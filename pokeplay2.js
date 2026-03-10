@@ -1,0 +1,1392 @@
+let msgsent = []
+const appr = [1072659486,6265981509]
+//const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' //main bot
+const botToken = '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' //backup bot
+//const botToken = '6945557235:AAFkj6PDd9RxwUhAH6FC9UWjuks4r5vJEaQ' // test bot
+const { Telegraf } = require('telegraf')
+const bot = new Telegraf(botToken)
+const app = [6265981509]
+const LocalSession = require('telegraf-session-local');
+const session = new LocalSession({ database: 'data/hexa_session.json' });
+bot.use(session.middleware());
+const commands = new Map();
+commands.forEach((method, name) => {
+  bot.command(name, method)
+})
+const tutors = [
+520, 803, 338, 805, 519, 307, 799, 814, 815, 518,
+  812, 308, 450, 282, 143,
+  343, 351, 387,  20,
+  401, 804, 798, 800, 802, 807, 797, 324,
+  808, 806,   7,   8,   9, 200, 264, 530, 276,
+  796, 352, 710, 809, 492, 813, 434,
+  340, 547
+]
+const gmax = 'https://telegra.ph/file/69896185471b6a096ff06.jpg'
+let rar = 0
+let gma = 0
+const trainers = {
+"selene":"https://telegra.ph/file/9630b88c3d8e12f345d01.jpg",
+"calem":"https://telegra.ph/file/7ab5b16c1c618b3295711.jpg",
+"elio":"https://telegra.ph/file/dc50d855ef55787805e89.jpg",
+"nate":"https://telegra.ph/file/e403ddd36c19ed1eda7d5.jpg",
+"victor":"https://telegra.ph/file/fbf0184a2224eb69e3dcb.jpg",
+"hilbert":"https://telegra.ph/file/c13833bd1ba27a1ec142e.jpg",
+"lucas":"https://telegra.ph/file/d607a91c98a8b421c68af.jpg",
+"brenden":"https://telegra.ph/file/9f7a41488fe4156c88429.jpg",
+"ethan":"https://telegra.ph/file/e21588cecef8e6c230b8c.jpg",
+"chase":"https://telegra.ph/file/9f7a41488fe4156c88429.jpg"
+}
+const event = ['kirlia','pacham','lilligant','decdueye','skitty','unown']
+const userState2 = new Map()
+const path = require('path')
+const userState = new Map()
+const stringSimilarity = require('string-similarity');
+const schedule = require('node-schedule');
+const NodeCache = require('node-cache');
+const timeoutCache = new NodeCache();
+const colors = ['red','orange','yellow','green','blue','lightblue','violet','darkviolet','black','grey','white','brown','pink','purple']
+const fetch = require('node-fetch');
+const { createCanvas, loadImage, registerFont } = require('canvas');
+const registerCommands = require('./commands');
+const registerCallbacks = require('./callbacks');
+const { buildModuleDeps } = require('./utils');
+registerFont('./CabalBold-78yP.ttf', { family: 'Arial' });
+registerFont('./SparkyStonesRegular-BW6ld.ttf', { family: 'Cool' });
+const moment = require('moment');
+const ballsdata = {
+"regular":1.5,
+"great":2.5,
+"ultra":3,
+"master":255,
+"safari":3,
+"level":2,
+"friend":2.5,
+"moon":2,
+"sport":2.7,
+"net":2,
+"nest":2,
+"repeat":2,
+"luxury":3.5,
+"quick":1.5,
+"park":1.5,
+"beast":1.5
+}
+bot.on('edited_message',async ctx => {
+})
+// Ignore commands sent before this bot instance started (stale updates)
+bot.use((ctx, next) => {
+  try {
+    if (ctx.message && ctx.message.date) {
+      const msgMs = ctx.message.date * 1000;
+      if (msgMs < botStartTime) {
+        return;
+      }
+    }
+  } catch (e) {
+    // fall through
+  }
+  return next();
+});
+const bags = {
+"1":"https://te.legra.ph/file/340c9151c246c4262380d.jpg",
+"2":"https://te.legra.ph/file/e60ce276626cc8f039ae2.jpg",
+"3":"https://te.legra.ph/file/7bf7399dba1158909b3ee.jpg",
+"4":"https://te.legra.ph/file/f635600afa470f91058b6.jpg",
+"5":"https://te.legra.ph/file/3f97ddbd80bb1ea351191.jpg",
+"6":"https://te.legra.ph/file/0ca46b70b24f64b496b5d.jpg",
+"7":"https://te.legra.ph/file/e6cff8112d5d5d25ab4f9.jpg",
+"8":"https://te.legra.ph/file/5b14ba8ad45e85376cc45.jpg",
+"9":"https://te.legra.ph/file/017a600cc62b5af2ec0ec.jpg",
+"10":"https://graph.org/file/5f0681dee62ffd3867a13.jpg"}
+let he = require('he');
+const fs = require('fs')
+const safari = JSON.parse(fs.readFileSync('data/safari.json', 'utf8'));
+const events = JSON.parse(fs.readFileSync('data/event.json', 'utf8'));
+const lvls = JSON.parse(fs.readFileSync('data/poke_level.json', 'utf8'));
+const catch_rates = JSON.parse(fs.readFileSync('data/pokemon_rarity.json', 'utf8'));
+const stones = JSON.parse(fs.readFileSync('data/stones.json', 'utf8'));
+const pokes = JSON.parse(fs.readFileSync('data/pokemon_info55_modified2.json', 'utf8'));
+const pokemoves = JSON.parse(fs.readFileSync('data/moveset_data_updated2.json', 'utf8'));
+const re = JSON.parse(fs.readFileSync('data/poke_rarity.json', 'utf8'));
+const pokestats = JSON.parse(fs.readFileSync('data/pokemon_base_stats_info2.json', 'utf8'));
+const trainerlevel = JSON.parse(fs.readFileSync('data/levels.json', 'utf8'));
+const tmprices = JSON.parse(fs.readFileSync('data/tm_prices.json', 'utf8'));
+const tms = JSON.parse(fs.readFileSync('data/tms2.json', 'utf8'));
+const forms = JSON.parse(fs.readFileSync('data/pokemon_data_updated.json', 'utf8'));
+const shiny = JSON.parse(fs.readFileSync('data/shiny.json', 'utf8'));
+const dmoves = JSON.parse(fs.readFileSync('data/moves_info.json', 'utf8'));
+const spawn = JSON.parse(fs.readFileSync('data/pokemon_status_info.json', 'utf8'));
+const expdata = JSON.parse(fs.readFileSync('data/pokemon_base_exp2.json', 'utf8'));
+const pokes2 = JSON.parse(fs.readFileSync('data/pokemon_info2.json', 'utf8'));
+const chart = JSON.parse(fs.readFileSync('data/exp_chart.json', 'utf8'));
+const chains = JSON.parse(fs.readFileSync('data/evolution_chains2.json', 'utf8'));
+const growth_rates = JSON.parse(fs.readFileSync('data/pokemon_data2.json', 'utf8'));
+const rdata = JSON.parse(fs.readFileSync('data/pokedex_data.json', 'utf8'));
+const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData,loadMessageData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs} = require('./func.js')
+const regions = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Paldea']
+const region = {
+"Kanto":1,
+"Johto":2,
+"Hoenn":3,
+"Sinnoh":4,
+"Unova":5,
+"Kalos":6,
+"Alola":7,
+"Galar":8,
+"Paldea":9
+}
+const starters = {
+  "Kanto": ["Bulbasaur", "Charmander", "Squirtle"],
+  "Unova": ["Snivy", "Tepig", "Oshawott"],
+  "Sinnoh": ["Turtwig", "Chimchar", "Piplup"],
+  "Johto": ["Chikorita", "Cyndaquil", "Totodile"],
+  "Hoenn": ["Treecko", "Torchic", "Mudkip"],
+  "Paldea": ["Sprigatito", "Fuecoco", "Quaxly"],
+  "Galar": ["Grookey", "Scorbunny", "Sobble"],
+  "Alola": ["Rowlet", "Litten", "Popplio"],
+  "Kalos": ["Chespin", "Fennekin", "Froakie"]
+};
+const emojis = {
+  "normal": "🔘",
+  "fire": "🔥",
+  "water": "💧",
+  "electric": "⚡",
+  "grass": "🌱",
+  "ice": "❄️",
+  "fighting": "🥊",
+  "poison": "☠️",
+  "ground": "🌍",
+  "flying": "🦅",
+  "psychic": "🧠",
+  "bug": "🐛",
+  "rock": "🪨",
+  "ghost": "👻",
+  "dragon": "🐲",
+  "dark": "🌑",
+  "steel": "🔩",
+  "fairy": "🧚"
+}
+const STATUS_ICONS = {
+  burn: "🔥",
+  poison: "☠️",
+  badly_poisoned: "☠️",
+  freeze: "❄️",
+  paralyze: "⚡"
+}
+
+function ensureBattleStatus(battleData) {
+  if (!battleData.status || typeof battleData.status !== "object") {
+    battleData.status = {};
+  }
+  return battleData.status;
+}
+
+function getBattleStatus(battleData, pass) {
+  const status = ensureBattleStatus(battleData)[pass];
+  return status || null;
+}
+
+function setBattleStatus(battleData, pass, status) {
+  const statuses = ensureBattleStatus(battleData);
+  if (!status) {
+    delete statuses[pass];
+    return;
+  }
+  statuses[pass] = status;
+}
+
+function getStatusLabel(status) {
+  if (!status) return "";
+  return status === "badly_poisoned" ? "Badly Poisoned" : c(status);
+}
+
+function getStatusTag(battleData, pass) {
+  const status = getBattleStatus(battleData, pass);
+  if (!status) return "";
+  const icon = STATUS_ICONS[status] || "";
+  return ` ${icon} [${getStatusLabel(status)}]`;
+}
+
+function getSpeedWithStatus(baseSpeed, battleData, pass) {
+  const status = getBattleStatus(battleData, pass);
+  if (status === "paralyze") {
+    return Math.max(1, Math.floor(baseSpeed / 2));
+  }
+  return baseSpeed;
+}
+
+function canPokemonAct(battleData, pass, pokeName) {
+  const status = getBattleStatus(battleData, pass);
+  if (status === "freeze") {
+    if (Math.random() < 0.2) {
+      setBattleStatus(battleData, pass, null);
+      return { canAct: true, msg: `➣ <b>${c(pokeName)}</b> thawed out.` };
+    }
+    return { canAct: false, msg: `➣ <b>${c(pokeName)}</b> is frozen solid.` };
+  }
+  if (status === "paralyze" && Math.random() < 0.25) {
+    return { canAct: false, msg: `➣ <b>${c(pokeName)}</b> is fully paralyzed and cannot move.` };
+  }
+  return { canAct: true, msg: "" };
+}
+
+function getMoveStatusEffect(move) {
+  if (!move || !move.name) return null;
+  const name = String(move.name).toLowerCase();
+  const guaranteed = {
+    "will-o-wisp": { status: "burn", chance: 1 },
+    "toxic": { status: "badly_poisoned", chance: 1 },
+    "poison-powder": { status: "poison", chance: 1 },
+    "poison-gas": { status: "poison", chance: 1 },
+    "thunder-wave": { status: "paralyze", chance: 1 },
+    "stun-spore": { status: "paralyze", chance: 1 },
+    "glare": { status: "paralyze", chance: 1 },
+    "nuzzle": { status: "paralyze", chance: 1 }
+  };
+  if (guaranteed[name]) return guaranteed[name];
+
+  if (["ember", "flamethrower", "fire-blast", "heat-wave", "flame-wheel", "fire-punch"].includes(name)) {
+    return { status: "burn", chance: 0.1 };
+  }
+  if (["poison-sting", "smog", "sludge", "sludge-bomb", "poison-jab", "cross-poison", "gunk-shot"].includes(name)) {
+    return { status: "poison", chance: 0.3 };
+  }
+  if (["thunderbolt", "thunder", "spark", "discharge", "body-slam", "lick"].includes(name)) {
+    return { status: "paralyze", chance: 0.3 };
+  }
+  if (["ice-beam", "blizzard", "powder-snow", "ice-punch"].includes(name)) {
+    return { status: "freeze", chance: 0.1 };
+  }
+  return null;
+}
+
+function isStatusImmune(status, defenderTypes = []) {
+  const types = defenderTypes.map((t) => String(t).toLowerCase());
+  if (status === "burn" && types.includes("fire")) return true;
+  if ((status === "poison" || status === "badly_poisoned") && (types.includes("poison") || types.includes("steel"))) return true;
+  if (status === "freeze" && types.includes("ice")) return true;
+  if (status === "paralyze" && types.includes("electric")) return true;
+  return false;
+}
+
+function applyDefenderResidualDamage(battleData, defenderPass, defenderName, defenderMaxHp) {
+  const status = getBattleStatus(battleData, defenderPass);
+  if (!status || !["burn", "poison", "badly_poisoned"].includes(status)) {
+    return "";
+  }
+  const divisor = status === "burn" ? 16 : 8;
+  const residual = Math.max(1, Math.floor(defenderMaxHp / divisor));
+  battleData.ohp = Math.max(0, battleData.ohp - residual);
+  battleData.tem2[defenderPass] = Math.max(0, battleData.tem2[defenderPass] - residual);
+  return `\n➣ <b>${c(defenderName)}</b> is hurt by ${status === "burn" ? "burn" : "poison"} and lost <code>${residual}</code> HP.`;
+}
+
+let botStartTime = new Date().getTime();
+let lastClicked = {}
+let lastUsed = {}
+let lastClicked2 = {}
+let globalClicks = [];
+let lastmsg = {}
+let globalmsg = [];
+let battlec = {}
+const banListFile2 = 'data/ban_list.json';
+const admins = [6265981509]
+const admins35 = [6265981509]
+
+// Load the ban list from the file
+let banList2 = [];
+try {
+    const banListData = fs.readFileSync(banListFile2, 'utf-8');
+    banList2 = JSON.parse(banListData);
+} catch (error) {
+    console.error('Error loading ban list:', error);
+}
+// saveBanList moved near bootstrapping section
+
+const moduleDeps = buildModuleDeps({
+  bot,
+  botToken,
+  app,
+  session,
+  commands,
+  chooseRandomNumbers,
+  getLevel,
+  tutors,
+  gmax,
+  trainers,
+  event,
+  userState,
+  userState2,
+  check,
+  check2,
+  check2q,
+  getUserData,
+  saveUserData2,
+  saveUserData22,
+  sendMessage,
+  editMessage,
+  loadMessageData,
+  regions,
+  starters,
+  trainerlevel,
+  tms,
+  stones,
+  spawn,
+  forms,
+  lvls,
+  pokes,
+  pokemoves,
+  dmoves,
+  growth_rates,
+  chart,
+  stat,
+  word,
+  getRandomNature,
+  generateRandomIVs,
+  c,
+  he,
+  fs,
+  path,
+  fetch,
+  createCanvas,
+  loadImage,
+  registerFont,
+  moment,
+  timeoutCache,
+  colors,
+  bags,
+  safari,
+  lvls,
+  catch_rates,
+  re,
+  trainerlevel,
+  tmprices,
+  expdata,
+  pokes2,
+  chains,
+  rdata,
+  region,
+  stringSimilarity,
+  ballsdata,
+  calculateTotal,
+  calculateTotalEV,
+  calcexp,
+  sleep,
+  findEvolutionLevel,
+  sort,
+  pokelist,
+  pokelisthtml,
+  checkseen,
+  formatDetails,
+  appr,
+  rar,
+  gma,
+  banList2,
+  banListFile2,
+  saveBanList,
+  admins,
+  admins35
+  ,
+  pokestats,
+  plevel,
+  Stats,
+  battlec,
+  shiny,
+  events,
+  emojis,
+  saveMessageData,
+  incexp,
+  incexp2,
+  Bar,
+  eff,
+  calc,
+  getStatusTag,
+  ensureBattleStatus,
+  getBattleStatus,
+  canPokemonAct,
+  getMoveStatusEffect,
+  isStatusImmune,
+  setBattleStatus,
+  getStatusLabel,
+  applyDefenderResidualDamage,
+  getSpeedWithStatus,
+  tutors
+  ,
+  getAllUserData,
+  getTopUsers,
+  botStartTime,
+  lastClicked,
+  lastUsed,
+  lastClicked2,
+  globalClicks,
+  lastmsg,
+  globalmsg,
+  forwardMessageToAllUsers
+});
+registerCommands(bot, moduleDeps);
+registerCallbacks(bot, moduleDeps);
+
+bot.on('callback_query', async (ctx, next) => {
+  try {
+
+if(banList2.includes(String(ctx.from.id))|| banList2.includes(ctx.from.id)){
+return
+}
+    const userId = ctx.from.id;
+    const chatId = ctx.chat ? ctx.chat.id : 000;
+const globalClicksPerSecond = globalClicks.filter(
+  (timestamp) => Date.now() - timestamp < 1000
+);
+
+if (globalClicksPerSecond.length > 25) {
+  const waitTime = Math.ceil((globalClicksPerSecond[0] + 1000 - Date.now()) / 1000);
+  ctx.answerCbQuery(`Wait for a second.`);
+  return;
+}
+
+// Check chat-specific click rate for groups
+if (ctx.chat && ctx.chat.type != 'private') {
+  if (!lastClicked[chatId]) {
+    lastClicked[chatId] = [];
+  }
+
+  // Check total clicks in the current minute
+  const currentMinuteStart = Date.now() - (Date.now() % 60000);
+  const clicksPerMinute = lastClicked[chatId].filter(
+    (timestamp) => timestamp >= currentMinuteStart
+  );
+
+  if (clicksPerMinute.length >= 19) {
+    const waitTime = Math.ceil((clicksPerMinute[0] + 60000 - Date.now()) / 1000);
+    ctx.answerCbQuery(`Too many requests.`);
+    return;
+  }
+}
+if(ctx.chat.type=='private'){
+var sy = 700
+}else{
+var sy = 1000
+}
+if (lastClicked2[ctx.from.id] && Date.now() - lastClicked2[ctx.from.id] < sy) {
+
+  ctx.answerCbQuery('Try after a sec');
+  return;
+}
+await next();
+}catch(error){
+console.log(error)
+}
+})
+bot.on('message',async (ctx,next) => {
+try{
+if(banList2.includes(String(ctx.from.id))|| banList2.includes(ctx.from.id)){
+return
+}
+ctx.session.groupChatLimitReached = false;
+const updateTimestamp = ctx.message.date * 1000; // Convert to milliseconds
+  if (updateTimestamp < botStartTime) {
+    return;
+  }
+const userId = ctx.from.id;
+    const chatId = ctx.chat ? ctx.chat.id : 000;
+const globalClicksPerSecond = globalmsg.filter(
+  (timestamp) => Date.now() - timestamp < 1000
+);
+
+if (globalClicksPerSecond.length > 25) {
+  const waitTime = Math.ceil((globalClicksPerSecond[0] + 1000 - Date.now()) / 1000);
+  return;
+}
+
+// Check chat-specific click rate for groups
+if (ctx.chat && ctx.chat.type != 'private') {
+  if (!lastmsg[chatId]) {
+    lastmsg[chatId] = [];
+  }
+
+  // Check total clicks in the current minute
+  const currentMinuteStart = Date.now() - (Date.now() % 60000);
+  const clicksPerMinute = lastmsg[chatId].filter(
+    (timestamp) => timestamp >= currentMinuteStart
+  );
+
+  if (clicksPerMinute.length >= 19) {
+    const waitTime = Math.ceil((clicksPerMinute[0] + 60000 - Date.now()) / 1000);
+if(!msgsent.includes(chatId)){
+await sendMessage(ctx,ctx.chat.id,'*⚠️ Too many requests*',{parse_mode:'markdown'})
+msgsent.push(chatId)
+}
+    return;
+  }
+}
+if(ctx.chat.type=='private'){
+var sy = 700
+}else{
+var sy = 1500
+}
+if (lastClicked2[ctx.from.id] && Date.now() - lastClicked2[ctx.from.id] < sy) {
+console.log('low gap')
+    return;
+  }
+if(msgsent.includes(chatId)){
+msgsent = msgsent.filter(id => id!=chatId)
+}
+const nam2 = (ctx.message && ctx.message.text && ctx.message.text.startsWith('/')) ? ctx.message.text.split(' ')[0].replace('/','') : 'b'
+const name = nam2.includes('@'+bot.botInfo.username) ? nam2.replace('@'+bot.botInfo.username,'') : nam2
+const command = commands.get(name)
+if(ctx.message && ctx.message.text && ctx.message.text.startsWith('/')){
+lastClicked2[ctx.from.id] = Date.now();
+}
+if(command){
+command(ctx,next)
+return
+}
+const data = await getUserData(ctx.from.id)
+if(data.inv && (!data.settings)){
+data.settings = {}
+const s = data.settings
+s['max_poke'] = 6
+s['dual_type'] = true
+s['min_6l'] = 0
+s['max_6l'] = 6
+s['min_level'] = 1
+s['max_level'] = 100
+s['switch'] = true
+s['key_item'] = true
+s['sandbox'] = false
+s['random'] = false
+s['preview'] = 'no'
+s['pin'] = false
+s['ban_types'] = []
+s['allow_types'] = []
+s['ban_regions'] = []
+s['allow_regions'] = []
+s['type_effects'] = true
+await saveUserData2(ctx.from.id,data)
+}
+
+if(data.inv && !data.inv.exp){
+data.inv.exp = 0
+await saveUserData2(ctx.from.id,data)
+}
+if (userState2.has(ctx.from.id)) {
+    const userData2 = userState2.get(ctx.from.id);
+
+    // Check if the user's message is a reply to the waiting message
+    if (ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === userData2.messageId) {
+userState2.delete(ctx.from.id);
+var regex = /[^a-zA-Z0-9 .]/g;
+  // Find all invalid characters in the message
+  var invalidCharacters = ctx.message.text.match(regex);
+if(invalidCharacters!=null){
+const message = await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Invalid Character: *'+invalidCharacters+'*',{reply_markup:{force_reply:true}})
+const userData3 = {
+      messageId: message,
+      pass: userData2.pass // You can set the name to whatever you like
+    };
+    userState2.set(ctx.from.id, userData3);
+return
+}
+if(ctx.message.text.length > 12){
+const message = await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Maximum Length: *12*',{reply_markup:{force_reply:true}})
+const userData3 = {
+      messageId: message,
+      pass: userData2.pass // You can set the name to whatever you like
+    };
+    userState2.set(ctx.from.id, userData3);
+return
+}
+const poke = data.pokes.filter((pk)=>pk.pass==userData2.pass)[0]
+if(!poke){
+await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Pokemon Not Found',{reply_to_message_id:ctx.message.message_id})
+return
+}
+if(ctx.message.text == '.'){
+if(poke.nickname){
+delete poke.nickname
+}
+await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Removed nickname of *'+c(poke.name)+'*',{reply_to_message_id:ctx.message.message_id})
+}else{
+poke.nickname = ctx.message.text
+await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Nicknamed *'+c(poke.name)+'* as *'+c(ctx.message.text)+'*',{reply_to_message_id:ctx.message.message_id})
+}
+await saveUserData2(ctx.from.id, data);;
+return
+}
+}
+if (userState.has(ctx.from.id)) {
+    const userData2 = userState.get(ctx.from.id);
+
+    // Check if the user's message is a reply to the waiting message
+    if (ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === userData2.messageId) {
+userState.delete(ctx.from.id);
+var regex = /[^a-zA-Z0-9 ]/g;
+  // Find all invalid characters in the message
+  var invalidCharacters = ctx.message.text.match(regex);
+if(invalidCharacters!=null){
+const message = await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Invalid Character: *'+invalidCharacters+'*',{reply_markup:{force_reply:true}})
+const userData3 = {
+      messageId: message,
+      teamn: userData2.teamn // You can set the name to whatever you like
+    };
+    userState.set(ctx.from.id, userData3);
+return
+}
+if(ctx.message.text.length > 12){
+const message = await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Maximum Length: *12*',{reply_markup:{force_reply:true}})
+const userData3 = {
+      messageId: message,
+      teamn: userData2.teamn // You can set the name to whatever you like
+    };
+    userState.set(ctx.from.id, userData3);
+return
+}
+
+if(ctx.message.text == ','){
+delete data.inv[userData2.teamn]
+await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Successfully Removed Name Of *Team '+userData2.teamn+'*',{reply_to_message_id:ctx.message.message_id})
+}else{
+data.inv[userData2.teamn] = ctx.message.text
+await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Renamed *Team '+userData2.teamn+'* As *'+ctx.message.text+'*',{reply_to_message_id:ctx.message.message_id})
+}
+await saveUserData2(ctx.from.id, data);
+return
+}
+}
+if(data.inv && data.inv.team && data.teams){
+const team = data.teams[data.inv.team]
+for(const a of team){
+const pk = data.pokes.filter((pk)=> pk.pass==a)[0]
+if(!pk){
+data.teams[data.inv.team] = data.teams[data.inv.team].filter((p)=> p!=a)
+await saveUserData2(ctx.from.id,data)
+}
+}
+}
+if(data.inv && (!data.inv.name || data.inv.name!=ctx.from.first_name)){
+data.inv.name = he.encode(ctx.from.first_name)
+await saveUserData2(ctx.from.id,data)
+}
+if(data.inv && !data.extra){
+data.extra = {}
+await saveUserData2(ctx.from.id,data)
+}
+if(data.inv && !data.extra.megas){
+data.extra.megas = {}
+await saveUserData2(ctx.from.id,data)
+}
+if(data.inv && Object.keys(data.extra.megas).length > 0){
+const messageData = await loadMessageData();
+const userIdToFind = String(ctx.from.id)
+const result = Object.keys(messageData).find(key => {
+  const value = messageData[key];
+  return typeof value === 'object' && (value.turn === userIdToFind || value.oppo === userIdToFind);
+});
+if(result){
+let battleData = {};
+    try {
+      battleData = JSON.parse(fs.readFileSync('./data/battle/'+result+'.json', 'utf8'));
+    } catch (error) {
+      battleData = {};
+    }
+if(!battleData.megas){
+battleData.megas = {}
+}
+if(!Object.keys(battleData.megas).includes(Object.keys(data.extra.megas)[0])){
+const p = data.pokes.filter((pk)=> pk.pass == Object.keys(data.extra.megas)[0])[0]
+if(p){
+p.name = data.extra.megas[Object.keys(data.extra.megas)[0]]
+}
+data.extra.megas = {}
+await saveUserData2(ctx.from.id,data)
+}
+}else{
+const p = data.pokes.filter((pk)=> pk.pass == Object.keys(data.extra.megas)[0])[0]
+if(p){
+p.name = data.extra.megas[Object.keys(data.extra.megas)[0]]
+}
+data.extra.megas = {}
+await saveUserData2(ctx.from.id,data)
+}
+}
+if(data.pokes && data.pokes.length > 0){
+if(!data.pokecaught){
+data.pokecaught = []
+}
+if(!data.pokeseen){
+data.pokeseen = []
+}
+const fu2 = data.pokes.filter((p)=>!data.pokecaught.includes(p.name))
+const fu = data.pokes.filter((p)=>!data.pokeseen.includes(p.name))
+if(fu2.length > 0){
+for(const yy of fu2){
+data.pokecaught.push(yy.name)
+}
+await saveUserData2(ctx.from.id,data)
+}
+if(fu.length > 0){
+for(const yy of fu){
+data.pokeseen.push(yy.name)
+}
+await saveUserData2(ctx.from.id,data)
+}
+}
+if(data.inv && data.extra){
+const matchingLevels = Object.keys(trainerlevel).filter(level => data.inv.exp >= trainerlevel[level]);
+const level = matchingLevels.length > 0 ? parseInt(matchingLevels[matchingLevels.length - 1]) : undefined;
+if(data.extra.pending && level > 19){
+const id = data.extra.pending*1
+const userData2 = await getUserData(id)
+if(!userData2.extra.refer){
+userData2.extra.refer = []
+}
+if(!userData2.refers){
+userData2.refers = 0
+}
+userData2.refers += 1
+userData2.extra.refer.push(ctx.from.id)
+data.inv.pc += 1000
+data.extra.referred = id
+delete data.extra.pending
+await sendMessage(ctx,ctx.from.id,'You have successfully reached <b>Level 20</b> and your refer by <b>'+userData2.inv.name+' has been completed.\n+ 1k PC 💷</b>',{parse_mode:'HTML'})
+let msg = '<b>'+ctx.from.first_name+'</b> has reached <b>Level 20</b>.'
+userData2.inv.pc += 500
+msg += '\n<b>+500</b> PokeCoins 💷'
+if (userData2.refers % 3 === 0) {
+const ballTypes = ['level','friend','moon','sport','net','nest','luxury','premier','quick','park','beast'];
+
+// Shuffle the ballTypes array
+for (let i = ballTypes.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [ballTypes[i], ballTypes[j]] = [ballTypes[j], ballTypes[i]];
+}
+
+const numTypesToAdd = Math.floor(Math.random() * 2) + 2;
+const selectedTypes = ballTypes.slice(0, numTypesToAdd);
+selectedTypes.forEach(type => {
+    const randomAmount = Math.floor(Math.random() * 5) + 1;
+    userData2.balls[type] = (userData2.balls[type] || 0) + randomAmount;
+    msg += `\n<b>+${randomAmount}</b> ${c(type)} Balls`;
+});
+}
+if(userData2.refers % 8 === 0){
+const n5 = Object.keys(tms.tmnumber)
+const num = n5[Math.floor(Math.random()*n5.length)]
+if(!userData2.tms){
+userData2.tms = {}
+}
+if(!userData2.tms[String(num)]){
+userData2.tms[String(num)] = 0
+}
+userData2.tms[String(num)] += 1
+userData2.inv.pc += 1000
+if(!userData2.inv.pass){
+userData2.inv.pass = 0
+}
+userData2.inv.pass += 1
+msg += '\n<b>+1</b> TM'+num+' ⚙\n<b>+1</b> Safari Pass\n<b>+1000</b> PokeCoins 💷'
+}
+if(userData2.refers % 13 === 0){
+const n5 = Object.keys(tms.tmnumber)
+const num = n5[Math.floor(Math.random()*n5.length)]
+if(!userData2.tms){
+userData2.tms = {}
+}
+if(!userData2.tms[String(num)]){
+userData2.tms[String(num)] = 0
+}
+userData2.tms[String(num)] += 1
+const num2 = n5[Math.floor(Math.random()*n5.length)]
+if(!userData2.tms[String(num2)]){
+userData2.tms[String(num2)] = 0
+}
+userData2.tms[String(num2)] += 1
+const num3 = n5[Math.floor(Math.random()*n5.length)]
+if(!userData2.tms[String(num3)]){
+userData2.tms[String(num3)] = 0
+}
+userData2.tms[String(num3)] += 1
+userData2.inv.pc += 3000
+if(!userData2.inv.pass){
+userData2.inv.pass = 0
+}
+userData2.inv.pass += 1
+msg += '\n<b>+1</b> TM'+num+' ⚙\n<b>+1</b> TM'+num2+' ⚙\n<b>+1</b> TM'+num3+' ⚙\n<b>+1</b> Safari Pass\n<b>+3000</b> PokeCoins 💷'
+}
+
+  if (userData2.refers % 22 === 0) {
+if(!userData2.balls.master){
+userData2.balls.master = 0
+}
+userData2.balls.master += 1
+const st = Object.keys(stones)
+const stone = st[Math.floor(Math.random()*st.length)]
+if(!userData2.inv.stones){
+userData2.inv.stones = []
+}
+userData2.inv.stones.push(stone)
+const ar = ['legendary','legendry']
+var list = Object.keys(spawn).filter(pk=>ar.includes(spawn[pk].toLowerCase()) && forms[pk])
+const name5 = list[Math.floor(Math.random()*list.length)]
+const nut = ['gmax','mega','origin','primal']
+var fr = forms[name5].filter(pk=> !nut.some((pk2)=> pk.identifier.includes(pk2)) && ar.includes(spawn[pk.identifier].toLowerCase()))
+const nam = fr[Math.floor(Math.random()*fr.length)].identifier
+const ul = lvls[nam]
+let m = Math.max(ul.split('-')[0]*1,5)
+let m2 = ul.split('-')[1]*1
+const level = Math.floor(Math.random()*(m2-m))+m
+const pokeName = nam.toLowerCase()
+  const poked = pokes[pokeName]
+  if (poked) {
+const moves = pokemoves[pokeName]
+if(moves){
+const moves2 = moves.moves_info.filter((move)=> move.learn_method == 'level-up' && move.level_learned_at < level*1 && dmoves[move.id].power && dmoves[move.id].accuracy)
+const am = Math.min(Math.max(moves2.length,1),4)
+const omoves = moves2.slice(-am)
+const ms = []
+for(const m of omoves){
+ms.push(m.id)
+}
+const iv = await generateRandomIVs(spawn[pokeName].toLowerCase())
+  const ev = {
+"hp":0,
+"attack":0,
+"defense":0,
+"special_attack":0,
+"special_defense":0,
+"speed":0
+};
+const pass2 = word(8)
+const nat = getRandomNature()
+const g = growth_rates[pokeName]
+var sy = ''
+const exp = chart[g.growth_rate][level]
+  const da = {
+    name:pokeName,
+    id: poked.pokedex_number,
+    nature:nat,
+    exp:exp,
+    pass:pass2,
+    ivs: iv,
+    symbol: sy,
+    evs: ev,
+    moves: ms, // Push the randomly selected move ID
+  };
+if(!userData2.pokes){
+userData2.pokes = []
+}
+userData2.pokes.push(da)
+}
+}
+msg += '\n<b>+1</b> Master Ball\n<b>+1</b> '+c(stone)+'\n<b>+1</b> '+c(nam)+''
+  }
+await sendMessage(ctx,id,msg,{parse_mode:'HTML'})
+await sendMessage(ctx,-1003069884900,'#refer\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) has reached level 20 and <b>'+userData2.inv.name+'</b> (<code>'+id+'</code>) received :-.\n\n'+msg+'',{parse_mode:'html'})
+await saveUserData2(id,userData2)
+await saveUserData2(ctx.from.id,data)
+return
+}
+}
+await next();
+}catch(error){
+console.log(error,ctx.from.id)
+}
+})
+// /start command moved to commands/start.js
+
+// callback moved to callbacks/001_pkege.js
+// callback moved to callbacks/002_suger.js
+// callback moved to callbacks/003_delete.js
+// /stats moved to commands/stats.js
+// callback moved to callbacks/004_stats.js
+
+// callback moved to callbacks/005_moves.js
+// callback moved to callbacks/006_info.js
+// callback moved to callbacks/007_ste.js
+// callback moved to callbacks/008_pkisvs.js
+
+
+// /hunt moved to commands/hunt.js
+// callback moved to callbacks/009_run.js
+// callback moved to callbacks/010_exrtbt.js
+// callback moved to callbacks/011_catch.js
+// callback moved to callbacks/012_atk.js
+// callback moved to callbacks/013_bajkw.js
+// callback moved to callbacks/014_bag.js
+// callback moved to callbacks/015_ball.js
+// callback moved to callbacks/016_btl.js
+// callback moved to callbacks/017_pokemon.js
+// callback moved to callbacks/018_snd.js
+// callback moved to callbacks/019_ev.js
+// /travel moved to commands/travel.js
+// callback moved to callbacks/020_locked.js
+// callback moved to callbacks/021_travel.js
+// /open moved to commands/open.js
+// /close moved to commands/close.js
+// /myteams moved to commands/myteams.js
+// callback moved to callbacks/022_set.js
+// callback moved to callbacks/023_rename.js
+// callback moved to callbacks/024_randomize.js
+
+// callback moved to callbacks/025_teams.js
+// callback moved to callbacks/026_rest.js
+// callback moved to callbacks/027_main.js
+// callback moved to callbacks/028_add.js
+// callback moved to callbacks/029_select.js
+// callback moved to callbacks/030_remove.js
+// callback moved to callbacks/031_rjem.js
+// callback moved to callbacks/032_change_order.js
+
+// callback moved to callbacks/033_fswc.js
+
+// callback moved to callbacks/034_swap_confirm.js
+
+// /mybag moved to commands/mybag.js
+// callback moved to callbacks/035_vyast.js
+// callback moved to callbacks/036_sysu.js
+
+// callback moved to callbacks/037_poag.js
+// callback moved to callbacks/038_vyabll.js
+
+
+// callback moved to callbacks/039_lrn.js
+// callback moved to callbacks/040_elr.js
+// callback moved to callbacks/041_crncl.js
+// callback moved to callbacks/042_mhusz.js
+
+// /pokestore moved to commands/pokestore.js
+// callback moved to callbacks/043_store.js
+
+
+// /sell moved to commands/sell.js
+// callback moved to callbacks/044_keyitem.js
+// callback moved to callbacks/045_syllity.js
+// callback moved to callbacks/046_syr.js
+
+// /buy moved to commands/buy.js
+// /transfer moved to commands/transfer.js
+// callback moved to callbacks/047_evy.js
+
+// /safari_zone moved to commands/safari_zone.js
+// /enter moved to commands/enter.js
+// callback moved to callbacks/048_safari.js
+// /exit moved to commands/exit.js
+
+const groupCommands = [
+    { command: '/start', description: 'Start The Bot' },
+    { command: '/hunt', description: 'hunt A Poke' },
+{command:'/challenge',description:'Battle With Other Players'},
+{command:'/mybag',description:'Check Your Bag'},
+{ command: '/mypokemons', description: 'Check Your All Pokes' },
+{command:'/mycard',description:'View Your Trainer Card'},
+{command:'/trainer_card',description:'Customize Your Trainer Card'},
+{command: '/stats', description: 'Check Stats Of A Poke' },
+{command:'/buy',description:'Buy Items From Poke Store'},
+{command:'/sell',description:'Sell Item To Poke Store'},
+{command:'/transfer',description:'transfer PokeCoins To Other Users'},
+{command: '/travel', description: 'Travel Another Place' },
+{command:'/safari_zone',description:'Travel Into Safari Zone'},
+{command:'/ev_train',description:'Train EVs Of Your Poke'},
+{command:'/myteams',description:' Setup Your Teams'},
+{command:'/pokestore',description:'Visit PokeStore'},
+{command:'/trade',description:'Trade Pokemons With Others (Paid)'},
+{command:'/nickname',description:'Nickname A Pokemon'},
+{command:'/release',description:'Release A Pokemon'},
+{command:'/candy',description:'Give Candy To Your Pokemon'},
+{command:'/vitamin',description:'Give Vitamins To Your Pokemon'},
+{command:'/berry',description:'Give Berry To Your Pokemon'},
+{command:'/evolve',description:'Evolve Your Pokemon'},
+{command:'/relearner',description:'Relearn Level-Up Moves'},
+{command:'/pokedex',description:'Pokedex A Pokemom'},
+{command:'/referral',description:'Refer And Earn'},
+{command:'/settings',description:'Battle Settings Information'}
+    // Add more group chat commands as needed
+  ];                                                                             
+  bot.telegram.setMyCommands(groupCommands, {scope: {type: "default"}});
+// /mycard moved to commands/mycard.js
+// /trainer_card moved to commands/trainer_card.js
+// callback moved to callbacks/049_trainer.js
+// callback moved to callbacks/050_stcrd.js
+bot.on('text',async (ctx,next) => {
+if(ctx.message.text && ctx.message.text.toLowerCase().includes('/tm')){
+let num = ctx.message.text.toLowerCase().replace('/tm','')
+if(num.includes('@'+bot.botInfo.username.toLowerCase()+'')){
+num = num.replace('@'+bot.botInfo.username.toLowerCase()+'','')
+}
+const data = await getUserData(ctx.from.id)
+console.log(num)
+if(tms.tmnumber[String(num)]){
+if(!data.tms){
+data.tms={}
+}
+console.log('tmfpund')
+if(data.tms[num] && data.tms[num] > 0){
+console.log('yes')
+const m = tms.tmnumber[num]
+let msg = '✦ *TM'+num+'* ('+c(dmoves[m].name)+' '+emojis[dmoves[m].type]+')\n'
+msg += '*Power:* '+dmoves[m].power+', *Accuracy:* '+dmoves[m].accuracy+' (_'+c(dmoves[m].category)+'_)\n'
+msg += '\n• You Can Sell *TM'+num+'* For *'+tmprices.sell[String(num)]+'* 💷'
+await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},msg,{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:[[{text:'Use',callback_data:'tmuse_'+num+'_'+ctx.from.id+''},{text:'Sell',callback_data:'tmselly_'+num+'_'+tmprices.sell[String(num)]+'_'+ctx.from.id+''}]]}})
+}else{
+await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Don\'t Have *TM'+num+'*',{reply_to_message_id:ctx.message.message_id})
+}
+}
+}
+await next();
+})
+// callback moved to callbacks/051_tmuse.js
+// callback moved to callbacks/052_tundse.js
+// callback moved to callbacks/053_frgtm.js
+
+
+
+// callback moved to callbacks/054_lrtme.js
+
+
+
+// callback moved to callbacks/055_tmselly.js
+// callback moved to callbacks/056_tsejl.js
+// /challenge command moved to commands/challenge.js
+// callback moved to callbacks/057_reject.js
+// callback moved to callbacks/058_multryn.js
+
+async function editOverdueMessages() {
+    const messageData = await loadMessageData();
+for(const id in messageData.moves){
+const time = messageData.moves[id].td
+const queryTime = new Date(time)
+const options = {
+  timeZone: 'Asia/Kolkata',
+  month: 'numeric',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: true,
+};
+const currentTime = new Date().toLocaleString('en-US', options)
+const timeDifference = new Date(currentTime) - queryTime;
+console.log(timeDifference)
+if(timeDifference > 900000){
+bot.telegram.editMessageText(messageData.moves[id].chat,id, null,'Unfortunately, Timeout For *15 Min* Has Over & *'+c(messageData.moves[id].poke)+'* Did Not Learnt *'+c(messageData.moves[id].move)+'*',{parse_mode:'markdown'})
+delete messageData.moves[id]
+await saveMessageData(messageData)
+}
+}
+for(const id in messageData.tutor){
+const time = messageData.tutor[id].tdy
+const queryTime = new Date(time)
+const options = {
+timeZone: 'Asia/Kolkata',
+month: 'numeric',
+day: 'numeric',
+hour: 'numeric',
+minute: 'numeric',
+  hour12: true,
+};
+const currentTime = new Date().toLocaleString('en-US', options)
+const timeDifference = new Date(currentTime) - queryTime;
+console.log(timeDifference)
+if(timeDifference > 900000){
+bot.telegram.editMessageText(messageData.tutor[id].chat,id, null,'Unfortunately, Timeout For *15 Min* Has Over & *Move Tutor* has gone, you *Missed* opportunity to teach your pokemon *'+c(messageData.tutor[id].mv)+'*',{parse_mode:'markdown'})
+delete messageData.tutor[id]
+await saveMessageData(messageData)
+}
+}
+
+    Object.entries(messageData)
+        .filter(([chatId, userMessageData]) =>
+            (userMessageData.times && Date.now() - userMessageData.times > 90000) ||
+            (userMessageData.timestamp && Date.now() - userMessageData.timestamp > 60000)
+        )
+        .map(async ([chatId, userMessageData]) => {
+            if (userMessageData.times) {
+                const { turn, oppo } = userMessageData;
+                const d1 = await getUserData(turn);
+                const d2 = await getUserData(oppo);
+
+                const elapsedTime = Date.now() - userMessageData.times;
+
+                if (elapsedTime > 130000) {
+                    let newMessage = `<a href="tg://user?id=${turn}"><b>${d1.inv.name}</b></a> has not moved and losses <b>25</b> PokeCoins 💷.`;
+                    newMessage += `\n<a href="tg://user?id=${oppo}"><b>${d2.inv.name}</b></a> <b>+25</b> PokeCoins 💷.`;
+
+                    if (d1.inv.pc > 25) {
+                        d1.inv.pc -= 25;
+                    }
+
+                    d2.inv.pc += 25;
+
+                    await saveUserData2(turn, d1);
+                    await saveUserData2(oppo, d2);
+                    messageData.battle = messageData.battle.filter((chats) => chats !== parseInt(turn) && chats !== parseInt(oppo));
+                    delete messageData[chatId];
+await saveMessageData(messageData);
+bot.telegram.editMessageText(userMessageData.chat, userMessageData.mid, null, newMessage, {
+                        parse_mode: 'HTML'
+})
+                }
+            } else if (userMessageData.timestamp) {
+                const elapsedTime = Date.now() - userMessageData.timestamp;
+const dr = await getUserData(chatId)
+                if (elapsedTime > 60000 || !dr.extra.hunting) {
+                    const newMessage = '*Timeover.*';
+                    messageData.battle = messageData.battle.filter((chats) => chats !== userMessageData.id);
+                    delete messageData[chatId];
+                await saveMessageData(messageData);
+bot.telegram.editMessageText(chatId, userMessageData.mid, null, newMessage, {
+                        parse_mode: 'markdown'
+})
+}
+            }
+        });
+
+}
+
+schedule.scheduleJob('*/2 * * * * *', editOverdueMessages);
+// callback moved to callbacks/059_viewteam.js
+// /reset_battle moved to commands/reset_battle.js
+// /record moved to commands/record.js
+// /trade moved to commands/trade.js
+// callback moved to callbacks/060_tradc.js
+// callback moved to callbacks/061_trade.js
+// callback moved to callbacks/062_trdfe.js
+// callback moved to callbacks/063_trfe.js
+// callback moved to callbacks/064_agtr.js
+// admins declared near bootstrap
+// /add_band moved to commands/add_band.js
+// /status moved to commands/status.js
+// /add moved to commands/add.js
+// /candy moved to commands/candy.js
+// /evolve moved to commands/evolve.js
+// callback moved to callbacks/065_evolve.js
+// callback moved to callbacks/066_candy.js
+
+// /vitamin moved to commands/vitamin.js
+// callback moved to callbacks/067_vitamin.js
+// callback moved to callbacks/068_vitye.js
+// /berry moved to commands/berry.js
+// callback moved to callbacks/069_berry.js
+// callback moved to callbacks/070_brth.js
+const dataFolderPath = './data/db/'; // Replace with the path to your data folder
+// /broad moved to commands/broad.js
+
+async function forwardMessageToAllUsers(ctx, msgid,id) {
+  const userIds = getUserIdsFromDataFolder();
+
+  let successCount = 0;
+  let failureCount = 0;
+
+  for (const userId of userIds) {
+    try {
+//const msg = await sendMessage(ctx,userId, message,{parse_mode:'markdown'});
+//await ctx.telegram.pinChatMessage(userId,msg.message_id);
+await bot.telegram.forwardMessage(userId,id,msgid)
+      successCount++;
+    } catch (error) {
+      const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
+      if(d.includes('chat not found') || d.includes('blocked by the user')){
+        try{
+          const p = path.join(dataFolderPath, `${userId}.json`)
+          if(fs.existsSync(p)){
+            fs.unlinkSync(p)
+          }
+        }catch(e){}
+      }
+      console.error(`Failed to forward message to user ${userId}: ${error.message}`);
+      failureCount++;
+    }
+
+    // To avoid rate limiting, wait for 1 second before forwarding to the next user
+    await sleep(400);
+  }
+
+  // Send a summary message
+  const summaryMessage = `Total Users ${userIds.length}\nMessage forwarded to ${successCount} users.\n Failed to forward to ${failureCount} users.`;
+  await sendMessage(ctx,ctx.chat.id,summaryMessage);
+}
+
+function getUserIdsFromDataFolder() {
+  const userIds = [];
+  const files = fs.readdirSync(dataFolderPath);
+
+  for (const file of files) {
+    const userId = parseInt(path.parse(file).name, 10);
+    if (!isNaN(userId)) {
+      userIds.push(userId);
+    }
+  }
+
+  return userIds;
+}
+// /top moved to commands/top.js
+// /display moved to commands/display.js
+// callback moved to callbacks/071_display.js
+// /sort moved to commands/sort.js
+// callback moved to callbacks/072_sort.js
+// /nickname moved to commands/nickname.js
+// callback moved to callbacks/073_nickname.js
+// /referral moved to commands/referral.js
+// callback moved to callbacks/074_refurl.js
+// /mynicknames moved to commands/mynicknames.js
+// callback moved to callbacks/075_nykne.js
+// /pokedex moved to commands/pokedex.js
+// callback moved to callbacks/076_pkydex.js
+// callback moved to callbacks/077_bst.js
+// callback moved to callbacks/078_ryf.js
+async function checkseen(ctx,name){
+console.log(name)
+const data56 = await getUserData(ctx.from.id)
+if(!data56.pokeseen){
+data56.pokeseen = []
+}
+if(!data56.pokeseen.includes(name)){
+console.log('not includes '+name)
+data56.pokeseen.push(name)
+await saveUserData2(ctx.from.id,data56)
+}
+return
+}
+function formatDetails(details) {
+const regions2 = {
+  'Kanto': ['kanto', 'letsgo-kanto'],
+  'johto':['johto'],
+  'hoenn':['hoenn'],
+'hisui': ['hisui'],
+  'sinnoh':['sinnoh'],
+  'unova':['unova'],
+  'kalos':['kalos-central','kalos-mountain','kalos-coastal'],
+  'alola':['alola','poni','melemele','akala','ulaula'],
+  'Galar': ['galar','isle-of-armor', 'crown-tundra'],
+  'paldea':['paldea','kitakami','blueberry'],
+  'conquest-gallery':['conquest-gallery']
+};
+  const formattedDetails = [];
+  for (const region in regions2) {
+    const places = regions2[region];
+    const regionDetails = places.map(place => {
+      const detail = details.find(d => d.toLowerCase() === place);
+      return detail ? detail.replace(/[-_]/g, ' ') : '';
+    }).filter(Boolean);
+    if (regionDetails.length > 0) {
+      formattedDetails.push(`• <b>${c(region)}</b> - [${c(regionDetails.join(' , '))}]`);
+    }
+  }
+  return formattedDetails.join('\n');
+}
+// callback moved to callbacks/079_tyrt.js
+// callback moved to callbacks/080_trlr.js
+// callback moved to callbacks/081_tryfrg.js
+// callback moved to callbacks/082_trtns.js
+// /ev_train moved to commands/ev_train.js
+// callback moved to callbacks/083_evtrain.js
+// callback moved to callbacks/084_rvyr.js
+// /release moved to commands/release.js
+// callback moved to callbacks/085_release.js
+// callback moved to callbacks/086_relst.js
+// callback moved to callbacks/087_dlt.js
+// /pokeballs moved to commands/pokeballs.js
+// callback moved to callbacks/088_pkbl.js
+// admins35 declared near bootstrap
+// /bfb moved to commands/bfb.js
+
+// Unban command: /unban <id>
+// /ufb moved to commands/ufb.js
+function saveBanList() {
+    fs.writeFileSync(banListFile2, JSON.stringify(banList2, null, 2), 'utf-8');
+}
+// /settings moved to commands/settings.js
+// /set moved to commands/set.js
+// /hi moved to commands/hi.js
+async function editMessage(per,ctx, chatId, id, msg, parameters2) {
+    let options = {};
+try{
+    if (typeof parameters2 === 'object') {
+        options = { ...options, ...parameters2 };
+    }
+lastClicked2[ctx.from.id] = Date.now();
+globalClicks = [...globalClicks, Date.now()];
+
+if (chatId && ctx.chat && ctx.chat.type != 'private') {
+  lastClicked[ctx.chat.id] = [...(lastClicked[ctx.chat.id] || []), Date.now()];
+}
+if(per=='markup'){
+var m = await ctx.telegram.editMessageReplyMarkup(chatId,id,null,msg)
+}else if(per=='media'){
+var m = await bot.telegram.editMessageMedia(chatId,id,null,msg,options)
+}else if(per=='text'){
+var m = await bot.telegram.editMessageText(chatId,id,null,msg,options)
+}else if(per=='caption'){
+var m = await bot.telegram.editMessageCaption(chatId,id,null,msg,options)
+}
+return m.message_id
+}catch(error){
+const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
+if(d.includes('message is not modified')){
+return null
+}
+console.error('Error sending message:', error)
+return null
+}
+}
+async function sendMessage(ctx, chatId, parameters1, msg, parameters2) {
+    let options = {};
+try{
+    // Check if parameters1 is an object (contains options)
+    if (typeof parameters1 === 'object') {
+        options = { ...parameters1 };
+    } else {
+        // If parameters1 is not an object, it's the message content
+        if(msg){
+          parameters2 = msg
+        }
+        msg = parameters1;
+    }
+
+    // Merge parameters2 into options
+    if (typeof parameters2 === 'object') {
+        options = { ...options, ...parameters2 };
+    }
+
+lastClicked2[ctx.from.id] = Date.now();
+globalmsg = [...globalmsg, Date.now()];
+
+if (chatId && ctx.chat && ctx.chat.type != 'private') {
+  lastmsg[ctx.chat.id] = [...(lastmsg[ctx.chat.id] || []), Date.now()];
+}
+if(options.source){
+console.log('card')
+var m = await bot.telegram.sendPhoto(chatId,parameters1,msg)
+}else if(options.caption){
+var m = await bot.telegram.sendPhoto(chatId,msg,options)
+}else{
+var m = await bot.telegram.sendMessage(chatId, msg, options)
+}
+return m.message_id
+}catch(error){
+const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
+if(d.includes('message to be replied not found') && options && options.reply_to_message_id){
+  try{
+    const retryOptions = { ...options }
+    delete retryOptions.reply_to_message_id
+    let m2
+    if(retryOptions.source){
+      m2 = await bot.telegram.sendPhoto(chatId,parameters1,msg)
+    }else if(retryOptions.caption){
+      m2 = await bot.telegram.sendPhoto(chatId,msg,retryOptions)
+    }else{
+      m2 = await bot.telegram.sendMessage(chatId, msg, retryOptions)
+    }
+    return m2.message_id
+  }catch(error2){
+    console.error('Error sending message:', error2)
+    return null
+  }
+}
+console.error('Error sending message:', error)
+return null
+}
+}
+// /natures moved to commands/natures.js
+bot.launch();
+

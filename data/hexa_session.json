@@ -1,0 +1,244 @@
+{
+  "sessions": [
+    {
+      "id": "1072659486:1072659486",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "1752227949:1752227949",
+      "data": {
+        "groupChatLimitReached": false,
+        "key": true,
+        "name": 7753673
+      }
+    },
+    {
+      "id": "-1002044488904:1752227949",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1002044488904:1072659486",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "6265981509:6265981509",
+      "data": {
+        "groupChatLimitReached": false,
+        "key": true,
+        "name": ""
+      }
+    },
+    {
+      "id": "-1003720903257:6265981509",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1003720903257:7074080974",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "7074080974:7074080974",
+      "data": {
+        "groupChatLimitReached": false,
+        "key": true,
+        "name": ""
+      }
+    },
+    {
+      "id": "-1003720903257:6969086416",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "6969086416:6969086416",
+      "data": {
+        "groupChatLimitReached": false,
+        "key": true,
+        "name": 7755833
+      }
+    },
+    {
+      "id": "-1002491414660:8503511287",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1002044488904:6265981509",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1002044488904:1381668733",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1002491414660:7578724525",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "6890098674:6890098674",
+      "data": {
+        "groupChatLimitReached": false,
+        "key": true,
+        "name": 7755876
+      }
+    },
+    {
+      "id": "2035242620:2035242620",
+      "data": {
+        "groupChatLimitReached": false,
+        "key": true,
+        "name": 7755923
+      }
+    },
+    {
+      "id": "7577674783:7577674783",
+      "data": {
+        "groupChatLimitReached": false,
+        "key": true,
+        "name": 7755983
+      }
+    },
+    {
+      "id": "8551864967:8551864967",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "8545015869:8545015869",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1002044488904:8545015869",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1002044488904:5228554516",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "8150648096:8150648096",
+      "data": {
+        "groupChatLimitReached": false,
+        "key": true,
+        "name": ""
+      }
+    },
+    {
+      "id": "5228554516:5228554516",
+      "data": {
+        "groupChatLimitReached": false,
+        "key": true,
+        "name": 7756007
+      }
+    },
+    {
+      "id": "1661129466:1661129466",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1002245132909:6265981509",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1003069884900:6265981509",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1003717959849:7074080974",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1003717959849:6265981509",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1002245132909:8306853454",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1002245132909:7074080974",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1002245132909:6969086416",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1003069884900:7049866497",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1003736053869:6265981509",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1003736053869:6642049252",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1002245132909:8505488621",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1003736053869:6890098674",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    },
+    {
+      "id": "-1003736053869:8551864967",
+      "data": {
+        "groupChatLimitReached": false
+      }
+    }
+  ]
+}

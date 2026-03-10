@@ -1,0 +1,575 @@
+[
+  {
+    "user_id": 6265981509,
+    "data": {
+      "pokes": [
+        {
+          "name": "slaking",
+          "nature": "Adamant",
+          "ivs": {
+            "hp": 31,
+            "attack": 31,
+            "defense": 31,
+            "special_attack": 31,
+            "special_defense": 31,
+            "speed": 31
+          },
+          "evs": {
+            "hp": 118,
+            "attack": 140,
+            "defense": 252,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            359,
+            185,
+            343,
+            498
+          ],
+          "exp": 1250000,
+          "id": 289,
+          "pass": "Tsxr5AMS",
+          "cpass": "zxJlvZb4",
+          "symbol": ""
+        },
+        {
+          "name": "dragonite",
+          "nature": "Adamant",
+          "ivs": {
+            "special_defense": 31,
+            "speed": 31,
+            "attack": 31,
+            "hp": 31,
+            "special_attack": 31,
+            "defense": 31
+          },
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            21,
+            401,
+            407,
+            200
+          ],
+          "exp": 165813,
+          "id": 149,
+          "gmax": false,
+          "pass": "BiLqcvCr",
+          "cpass": "nfoVDL7g",
+          "symbol": ""
+        },
+        {
+          "name": "charizard",
+          "nature": "Bold",
+          "ivs": {
+            "speed": 17,
+            "defense": 16,
+            "attack": 18,
+            "hp": 14,
+            "special_attack": 22,
+            "special_defense": 16
+          },
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 2,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            225,
+            424,
+            163,
+            53
+          ],
+          "exp": 57517,
+          "id": 6,
+          "pass": "lTTgD8x0",
+          "cpass": "UwRb1o5L",
+          "symbol": ""
+        },
+        {
+          "name": "snorlax",
+          "nature": "Naive",
+          "ivs": {
+            "speed": 12,
+            "special_attack": 19,
+            "attack": 17,
+            "hp": 24,
+            "defense": 25,
+            "special_defense": 19
+          },
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            44,
+            173,
+            242,
+            34
+          ],
+          "exp": 63316,
+          "id": 143,
+          "pass": "Aw7KRyyT",
+          "cpass": "kwNaKbJ7",
+          "symbol": ""
+        },
+        {
+          "name": "doduo",
+          "nature": "Modest",
+          "ivs": {
+            "speed": 17,
+            "special_defense": 20,
+            "attack": 21,
+            "defense": 18,
+            "hp": 11,
+            "special_attack": 13
+          },
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            64,
+            98,
+            99
+          ],
+          "exp": 1331,
+          "id": 84,
+          "pass": "EV6xD1NW",
+          "cpass": "3nWk0yQL",
+          "symbol": ""
+        },
+        {
+          "name": "machoke",
+          "nature": "Lonely",
+          "ivs": {
+            "special_attack": 25,
+            "speed": 26,
+            "attack": 24,
+            "special_defense": 12,
+            "defense": 23,
+            "hp": 15
+          },
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            282,
+            233,
+            70,
+            530
+          ],
+          "exp": 47846,
+          "id": 67,
+          "pass": "E1l9kgg6",
+          "cpass": "YYuWdO6x",
+          "symbol": ""
+        },
+        {
+          "name": "mewtwo",
+          "nature": "Bold",
+          "ivs": {
+            "speed": 18,
+            "special_defense": 24,
+            "attack": 28,
+            "hp": 27,
+            "special_attack": 17,
+            "defense": 23
+          },
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            246,
+            427,
+            396,
+            94
+          ],
+          "exp": 283726,
+          "id": 150,
+          "pass": "wqmmqAqo",
+          "cpass": "rUDTThlj",
+          "symbol": ""
+        },
+        {
+          "name": "eternatus",
+          "id": 890,
+          "nature": "timid",
+          "exp": 1250000,
+          "pass": "I3H2X3gD",
+          "ivs": {
+            "hp": 31,
+            "attack": 0,
+            "defense": 31,
+            "special_attack": 31,
+            "special_defense": 31,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            53,
+            744,
+            322,
+            795
+          ]
+        },
+        {
+          "name": "minior-green",
+          "id": 774,
+          "nature": "Modest",
+          "exp": 1059860,
+          "pass": "8nTVMgtE",
+          "ivs": {
+            "hp": 11,
+            "attack": 16,
+            "defense": 18,
+            "special_attack": 8,
+            "special_defense": 11,
+            "speed": 16
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            36,
+            408,
+            38,
+            153
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "sirfetchd",
+          "id": 865,
+          "nature": "Serious",
+          "exp": 1000000,
+          "pass": "jVxhb25D",
+          "ivs": {
+            "hp": 8,
+            "attack": 17,
+            "defense": 18,
+            "special_attack": 26,
+            "special_defense": 15,
+            "speed": 14
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            21,
+            348,
+            413,
+            794
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "miraidon-glide-mode",
+          "id": 1008,
+          "nature": "Lax",
+          "exp": 1250000,
+          "pass": "zxrDa9rI",
+          "ivs": {
+            "hp": 7,
+            "attack": 11,
+            "defense": 21,
+            "special_attack": 17,
+            "special_defense": 16,
+            "speed": 18
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            200,
+            87,
+            315,
+            63
+          ],
+          "temp_battle": true
+        }
+      ],
+      "inv": {
+        "pc": 5686,
+        "region": "letsgo-kanto",
+        "exp": 6525,
+        "avtar": "6",
+        "template": "9",
+        "id": "red",
+        "data": "black",
+        "hometown": "Paldea",
+        "name": "&#x1D675;&#x1D67B;&#x1D678;&#x1D681;&#x1D683;&#x1D674;&#x1D681;",
+        "team": "1",
+        "candy": 10,
+        "win": 5,
+        "vitamin": 22,
+        "lose": 2
+      },
+      "balls": {
+        "regular": 9,
+        "great": 6,
+        "ultra": 3,
+        "safari": 0
+      },
+      "extra": {
+        "pending": "5254303126",
+        "date": "12/02/2024",
+        "megas": {},
+        "huntd": "2026-03-10",
+        "hunts": 3,
+        "hunting": false,
+        "saf": "Kanto",
+        "lastsafari": "2024-12-02",
+        "unlocks": [
+          "10"
+        ],
+        "temp_battle": {
+          "oTwSzXl": [
+            "8nTVMgtE",
+            "jVxhb25D",
+            "zxrDa9rI"
+          ]
+        },
+        "randombattle_settings": {
+          "max_poke": 3,
+          "allow_regions": [
+            "paldea",
+            "galar",
+            "alola"
+          ],
+          "allow_legendary": false,
+          "allow_non_legendary": true
+        }
+      },
+      "teams": {
+        "1": [
+          "I3H2X3gD",
+          "BiLqcvCr",
+          "lTTgD8x0",
+          "Aw7KRyyT",
+          "Tsxr5AMS"
+        ],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": []
+      },
+      "pokeseen": [
+        "oddish",
+        "charmander",
+        "chansey",
+        "doduo",
+        "lapras",
+        "graveler",
+        "horsea",
+        "fuecoco",
+        "staryu",
+        "dratini",
+        "pidgey",
+        "dragonite",
+        "mewtwo",
+        "slaking",
+        "aerodactyl",
+        "charizard",
+        "snorlax",
+        "machoke",
+        "scyther",
+        "magmar",
+        "nidoran-m",
+        "growlithe",
+        "shellder",
+        "bellsprout",
+        "spearow",
+        "sandshrew",
+        "eternatus",
+        "corviknight-gmax",
+        "zarude",
+        "centiskorch",
+        "hatterene-gmax",
+        "falinks",
+        "spectrier",
+        "muk",
+        "pikachu-partner-cap",
+        "gyarados-mega",
+        "seaking",
+        "arcanine",
+        "pinsir-mega",
+        "enamorus-therian",
+        "ogerpon",
+        "basculegion-female",
+        "clodsire",
+        "terapagos-stellar",
+        "fezandipiti",
+        "silvally-ground",
+        "calyrex-ice",
+        "grafaiai",
+        "coalossal",
+        "sandy-shocks",
+        "pikachu-sinnoh-cap",
+        "basculin-white-striped",
+        "silvally-dark",
+        "venomoth",
+        "gogoat",
+        "garchomp-mega",
+        "lugia",
+        "urshifu-rapid-strike",
+        "silvally-psychic",
+        "regigigas",
+        "okidogi",
+        "magearna-original",
+        "mesprit",
+        "palkia",
+        "arceus-ground",
+        "darkrai",
+        "arceus",
+        "palkia-origin",
+        "basculegion-male",
+        "dudunsparce",
+        "koraidon-sprinting-build",
+        "chien-pao",
+        "farigiraf",
+        "slither-wing",
+        "minior-green",
+        "sirfetchd",
+        "miraidon-glide-mode"
+      ],
+      "pokecaught": [
+        "fuecoco",
+        "dragonite",
+        "slaking",
+        "charizard",
+        "snorlax",
+        "doduo",
+        "machoke",
+        "mewtwo",
+        "eternatus",
+        "corviknight-gmax",
+        "zarude",
+        "centiskorch",
+        "hatterene-gmax",
+        "falinks",
+        "spectrier",
+        "muk",
+        "pikachu-partner-cap",
+        "gyarados-mega",
+        "seaking",
+        "arcanine",
+        "pinsir-mega",
+        "enamorus-therian",
+        "ogerpon",
+        "basculegion-female",
+        "clodsire",
+        "terapagos-stellar",
+        "fezandipiti",
+        "silvally-ground",
+        "calyrex-ice",
+        "grafaiai",
+        "coalossal",
+        "sandy-shocks",
+        "pikachu-sinnoh-cap",
+        "basculin-white-striped",
+        "silvally-dark",
+        "venomoth",
+        "gogoat",
+        "garchomp-mega",
+        "lugia",
+        "urshifu-rapid-strike",
+        "silvally-psychic",
+        "regigigas",
+        "okidogi",
+        "magearna-original",
+        "mesprit",
+        "palkia",
+        "arceus-ground",
+        "darkrai",
+        "arceus",
+        "palkia-origin",
+        "basculegion-male",
+        "dudunsparce",
+        "koraidon-sprinting-build",
+        "chien-pao",
+        "farigiraf",
+        "slither-wing",
+        "minior-green",
+        "sirfetchd",
+        "miraidon-glide-mode"
+      ],
+      "settings": {
+        "max_poke": 6,
+        "dual_type": true,
+        "min_6l": 0,
+        "max_6l": 6,
+        "min_level": 1,
+        "max_level": 100,
+        "switch": true,
+        "key_item": true,
+        "sandbox": false,
+        "random": false,
+        "preview": "no",
+        "pin": false,
+        "ban_types": [],
+        "allow_types": [],
+        "ban_regions": [],
+        "allow_regions": [],
+        "type_effects": true
+      }
+    },
+    "reset": false
+  }
+]

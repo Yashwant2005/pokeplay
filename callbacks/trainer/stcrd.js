@@ -33,8 +33,8 @@ try {
     const canvas = createCanvas(background.width, background.height);
     const ctxCanvas = canvas.getContext('2d');
     const fontSize = 45;
-    const font = `${fontSize}px Arial`;
-    const font2 = `55px Arial`;
+    const font = `${fontSize}px "Cabal"`;
+    const font2 = `55px "Cabal"`;
 const img = String(userData.inv.avtar || '1')
 
   let p = await loadAvatarWithFallback([
@@ -101,7 +101,7 @@ if (p) {
   ctxCanvas.fillStyle = "#2b2f36";
   ctxCanvas.fillRect(825, 260, 375, 375);
   ctxCanvas.fillStyle = "#ffffff";
-  ctxCanvas.font = "bold 84px Arial";
+  ctxCanvas.font = "bold 84px Cabal";
   ctxCanvas.fillText("?", 995, 470);
 }
 }else{
@@ -130,7 +130,7 @@ if (p) {
   ctxCanvas.fillStyle = "#2b2f36";
   ctxCanvas.fillRect(37, 400, 400, 400);
   ctxCanvas.fillStyle = "#ffffff";
-  ctxCanvas.font = "bold 84px Arial";
+  ctxCanvas.font = "bold 84px Cabal";
   ctxCanvas.fillText("?", 215, 620);
 }
 }
@@ -153,6 +153,12 @@ console.log(error);
 }
 
 module.exports = register_050_stcrd;
+
+
+
+
+
+
 
 
 

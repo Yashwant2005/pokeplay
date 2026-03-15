@@ -1,0 +1,128 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "8551864967": true,
+    "8493023103": true
+  },
+  "tempTeams": {
+    "8551864967": [
+      "DBJNcN2C",
+      "EOHYd6WP",
+      "J78rMFKJ",
+      "3DW8VN3Z",
+      "G3Gw4Pmm",
+      "Hi9IyrMs"
+    ],
+    "8493023103": [
+      "lvwnY0rq",
+      "FYGRwdLY",
+      "NwInLnC9",
+      "AHrHq7Nj",
+      "KNK2mR8s",
+      "ZlI3lthJ"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "S9267Uq",
+  "status": {},
+  "c": "lvwnY0rq",
+  "chp": 204,
+  "o": "EOHYd6WP",
+  "ohp": 377,
+  "cid": "8493023103",
+  "oid": "8551864967",
+  "tem": {
+    "lvwnY0rq": 204,
+    "FYGRwdLY": 305,
+    "NwInLnC9": 295,
+    "AHrHq7Nj": 329,
+    "KNK2mR8s": 333,
+    "ZlI3lthJ": 234
+  },
+  "la": {
+    "lvwnY0rq": 100,
+    "FYGRwdLY": 100,
+    "NwInLnC9": 100,
+    "AHrHq7Nj": 100,
+    "KNK2mR8s": 100,
+    "ZlI3lthJ": 100
+  },
+  "tem2": {
+    "DBJNcN2C": 0,
+    "EOHYd6WP": 377,
+    "J78rMFKJ": 269,
+    "3DW8VN3Z": 275,
+    "G3Gw4Pmm": 216,
+    "Hi9IyrMs": 241
+  },
+  "la2": {
+    "DBJNcN2C": 100,
+    "EOHYd6WP": 100,
+    "J78rMFKJ": 100,
+    "3DW8VN3Z": 100,
+    "G3Gw4Pmm": 100,
+    "Hi9IyrMs": 100
+  },
+  "ot": {
+    "undefined": 449
+  },
+  "usedMoves": {
+    "lvwnY0rq": [
+      "26"
+    ],
+    "DBJNcN2C": [
+      "667"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 2,
+  "bideState": {},
+  "statStages": {
+    "lvwnY0rq": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "DBJNcN2C": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "DBJNcN2C": {
+      "damage": 121,
+      "category": "physical",
+      "from": "lvwnY0rq",
+      "move": "jump kick"
+    }
+  }
+}

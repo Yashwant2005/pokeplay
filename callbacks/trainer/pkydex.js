@@ -1,6 +1,14 @@
 function register_076_pkydex(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const pkydexLast = new Map();
   bot.action(/pkydex_/,async ctx => {
+  const now = Date.now();
+  const last = pkydexLast.get(ctx.from.id) || 0;
+  if(now - last < 1200){
+    ctx.answerCbQuery('Try again');
+    return;
+  }
+  pkydexLast.set(ctx.from.id, now);
 console.log('a')
 const poke = ctx.callbackQuery.data.split('_')[1]
 const form = ctx.callbackQuery.data.split('_')[3]*1

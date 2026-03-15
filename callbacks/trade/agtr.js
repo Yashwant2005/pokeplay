@@ -50,6 +50,23 @@ data1.pokes[ind1] = poke2
 if(ind2 !== -1){
 data2.pokes[ind2] = poke
 }
+// Auto-add received pokemon to main team if there is space
+const ensureTeamAutoAdd = (data, removedPass, addedPass) => {
+  if(!data.inv) return
+  if(!data.teams) data.teams = {}
+  const teamId = data.inv.team ? data.inv.team : "1"
+  if(!data.teams[teamId]) data.teams[teamId] = []
+  if(removedPass){
+    data.teams[teamId] = data.teams[teamId].filter(p => p !== removedPass)
+  }
+  const valid = new Set((data.pokes || []).map(p => p.pass))
+  data.teams[teamId] = data.teams[teamId].filter(p => valid.has(p))
+  if(addedPass && data.teams[teamId].length < 6 && !data.teams[teamId].includes(addedPass)){
+    data.teams[teamId].push(addedPass)
+  }
+}
+ensureTeamAutoAdd(data1, pass1, pass2)
+ensureTeamAutoAdd(data2, pass2, pass1)
 await saveUserData2(id2.replace(/[ny]/g,''),data2)
 await saveUserData2(id1.replace(/[ny]/g,''),data1)
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>Trade Has Been Completed</b>\n\n• <a href="tg://user?id='+id1.replace(/[ny]/g,'')+'"><b>'+data1.inv.name+'</b></a> Receives <b>'+c(poke2.name)+'</b>\n\n• <a href="tg://user?id='+id2.replace(/[ny]/g,'')+'"><b>'+data2.inv.name+'</b></a> Receives <b>'+c(poke.name)+'</b>',{parse_mode:'html'})

@@ -29,16 +29,11 @@ function registerRelearnerCommand(bot, deps) {
       return;
     }
 
-    if (data.inv.pc < 5000) {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You need 5000 PokeCoins to use Relearner*', { reply_to_message_id: ctx.message.message_id });
-      return;
-    }
-
     await sendMessage(
       ctx,
       ctx.chat.id,
       { parse_mode: 'markdown' },
-      '*Move Relearner* costs *5000* PokeCoins per relearn.\nSelect a pokemon:',
+      '*Move Relearner* is *free* now.\nSelect a pokemon:',
       { reply_markup: { inline_keyboard: [[{ text: 'Open Relearner', callback_data: 'relearn_' + ctx.from.id + '_1' }]] }, reply_to_message_id: ctx.message.message_id }
     );
   });

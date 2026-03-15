@@ -311,7 +311,7 @@ function registerRandomBattleCommand(bot, deps) {
     }
 
     settings3.bword = bword;
-    await fs.writeFileSync('./data/battle/' + bword + '.json', JSON.stringify(settings3, null, 2));
+    await saveBattleData(bword, settings3);
 
     const msg = `⚔ <a href="tg://user?id=${ctx.from.id}"><b>${he.encode(ctx.from.first_name)}</b></a> has started a <b>Random Battle</b> with <a href="tg://user?id=${reply.from.id}"><b>${he.encode(reply.from.first_name)}</b></a>` +
       (region ? `\n<b>Region:</b> ${c(region)}` : '') +
@@ -444,7 +444,7 @@ function registerRandomBattleCommand(bot, deps) {
     }
     let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/' + bword + '.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (e) {
       return;
     }
@@ -458,7 +458,7 @@ function registerRandomBattleCommand(bot, deps) {
     const bword = parts[4];
     let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/' + bword + '.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (e) {
       battleData = {};
     }
@@ -476,7 +476,7 @@ function registerRandomBattleCommand(bot, deps) {
     }
     let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/' + bword + '.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (e) {
       return;
     }
@@ -495,7 +495,7 @@ function registerRandomBattleCommand(bot, deps) {
     }
     let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/' + bword + '.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (e) {
       return;
     }
@@ -509,7 +509,7 @@ function registerRandomBattleCommand(bot, deps) {
       return;
     }
     await saveRandomSettings(id1, battleData.set);
-    await fs.writeFileSync('./data/battle/' + bword + '.json', JSON.stringify(battleData, null, 2));
+    await saveBattleData(bword, battleData);
     ctx.answerCbQuery('Updated');
     await renderSettingsMenu(ctx, id1, id2, bword, battleData);
   });
@@ -525,7 +525,7 @@ function registerRandomBattleCommand(bot, deps) {
     }
     let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/' + bword + '.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (e) {
       return;
     }
@@ -544,7 +544,7 @@ function registerRandomBattleCommand(bot, deps) {
     }
     let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/' + bword + '.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (e) {
       return;
     }
@@ -566,7 +566,7 @@ function registerRandomBattleCommand(bot, deps) {
       return;
     }
     await saveRandomSettings(id1, battleData.set);
-    await fs.writeFileSync('./data/battle/' + bword + '.json', JSON.stringify(battleData, null, 2));
+    await saveBattleData(bword, battleData);
     ctx.answerCbQuery('Updated');
     await renderRegionsMenu(ctx, id1, id2, bword, battleData);
   });
@@ -582,7 +582,7 @@ function registerRandomBattleCommand(bot, deps) {
     }
     let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/' + bword + '.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (e) {
       return;
     }
@@ -601,7 +601,7 @@ function registerRandomBattleCommand(bot, deps) {
       return;
     }
     await saveRandomSettings(id1, battleData.set);
-    await fs.writeFileSync('./data/battle/' + bword + '.json', JSON.stringify(battleData, null, 2));
+    await saveBattleData(bword, battleData);
     ctx.answerCbQuery('Updated');
     await renderSettingsMenu(ctx, id1, id2, bword, battleData);
   });
@@ -617,7 +617,7 @@ function registerRandomBattleCommand(bot, deps) {
     }
     let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/' + bword + '.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (e) {
       return;
     }
@@ -636,7 +636,7 @@ function registerRandomBattleCommand(bot, deps) {
       return;
     }
     await saveRandomSettings(id1, battleData.set);
-    await fs.writeFileSync('./data/battle/' + bword + '.json', JSON.stringify(battleData, null, 2));
+    await saveBattleData(bword, battleData);
     ctx.answerCbQuery('Updated');
     await renderSettingsMenu(ctx, id1, id2, bword, battleData);
   });

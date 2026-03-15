@@ -9,17 +9,24 @@ if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
 battlec[ctx.chat.id] = Date.now();
 const move = ctx.callbackQuery.data.split('_')[1]
 const bword = ctx.callbackQuery.data.split('_')[2]
-console.log(bword)
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (error) {
       battleData = {};
     }
 const data = await getUserData(ctx.from.id)
+if(!battleData || !battleData.c || !battleData.name || !battleData.omoves || battleData.omoves.length < 1){
+  ctx.answerCbQuery('Battle expired. Start again.')
+  return
+}
 const move1 = dmoves[move]
 const move2 = dmoves[battleData.omoves[Math.floor(Math.random()*battleData.omoves.length)].id]
 const p = data.pokes.filter((poke)=>poke.pass==battleData.c)[0]
+if(!move1 || !move2 || !p){
+  ctx.answerCbQuery('Battle desynced. Use /reset_battle.')
+  return
+}
 const base = pokestats[battleData.name]
 const base2 = pokestats[p.name]
 const uname = he.encode(ctx.from.first_name)
@@ -48,7 +55,7 @@ battleData.chp = Math.max((battleData.chp-damage2),0)
 battleData.team[battleData.c] = Math.max((battleData.team[battleData.c]-damage2),0)
 battleData.ochp -= damage
 battleData.ot[battleData.name] -= damage
-await fs.writeFileSync('./data/battle/' +bword+ '.json', JSON.stringify(battleData, null, 2));
+await saveBattleData(bword, battleData);
 let ms2 = '➩ <b>'+c(p.name)+'</b> Used <b>'+c(move1.name)+'</b> And Dealt <b>'+c(battleData.name)+'</b> <code>'+damage+'</code> HP.'
 if(eff1 == 0){
 ms2 += '\n<b>✶ It\'s 0x effective!</b>'
@@ -128,7 +135,6 @@ if(highestEv.stat=='special-defense'){
 highestEv.stat = 'special_defense'
 }
 const t2 = calculateTotal(p.evs)
-console.log(l2)
 if((p.evs[highestEv.stat]+highestEv.value) < 252 && (t2+highestEv.value) < 510 && clevel*1!=100){
 p.evs[highestEv.stat] = Math.min((highestEv.value+p.evs[highestEv.stat]),252)
 await saveUserData2(ctx.from.id,data)
@@ -331,4 +337,5 @@ const messageData = await loadMessageData();
 }
 
 module.exports = register_012_atk;
+
 

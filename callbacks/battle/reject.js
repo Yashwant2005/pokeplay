@@ -11,7 +11,7 @@ return
 }
 if(bword){
   try {
-    const battleData = JSON.parse(fs.readFileSync('./data/battle/' + bword + '.json', 'utf8'));
+    const battleData = loadBattleData(bword);
     if(battleData && battleData.tempBattle && battleData.tempTeams){
       const ids = [id1,id2];
       for(const uid of ids){

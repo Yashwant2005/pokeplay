@@ -1,0 +1,138 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "8551864967": true,
+    "8493023103": true
+  },
+  "tempTeams": {
+    "8551864967": [
+      "8KL6tWYh",
+      "ZYbRj1Hd",
+      "yqHW1697",
+      "N97e1Dl3",
+      "YCq34cCV",
+      "AHyC9ikY"
+    ],
+    "8493023103": [
+      "MLBzGBYq",
+      "bRIzM3O4",
+      "WDlB4HOE",
+      "Om6fWn5Y",
+      "F6fKzzQJ",
+      "lePLHGeF"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "B6XueWM",
+  "status": {},
+  "c": "8KL6tWYh",
+  "chp": 180,
+  "o": "MLBzGBYq",
+  "ohp": 111,
+  "cid": "8551864967",
+  "oid": "8493023103",
+  "tem": {
+    "8KL6tWYh": 180,
+    "ZYbRj1Hd": 272,
+    "yqHW1697": 237,
+    "N97e1Dl3": 288,
+    "YCq34cCV": 343,
+    "AHyC9ikY": 276
+  },
+  "la": {
+    "8KL6tWYh": 100,
+    "ZYbRj1Hd": 100,
+    "yqHW1697": 100,
+    "N97e1Dl3": 100,
+    "YCq34cCV": 100,
+    "AHyC9ikY": 100
+  },
+  "tem2": {
+    "MLBzGBYq": 111,
+    "bRIzM3O4": 311,
+    "WDlB4HOE": 322,
+    "Om6fWn5Y": 220,
+    "F6fKzzQJ": 354,
+    "lePLHGeF": 311
+  },
+  "la2": {
+    "MLBzGBYq": 100,
+    "bRIzM3O4": 100,
+    "WDlB4HOE": 100,
+    "Om6fWn5Y": 100,
+    "F6fKzzQJ": 100,
+    "lePLHGeF": 100
+  },
+  "ot": {
+    "undefined": 264
+  },
+  "usedMoves": {
+    "8KL6tWYh": [
+      "53"
+    ],
+    "MLBzGBYq": [
+      "435"
+    ]
+  },
+  "queuedActions": [],
+  "runs": [
+    8551864967,
+    8493023103
+  ],
+  "bideCycle": 1,
+  "bideState": {},
+  "statStages": {
+    "8KL6tWYh": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "MLBzGBYq": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "MLBzGBYq": {
+      "damage": 153,
+      "category": "special",
+      "from": "8KL6tWYh",
+      "move": "flamethrower"
+    },
+    "8KL6tWYh": {
+      "damage": 104,
+      "category": "special",
+      "from": "MLBzGBYq",
+      "move": "discharge"
+    }
+  }
+}

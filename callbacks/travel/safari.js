@@ -1,6 +1,6 @@
 function register_048_safari(bot, deps) {
   Object.assign(globalThis, deps, { bot });
-  bot.action(/safari_/,check2q,async ctx => {
+  bot.action(/^safari_/,check2q,async ctx => {
 const reg = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
 const ext = ctx.callbackQuery.data.split('_')[3]
@@ -60,16 +60,20 @@ if(ext && ext=='pass'){
 userData.inv.pass -= 1
 userData.balls.safari = 30
 userData.extra.saf = ry
-userData.extra.lastsafari = currentDate
 }else{
 userData.inv.pc -= 200
-userData.balls.safari = 20
+userData.balls.safari = 30
 userData.extra.saf = ry
 userData.extra.lastsafari = currentDate
 }
 await saveUserData2(ctx.from.id, userData);
 
-  await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Successfully Entered *'+c(ry)+' Safari Zone*',{parse_mode:'markdown'});
+  if(ext && ext=='pass'){
+  await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Successfully Entered *'+c(ry)+' Safari Zone* using *Safari Pass*\n\n_This did not consume your normal safari quota for today._',{parse_mode:'markdown'});
+  return
+  }
+
+    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Successfully Entered *'+c(ry)+' Safari Zone*',{parse_mode:'markdown'});
 });
 }
 

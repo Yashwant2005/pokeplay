@@ -1,0 +1,60 @@
+{
+  "c": "m08rfuNt",
+  "org": "no",
+  "chp": 0,
+  "ochp": 6,
+  "ohp": 58,
+  "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 15,
+    "special_attack": 19,
+    "special_defense": 15,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "pyqg3yrs",
+  "level": 20,
+  "name": "pidgeotto",
+  "omoves": [
+    {
+      "id": 16,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 16,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 13
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pidgeotto": 6
+  },
+  "symbol": "",
+  "team": {
+    "m08rfuNt": 0
+  },
+  "la": {
+    "m08rfuNt": 15
+  }
+}

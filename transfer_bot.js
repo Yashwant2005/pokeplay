@@ -16,11 +16,13 @@ const growthRates = JSON.parse(fs.readFileSync('data/pokemon_data2.json', 'utf8'
 const chart = JSON.parse(fs.readFileSync('data/exp_chart.json', 'utf8'));
 const chains = JSON.parse(fs.readFileSync('data/evolution_chains2.json', 'utf8'));
 const spawn = JSON.parse(fs.readFileSync('data/pokemon_status_info.json', 'utf8'));
+const stones = JSON.parse(fs.readFileSync('data/stones.json', 'utf8'));
 
 const BOT_TOKEN = '8616181555:AAHFesYbqllv11TGDDR4kNAU2rznGR_OLG8';
 const ADMIN_GROUP_ID = -1003736053869;
-const SOURCE_BOT_ID = 572621020;
-const ADMINS = [6265981509, 1411248872];
+const SOURCE_BOT_IDS = [572621020, 7955369039];
+const HEXAMON_BOT_ID = 572621020;
+const ADMINS = [6265981509, 1411248872, 8493023103, 8551864967];
 
 const REQUESTS_FILE = path.join('data', 'transfer_requests.json');
 const bot = new Telegraf(BOT_TOKEN);
@@ -39,8 +41,41 @@ function saveRequests(requests) {
   fs.writeFileSync(REQUESTS_FILE, JSON.stringify(requests, null, 2), 'utf8');
 }
 
+function persistUserDataToFile(userId, userData) {
+  const key = String(userId);
+  const filePath = path.join('data', 'db', key + '.json');
+  let userDataEntry = [];
+  if (fs.existsSync(filePath)) {
+    const existingData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    if (Array.isArray(existingData)) {
+      userDataEntry = existingData;
+    } else {
+      userDataEntry = [existingData];
+    }
+  } else {
+    userDataEntry = [{ user_id: key, data: {}, reset: false }];
+  }
+  let entry = userDataEntry.find(e => e.user_id == key);
+  if (!entry) {
+    entry = { user_id: key, data: {}, reset: false };
+    userDataEntry.push(entry);
+  }
+  entry.data = userData;
+  fs.writeFileSync(filePath, JSON.stringify(userDataEntry, null, 2), 'utf8');
+}
+
 function isAdmin(id) {
   return ADMINS.includes(Number(id));
+}
+
+async function isGroupAdmin(ctx, userId) {
+  try {
+    const member = await ctx.telegram.getChatMember(ADMIN_GROUP_ID, userId);
+    const status = member && member.status;
+    return status === 'administrator' || status === 'creator';
+  } catch (err) {
+    return false;
+  }
 }
 
 function normalizePokemonName(input) {
@@ -138,6 +173,42 @@ function parseIvFromText(text) {
   return out;
 }
 
+function normalizeStoneName(input) {
+  return String(input || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[_.\s]+/g, '-');
+}
+
+function parseStonesFromText(text) {
+  const out = [];
+  const lines = String(text || '').split('\n');
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    const m = trimmed.match(/^\/([A-Za-z0-9_-]+)/);
+    const rawName = m ? m[1] : trimmed;
+    const key = normalizeStoneName(rawName);
+    if (stones[key]) out.push(key);
+  }
+  return out;
+}
+
+function parseKeyStoneStatus(text) {
+  const m = String(text || '').match(/Key\s*Stone[^:]*:\s*([^\n]+)/i);
+  return m ? m[1].trim() : null;
+}
+
+function formatStoneCounts(stoneList) {
+  const counts = {};
+  for (const key of stoneList) {
+    counts[key] = (counts[key] || 0) + 1;
+  }
+  return Object.keys(counts)
+    .map((key) => `${c(key)}${counts[key] > 1 ? ' x' + counts[key] : ''}`)
+    .join(', ');
+}
+
 function requestFingerprint(pokemonName, nature, ivs) {
   return [
     String(pokemonName || '').toLowerCase(),
@@ -197,14 +268,7 @@ async function addApprovedPokemonToUser(userId, pokemonName, nature, providedIvs
   const baseIvs = providedIvs || generateRandomIVs((spawn[pokemonName] || '').toLowerCase());
   const safeNature = nature || 'hardy';
 
-  const preEvo = getPreEvolutionName(pokemonName);
   const addedNames = [];
-
-  if (preEvo && pokes[preEvo]) {
-    const preEntry = buildPokemonEntry(preEvo, safeNature, baseIvs, shiny);
-    data.pokes.push(preEntry);
-    addedNames.push(preEvo);
-  }
 
   const mainEntry = buildPokemonEntry(pokemonName, safeNature, baseIvs, shiny);
   data.pokes.push(mainEntry);
@@ -219,9 +283,34 @@ async function addApprovedPokemonToUser(userId, pokemonName, nature, providedIvs
   return addedNames;
 }
 
+async function addApprovedStonesToUser(userId, stoneKeys, hasKeyStone) {
+  const data = await getUserData(userId);
+  if (!data.inv) {
+    throw new Error('User has no main-bot profile yet. Ask user to /start in main bot first.');
+  }
+
+  if (!Array.isArray(data.inv.stones)) {
+    data.inv.stones = [];
+  }
+
+  const added = [];
+  for (const key of stoneKeys) {
+    data.inv.stones.push(key);
+    added.push(key);
+  }
+
+  if (hasKeyStone) {
+    data.inv.ring = true;
+  }
+
+  await saveUserData2(userId, data);
+  persistUserDataToFile(userId, data);
+  return added;
+}
+
 function isForwardedFromSource(message) {
   const forwardFrom = message && message.forward_from;
-  return Boolean(forwardFrom && Number(forwardFrom.id) === SOURCE_BOT_ID);
+  return Boolean(forwardFrom && SOURCE_BOT_IDS.includes(Number(forwardFrom.id)));
 }
 
 function userLink(user) {
@@ -229,9 +318,15 @@ function userLink(user) {
   return `<a href="tg://user?id=${user.id}">${user.first_name || 'User'}</a>`;
 }
 
+function formatSourceBot(sourceId) {
+  if (Number(sourceId) === 572621020) return 'Source Bot: 572621020 (hexamonbot)';
+  if (Number(sourceId) === 7955369039) return 'Source Bot: 7955369039 (poketalesxbot)';
+  return `Source Bot: ${sourceId || 'unknown'}`;
+}
+
 bot.start(async (ctx) => {
   await ctx.reply(
-    'Transfer bot is active.\n\nUse /add to submit a Pokemon transfer request.\nFlow: Pokemon name -> nature page -> IV/EV page -> admin approval.'
+    'Transfer bot is active.\n\nUse /add to submit a Pokemon transfer request.\nFlow: Pokemon name -> nature page -> IV/EV page -> admin approval.\n\nUse /stones to submit a stones transfer request from hexamonbot.'
   );
 });
 
@@ -267,6 +362,22 @@ bot.command('add', async (ctx) => {
   await ctx.reply('Send pokemon name. Example: /add pikachu or just send: pikachu');
 });
 
+bot.command('stones', async (ctx) => {
+  if (ctx.chat.type !== 'private') {
+    await ctx.reply('Use /stones in private chat with this bot.');
+    return;
+  }
+
+  userState.set(ctx.from.id, { step: 'stones_await_forward' });
+  await ctx.reply(
+    'Forward your stones page from hexamonbot only.\n\n' +
+    'It should look like:\n' +
+    'Key Stone 🧿: Not Equipped\n' +
+    '/Banettite\n/Sablenite\n/Lopunnite\n/Medichamite\n\n' +
+    'After that, I will ask you for a screenshot proof with your name visible.'
+  );
+});
+
 bot.on('message', async (ctx, next) => {
   if (ctx.chat.type !== 'private') {
     return next();
@@ -274,6 +385,102 @@ bot.on('message', async (ctx, next) => {
 
   const state = userState.get(ctx.from.id);
   if (!state) return next();
+
+  if (state.step === 'stones_await_forward') {
+    if (!ctx.message.forward_date || !ctx.message.forward_from || Number(ctx.message.forward_from.id) !== HEXAMON_BOT_ID) {
+      await ctx.reply('Forward the stones page from hexamonbot only.');
+      return;
+    }
+
+    const text = getMessageText(ctx.message);
+    const stoneKeys = parseStonesFromText(text);
+    if (stoneKeys.length < 1) {
+      await ctx.reply('No valid stones found. Please forward the stones page again from hexamonbot.');
+      return;
+    }
+
+    const keyStoneStatus = parseKeyStoneStatus(text);
+    if (!keyStoneStatus) {
+      await ctx.reply('Key Stone line not found. Please forward the correct stones page from hexamonbot.');
+      return;
+    }
+
+    state.stones = stoneKeys;
+    state.keyStoneStatus = keyStoneStatus;
+    state.sourceBotId = ctx.message.forward_from.id;
+    state.forwardChatId = ctx.chat.id;
+    state.forwardMessageId = ctx.message.message_id;
+    state.step = 'stones_await_proof';
+    userState.set(ctx.from.id, state);
+    await ctx.reply('Now send a screenshot proof with your name visible. Do not forward it.');
+    return;
+  }
+
+  if (state.step === 'stones_await_proof') {
+    if (ctx.message.forward_date) {
+      await ctx.reply('Send a normal screenshot, not a forwarded message.');
+      return;
+    }
+    if (!ctx.message.photo || ctx.message.photo.length < 1) {
+      await ctx.reply('Screenshot proof must be a photo.');
+      return;
+    }
+
+    const proofPhotoId = ctx.message.photo[ctx.message.photo.length - 1].file_id;
+    const requests = loadRequests();
+    const reqId = word(12);
+
+    requests[reqId] = {
+      id: reqId,
+      type: 'stones',
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      userId: ctx.from.id,
+      userTag: ctx.from.username ? '@' + ctx.from.username : null,
+      sourceBotId: state.sourceBotId,
+      stones: state.stones || [],
+      keyStoneStatus: state.keyStoneStatus || null,
+      forwardChatId: state.forwardChatId,
+      forwardMessageId: state.forwardMessageId,
+      proofPhotoId
+    };
+    saveRequests(requests);
+
+    try {
+      await bot.telegram.forwardMessage(ADMIN_GROUP_ID, state.forwardChatId, state.forwardMessageId);
+    } catch (err) {
+      await ctx.reply('Failed to forward the stones page to admins. Please try again.');
+      userState.delete(ctx.from.id);
+      return;
+    }
+
+    const summary = [
+      '<b>New Stones Transfer Request</b>',
+      '',
+      `<b>Req ID:</b> <code>${reqId}</code>`,
+      `<b>User:</b> ${userLink(ctx.from)} (<code>${ctx.from.id}</code>)`,
+      `<b>Source:</b> ${formatSourceBot(state.sourceBotId)}`,
+      `<b>Key Stone:</b> ${state.keyStoneStatus ? state.keyStoneStatus : 'Unknown'}`,
+      `<b>Stones:</b> ${formatStoneCounts(state.stones)}`
+    ].join('\n');
+
+    const adminMarkup = {
+      inline_keyboard: [[
+        { text: 'Approve', callback_data: 'sapprove_' + reqId },
+        { text: 'Reject', callback_data: 'sreject_' + reqId }
+      ]]
+    };
+
+    await bot.telegram.sendPhoto(ADMIN_GROUP_ID, proofPhotoId, {
+      caption: summary,
+      parse_mode: 'HTML',
+      reply_markup: adminMarkup
+    });
+
+    userState.delete(ctx.from.id);
+    await ctx.reply('Stones request submitted to admins. You will be notified after approval.');
+    return;
+  }
 
   if (state.step === 'await_name') {
     const name = normalizePokemonName(ctx.message.text || '');
@@ -306,6 +513,7 @@ bot.on('message', async (ctx, next) => {
     }
 
     state.naturePhotoId = ctx.message.photo && ctx.message.photo.length ? ctx.message.photo[ctx.message.photo.length - 1].file_id : null;
+    state.sourceBotId = ctx.message.forward_from ? ctx.message.forward_from.id : null;
     state.step = 'await_ivs';
     userState.set(ctx.from.id, state);
     await ctx.reply('Nature received. Now forward IV/EV page from source bot.\nMoveset page is not required.');
@@ -365,13 +573,14 @@ bot.on('message', async (ctx, next) => {
       '',
       `<b>Req ID:</b> <code>${reqId}</code>`,
       `<b>User:</b> ${userLink(ctx.from)} (<code>${ctx.from.id}</code>)`,
+      `<b>${formatSourceBot(state.sourceBotId)}</b>`,
       `<b>Pokemon:</b> ${c(state.pokemonName)}`,
       `<b>Nature:</b> ${c(state.nature)}`,
       `<b>IVs:</b> HP ${parsedIvs.hp}, Atk ${parsedIvs.attack}, Def ${parsedIvs.defense}, SpA ${parsedIvs.special_attack}, SpD ${parsedIvs.special_defense}, Spe ${parsedIvs.speed}`,
       `<b>Shiny:</b> ${shiny ? 'Yes' : 'No'}`,
       `<b>Duplicate Check:</b> ${duplicates.length > 0 ? 'Duplicate Found' : 'No Duplicate'}`,
       '',
-      'Approve to add this pokemon to main bot at level 1. If pre-evolution exists, pre-evolution will be added too.'
+      'Approve to add this pokemon to main bot at level 1.'
     ].join('\n');
 
     const duplicateLines = duplicates.slice(0, 10).map((d) =>
@@ -410,7 +619,12 @@ bot.on('message', async (ctx, next) => {
 });
 
 bot.action(/tapprove_/, async (ctx) => {
-  if (!isAdmin(ctx.from.id)) {
+  if (ctx.chat && ctx.chat.id !== ADMIN_GROUP_ID) {
+    await ctx.answerCbQuery('Not allowed here.');
+    return;
+  }
+  const allowed = isAdmin(ctx.from.id) || await isGroupAdmin(ctx, ctx.from.id);
+  if (!allowed) {
     await ctx.answerCbQuery('Not allowed.');
     return;
   }
@@ -466,8 +680,108 @@ bot.action(/tapprove_/, async (ctx) => {
   }
 });
 
+bot.action(/sapprove_/, async (ctx) => {
+  if (ctx.chat && ctx.chat.id !== ADMIN_GROUP_ID) {
+    await ctx.answerCbQuery('Not allowed here.');
+    return;
+  }
+  const allowed = isAdmin(ctx.from.id) || await isGroupAdmin(ctx, ctx.from.id);
+  if (!allowed) {
+    await ctx.answerCbQuery('Not allowed.');
+    return;
+  }
+
+  const reqId = ctx.callbackQuery.data.split('_')[1];
+  const requests = loadRequests();
+  const req = requests[reqId];
+
+  if (!req || req.type !== 'stones') {
+    await ctx.answerCbQuery('Request not found.');
+    return;
+  }
+  if (req.status !== 'pending') {
+    await ctx.answerCbQuery('Already processed.');
+    return;
+  }
+
+  try {
+    const hasKeyStone = Boolean(req.keyStoneStatus);
+    const added = await addApprovedStonesToUser(req.userId, req.stones || [], hasKeyStone);
+    req.status = 'approved';
+    req.reviewedAt = new Date().toISOString();
+    req.reviewedBy = ctx.from.id;
+    req.added = added;
+    requests[reqId] = req;
+    saveRequests(requests);
+
+    await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+    await ctx.replyWithHTML(
+      `<b>Approved</b>\n<b>Req ID:</b> <code>${reqId}</code>\n<b>By:</b> ${userLink(ctx.from)}\n<b>Added:</b> ${added.length ? formatStoneCounts(added) : 'None'}`
+    );
+
+    await bot.telegram.sendMessage(
+      req.userId,
+      `Stones transfer approved. Added: ${added.length ? formatStoneCounts(added) : 'None'}`
+    );
+
+    await ctx.answerCbQuery('Approved.');
+  } catch (err) {
+    req.status = 'failed';
+    req.reviewedAt = new Date().toISOString();
+    req.reviewedBy = ctx.from.id;
+    req.error = String(err.message || err);
+    requests[reqId] = req;
+    saveRequests(requests);
+
+    await ctx.answerCbQuery('Approve failed.');
+    await ctx.replyWithHTML(`<b>Approve failed</b>\nReq: <code>${reqId}</code>\nError: <code>${String(err.message || err)}</code>`);
+  }
+});
+
+bot.action(/sreject_/, async (ctx) => {
+  if (ctx.chat && ctx.chat.id !== ADMIN_GROUP_ID) {
+    await ctx.answerCbQuery('Not allowed here.');
+    return;
+  }
+  const allowed = isAdmin(ctx.from.id) || await isGroupAdmin(ctx, ctx.from.id);
+  if (!allowed) {
+    await ctx.answerCbQuery('Not allowed.');
+    return;
+  }
+
+  const reqId = ctx.callbackQuery.data.split('_')[1];
+  const requests = loadRequests();
+  const req = requests[reqId];
+
+  if (!req || req.type !== 'stones') {
+    await ctx.answerCbQuery('Request not found.');
+    return;
+  }
+  if (req.status !== 'pending') {
+    await ctx.answerCbQuery('Already processed.');
+    return;
+  }
+
+  req.status = 'rejected';
+  req.reviewedAt = new Date().toISOString();
+  req.reviewedBy = ctx.from.id;
+  requests[reqId] = req;
+  saveRequests(requests);
+
+  await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+  await ctx.replyWithHTML(`<b>Rejected</b>\nReq: <code>${reqId}</code>\nBy: ${userLink(ctx.from)}`);
+
+  await bot.telegram.sendMessage(req.userId, `Stones transfer request rejected. Req ID: ${reqId}`);
+  await ctx.answerCbQuery('Rejected.');
+});
+
 bot.action(/treject_/, async (ctx) => {
-  if (!isAdmin(ctx.from.id)) {
+  if (ctx.chat && ctx.chat.id !== ADMIN_GROUP_ID) {
+    await ctx.answerCbQuery('Not allowed here.');
+    return;
+  }
+  const allowed = isAdmin(ctx.from.id) || await isGroupAdmin(ctx, ctx.from.id);
+  if (!allowed) {
     await ctx.answerCbQuery('Not allowed.');
     return;
   }

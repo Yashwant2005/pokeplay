@@ -10,7 +10,7 @@ battlec[ctx.chat.id] = Date.now();
 const bword = ctx.callbackQuery.data.split('_')[2]
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (error) {
       battleData = {};
     }
@@ -28,7 +28,7 @@ return
 
 battleData.c = ps
 battleData.chp = battleData.team[ps]
-await fs.writeFileSync('./data/battle/' +bword+ '.json', JSON.stringify(battleData, null, 2));
+await saveBattleData(bword, battleData);
 const uname = he.encode(ctx.from.first_name)
 const clevel = plevel(p.name,p.exp)
 const op = pokes[battleData.name]

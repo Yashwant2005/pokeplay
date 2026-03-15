@@ -29,7 +29,7 @@ return
 const bword = word(10)
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (error) {
       battleData = {};
     }
@@ -67,7 +67,24 @@ const level = 100
 const stats2 = await Stats(base,iv,ev,c(nat),level)
 const hp2 = stats2.hp
 const moves5 = pokemoves[nam]
-const moves2 = moves5.moves_info.filter((move)=> move.learn_method == 'level-up' && move.level_learned_at < level && dmoves[move.id].power && dmoves[move.id].accuracy)
+let moves2 = []
+if(moves5 && Array.isArray(moves5.moves_info)){
+  moves2 = moves5.moves_info.filter((move)=> move.learn_method == 'level-up' && move.level_learned_at < level && dmoves[move.id] && dmoves[move.id].power && dmoves[move.id].accuracy)
+}
+if(moves2.length < 1){
+  const fallback = Object.keys(dmoves || {})
+    .map((id)=> Number(id))
+    .filter((id)=> {
+      const mv = dmoves[id]
+      return mv && mv.category !== 'status' && Number(mv.power) > 0 && Number(mv.accuracy) > 0
+    })
+  const pick = []
+  while(pick.length < 4 && fallback.length > 0){
+    const idx = Math.floor(Math.random() * fallback.length)
+    pick.push({ id: fallback.splice(idx,1)[0] })
+  }
+  moves2 = pick
+}
 const am = Math.min(Math.max(moves2.length,1),4)
 const omoves = moves2.slice(-am)
 battleData.ot[nam] = hp2
@@ -98,6 +115,11 @@ let move = dmoves[move2]
 msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }
+if(moves.length < 1){
+  ctx.answerCbQuery('Your move data is missing. Use /reset_battle.')
+  return
+}
+
 const buttons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'exrmv_'+word+'_'+bword+'' }));
 while(buttons.length < 4){
 buttons.push({text:'  ',callback_data:'empty'})
@@ -136,7 +158,7 @@ tem[pk[0].pass] = stats.hp
 }
 battleData.team = tem
 battleData.la = la
-await fs.writeFileSync('./data/battle/' +bword+ '.json', JSON.stringify(battleData, null, 2));
+await saveBattleData(bword, battleData);
 ctx.session.name = ''
 var mg = await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},msg,{reply_markup:keyboard})
 const messageData = await loadMessageData();
@@ -147,4 +169,6 @@ await saveMessageData(messageData);
 }
 
 module.exports = register_010_exrtbt;
+
+
 

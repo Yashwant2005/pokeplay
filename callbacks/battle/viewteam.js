@@ -9,7 +9,7 @@ return
 }
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
 } catch (error) {
       battleData = {};
     }

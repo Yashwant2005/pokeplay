@@ -16,11 +16,19 @@ await saveUserData2(ctx.from.id,data)
 await sleep(600)
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (error) {
       battleData = {};
     }
+if(!battleData || !battleData.c || !battleData.name){
+  ctx.answerCbQuery('Battle expired. Start again.')
+  return
+}
 const p = data.pokes.filter((poke)=>poke.pass==battleData.c)[0]
+if(!p){
+  ctx.answerCbQuery('Battle desynced. Use /reset_battle.')
+  return
+}
 const uname = he.encode(ctx.from.first_name)
 const clevel = plevel(p.name,p.exp)
 const op = pokes[battleData.name]
@@ -168,10 +176,24 @@ var a2 = '★ ★ ★'
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,a2)
 await sleep(800)
   }
-let m = ''
-const g = growth_rates[battleData.name]
-const exp = chart[g.growth_rate][String(battleData.level)]
-const de = pokes[battleData.name]
+ let m = ''
+ const g = growth_rates[battleData.name]
+ const de = pokes[battleData.name]
+ if(!g || !chart[g.growth_rate] || !de){
+   data.extra.hunting = false
+   await saveUserData2(ctx.from.id,data)
+   try{
+     await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Missing pokemon data. Please /hunt again.',{parse_mode:'markdown'})
+   }catch(e){}
+   const messageData = await loadMessageData();
+   if(messageData[ctx.from.id]) {
+     messageData.battle = messageData.battle.filter((chats)=> chats!== ctx.from.id)
+     delete messageData[ctx.from.id];
+     await saveMessageData(messageData)
+   }
+   return
+ }
+ const exp = chart[g.growth_rate][String(battleData.level)]
 const nyio = battleData.name
 if(battleData.org == 'yes' && Math.random()< 0.98){
 const maxlv = plevel(battleData.name,exp)
@@ -204,8 +226,21 @@ exp:exp,
 id:de.pokedex_number,
 pass:pass2,
 cpass:battleData.cpass,
-symbol:battleData.symbol
+  symbol:battleData.symbol
 })
+// Auto-add to main team if there is space
+if(!data.teams){
+  data.teams = {}
+}
+const teamId = data.inv && data.inv.team ? data.inv.team : "1"
+if(!data.teams[teamId]){
+  data.teams[teamId] = []
+}
+const validPasses = new Set((data.pokes || []).map(p => p.pass))
+data.teams[teamId] = data.teams[teamId].filter(p => validPasses.has(p))
+if(data.teams[teamId].length < 6 && !data.teams[teamId].includes(pass2)){
+  data.teams[teamId].push(pass2)
+}
 if(!data.pokecaught){
 data.pokecaught = []
 }
@@ -249,4 +284,5 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,''
 }
 
 module.exports = register_015_ball;
+
 

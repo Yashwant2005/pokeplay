@@ -1,7 +1,9 @@
-function registerBattleCallbacks(bot, deps) {
+﻿function registerBattleCallbacks(bot, deps) {
   const {
     getUserData,
     editMessage,
+    loadBattleData,
+    saveBattleData,
     fs,
     c,
     pokes,
@@ -41,6 +43,16 @@ function registerBattleCallbacks(bot, deps) {
   } = deps;
 
   const botRef = botInstance || bot;
+  const battleDebug = process.env.BATTLE_DEBUG === '1';
+  function dbg(label, data) {
+    if (!battleDebug) return;
+    try {
+      // Use stderr so it still prints when QUIET_LOGS disables console.log
+      console.error('[BATTLE]', label, typeof data === 'string' ? data : JSON.stringify(data));
+    } catch (e) {
+      console.error('[BATTLE]', label);
+    }
+  }
 
   const safeName = (raw) => {
     const txt = String(raw || "Trainer");
@@ -55,14 +67,1185 @@ function registerBattleCallbacks(bot, deps) {
     return safeName(data.inv.name || data.inv.username || data.inv.id || fallbackId);
   };
 
+  function normalizeMoveName(moveName) {
+    return String(moveName || '')
+      .toLowerCase()
+      .replace(/[-_]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  // Helper: build PvP battle message + keyboard with Showdown-style hidden moves
+  const buildPvpMsg = (prefix, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroup) => {
+    const pp = pokes[p1.name];
+    const pp2 = pokes[p2.name];
+    const hideTurn = battleData.switchLock && String(battleData.switchLock) === String(battleData.cid);
+    const hideOpp = battleData.switchLock && String(battleData.switchLock) === String(battleData.oid);
+    let msg = prefix || '';
+    msg += '\n\n<b>Opponent :</b> <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>';
+    if (hideOpp) {
+      msg += '\n<b>???</b> [???]';
+      msg += '\n<b>Level :</b> ?? | <b>HP :</b> ??/??';
+      msg += '\n<code>??????????</code>';
+    } else {
+      msg += '\n<b>'+c(p2.name)+'</b> ['+c(pp2.types.join(' / '))+']'+getStatusTag(battleData, battleData.o);
+      msg += '\n<b>Level :</b> '+plevel(p2.name,p2.exp)+' | <b>HP :</b> '+battleData.ohp+'/'+stats1.hp+'';
+      msg += '\n<code>'+Bar(stats1.hp,battleData.ohp)+'</code>';
+    }
+    msg += '\n\n<b>Turn :</b> <a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a>';
+    if (hideTurn) {
+      msg += '\n<b>???</b> [???]';
+      msg += '\n<b>Level :</b> ?? | <b>HP :</b> ??/??';
+      msg += '\n<code>??????????</code>';
+    } else {
+      msg += '\n<b>'+c(p1.name)+'</b> ['+c(pp.types.join(' / '))+']'+getStatusTag(battleData, battleData.c);
+      msg += '\n<b>Level :</b> '+plevel(p1.name,p1.exp)+' | <b>HP :</b> '+battleData.chp+'/'+stats2.hp+'';
+      msg += '\n<code>'+Bar(stats2.hp,battleData.chp)+'</code>';
+    }
+
+    // Revealed moves (moves already used - visible to everyone)
+    const usedMoves = battleData.usedMoves || {};
+    const p1UsedMoves = usedMoves[battleData.c] || [];
+    if (isGroup && p1UsedMoves.length > 0 && !hideTurn) {
+      msg += '\n\n<b>Revealed Moves :</b>';
+      for (const mid of p1UsedMoves) {
+        const mv = dmoves[mid];
+        if (mv) msg += '\n- <b>'+c(mv.name)+'</b> ['+c(mv.type)+' '+emojis[mv.type]+'] <b>Power:</b> '+mv.power+' <b>Acc:</b> '+mv.accuracy+' ('+c(mv.category.charAt(0))+')';
+      }
+    } else if (!isGroup && !hideTurn) {
+      // private chat: show all moves as before
+      msg += '\n\n<b>Moves :</b>';
+      for (const move2 of p1.moves) {
+        let move = dmoves[move2];
+        msg += '\n- <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')';
+      }
+    }
+
+    let img = pp.front_default_image;
+    const imSh = shiny.filter((poke)=>poke.name==p1.name)[0];
+    if (events[p1.name] && p1.symbol == 'Ã°Å¸Âªâ€¦') img = events[p1.name];
+    if (imSh && p1.symbol=='Ã¢Å“Â¨') img = imSh.shiny_url;
+
+    let ext = {};
+    ext = { link_preview_options: { is_disabled: true } };
+
+    const moves = p1.moves.map(m => ''+m+'');
+    let rows = [];
+    // Row 1: 4 move buttons in a single row
+    let moveButtons = [];
+    if (isGroup) {
+      // Showdown-style: 4 buttons where used moves show real name, unused show ???
+      moveButtons = moves.map((word) => {
+        const isRevealed = p1UsedMoves.includes(word);
+        return { text: isRevealed ? c(dmoves[word].name) : '???', callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' };
+      });
+    } else {
+      // Private: show all move buttons with real names directly
+      moveButtons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' }));
+    }
+    if (moveButtons.length < 1) {
+      moveButtons.push({ text: 'No Moves', callback_data: 'empty' });
+    }
+    rows.push(moveButtons);
+
+    // Row 2: 5 switch buttons (other alive pokes)
+    const switchButtons = [];
+    if (battleData.set.switch) {
+      let idx = 1;
+      for (const pass of Object.keys(battleData.tem || {})) {
+        if (String(pass) === String(battleData.c)) continue;
+        if ((battleData.tem[pass] || 0) > 0) {
+          switchButtons.push({ text: String(idx), callback_data: 'multidne_' + pass + '_' + bword + '_' + battleData.cid + '_change' });
+          idx++;
+        }
+        if (switchButtons.length >= 5) break;
+      }
+    }
+    if (switchButtons.length > 0) {
+      rows.push(switchButtons);
+    }
+
+    // Row 3: View Moves + Escape + View Team
+    rows.push([
+      { text: 'View Moves', callback_data: 'multivwmv_'+bword+'_'+battleData.cid+'' },
+      { text: 'Escape', callback_data: 'multryn_'+bword+'_multi' },
+      { text: 'View Team', callback_data: 'viewteam_'+bword+'_'+battleData.cid+'' }
+    ]);
+
+    if (!attacker.inv.stones) attacker.inv.stones = [];
+    const isstone = [...new Set(attacker.inv.stones)].filter(stone => stones[stone]?.pokemon === p1.name);
+    if (battleData.set.key_item && isstone.length > 0 && attacker.extra && Object.keys(attacker.extra.megas||{}).length == 0 && attacker.inv.ring) {
+      const rows5 = isstone.map(i => ({text:'Use '+c(i)+'',callback_data:'megtst_'+i+'_'+bword+''}));
+      rows.push(rows5);
+    }
+
+    // Bag/Pokemon buttons removed per new UI layout
+
+    return { msg, keyboard: { inline_keyboard: rows }, ext };
+  };
+
+  // Helper to swap turns between cid and oid contexts
+  function fullSwap(bd) {
+    const cc = bd.c; const cc2 = bd.chp; const cc3 = bd.cid; const cc4 = bd.tem; const cc5 = bd.la;
+    bd.c = bd.o; bd.chp = bd.ohp; bd.cid = bd.oid; bd.tem = bd.tem2; bd.la = bd.la2;
+    bd.o = cc; bd.ohp = cc2; bd.oid = cc3; bd.tem2 = cc4; bd.la2 = cc5;
+  }
+
+  function getMovePriority(moveName) {
+    const name = String(moveName || '').toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+
+    const PRIORITY_BY_MOVE = {
+      // Increased priority moves
+      'accelerock': 1,
+      'ally switch': 2,
+      'aqua jet': 1,
+      'baby doll eyes': 1,
+      'baneful bunker': 4,
+      'bide': 1,
+      'bullet punch': 1,
+      'burning bulwark': 4,
+      'crafty shield': 3,
+      'detect': 4,
+      'endure': 4,
+      'extreme speed': 2,
+      'fake out': 3,
+      'feint': 2,
+      'first impression': 2,
+      'follow me': 2,
+      'grassy glide': 1,
+      'helping hand': 5,
+      'ice shard': 1,
+      'ion deluge': 1,
+      'jet punch': 1,
+      'king s shield': 4,
+      'mach punch': 1,
+      'magic coat': 4,
+      'obstruct': 4,
+      'powder': 1,
+      'protect': 4,
+      'quick attack': 1,
+      'quick guard': 3,
+      'rage powder': 2,
+      'shadow sneak': 1,
+      'silk trap': 4,
+      'snatch': 4,
+      'spiky shield': 4,
+      'spotlight': 3,
+      'sucker punch': 1,
+      'thunderclap': 1,
+      'upper hand': 3,
+      'vacuum wave': 1,
+      'water shuriken': 1,
+      'wide guard': 3,
+      'zippy zap': 2,
+
+      // Decreased priority moves
+      'avalanche': -4,
+      'beak blast': -3,
+      'circle throw': -6,
+      'counter': -5,
+      'dragon tail': -6,
+      'focus punch': -3,
+      'magic room': -7,
+      'mirror coat': -5,
+      'revenge': -4,
+      'roar': -6,
+      'shell trap': -3,
+      'teleport': -6,
+      'trick room': -7,
+      'vital throw': -1,
+      'whirlwind': -6,
+      'wonder room': -7
+    };
+
+    return PRIORITY_BY_MOVE[name] ?? 0;
+  }
+
+const DRAIN_MOVE_RATIOS = {
+  'absorb': 0.5,
+  'bitter blade': 0.5,
+  'bouncy bubble': 0.5,
+  'drain punch': 0.5,
+  'giga drain': 0.5,
+  'horn leech': 0.5,
+  'leech life': 0.5,
+  'matcha gotcha': 0.5,
+  'mega drain': 0.5,
+  'parabolic charge': 0.5,
+  'draining kiss': 0.75,
+  'dream eater': 0.5,
+  'oblivion wing': 0.75
+};
+
+function getDrainRatio(moveName) {
+  return DRAIN_MOVE_RATIOS[moveName] || 0;
+}
+
+const STAT_KEYS = ['attack', 'defense', 'special_attack', 'special_defense', 'speed', 'accuracy', 'evasion'];
+
+const MOVE_STAT_EFFECTS = {
+  'growl': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'aurora beam': [{ target: 'target', stat: 'attack', stages: -1, chance: 0.1 }],
+  'baby doll eyes': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'bitter malice': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'breaking swipe': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'charm': [{ target: 'target', stat: 'attack', stages: -2, chance: 1 }],
+  'chilling water': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'feather dance': [{ target: 'target', stat: 'attack', stages: -2, chance: 1 }],
+  'lunge': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'max wyrmwind': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'memento': [{ target: 'target', stat: 'attack', stages: -2, chance: 1 }, { target: 'target', stat: 'special_attack', stages: -2, chance: 1 }],
+  'noble roar': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }, { target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'parting shot': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }, { target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'captivate': [{ target: 'target', stat: 'special_attack', stages: -2, chance: 1 }],
+  'confide': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'eerie impulse': [{ target: 'target', stat: 'special_attack', stages: -2, chance: 1 }],
+  'max flutterby': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'play nice': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'play rough': [{ target: 'target', stat: 'attack', stages: -1, chance: 0.1 }],
+  'springtide storm': [{ target: 'target', stat: 'attack', stages: -1, chance: 0.3 }],
+  'strength sap': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'mist ball': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 0.5 }],
+  'tearful look': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }, { target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'tickle': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }, { target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'trop kick': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'venom drench': [
+    { target: 'target', stat: 'attack', stages: -1, chance: 1, whenTargetStatusIn: ['poison', 'badly_poisoned'] },
+    { target: 'target', stat: 'special_attack', stages: -1, chance: 1, whenTargetStatusIn: ['poison', 'badly_poisoned'] },
+    { target: 'target', stat: 'speed', stages: -1, chance: 1, whenTargetStatusIn: ['poison', 'badly_poisoned'] }
+  ],
+  'tail whip': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'leer': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'screech': [{ target: 'target', stat: 'defense', stages: -2, chance: 1 }],
+  'acid': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'crunch': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.2 }],
+  'crush claw': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.5 }],
+  'fire lash': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'grav apple': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'iron tail': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.3 }],
+  'liquidation': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.2 }],
+  'max phantasm': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'octolock': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }, { target: 'target', stat: 'special_defense', stages: -1, chance: 1 }],
+  'razor shell': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.5 }],
+  'rock smash': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.5 }],
+  'shadow bone': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.2 }],
+  'shadow down': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'spicy extract': [{ target: 'target', stat: 'attack', stages: 2, chance: 1 }, { target: 'target', stat: 'defense', stages: -2, chance: 1 }],
+  'thunderous kick': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'triple arrows': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.5 }],
+  'metal sound': [{ target: 'target', stat: 'special_defense', stages: -2, chance: 1 }],
+  'fake tears': [{ target: 'target', stat: 'special_defense', stages: -2, chance: 1 }],
+  'acid spray': [{ target: 'target', stat: 'special_defense', stages: -2, chance: 1 }],
+  'apple acid': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 1 }],
+  'psychic': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'shadow ball': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.2 }],
+  'bug buzz': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'earth power': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'energy ball': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'flash cannon': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'focus blast': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'lumina crash': [{ target: 'target', stat: 'special_defense', stages: -2, chance: 1 }],
+  'luster purge': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.5 }],
+  'max darkness': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 1 }],
+  'seed flare': [{ target: 'target', stat: 'special_defense', stages: -2, chance: 0.4 }],
+  'snarl': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'skitter smack': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'spirit break': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'struggle bug': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'mystical fire': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'moonblast': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 0.3 }],
+  'string shot': [{ target: 'target', stat: 'speed', stages: -2, chance: 1 }],
+  'bleakwind storm': [{ target: 'target', stat: 'speed', stages: -1, chance: 0.3 }],
+  'scary face': [{ target: 'target', stat: 'speed', stages: -2, chance: 1 }],
+  'constrict': [{ target: 'target', stat: 'speed', stages: -1, chance: 0.1 }],
+  'cotton spore': [{ target: 'target', stat: 'speed', stages: -2, chance: 1 }],
+  'drum beating': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'icy wind': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'glaciate': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'electroweb': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'g max foam burst': [{ target: 'target', stat: 'speed', stages: -2, chance: 1 }],
+  'bulldoze': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'max strike': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'mud shot': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'pounce': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'rock tomb': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'low sweep': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'bubble': [{ target: 'target', stat: 'speed', stages: -1, chance: 0.1 }],
+  'bubble beam': [{ target: 'target', stat: 'speed', stages: -1, chance: 0.1 }],
+  'silk trap': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'sticky web': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'syrup bomb': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'tar shot': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'toxic thread': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'sand attack': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 1 }],
+  'smokescreen': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 1 }],
+  'kinesis': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 1 }],
+  'flash': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 1 }],
+  'mud slap': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 1 }],
+  'leaf tornado': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.5 }],
+  'mirror shot': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.3 }],
+  'mud bomb': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.3 }],
+  'muddy water': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.3 }],
+  'night daze': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.4 }],
+  'octazooka': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.5 }],
+  'secret power': [{ target: 'target', randomFrom: ['attack', 'defense', 'special_attack', 'accuracy', 'speed'], stages: -1, chance: 0.3 }],
+  'sweet scent': [{ target: 'target', stat: 'evasion', stages: -1, chance: 1 }],
+  'defog': [{ target: 'target', stat: 'evasion', stages: -1, chance: 1 }],
+  'g max tartness': [{ target: 'target', stat: 'evasion', stages: -1, chance: 1 }],
+  'shadow mist': [{ target: 'target', stat: 'evasion', stages: -1, chance: 1 }],
+  'swords dance': [{ target: 'self', stat: 'attack', stages: 2, chance: 1 }],
+  'howl': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'meditate': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'sharpen': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'bulk up': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'dragon dance': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'acupressure': [{ target: 'self', randomStat: true, stages: 2, chance: 1 }],
+  'coil': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'accuracy', stages: 1, chance: 1 }],
+  'gravity': [],
+  'work up': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'growth': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'shift gear': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: 2, chance: 1 }],
+  'harden': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'withdraw': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'defense curl': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'iron defense': [{ target: 'self', stat: 'defense', stages: 2, chance: 1 }],
+  'acid armor': [{ target: 'self', stat: 'defense', stages: 2, chance: 1 }],
+  'cotton guard': [{ target: 'self', stat: 'defense', stages: 3, chance: 1 }],
+  'cosmic power': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'nasty plot': [{ target: 'self', stat: 'special_attack', stages: 2, chance: 1 }],
+  'calm mind': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'tail glow': [{ target: 'self', stat: 'special_attack', stages: 3, chance: 1 }],
+  'charge beam': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 0.7 }],
+  'fiery dance': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 0.5 }],
+  'electro shot': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'geomancy': [{ target: 'self', stat: 'special_attack', stages: 2, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 2, chance: 1 }, { target: 'self', stat: 'speed', stages: 2, chance: 1 }],
+  'max ooze': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'meteor beam': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'mystical power': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'take heart': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'torch song': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'amnesia': [{ target: 'self', stat: 'special_defense', stages: 2, chance: 1 }],
+  'aromatic mist': [{ target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'charge': [{ target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'max quake': [{ target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'quiver dance': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'agility': [{ target: 'self', stat: 'speed', stages: 2, chance: 1 }],
+  'rock polish': [{ target: 'self', stat: 'speed', stages: 2, chance: 1 }],
+  'autotomize': [{ target: 'self', stat: 'speed', stages: 2, chance: 1 }],
+  'flame charge': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'aqua step': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'aura wheel': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'esper wing': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'max airstream': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'rapid spin': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'trailblaze': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'double team': [{ target: 'self', stat: 'evasion', stages: 1, chance: 1 }],
+  'minimize': [{ target: 'self', stat: 'evasion', stages: 2, chance: 1 }],
+  'hone claws': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'accuracy', stages: 1, chance: 1 }],
+  'close combat': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }],
+  'armor cannon': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }],
+  'clanging scales': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }],
+  'dragon ascent': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }],
+  'headlong rush': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }],
+  'hyperspace fury': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }],
+  'scale shot': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'superpower': [{ target: 'self', stat: 'attack', stages: -1, chance: 1 }, { target: 'self', stat: 'defense', stages: -1, chance: 1 }],
+  'tera blast': [{ target: 'self', statByMoveCategory: { physical: 'attack', special: 'special_attack' }, stages: -1, chance: 1 }],
+  'hammer arm': [{ target: 'self', stat: 'speed', stages: -1, chance: 1 }],
+  'ice hammer': [{ target: 'self', stat: 'speed', stages: -1, chance: 1 }],
+  'spin out': [{ target: 'self', stat: 'speed', stages: -2, chance: 1 }],
+  'curse': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: -1, chance: 1 }],
+  'v create': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }, { target: 'self', stat: 'speed', stages: -1, chance: 1 }],
+  'overheat': [{ target: 'self', stat: 'special_attack', stages: -2, chance: 1 }],
+  'make it rain': [{ target: 'self', stat: 'special_attack', stages: -1, chance: 1 }],
+  'leaf storm': [{ target: 'self', stat: 'special_attack', stages: -2, chance: 1 }],
+  'draco meteor': [{ target: 'self', stat: 'special_attack', stages: -2, chance: 1 }],
+  'psycho boost': [{ target: 'self', stat: 'special_attack', stages: -2, chance: 1 }],
+  'fleur cannon': [{ target: 'self', stat: 'special_attack', stages: -2, chance: 1 }],
+  'shell smash': [
+    { target: 'self', stat: 'attack', stages: 2, chance: 1 },
+    { target: 'self', stat: 'special_attack', stages: 2, chance: 1 },
+    { target: 'self', stat: 'speed', stages: 2, chance: 1 },
+    { target: 'self', stat: 'defense', stages: -1, chance: 1 },
+    { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }
+  ],
+  // All-or-nothing 10% all-stats boost
+  'ancient power': [
+    { target: 'self', stat: 'attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'speed', stages: 1, chance: 0.1, chanceGroup: 'A' }
+  ],
+  'silver wind': [
+    { target: 'self', stat: 'attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'speed', stages: 1, chance: 0.1, chanceGroup: 'A' }
+  ],
+  'ominous wind': [
+    { target: 'self', stat: 'attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'speed', stages: 1, chance: 0.1, chanceGroup: 'A' }
+  ],
+  // Guaranteed all-stats boosts
+  'clangorous soulblaze': [
+    { target: 'self', stat: 'attack', stages: 1, chance: 1 },
+    { target: 'self', stat: 'defense', stages: 1, chance: 1 },
+    { target: 'self', stat: 'special_attack', stages: 1, chance: 1 },
+    { target: 'self', stat: 'special_defense', stages: 1, chance: 1 },
+    { target: 'self', stat: 'speed', stages: 1, chance: 1 }
+  ],
+  'extreme evoboost': [
+    { target: 'self', stat: 'attack', stages: 2, chance: 1 },
+    { target: 'self', stat: 'defense', stages: 2, chance: 1 },
+    { target: 'self', stat: 'special_attack', stages: 2, chance: 1 },
+    { target: 'self', stat: 'special_defense', stages: 2, chance: 1 },
+    { target: 'self', stat: 'speed', stages: 2, chance: 1 }
+  ],
+  'no retreat': [
+    { target: 'self', stat: 'attack', stages: 1, chance: 1 },
+    { target: 'self', stat: 'defense', stages: 1, chance: 1 },
+    { target: 'self', stat: 'special_attack', stages: 1, chance: 1 },
+    { target: 'self', stat: 'special_defense', stages: 1, chance: 1 },
+    { target: 'self', stat: 'speed', stages: 1, chance: 1 }
+  ],
+  // Single/partial attack boosts
+  'max knuckle': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'metal claw': [{ target: 'self', stat: 'attack', stages: 1, chance: 0.1 }],
+  'meteor mash': [{ target: 'self', stat: 'attack', stages: 1, chance: 0.2 }],
+  'order up': [{ target: 'self', randomFrom: ['attack', 'defense', 'special_attack'], stages: 1, chance: 1 }],
+  'power-up punch': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'rage': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'tidy up': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'victory dance': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  // HP-cost boosts: handled specially in executeStandardMove
+  'belly drum': [],
+  'clangorous soul': [],
+  'fillet away': [],
+  // Post-KO boost: handled specially in executeStandardMove
+  'fell stinger': [],
+  // Raise user defense
+  'barrier': [{ target: 'self', stat: 'defense', stages: 2, chance: 1 }],
+  'defend order': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'diamond storm': [{ target: 'self', stat: 'defense', stages: 2, chance: 0.5 }],
+  'flower shield': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'max steelspike': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'psyshield bash': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'shelter': [{ target: 'self', stat: 'defense', stages: 2, chance: 1 }],
+  'skull bash': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'steel wing': [{ target: 'self', stat: 'defense', stages: 1, chance: 0.1 }],
+  'stockpile': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'stuff cheeks': [{ target: 'self', stat: 'defense', stages: 2, chance: 1 }]
+};
+
+
+function ensureBattleStatStages(battleData) {
+  if (!battleData.statStages || typeof battleData.statStages !== 'object') {
+    battleData.statStages = {};
+  }
+  return battleData.statStages;
+}
+
+function ensurePokemonStatStages(battleData, pass) {
+  const all = ensureBattleStatStages(battleData);
+  if (!all[pass] || typeof all[pass] !== 'object') {
+    all[pass] = { attack: 0, defense: 0, special_attack: 0, special_defense: 0, speed: 0, accuracy: 0, evasion: 0 };
+  }
+  const keys = ['attack', 'defense', 'special_attack', 'special_defense', 'speed', 'accuracy', 'evasion'];
+  for (const key of keys) {
+    if (typeof all[pass][key] !== 'number') all[pass][key] = 0;
+  }
+  return all[pass];
+}
+
+function getStageMultiplier(stage) {
+  if (stage >= 0) return (2 + stage) / 2;
+  return 2 / (2 - stage);
+}
+
+function applyStageToStat(baseValue, stage) {
+  return Math.max(1, Math.floor(baseValue * getStageMultiplier(stage)));
+}
+
+function getEffectiveSpeed(baseSpeed, battleData, pass) {
+  const statusAdjusted = getSpeedWithStatus(baseSpeed, battleData, pass);
+  const stages = ensurePokemonStatStages(battleData, pass);
+  return applyStageToStat(statusAdjusted, stages.speed);
+}
+
+function getModifiedAccuracy(baseAccuracy, attackerAccuracyStage, defenderEvasionStage) {
+  const netStage = (attackerAccuracyStage || 0) - (defenderEvasionStage || 0);
+  const acc = Math.floor(baseAccuracy * getStageMultiplier(netStage));
+  return Math.max(1, Math.min(100, acc));
+}
+
+function clampStage(stage) {
+  return Math.max(-6, Math.min(6, stage));
+}
+
+function getStageVerb(delta) {
+  const mag = Math.abs(delta);
+  if (delta > 0) {
+    if (mag >= 3) return 'rose drastically';
+    if (mag === 2) return 'rose sharply';
+    return 'rose';
+  }
+  if (mag >= 3) return 'fell drastically';
+  if (mag === 2) return 'fell harshly';
+  return 'fell';
+}
+
+function getStatLabel(stat) {
+  if (stat === 'special_attack') return 'Special Attack';
+  if (stat === 'special_defense') return 'Special Defense';
+  return c(stat);
+}
+
+function expandEffectStats(effect) {
+  if (effect.stat === 'special') return ['special_attack', 'special_defense'];
+  return [effect.stat];
+}
+
+function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName, defenderName, attackerPass, defenderPass, targetAlive }) {
+  const effects = MOVE_STAT_EFFECTS[moveName] || [];
+  const resolvedMoveCategory = String(moveCategory || '').toLowerCase();
+  if (!effects.length) return '';
+
+  const resolvedChanceGroups = {};
+  for (const effect of effects) {
+    if (effect.chanceGroup !== undefined && !(effect.chanceGroup in resolvedChanceGroups)) {
+      resolvedChanceGroups[effect.chanceGroup] = Math.random() <= (effect.chance ?? 1);
+    }
+  }
+
+  let out = '';
+  for (const effect of effects) {
+    if (effect.chanceGroup !== undefined) {
+      if (!resolvedChanceGroups[effect.chanceGroup]) continue;
+    } else {
+      if (Math.random() > (effect.chance ?? 1)) continue;
+    }
+    if (effect.target === 'target' && !targetAlive) continue;
+    if (effect.target === 'target' && Array.isArray(effect.whenTargetStatusIn) && effect.whenTargetStatusIn.length > 0) {
+      const tStatus = getBattleStatus(battleData, defenderPass);
+      if (!tStatus || !effect.whenTargetStatusIn.includes(tStatus)) continue;
+    }
+
+    const targetPass = effect.target === 'self' ? attackerPass : defenderPass;
+    const targetName = effect.target === 'self' ? attackerName : defenderName;
+    const stages = ensurePokemonStatStages(battleData, targetPass);
+
+    if (effect.randomStat) {
+      const allStats = ['attack', 'defense', 'special_attack', 'special_defense', 'speed', 'accuracy', 'evasion'];
+      const eligible = allStats.filter(s => (stages[s] || 0) < 6);
+      if (eligible.length > 0) {
+        const statKey = eligible[Math.floor(Math.random() * eligible.length)];
+        const prev = stages[statKey] || 0;
+        const next = clampStage(prev + effect.stages);
+        const delta = next - prev;
+        stages[statKey] = next;
+        if (delta !== 0) {
+          out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
+        }
+      }
+      continue;
+    }
+
+    if (effect.randomFrom) {
+      const increasing = (effect.stages || 0) >= 0;
+      const pool = effect.randomFrom.filter(s => increasing ? (stages[s] || 0) < 6 : (stages[s] || 0) > -6);
+      if (pool.length > 0) {
+        const statKey = pool[Math.floor(Math.random() * pool.length)];
+        const prev = stages[statKey] || 0;
+        const next = clampStage(prev + effect.stages);
+        const delta = next - prev;
+        stages[statKey] = next;
+        if (delta !== 0) {
+          out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
+        }
+      }
+      continue;
+    }
+
+    const effectStats = effect.statByMoveCategory ? [effect.statByMoveCategory[resolvedMoveCategory]].filter(Boolean) : expandEffectStats(effect);
+
+    for (const statKey of effectStats) {
+      const prev = stages[statKey] || 0;
+      const next = clampStage(prev + effect.stages);
+      const delta = next - prev;
+      stages[statKey] = next;
+      if (delta !== 0) {
+        out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
+      }
+    }
+  }
+  return out;
+}
+
+  async function resolveQueuedActions(ctx, battleData, bword) {
+    if (!battleData.queuedActions || battleData.queuedActions.length < 2) return false;
+
+    const action1 = battleData.queuedActions[0];
+    const action2 = battleData.queuedActions[1];
+    battleData.bideCycle = (battleData.bideCycle || 0) + 1;
+    dbg('resolve:start', { bword, a1: action1, a2: action2, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o, qlen: battleData.queuedActions.length });
+    battleData.queuedActions = []; // Clear queue for next turn
+    if (battleData.switchLock) battleData.switchLock = null;
+    if (battleData.switchPending) {
+      delete battleData.switchPending[String(action1.cid)];
+      if (action2) delete battleData.switchPending[String(action2.cid)];
+      if (Object.keys(battleData.switchPending).length < 1) delete battleData.switchPending;
+    }
+
+    const actions = [action1, action2].filter(Boolean);
+    const switchActions = actions.filter(a => a.type === 'switch');
+    const moveActions = actions.filter(a => a.type !== 'switch');
+
+    // Bide locks the move choice until it is released.
+    if (!battleData.bideState || typeof battleData.bideState !== 'object') {
+      battleData.bideState = {};
+    }
+    for (const act of moveActions) {
+      if (battleData.bideState[act.c] && battleData.bideState[act.c].moveId) {
+        act.id = battleData.bideState[act.c].moveId;
+      }
+    }
+
+    let speedA = 0;
+    let speedB = 0;
+    if (moveActions.length === 2) {
+      const usrA = await getUserData(action1.cid);
+      const usrB = await getUserData(action2.cid);
+      const pkA = usrA.pokes.filter(p => p.pass == action1.c)[0];
+      const pkB = usrB.pokes.filter(p => p.pass == action2.c)[0];
+      if (!pkA || !pkB) {
+        dbg('resolve:speed_missing_poke', { bword, pkA: !!pkA, pkB: !!pkB, a1: action1, a2: action2 });
+        // Keep going; we'll fall back to priority/random ordering below.
+        speedA = 0;
+        speedB = 0;
+      } else {
+        const stA = await Stats(pokestats[pkA.name], pkA.ivs, pkA.evs, c(pkA.nature), plevel(pkA.name, pkA.exp));
+        const stB = await Stats(pokestats[pkB.name], pkB.ivs, pkB.evs, c(pkB.nature), plevel(pkB.name, pkB.exp));
+
+        speedA = getEffectiveSpeed(stA.speed, battleData, action1.c);
+        speedB = getEffectiveSpeed(stB.speed, battleData, action2.c);
+      }
+    }
+
+    let orderedActions = [];
+    if (moveActions.length === 1) {
+      orderedActions = [moveActions[0]];
+    } else if (moveActions.length === 2) {
+      const mv1 = dmoves[action1.id];
+      const mv2 = dmoves[action2.id];
+      const pri1 = mv1 ? getMovePriority(mv1.name) : 0;
+      const pri2 = mv2 ? getMovePriority(mv2.name) : 0;
+      if (!mv1 || !mv2) {
+        dbg('resolve:missing_move_data', { bword, mv1: !!mv1, mv2: !!mv2, a1: action1, a2: action2 });
+      }
+
+      if (pri1 > pri2) { orderedActions = [action1, action2]; }
+      else if (pri2 > pri1) { orderedActions = [action2, action1]; }
+      else {
+        if (speedA > speedB) { orderedActions = [action1, action2]; }
+        else if (speedB > speedA) { orderedActions = [action2, action1]; }
+        else { orderedActions = (Math.random() < 0.5) ? [action1, action2] : [action2, action1]; }
+      }
+    }
+    const isSingleMoveTurn = moveActions.length < 2;
+
+    if (!battleData.turnHits) battleData.turnHits = {};
+    battleData.turnHits = {}; // Reset at start of turn
+
+    let turnLogs = "\n\n<b>Turn Summary:</b>";
+
+    async function applySwitchAction(act) {
+      if (!act || !act.pass) return;
+      if (String(battleData.cid) !== String(act.cid)) {
+        fullSwap(battleData);
+      }
+      const previousPass = battleData.c;
+      const attacker = await getUserData(battleData.cid);
+      const p12 = attacker.pokes.filter((poke)=>poke.pass==act.pass)[0];
+      battleData.c = act.pass;
+      battleData.chp = battleData.tem[act.pass];
+      // Switching out ends Bide for the Pokemon that left the field.
+      if (battleData.bideState && battleData.bideState[previousPass]) {
+        delete battleData.bideState[previousPass];
+      }
+      if (p12) {
+        turnLogs += '\n-> <b>' + c(p12.name) + '</b> came for battle.';
+      }
+    }
+
+    // Function to execute one standard attack in current context (battleData.cid attacking battleData.oid)
+    async function executeStandardMove(act) {
+      if (battleData.chp <= 0 || battleData.ohp <= 0) return; // attacker or defender fainted
+
+      const move = dmoves[act.id];
+      const moveName = normalizeMoveName(move?.name);
+      const isCounterMove = ['counter', 'mirror coat', 'metal burst', 'comeuppance'].includes(moveName);
+      let attacker = await getUserData(battleData.cid);
+      let defender = await getUserData(battleData.oid);
+      let p = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0];
+      let op = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
+
+      let base1 = pokestats[p.name];
+      let base2 = pokestats[op.name];
+      let level1 = plevel(p.name, p.exp);
+      let level2 = plevel(op.name, op.exp);
+      let stats1 = await Stats(base1, p.ivs, p.evs, c(p.nature), level1);
+      let stats2 = await Stats(base2, op.ivs, op.evs, c(op.nature), level2);
+
+      // Check type effectiveness
+      const type3 = pokes[op.name].types[0];
+      const type4 = pokes[op.name].types[1] ? c(pokes[op.name].types[1]) : null;
+      let eff1 = 1;
+      if (battleData.set.type_effects) { eff1 = await eff(c(move.type), c(type3), type4); }
+
+      const atkStages = ensurePokemonStatStages(battleData, battleData.c);
+      const defStages = ensurePokemonStatStages(battleData, battleData.o);
+
+      let atk = applyStageToStat(stats1.attack, atkStages.attack);
+      let def2 = applyStageToStat(stats2.defense, defStages.defense);
+      if (move.category == 'special') {
+        atk = applyStageToStat(stats1.special_attack, atkStages.special_attack);
+        def2 = applyStageToStat(stats2.special_defense, defStages.special_defense);
+      }
+      if (move.category == 'physical' && getBattleStatus(battleData, battleData.c) === 'burn') {
+        atk = Math.max(1, Math.floor(atk / 2));
+      }
+
+      let msgLocal = "";
+
+      // ActState (Frozen, Asleep, Paralyzed etc)
+      ensureBattleStatus(battleData); // verify status conditions haven't cleared
+      const actState = canPokemonAct(battleData, battleData.c, p.name);
+
+      if (!actState.canAct) {
+        msgLocal += "\n" + actState.msg;
+      } else if (moveName === 'bide') {
+        // Bide bypasses accuracy/evasion checks
+        if (!battleData.bideState) battleData.bideState = {};
+        if (!battleData.bideState[battleData.c]) {
+          // Bide stores for exactly 2 turns, then retaliates.
+          battleData.bideState[battleData.c] = { turnsLeft: 1, damage: 0, moveId: act.id, lastAttacker: null, lastProcessedCycle: battleData.bideCycle };
+          msgLocal += '\n-> <b>'+c(p.name)+'</b> is storing energy!';
+        } else {
+          let bState = battleData.bideState[battleData.c];
+          if (bState.lastProcessedCycle === battleData.bideCycle) {
+            msgLocal += '\n-> <b>'+c(p.name)+'</b> is storing energy!';
+          } else if (isSingleMoveTurn) {
+            // Do not progress Bide countdown on single-action turns (e.g. switch/faint flows).
+            bState.lastProcessedCycle = battleData.bideCycle;
+            msgLocal += '\n-> <b>'+c(p.name)+'</b> is storing energy!';
+          } else if (bState.turnsLeft > 1) {
+            bState.turnsLeft -= 1;
+            bState.lastProcessedCycle = battleData.bideCycle;
+            msgLocal += '\n-> <b>'+c(p.name)+'</b> is storing energy!';
+          } else {
+            bState.lastProcessedCycle = battleData.bideCycle;
+            if (bState.damage === 0) {
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> unleashed its energy... but it failed!';
+            } else {
+              var damage = Math.min(bState.damage * 2, battleData.ohp);
+              battleData.ohp = Math.max((battleData.ohp - damage), 0);
+              battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+              battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
+              if (battleData.bideState && battleData.bideState[battleData.o]) {
+                battleData.bideState[battleData.o].damage += damage;
+                battleData.bideState[battleData.o].lastAttacker = battleData.c;
+              }
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> unleashed its energy! It dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+            }
+            delete battleData.bideState[battleData.c];
+          }
+        }
+      } else if (isCounterMove) {
+        // Counterattack moves only succeed if this Pokemon was hit earlier this turn.
+        const lastHit = battleData.turnHits[battleData.c];
+        const wasHitByCurrentFoe = lastHit && String(lastHit.from) === String(battleData.o);
+        if (!lastHit || lastHit.damage === 0 || !wasHitByCurrentFoe) {
+          msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+        } else if (moveName === 'counter' && lastHit.category !== 'physical') {
+          msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+        } else if (moveName === 'mirror coat' && lastHit.category !== 'special') {
+          msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+        } else {
+          const multiplier = (moveName === 'metal burst' || moveName === 'comeuppance') ? 1.5 : 2;
+          var damage = Math.min(Math.max(Math.floor(lastHit.damage * multiplier), 1), battleData.ohp);
+          battleData.ohp = Math.max((battleData.ohp - damage), 0);
+          battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+          battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
+          if (battleData.bideState && battleData.bideState[battleData.o]) {
+            battleData.bideState[battleData.o].damage += damage;
+            battleData.bideState[battleData.o].lastAttacker = battleData.c;
+          }
+          msgLocal += '\n-> <b>'+c(p.name)+'</b> retaliated with <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+        }
+      } else {
+        const bypassAccuracyCheck = moveName === 'bind';
+        const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
+        const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), atkStages.accuracy, defStages.evasion) : 100;
+        if (hasAccuracyCheck && Math.random() * 100 > accValue) {
+          msgLocal += '\n-> <b>'+c(p.name)+'</b> <b>'+c(move.name)+'</b> has missed.';
+        } else if (hasAccuracyCheck && Math.random() < 0.05) {
+          msgLocal += '\n-> <b>'+c(op.name)+'</b> Dodged <b>'+c(p.name)+'</b>\'s <b>'+c(move.name)+'</b>';
+        } else {
+          if (moveName === 'leech seed') {
+            if (!battleData.leechSeed || typeof battleData.leechSeed !== 'object') {
+              battleData.leechSeed = {};
+            }
+            const defenderTypes = (pokes[op.name]?.types || []).map((t) => String(t).toLowerCase());
+            if (defenderTypes.includes('grass')) {
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+            } else if (battleData.leechSeed[battleData.o]) {
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+            } else {
+              battleData.leechSeed[battleData.o] = battleData.c;
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> planted a seed on <b>'+c(op.name)+'</b>!';
+            }
+          } else if (move.category == 'status' || !move.power) {
+            msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.';
+            msgLocal += applyMoveStatEffects({
+              battleData,
+              moveName,
+              moveCategory: move.category,
+              attackerName: p.name,
+              defenderName: op.name,
+              attackerPass: battleData.c,
+              defenderPass: battleData.o,
+              targetAlive: battleData.ohp > 0
+            });
+
+            if (moveName === 'strength sap') {
+              const targetStages = ensurePokemonStatStages(battleData, battleData.o);
+              const targetAtk = applyStageToStat(stats2.attack, targetStages.attack);
+              const hpBefore = battleData.chp;
+              battleData.chp = Math.min(stats1.hp, battleData.chp + targetAtk);
+              const healed = Math.max(0, battleData.chp - hpBefore);
+              battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || hpBefore) + healed));
+              if (healed > 0) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
+              }
+            }
+
+            if (moveName === 'memento') {
+              const selfBefore = battleData.chp;
+              battleData.chp = 0;
+              battleData.tem[battleData.c] = 0;
+              if (selfBefore > 0) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> fainted after using <b>'+c(move.name)+'</b>!';
+              }
+            }
+
+            if (moveName === 'belly drum') {
+              const bdHalf = Math.floor(stats1.hp / 2);
+              if (battleData.chp > bdHalf) {
+                battleData.chp -= bdHalf;
+                battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || battleData.chp) - bdHalf);
+                const bdStages = ensurePokemonStatStages(battleData, battleData.c);
+                const bdPrev = bdStages.attack || 0;
+                bdStages.attack = 6;
+                const bdDelta = 6 - bdPrev;
+                if (bdDelta > 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Attack</b> '+getStageVerb(bdDelta)+'!';
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its own HP to maximize Attack!';
+              } else {
+                msgLocal += '\n-> But it failed!';
+              }
+            }
+
+            if (moveName === 'clangorous soul') {
+              const csThird = Math.floor(stats1.hp / 3);
+              if (battleData.chp > csThird) {
+                battleData.chp = Math.max(1, battleData.chp - csThird);
+                battleData.tem[battleData.c] = Math.max(1, (battleData.tem[battleData.c] || battleData.chp + csThird) - csThird);
+                const csStages = ensurePokemonStatStages(battleData, battleData.c);
+                for (const s of ['attack','defense','special_attack','special_defense','speed']) {
+                  const prev = csStages[s] || 0; const next = clampStage(prev + 1); const delta = next - prev;
+                  csStages[s] = next;
+                  if (delta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+getStatLabel(s)+'</b> '+getStageVerb(delta)+'!';
+                }
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its HP to power itself up!';
+              } else {
+                msgLocal += '\n-> But it failed!';
+              }
+            }
+
+            if (moveName === 'fillet away') {
+              const faHalf = Math.floor(stats1.hp / 2);
+              if (battleData.chp > faHalf) {
+                battleData.chp -= faHalf;
+                battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || battleData.chp) - faHalf);
+                const faStages = ensurePokemonStatStages(battleData, battleData.c);
+                for (const [s, d] of [['attack',2],['special_attack',2],['speed',2]]) {
+                  const prev = faStages[s] || 0; const next = clampStage(prev + d); const delta = next - prev;
+                  faStages[s] = next;
+                  if (delta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+getStatLabel(s)+'</b> '+getStageVerb(delta)+'!';
+                }
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its HP to sharpen all its senses!';
+              } else {
+                msgLocal += '\n-> But it failed!';
+              }
+            }
+          } else {
+            if (moveName === 'dream eater' && getBattleStatus(battleData, battleData.o) !== 'sleep') {
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+            } else {
+              var damage = Math.min(calc(atk, def2, level1, move.power, eff1), battleData.ohp);
+              battleData.ohp = Math.max((battleData.ohp - damage), 0);
+              battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+
+              const drainRatio = getDrainRatio(moveName);
+              if (drainRatio > 0 && damage > 0) {
+                const healRaw = Math.max(1, Math.floor(damage * drainRatio));
+                const prevHp = battleData.chp;
+                battleData.chp = Math.min(stats1.hp, battleData.chp + healRaw);
+                const healed = Math.max(0, battleData.chp - prevHp);
+                battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || prevHp) + healed));
+                if (healed > 0) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> drained <code>'+healed+'</code> HP!';
+                }
+              }
+
+              // Record hit for counter-attacks and accumulate bide damage
+              battleData.turnHits[battleData.o] = { damage: damage, category: move.category, from: battleData.c, move: moveName };
+              if (battleData.bideState && battleData.bideState[battleData.o]) {
+                battleData.bideState[battleData.o].damage += damage;
+                battleData.bideState[battleData.o].lastAttacker = battleData.c;
+              }
+
+              if (eff1 == 0) msgLocal += '\n<b>* It\'s 0x effective!</b>';
+              else if (eff1 == 0.5) msgLocal += '\n<b>* It\'s not very effective...</b>';
+              else if (eff1 == 2) msgLocal += '\n<b>* It\'s super effective!</b>';
+              else if (eff1 == 4) msgLocal += '\n<b>* It\'s incredibly super effective!</b>';
+
+              if (damage > 0) {
+                msgLocal += applyMoveStatEffects({
+                  battleData,
+                  moveName,
+                  moveCategory: move.category,
+                  attackerName: p.name,
+                  defenderName: op.name,
+                  attackerPass: battleData.c,
+                  defenderPass: battleData.o,
+                  targetAlive: battleData.ohp > 0
+                });
+                if (moveName === 'fell stinger' && battleData.ohp <= 0) {
+                  const fsStages = ensurePokemonStatStages(battleData, battleData.c);
+                  const fsPrev = fsStages.attack || 0;
+                  const fsNext = clampStage(fsPrev + 3);
+                  const fsDelta = fsNext - fsPrev;
+                  fsStages.attack = fsNext;
+                  if (fsDelta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Attack</b> '+getStageVerb(fsDelta)+'!';
+                }
+              }
+            }
+          }
+
+          // Status condition inflictions
+          const statusEffect = getMoveStatusEffect(move);
+          if (statusEffect && battleData.ohp > 0) {
+            const existingStatus = getBattleStatus(battleData, battleData.o);
+            const defenderTypes = pokes[op.name]?.types || [];
+            if (!existingStatus && !isStatusImmune(statusEffect.status, defenderTypes) && Math.random() < statusEffect.chance) {
+              setBattleStatus(battleData, battleData.o, statusEffect.status);
+              msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.';
+            }
+          }
+        }
+      }
+
+      msgLocal += applyDefenderResidualDamage(battleData, battleData.o, op.name, stats2.hp);
+
+      // Leech Seed: seeded target loses HP, and the source recovers HP (single-battle context).
+      if (battleData.leechSeed && battleData.leechSeed[battleData.o] && String(battleData.leechSeed[battleData.o]) === String(battleData.c) && battleData.ohp > 0) {
+        const leechDamage = Math.max(1, Math.floor(stats2.hp / 8));
+        const drained = Math.min(leechDamage, battleData.ohp);
+        battleData.ohp = Math.max(0, battleData.ohp - drained);
+        battleData.tem2[battleData.o] = Math.max(0, battleData.tem2[battleData.o] - drained);
+
+        const hpBefore = battleData.chp;
+        battleData.chp = Math.min(stats1.hp, battleData.chp + drained);
+        const healed = Math.max(0, battleData.chp - hpBefore);
+        battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || hpBefore) + healed));
+
+        msgLocal += '\n-> <b>'+c(op.name)+'</b> had its energy sapped by Leech Seed and lost <code>'+drained+'</code> HP.';
+        if (healed > 0) {
+          msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP from Leech Seed.';
+        }
+      }
+
+      // Reveal Used Move
+      if (!battleData.usedMoves) battleData.usedMoves = {};
+      if (!battleData.usedMoves[battleData.c]) battleData.usedMoves[battleData.c] = [];
+      if (!battleData.usedMoves[battleData.c].includes(act.id)) battleData.usedMoves[battleData.c].push(act.id);
+
+      turnLogs += msgLocal;
+    }
+
+    if (switchActions.length > 0) {
+      for (const act of actions) {
+        if (act.type === 'switch') {
+          await applySwitchAction(act);
+        }
+      }
+      dbg('resolve:after_switches', { bword, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o });
+      if (moveActions.length === 1) {
+        if (String(battleData.cid) !== String(moveActions[0].cid)) {
+          fullSwap(battleData);
+        }
+        await executeStandardMove(moveActions[0]);
+      }
+    } else {
+      if (String(battleData.cid) !== String(orderedActions[0].cid)) {
+        fullSwap(battleData);
+      }
+      await executeStandardMove(orderedActions[0]);
+
+      if (battleData.ohp > 0 && battleData.chp > 0) { // both must be alive
+        fullSwap(battleData); // Context swap so opponent becomes Attacker
+        await executeStandardMove(orderedActions[1]);
+      }
+    }
+
+    // What if someone fainted?
+    if (battleData.chp <= 0 || battleData.ohp <= 0) {
+      if (battleData.ohp <= 0 && battleData.chp > 0) {
+        fullSwap(battleData); // ensure cid points to the fainted pokemon so UI logic works below
+      }
+    } else {
+      // Nobody fainted, just pick the next selector.
+      fullSwap(battleData);
+    }
+
+    await saveBattleData(bword, battleData);
+    dbg('resolve:done', { bword, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o, chp: battleData.chp, ohp: battleData.ohp });
+
+    const attacker = await getUserData(battleData.cid)
+    const defender = await getUserData(battleData.oid)
+    const p1 = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
+    const p2 = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0]
+    const pp = pokes[p1.name]
+    const pp2 = pokes[p2.name]
+    const base1 = pokestats[p2.name]
+    const base2 = pokestats[p1.name]
+    const level1 = plevel(p2.name,p2.exp)
+    const level2 = plevel(p1.name,p1.exp)
+    const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
+    const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
+
+    let msg = turnLogs;
+
+    const messageData = await loadMessageData();
+    messageData[bword] = { chat:ctx.chat.id,mid: ctx.callbackQuery.message.message_id, times: Date.now(),turn:battleData.cid,oppo:battleData.oid };
+    await saveMessageData(messageData);
+
+    if(battleData.chp < 1){
+      msg += '\n\n<b>'+c(p1.name)+'</b> has fainted. Choose your next pokemon.'
+      if(!battleData.set.sandbox){
+        await incexp(defender,p2,attacker,p1,ctx,battleData,bot)
+        await incexp2(attacker,p1,defender,p2,ctx,battleData,bot)
+      }
+      const av = []
+      const al = []
+      let b = 1
+      for(const pok in battleData.tem){
+        if(battleData.tem[pok] > 0){
+          const ppe = attacker.pokes.filter((poke)=>poke.pass == pok)[0]
+          av.push({name:b,pass:pok})
+          al.push(pok)
+        }else{
+          av.push({name:b+' (0 HP)',pass:pok})
+        }
+        b++;
+      }
+      if(al.length < 1){
+        const gpc = Object.keys(battleData.tem).length*15
+        defender.inv.pc += gpc
+        if(!defender.inv.win){
+          defender.inv.win = 0
+        }
+        defender.inv.win += 1
+        if(!attacker.inv.lose){
+          attacker.inv.lose = 0
+        }
+        attacker.inv.lose += 1
+        if(battleData.tempBattle && battleData.tempTeams){
+          const t1 = battleData.tempTeams[battleData.cid] || []
+          const t2 = battleData.tempTeams[battleData.oid] || []
+          attacker.pokes = (attacker.pokes || []).filter(p => !t1.includes(p.pass))
+          defender.pokes = (defender.pokes || []).filter(p => !t2.includes(p.pass))
+          if(attacker.extra && attacker.extra.temp_battle){
+            delete attacker.extra.temp_battle[bword]
+          }
+          if(defender.extra && defender.extra.temp_battle){
+            delete defender.extra.temp_battle[bword]
+          }
+        }
+        await saveUserData2(battleData.cid,attacker)
+        await saveUserData2(battleData.oid,defender)
+        const messageData = await loadMessageData();
+        messageData.battle = messageData.battle.filter((chats)=> chats!==parseInt(messageData[bword].turn) && chats!==parseInt(messageData[bword].oppo))
+        delete messageData[bword];
+        await saveMessageData(messageData);
+        await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+gpc+' PokeCoins ðŸ’·',{parse_mode:'HTML'})
+        if(Math.random()< 0.00005){
+          const idr = (Math.random()<0.5) ? battleData.oid : battleData.cid
+          const dr = await getUserData(idr)
+          await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},'<a href="tg://user?id='+idr+'"><b>'+displayName(dr,idr)+'</b></a>, A <b>Move Tutor</b> was watching your match. He wants to <b>Teach</b> one of your <b>Pokemon</b> a <b>Move.</b>',{reply_markup:{inline_keyboard:[[{text:'Go',url:'t.me/'+bot.botInfo.username+''}]]}})
+          const options = {
+            timeZone: 'Asia/Kolkata',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+          };
+
+          const d = new Date().toLocaleString('en-US', options)
+          const my = String(tutors[Math.floor(Math.random()*tutors.length)])
+          const m77 = await sendMessage(ctx,idr,'While you were <b>Battling</b> with a trainer, An expert <b>Move Tutor</b> saw your battle very interestingly. He Impressed with your <b>Battle</b> experience and strategy. He wants to <b>Teach</b> your any of <b>Pokemon</b> a move. It will be available only for next <b>15 Minutes.</b>\n\nÃ¢Å“Â¦ <b>'+c(dmoves[my].name)+'</b> ['+c(dmoves[my].type)+' '+emojis[dmoves[my].type]+']\n<b>Power:</b> '+dmoves[my].power+', <b>Accuracy:</b> '+dmoves[my].accuracy+' (<i>'+c(dmoves[my].category)+'</i>) \n\nÃ¢â‚¬Â¢ Click below to <b>Select</b> pokemon to teach <b>'+c(dmoves[my].name)+'</b>',{parse_mode:'html',reply_markup:{inline_keyboard:[[{text:'Select',callback_data:'tyrt_'+my+'_'+d+''}]]}})
+          const mdata = await loadMessageData();
+          if(!mdata.tutor){
+            mdata.tutor = {}
+          }
+          mdata.tutor[m77.message_id] = {chat:idr,tdy:d,mv:dmoves[my].name}
+          await saveMessageData(mdata)
+        }
+      }else{
+        const buttons = av.map((poke) => ({ text: poke.name, callback_data: 'multidne_' + poke.pass + '_' + bword + '_'+battleData.cid+'_fainted' }));
+        while (buttons.length < 6) {
+          buttons.push({ text: '  ', callback_data: 'empty' });
+        }
+        const rows = [[{text:'View Team',callback_data:'viewteam_'+bword+'_'+battleData.cid+''}]];
+        for (let i = 0; i < buttons.length; i += 2) {
+          rows.push(buttons.slice(i, i + 2));
+        }
+        await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:rows}})
+        return true;
+      }
+      return true;
+    }
+    const isGroupMmo = ctx.chat.type !== 'private';
+    const pvpMmo = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
+    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMmo.msg,{parse_mode:'HTML',reply_markup:pvpMmo.keyboard,...pvpMmo.ext})
+    return true;
+  }
+
 bot.action(/sytbr_/,async ctx => {
 const id = ctx.callbackQuery.data.split('_')[1]
 const rid = ctx.callbackQuery.data.split('_')[2]
 const bword = ctx.callbackQuery.data.split('_')[3]
 if(ctx.from.id==id){
 const bt = ['max-poke','min-/-max-6l','min-/-max-level','switch','form-change','sandbox-mode','random-mode','preview-mode','types-lock','regions-lock','type-efficiency','dual-type','save-settings']
-const buttons = bt.map((word) => ({ text: '• '+c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_back_'+id+'_'+rid+'_'+bword+''})
+const buttons = bt.map((word) => ({ text: 'Ã¢â‚¬Â¢ '+c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_back_'+id+'_'+rid+'_'+bword+''})
   const rows = [];
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
@@ -82,7 +1265,7 @@ return
 }
 let settings3 = {};
     try {
-      settings3 = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      settings3 = loadBattleData(bword);
 } catch (error) {
       settings3 = {};
     }
@@ -91,7 +1274,7 @@ const d1 = await getUserData(id)
 const d2 = await getUserData(rid)
 const challanger = displayName(d1, id)
 const challanged = displayName(d2, rid)
-let msg = '⚔ <a href="tg://user?id='+id+'"><b>'+challanger+'</b></a> Has Challenged <a href="tg://user?id='+rid+'"><b>'+challanged+'</b></a>\n'
+let msg = 'Ã¢Å¡â€ <a href="tg://user?id='+id+'"><b>'+challanger+'</b></a> Has Challenged <a href="tg://user?id='+rid+'"><b>'+challanged+'</b></a>\n'
 let f = false
 let msg2 = ''
 if(word=='maxs'){
@@ -219,77 +1402,77 @@ settings.allow_regions = []
 for (let key in settings3.users) {
     settings3.users[key] = false;
   }
-await fs.writeFileSync('./data/battle/' +bword+ '.json', JSON.stringify(settings3, null, 2));
+await saveBattleData(bword, settings3);
 if(settings.max_poke < 6){
 f = true
-msg2 += '\n<b>• Max number of pokemon:</b> '+settings.max_poke+''
+msg2 += '\n<b>Ã¢â‚¬Â¢ Max number of pokemon:</b> '+settings.max_poke+''
 }
 if(settings.min_6l > 0 || settings.max_6l < 6){
 f = true
-msg2 += '\n<b>• Number of legendaries:</b> '+settings.min_6l+'-'+settings.max_6l+''
+msg2 += '\n<b>Ã¢â‚¬Â¢ Number of legendaries:</b> '+settings.min_6l+'-'+settings.max_6l+''
 }
 if(settings.min_level > 1 || settings.max_level < 100){
 f = true
-msg2 += '\n<b>• Level gap of pokemon:</b> '+settings.min_level+'-'+settings.max_level+''
+msg2 += '\n<b>Ã¢â‚¬Â¢ Level gap of pokemon:</b> '+settings.min_level+'-'+settings.max_level+''
 }
 if(!settings.switch){
 f = true
-msg2 += '\n<b>• Switching pokemon:</b> Disabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Switching pokemon:</b> Disabled'
 }
 if(!settings.key_item){
 f = true
-msg2 += '\n<b>• Form Changing:</b> Disabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Form Changing:</b> Disabled'
 }
 if(settings.sandbox){
 f = true
-msg2 += '\n<b>• Sandbox mode:</b> Enabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Sandbox mode:</b> Enabled'
 }
 if(settings.random){
 f = true
-msg2 += '\n<b>• Random mode:</b> Enabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Random mode:</b> Enabled'
 }
 if(settings.preview && settings.preview!= 'no'){
 f = true
-msg2 += '\n<b>• Preview mode:</b> '+settings.preview+''
+msg2 += '\n<b>Ã¢â‚¬Â¢ Preview mode:</b> '+settings.preview+''
 }
 if(settings.pin){
 f = true
-msg2 += '\n<b>• Pin mode:</b> Enabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Pin mode:</b> Enabled'
 }
 if(!settings.type_effects){
 f = true
-msg2 += '\n<b>• Type efficiency:</b> Disabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Type efficiency:</b> Disabled'
 }
 if(!settings.dual_type){
 f = true
-msg2 += '\n<b>• Dual Types:</b> Disabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Dual Types:</b> Disabled'
 }
 if(settings.allow_regions.length > 0){
 f = true
-msg2 += '\n<b>• Only regions:</b> ['+c(settings.allow_regions.join(' , '))+']'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Only regions:</b> ['+c(settings.allow_regions.join(' , '))+']'
 }
 if(settings.ban_regions.length > 0){
 f = true
-msg2 += '\n<b>• Banned regions:</b> ['+c(settings.ban_regions.join(' , '))+']'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Banned regions:</b> ['+c(settings.ban_regions.join(' , '))+']'
 }
 if(settings.ban_types.length > 0){
 f = true
-msg2 += '\n<b>• Banned types:</b> ['+c(settings.ban_types.join(' , '))+']'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Banned types:</b> ['+c(settings.ban_types.join(' , '))+']'
 }
 if(settings.allow_types.length > 0){
 f = true
-msg2 += '\n<b>• Types:</b> ['+c(settings.allow_types.join(' , '))+']'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Types:</b> ['+c(settings.allow_types.join(' , '))+']'
 }
 
 if(settings3.users[id]){
-var em1 = '✓'
+var em1 = 'Ã¢Å“â€œ'
 }else{
-var em1 = '✗'
+var em1 = 'Ã¢Å“â€”'
 }
 if(settings3.users[rid]){
-var em2 = '✓'
+var em2 = 'Ã¢Å“â€œ'
 }else{
-var em2 = '✗'
+var em2 = 'Ã¢Å“â€”'
 }
 
 if(f){
@@ -302,7 +1485,7 @@ if(word=='ban-regions'){
 const bt = ['kanto', 'jhoto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_banrg_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -312,9 +1495,9 @@ return
 }
 if(word=='allow-regions'){
 const bt = ['kanto', 'jhoto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
-const buttons = bt.map((word) => ({ text: settings.allow_types.includes(word) ? c(word)+'✅' : c(word), callback_data: 'stbtlsyt_allowrg_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
+const buttons = bt.map((word) => ({ text: settings.allow_types.includes(word) ? c(word)+'Ã¢Å“â€¦' : c(word), callback_data: 'stbtlsyt_allowrg_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -327,7 +1510,7 @@ if(word=='regions-lock'){
 const bt = ['ban-regions','allow-regions']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
 }
@@ -339,7 +1522,7 @@ if(word=='allowrg'){
 const bt = ['kanto', 'jhoto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_allowrg_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -351,7 +1534,7 @@ if(word=='banrg'){
 const bt = ['kanto', 'jhoto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_banrg_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -363,7 +1546,7 @@ if(word=='allowty'){
 const bt = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost',  'dragon', 'dark', 'steel', 'fairy']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_allowty_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -375,7 +1558,7 @@ if(word=='banty'){
 const bt = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_banty_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -387,7 +1570,7 @@ if(word=='max-poke'){
 const bt = ['1','2','3','4','5','6']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_maxs_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 3) {
     rows.push(buttons.slice(i, i + 3));
 }
@@ -399,7 +1582,7 @@ if(word=='min-/-max-6l'){
 const bt = ['min-6l','max-6l']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
 }
@@ -411,7 +1594,7 @@ if(word=='ban-types'){
 const bt = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_banty_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -423,7 +1606,7 @@ if(word=='allow-types'){
 const bt = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost',  'dragon', 'dark', 'steel', 'fairy']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_allowty_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -438,7 +1621,7 @@ if(word=='types-lock'){
 const bt = ['ban-types','allow-types']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
 }
@@ -450,7 +1633,7 @@ if(word=='regions-lock'){
 const bt = ['ban-regions','allow-regions']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
 }
@@ -462,7 +1645,7 @@ if(word=='min-/-max-level'){
 const bt = ['min-level','max-level']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
 }
@@ -474,7 +1657,7 @@ if(word=='min-level'){
 const bt = ['1-10','11-20','21-30','31-40','41-50','51-60','61-70','71-80','81-90','91-100']
 const buttons = bt.map((word) => ({ text: word, callback_data: 'stbtlsyt_minlevel_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_min-/-max-level_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_min-/-max-level_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 3) {
     rows.push(buttons.slice(i, i + 3));
 }
@@ -487,7 +1670,7 @@ const yu = ctx.callbackQuery.data.split('_')[5]
 const bt = Array.from({ length: (yu.split('-')[1]*1-yu.split('-')[0]*1+1)}, (_, i) => (i + yu.split('-')[0]*1).toString());
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_maxlv_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_max-level_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_max-level_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 5) {
     rows.push(buttons.slice(i, i + 5));
 }
@@ -500,7 +1683,7 @@ const yu = ctx.callbackQuery.data.split('_')[5]
 const bt = Array.from({ length: (yu.split('-')[1]*1-yu.split('-')[0]*1+1)}, (_, i) => (i + yu.split('-')[0]*1).toString());
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_minlv_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_min-level_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_min-level_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 5) {
     rows.push(buttons.slice(i, i + 5));
 }
@@ -512,7 +1695,7 @@ if(word=='max-level'){
 const bt = ['1-10','11-20','21-30','31-40','41-50','51-60','61-70','71-80','81-90','91-100']
 const buttons = bt.map((word) => ({ text: word, callback_data: 'stbtlsyt_maxlevel_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_min-/-max-level_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_min-/-max-level_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 3) {
     rows.push(buttons.slice(i, i + 3));
 }
@@ -525,7 +1708,7 @@ if(word=='min-6l'){
 const bt = ['0','1','2','3','4','5','6']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_min6l_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_min-/-max-6l_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_min-/-max-6l_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 3) {
     rows.push(buttons.slice(i, i + 3));
 }
@@ -537,7 +1720,7 @@ if(word=='max-6l'){
 const bt = ['0','1','2','3','4','5','6']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_max6l_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_min-/-max-6l_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_min-/-max-6l_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 3) {
     rows.push(buttons.slice(i, i + 3));
 }
@@ -553,12 +1736,12 @@ ctx.answerCbQuery('Settings Saved!')
 return
 }
 if(word=='back'){
-var rows = [[{text:'Agree ✓',callback_data:'battle_'+id+'_'+rid+'_'+bword+''},{text:'Reject ✗',callback_data:'reject_'+id+'_'+rid+'_'+bword+''}],[{text:'Battle Settings ⚔',callback_data:'sytbr_'+id+'_'+rid+'_'+bword+''}]]
+var rows = [[{text:'Agree Ã¢Å“â€œ',callback_data:'battle_'+id+'_'+rid+'_'+bword+''},{text:'Reject Ã¢Å“â€”',callback_data:'reject_'+id+'_'+rid+'_'+bword+''}],[{text:'Battle Settings Ã¢Å¡â€',callback_data:'sytbr_'+id+'_'+rid+'_'+bword+''}]]
 }else{
 msg += '\n\nUse /settings to get more info about battle settings.'
 const bt = ['max-poke','min-/-max-6l','min-/-max-level','switch','form-change','sandbox-mode','random-mode','preview-mode','types-lock','regions-lock','type-efficiency','dual-type','save-settings']
-const buttons = bt.map((word) => ({ text: '• '+c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_back_'+id+'_'+rid+'_'+bword+''})
+const buttons = bt.map((word) => ({ text: 'Ã¢â‚¬Â¢ '+c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
+buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_back_'+id+'_'+rid+'_'+bword+''})
   var rows = [];
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
@@ -587,7 +1770,7 @@ return
 const bword = ctx.callbackQuery.data.split('_')[3]
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
 } catch (error) {
       battleData = {};
     }
@@ -794,7 +1977,6 @@ const pk = data2.pokes.find(pok=>pok.pass == p)
 const tag = String(spawn[pk?.name] || '').toLowerCase()
 return pk && (tag== 'legendry' || tag== 'legendary' || tag == 'mythical')
 })
-console.log(leng,leng2)
 if(pokes1.length < 1 || leng.length < battleData.set.min_6l || leng.length > battleData.set.max_6l){
 battleData.users[id1] = false
 }
@@ -805,7 +1987,7 @@ battleData.users[id2] = false
  ctx.answerCbQuery('A valid team for this battle could not be formed')
  return
  }
-await fs.writeFileSync('./data/battle/' +bword+ '.json', JSON.stringify(battleData, null, 2));
+await saveBattleData(bword, battleData);
 if(Object.values(battleData.users).every(value => value === true)){
 const mdata = await loadMessageData();
 if(mdata.battle.includes(parseInt(id2))){
@@ -854,7 +2036,6 @@ const base2 = pokestats[user2poke.name]
   const speed1 = getSpeedWithStatus(spe[p1Lead], battleData, p1Lead)
   const speed2 = getSpeedWithStatus(spe2[p2Lead], battleData, p2Lead)
   const result = speed1 > speed2 ? p1Lead : p2Lead;
-console.log(result)
 if(result in tem){
 battleData.c = Object.keys(tem)[0]
 battleData.chp = tem[battleData.c]
@@ -882,143 +2063,98 @@ battleData.la2 = la
 battleData.ot = {}
 battleData.ot[battleData.name] = battleData.ohp
 }
-await fs.writeFileSync('./data/battle/' +bword+ '.json', JSON.stringify(battleData, null, 2));
+await saveBattleData(bword, battleData);
 const attacker = await getUserData(battleData.cid)
 const defender = await getUserData(battleData.oid)
 const p = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
 const p2 = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0]
 const pp = pokes[p.name]
 const pp2 = pokes[p2.name]
-let msg = '<b>✦ The Pokomon battle commences!</b>'
- msg += '\n\n<b>Opponent :</b> <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>'
-  msg += '\n<b>'+c(p2.name)+'</b> ['+c(pp2.types.join(' / '))+']'+getStatusTag(battleData, battleData.o)
-msg += '\n<b>Level :</b> '+plevel(p2.name,p2.exp)+' | <b>HP :</b> '+battleData.ohp+'/'+battleData.tem2[battleData.o]+''
-msg += '\n<code>'+Bar(battleData.tem2[battleData.o],battleData.ohp)+'</code>'
- msg += '\n\n<b>Turn :</b> <a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a>'
-  msg += '\n<b>'+c(p.name)+'</b> ['+c(pp.types.join(' / '))+']'+getStatusTag(battleData, battleData.c)
-msg += '\n<b>Level :</b> '+plevel(p.name,p.exp)+' | <b>HP :</b> '+battleData.chp+'/'+battleData.tem[battleData.c]+''
-msg += '\n<code>'+Bar(battleData.tem[battleData.c],battleData.chp)+'</code>'
-msg += '\n\n<b>Moves :</b>'
-const moves = []
-let img = pp.front_default_image
-const im = shiny.filter((poke)=>poke.name==p.name)[0]
-if(events[p.name] && p.symbol == '🪅') {
-img = events[p.name]
-}
-if(im && p.symbol=='✨'){
-img=im.shiny_url
-}
-for(const move2 of p.moves){
-let move = dmoves[move2]
-msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
-moves.push(''+move2+'')
-}
-let ext = {}
-if(battleData.set.preview=='Upper'){
-ext = {link_preview_options:{url:img,show_above_text:true}}
-}else if(battleData.set.preview=='Down'){
-ext = {link_preview_options:{url:img,show_above_text:false}}
-}
-const buttons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' }));
-while(buttons.length < 4){
-buttons.push({text:'  ',callback_data:'empty'})
-}
-  const rows = [];
-  for (let i = 0; i < buttons.length; i += 2) {
-    rows.push(buttons.slice(i, i + 2));
-  }
-const key2 = [{text:'Bag',callback_data:'multybg_'+bword+''},{text:'Escape',callback_data:'multryn_'+bword+'_multi'},{text:'Pokemon',callback_data:'multichanpok_'+bword+'_'+battleData.cid+''}]
-const isstone = [...new Set(attacker.inv.stones)].filter(stone => stones[stone]?.pokemon === p.name)
-if(battleData.set.key_item && isstone.length > 0 && Object.keys(attacker.extra.megas).length == 0 && attacker.inv.ring){
-const rows5 = []
-for(const i of isstone){
-rows5.push({text:'Use '+c(i)+'',callback_data:'megtst_'+i+'_'+bword+''})
-}
-rows.push(rows5)
-}
-rows.push(key2)
-  const keyboard = {
-    inline_keyboard: rows
-  };
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:keyboard,...ext})
+if (!battleData.usedMoves) battleData.usedMoves = {};
+// use saved full HP for stats
+const initStats1 = { hp: battleData.tem2[battleData.o] };
+const initStats2 = { hp: battleData.tem[battleData.c] };
+const isGroupInit = ctx.chat.type !== 'private';
+const pvpInit = buildPvpMsg('<b>* The Pokemon battle commences!</b>', battleData, attacker, defender, p, p2, initStats1, initStats2, bword, isGroupInit);
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpInit.msg,{parse_mode:'HTML',reply_markup:pvpInit.keyboard,...pvpInit.ext})
 const messageData = await loadMessageData();
 messageData.battle.push(parseInt(battleData.cid))
 messageData.battle.push(parseInt(battleData.oid))
     messageData[bword] = { chat:ctx.chat.id,mid: ctx.callbackQuery.message.message_id, times: Date.now(), turn:battleData.cid, oppo:battleData.oid };
     await saveMessageData(messageData);
 }else{
-let msg = '⚔ <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> Has Challenged <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a>\n'
+let msg = 'Ã¢Å¡â€ <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> Has Challenged <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a>\n'
 let msg2 = ''
 const settings = battleData.set
 if(settings.max_poke < 6){
 f = true
-msg2 += '\n<b>• Max number of pokemon:</b> '+settings.max_poke+''
+msg2 += '\n<b>Ã¢â‚¬Â¢ Max number of pokemon:</b> '+settings.max_poke+''
 }
 if(settings.min_6l > 0 || settings.max_6l < 6){
 f = true
-msg2 += '\n<b>• Number of legendaries:</b> '+settings.min_6l+'-'+settings.max_6l+''
+msg2 += '\n<b>Ã¢â‚¬Â¢ Number of legendaries:</b> '+settings.min_6l+'-'+settings.max_6l+''
 }
 if(settings.min_level > 1 || settings.max_level < 100){
 f = true
-msg2 += '\n<b>• Level gap of pokemon:</b> '+settings.min_level+'-'+settings.max_level+''
+msg2 += '\n<b>Ã¢â‚¬Â¢ Level gap of pokemon:</b> '+settings.min_level+'-'+settings.max_level+''
 }
 if(!settings.switch){
 f = true
-msg2 += '\n<b>• Switching pokemon:</b> Disabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Switching pokemon:</b> Disabled'
 }
 if(!settings.key_item){
 f = true
-msg2 += '\n<b>• Form Changing:</b> Disabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Form Changing:</b> Disabled'
 }
 if(settings.sandbox){
 f = true
-msg2 += '\n<b>• Sandbox mode:</b> Enabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Sandbox mode:</b> Enabled'
 }
 if(settings.random){
 f = true
-msg2 += '\n<b>• Random mode:</b> Enabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Random mode:</b> Enabled'
 }
 if(settings.preview && settings.preview != 'no'){
 f = true
-msg2 += '\n<b>• Preview mode:</b> '+settings.preview+''
+msg2 += '\n<b>Ã¢â‚¬Â¢ Preview mode:</b> '+settings.preview+''
 }
 if(settings.pin){
 f = true
-msg2 += '\n<b>• Pin mode:</b> Enabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Pin mode:</b> Enabled'
 }
 if(!settings.type_effects){
 f = true
-msg2 += '\n<b>• Type efficiency:</b> Disabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Type efficiency:</b> Disabled'
 }
 if(!settings.dual_type){
 f = true
-msg2 += '\n<b>• Dual Types:</b> Disabled'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Dual Types:</b> Disabled'
 }
 if(settings.allow_regions.length > 0){
 f = true
-msg2 += '\n<b>• Only regions:</b> ['+c(settings.allow_regions.join(' , '))+']'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Only regions:</b> ['+c(settings.allow_regions.join(' , '))+']'
 }
 if(settings.ban_regions.length > 0){
 f = true
-msg2 += '\n<b>• Banned regions:</b> ['+c(settings.ban_regions.join(' , '))+']'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Banned regions:</b> ['+c(settings.ban_regions.join(' , '))+']'
 }
 if(settings.ban_types.length > 0){
 f = true
-msg2 += '\n<b>• Banned types:</b> ['+c(settings.ban_types.join(' , '))+']'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Banned types:</b> ['+c(settings.ban_types.join(' , '))+']'
 }
 if(settings.allow_types.length > 0){
 f = true
-msg2 += '\n<b>• Types:</b> ['+c(settings.allow_types.join(' , '))+']'
+msg2 += '\n<b>Ã¢â‚¬Â¢ Types:</b> ['+c(settings.allow_types.join(' , '))+']'
 }
 if(battleData.users[id1]){
-var em1 = '✓'
+var em1 = 'Ã¢Å“â€œ'
 }else{
-var em1 = '✗'
+var em1 = 'Ã¢Å“â€”'
 }
 if(battleData.users[id2]){
-var em2 = '✓'
+var em2 = 'Ã¢Å“â€œ'
 }else{
-var em2 = '✗'
+var em2 = 'Ã¢Å“â€”'
 }
 if(f){
 msg += msg2
@@ -1026,13 +2162,12 @@ msg += msg2
 }else{
  msg += '\n\n-> <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> : '+em1+'\n-> <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a> : '+em2+''
 }
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:[[{text:'Agree ✓',callback_data:'battle_'+id1+'_'+id2+'_'+bword+''},{text:'Reject ✗',callback_data:'reject_'+id1+'_'+id2+'_'+bword+''}],[{text:'Battle Settings ⚔',callback_data:'sytbr_'+id1+'_'+id2+'_'+bword+''}]]}})
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:[[{text:'Agree Ã¢Å“â€œ',callback_data:'battle_'+id1+'_'+id2+'_'+bword+''},{text:'Reject Ã¢Å“â€”',callback_data:'reject_'+id1+'_'+id2+'_'+bword+''}],[{text:'Battle Settings Ã¢Å¡â€',callback_data:'sytbr_'+id1+'_'+id2+'_'+bword+''}]]}})
 }
 })
 
-bot.action(/multimo_/,async ctx => {
+bot.action(/multimo_/, async ctx => {
 if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-
   ctx.answerCbQuery('Try Again');
   return;
 }
@@ -1041,96 +2176,954 @@ const moveid = ctx.callbackQuery.data.split('_')[1]
 const bword = ctx.callbackQuery.data.split('_')[2]
 const id = ctx.callbackQuery.data.split('_')[3]
 if(ctx.from.id!=id){
-ctx.answerCbQuery('Not Your Turn')
-return
+  ctx.answerCbQuery('Not Your Turn')
+  return
 }
 let battleData = {};
-    try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+try {
+  battleData = loadBattleData(bword);
 } catch (error) {
-      battleData = {};
-    }
-  const move = dmoves[moveid]
-const data = await getUserData(battleData.cid)
-const data2 = await getUserData(battleData.oid)
-const p = data.pokes.filter((poke)=>poke.pass==battleData.c)[0]
-const op = data2.pokes.filter((poke)=>poke.pass==battleData.o)[0]
-const base1 = pokestats[p.name]
-const base2 = pokestats[op.name]
-const level1 = plevel(p.name,p.exp)
-const level2 = plevel(op.name,op.exp)
-const stats1 = await Stats(base1,p.ivs,p.evs,c(p.nature),level1)
-  const stats2 = await Stats(base2,op.ivs,op.evs,c(op.nature),level2)
-  ensureBattleStatus(battleData)
-let atk = stats1.attack
-let def = stats1.defense
-let atk2 = stats2.attack
-let def2 = stats2.defense
-const type1 = pokes[p.name].types[0]
-const type2 = pokes[p.name].types[1] ? pokes[p.name].types[1] : null
-const type3 = pokes[op.name].types[0]
-const type4 = pokes[op.name].types[1] ? c(pokes[op.name].types[1]) : null
-if(!battleData.set.type_effects){
-var eff1 = 1
-}else{
-var eff1 = await eff(c(move.type),c(type3),type4)
+  battleData = {};
 }
-  if(move.category=='special'){
-  atk = stats1.special_attack
-  def = stats1.special_defense
-  atk2 = stats2.special_attack
-  def2 = stats2.special_defense
-  }
-  if(move.category=='physical' && getBattleStatus(battleData, battleData.c) === 'burn'){
-    atk = Math.max(1, Math.floor(atk / 2))
-  }
-  console.log(eff1,type3,type4)
-  const actState = canPokemonAct(battleData, battleData.c, p.name)
-  let msg2 = actState.msg || ''
-  if(!actState.canAct){
-    // Skip move execution when status prevents acting.
-  }else if(Math.random()*100 > move.accuracy){
-  msg2 = '➣ <b>'+c(p.name)+'</b> <b>'+c(move.name)+'</b> has missed.'
-  }else if(Math.random() < 0.05){
-  msg2 = '➣ <b>'+c(op.name)+'</b> Dodged <b>'+c(p.name)+'</b>\'s <b>'+c(move.name)+'</b>'
-  }else{
-  if(move.category == 'status' || !move.power){
-  msg2 = '➣ <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.'
-  }else{
-  var damage = Math.min(calc(atk,def2,level1,move.power,eff1),battleData.ohp)
-  battleData.ohp = Math.max((battleData.ohp-damage),0)
-  battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o]-damage),0)
-  msg2 = '➣ <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP of <b>'+c(op.name)+'</b>'
-  }
-  const statusEffect = getMoveStatusEffect(move)
-  if(statusEffect && battleData.ohp > 0){
-    const existingStatus = getBattleStatus(battleData, battleData.o)
-    const defenderTypes = pokes[op.name]?.types || []
-    if(!existingStatus && !isStatusImmune(statusEffect.status, defenderTypes) && Math.random() < statusEffect.chance){
-      setBattleStatus(battleData, battleData.o, statusEffect.status)
-      msg2 += '\n➣ <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.'
+dbg('multimo:click', { bword, from: ctx.from.id, turnId: id, moveid, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o, qlen: battleData.queuedActions ? battleData.queuedActions.length : 0, switchLock: battleData.switchLock || null, switchPending: battleData.switchPending ? Object.keys(battleData.switchPending) : [] });
+// 1. Queue the Move Action
+if (!battleData.queuedActions) battleData.queuedActions = [];
+if (!battleData.queuedActions.some(act => String(act.cid) === String(ctx.from.id))) {
+  battleData.queuedActions.push({
+    cid: ctx.from.id,
+    c: battleData.c,
+    type: 'move',
+    id: moveid
+  });
+  ctx.answerCbQuery('Action locked!');
+} else {
+  // Edge case: User clicked a second time
+  ctx.answerCbQuery('You already selected your action!');
+  return;
+}
+
+// Rehydrate any pending switch if it somehow dropped from queue
+if (battleData.switchPending) {
+  for (const [cid, info] of Object.entries(battleData.switchPending)) {
+    if (!battleData.queuedActions.some(act => String(act.cid) === String(cid))) {
+      const pass = (info && typeof info === 'object') ? info.pass : info;
+      const cpass = (info && typeof info === 'object' && info.c) ? info.c : battleData.c;
+      battleData.queuedActions.push({
+        cid: cid,
+        c: cpass,
+        type: 'switch',
+        pass: pass
+      });
     }
   }
-  msg2 += applyDefenderResidualDamage(battleData, battleData.o, op.name, stats2.hp)
+}
+dbg('multimo:queued', { bword, q: battleData.queuedActions });
+
+// 2. Wait for Opponent OR Resolve
+const singleActionTurn = false;
+if (!singleActionTurn && battleData.queuedActions.length < 2) {
+    // Only we have chosen. Swap UI so opponent can choose.
+    fullSwap(battleData);
+    await saveBattleData(bword, battleData);
+
+const attacker = await getUserData(battleData.cid);
+const defender = await getUserData(battleData.oid);
+const p1 = attacker.pokes.filter((poke) => poke.pass == battleData.c)[0]
+const p2 = defender.pokes.filter((poke) => poke.pass == battleData.o)[0]
+if (!p1 || !p2) {
+  dbg('multimo:wait_missing_pokes', { bword, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o });
+  return;
+}
+const base1 = pokestats[p2.name]
+const base2 = pokestats[p1.name]
+    const level1 = plevel(p2.name, p2.exp)
+    const level2 = plevel(p1.name, p1.exp)
+    const stats1 = await Stats(base1, p2.ivs, p2.evs, c(p2.nature), level1)
+    const stats2 = await Stats(base2, p1.ivs, p1.evs, c(p1.nature), level2)
+
+    let msg = `<b>* ${displayName(defender, battleData.oid)} has locked in an action!</b>\n`
+    msg += `<b>Waiting for ${displayName(attacker, battleData.cid)} to select...</b>`
+
+const isGroupMmo = ctx.chat.type !== 'private';
+const pvpMmo = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
+await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, pvpMmo.msg, { parse_mode: 'HTML', reply_markup: pvpMmo.keyboard, ...pvpMmo.ext })
+ dbg('multimo:waiting', { bword, nextTurn: battleData.cid });
+     return;
+ }
+ 
+ // 3. Both have chosen: resolve immediately using the queued actions.
+ dbg('multimo:resolving', { bword, qlen: battleData.queuedActions.length });
+ await resolveQueuedActions(ctx, battleData, bword);
+ return;
+ 
+ function getMovePriority(moveName) {
+   const name = String(moveName || '').toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+
+  const PRIORITY_BY_MOVE = {
+    // Increased priority moves
+    'accelerock': 1,
+    'ally switch': 2,
+    'aqua jet': 1,
+    'baby doll eyes': 1,
+    'baneful bunker': 4,
+    'bide': 1,
+    'bullet punch': 1,
+    'burning bulwark': 4,
+    'crafty shield': 3,
+    'detect': 4,
+    'endure': 4,
+    'extreme speed': 2,
+    'fake out': 3,
+    'feint': 2,
+    'first impression': 2,
+    'follow me': 2,
+    'grassy glide': 1,
+    'helping hand': 5,
+    'ice shard': 1,
+    'ion deluge': 1,
+    'jet punch': 1,
+    'king s shield': 4,
+    'mach punch': 1,
+    'magic coat': 4,
+    'obstruct': 4,
+    'powder': 1,
+    'protect': 4,
+    'quick attack': 1,
+    'quick guard': 3,
+    'rage powder': 2,
+    'shadow sneak': 1,
+    'silk trap': 4,
+    'snatch': 4,
+    'spiky shield': 4,
+    'spotlight': 3,
+    'sucker punch': 1,
+    'thunderclap': 1,
+    'upper hand': 3,
+    'vacuum wave': 1,
+    'water shuriken': 1,
+    'wide guard': 3,
+    'zippy zap': 2,
+
+    // Decreased priority moves
+    'avalanche': -4,
+    'beak blast': -3,
+    'circle throw': -6,
+    'counter': -5,
+    'dragon tail': -6,
+    'focus punch': -3,
+    'magic room': -7,
+    'mirror coat': -5,
+    'revenge': -4,
+    'roar': -6,
+    'shell trap': -3,
+    'teleport': -6,
+    'trick room': -7,
+    'vital throw': -1,
+    'whirlwind': -6,
+    'wonder room': -7
+  };
+
+  return PRIORITY_BY_MOVE[name] ?? 0;
+}
+
+const DRAIN_MOVE_RATIOS = {
+  'absorb': 0.5,
+  'bitter blade': 0.5,
+  'bouncy bubble': 0.5,
+  'drain punch': 0.5,
+  'giga drain': 0.5,
+  'horn leech': 0.5,
+  'leech life': 0.5,
+  'matcha gotcha': 0.5,
+  'mega drain': 0.5,
+  'parabolic charge': 0.5,
+  'draining kiss': 0.75,
+  'dream eater': 0.5,
+  'oblivion wing': 0.75
+};
+
+function getDrainRatio(moveName) {
+  return DRAIN_MOVE_RATIOS[moveName] || 0;
+}
+
+const STAT_KEYS = ['attack', 'defense', 'special_attack', 'special_defense', 'speed', 'accuracy', 'evasion'];
+
+const MOVE_STAT_EFFECTS = {
+  'growl': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'aurora beam': [{ target: 'target', stat: 'attack', stages: -1, chance: 0.1 }],
+  'baby doll eyes': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'bitter malice': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'breaking swipe': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'charm': [{ target: 'target', stat: 'attack', stages: -2, chance: 1 }],
+  'chilling water': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'feather dance': [{ target: 'target', stat: 'attack', stages: -2, chance: 1 }],
+  'lunge': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'max wyrmwind': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'memento': [{ target: 'target', stat: 'attack', stages: -2, chance: 1 }, { target: 'target', stat: 'special_attack', stages: -2, chance: 1 }],
+  'noble roar': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }, { target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'parting shot': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }, { target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'captivate': [{ target: 'target', stat: 'special_attack', stages: -2, chance: 1 }],
+  'confide': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'eerie impulse': [{ target: 'target', stat: 'special_attack', stages: -2, chance: 1 }],
+  'max flutterby': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'play nice': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'play rough': [{ target: 'target', stat: 'attack', stages: -1, chance: 0.1 }],
+  'springtide storm': [{ target: 'target', stat: 'attack', stages: -1, chance: 0.3 }],
+  'strength sap': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'mist ball': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 0.5 }],
+  'tearful look': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }, { target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'tickle': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }, { target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'trop kick': [{ target: 'target', stat: 'attack', stages: -1, chance: 1 }],
+  'venom drench': [
+    { target: 'target', stat: 'attack', stages: -1, chance: 1, whenTargetStatusIn: ['poison', 'badly_poisoned'] },
+    { target: 'target', stat: 'special_attack', stages: -1, chance: 1, whenTargetStatusIn: ['poison', 'badly_poisoned'] },
+    { target: 'target', stat: 'speed', stages: -1, chance: 1, whenTargetStatusIn: ['poison', 'badly_poisoned'] }
+  ],
+  'tail whip': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'leer': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'screech': [{ target: 'target', stat: 'defense', stages: -2, chance: 1 }],
+  'acid': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'crunch': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.2 }],
+  'crush claw': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.5 }],
+  'fire lash': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'grav apple': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'iron tail': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.3 }],
+  'liquidation': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.2 }],
+  'max phantasm': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'octolock': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }, { target: 'target', stat: 'special_defense', stages: -1, chance: 1 }],
+  'razor shell': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.5 }],
+  'rock smash': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.5 }],
+  'shadow bone': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.2 }],
+  'shadow down': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'spicy extract': [{ target: 'target', stat: 'attack', stages: 2, chance: 1 }, { target: 'target', stat: 'defense', stages: -2, chance: 1 }],
+  'thunderous kick': [{ target: 'target', stat: 'defense', stages: -1, chance: 1 }],
+  'triple arrows': [{ target: 'target', stat: 'defense', stages: -1, chance: 0.5 }],
+  'metal sound': [{ target: 'target', stat: 'special_defense', stages: -2, chance: 1 }],
+  'fake tears': [{ target: 'target', stat: 'special_defense', stages: -2, chance: 1 }],
+  'acid spray': [{ target: 'target', stat: 'special_defense', stages: -2, chance: 1 }],
+  'apple acid': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 1 }],
+  'psychic': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'shadow ball': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.2 }],
+  'bug buzz': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'earth power': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'energy ball': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'flash cannon': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'focus blast': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.1 }],
+  'lumina crash': [{ target: 'target', stat: 'special_defense', stages: -2, chance: 1 }],
+  'luster purge': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 0.5 }],
+  'max darkness': [{ target: 'target', stat: 'special_defense', stages: -1, chance: 1 }],
+  'seed flare': [{ target: 'target', stat: 'special_defense', stages: -2, chance: 0.4 }],
+  'snarl': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'skitter smack': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'spirit break': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'struggle bug': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'mystical fire': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 1 }],
+  'moonblast': [{ target: 'target', stat: 'special_attack', stages: -1, chance: 0.3 }],
+  'string shot': [{ target: 'target', stat: 'speed', stages: -2, chance: 1 }],
+  'bleakwind storm': [{ target: 'target', stat: 'speed', stages: -1, chance: 0.3 }],
+  'scary face': [{ target: 'target', stat: 'speed', stages: -2, chance: 1 }],
+  'constrict': [{ target: 'target', stat: 'speed', stages: -1, chance: 0.1 }],
+  'cotton spore': [{ target: 'target', stat: 'speed', stages: -2, chance: 1 }],
+  'drum beating': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'icy wind': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'glaciate': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'electroweb': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'g max foam burst': [{ target: 'target', stat: 'speed', stages: -2, chance: 1 }],
+  'bulldoze': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'max strike': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'mud shot': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'pounce': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'rock tomb': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'low sweep': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'bubble': [{ target: 'target', stat: 'speed', stages: -1, chance: 0.1 }],
+  'bubble beam': [{ target: 'target', stat: 'speed', stages: -1, chance: 0.1 }],
+  'silk trap': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'sticky web': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'syrup bomb': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'tar shot': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'toxic thread': [{ target: 'target', stat: 'speed', stages: -1, chance: 1 }],
+  'sand attack': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 1 }],
+  'smokescreen': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 1 }],
+  'kinesis': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 1 }],
+  'flash': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 1 }],
+  'mud slap': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 1 }],
+  'leaf tornado': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.5 }],
+  'mirror shot': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.3 }],
+  'mud bomb': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.3 }],
+  'muddy water': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.3 }],
+  'night daze': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.4 }],
+  'octazooka': [{ target: 'target', stat: 'accuracy', stages: -1, chance: 0.5 }],
+  'secret power': [{ target: 'target', randomFrom: ['attack', 'defense', 'special_attack', 'accuracy', 'speed'], stages: -1, chance: 0.3 }],
+  'sweet scent': [{ target: 'target', stat: 'evasion', stages: -1, chance: 1 }],
+  'defog': [{ target: 'target', stat: 'evasion', stages: -1, chance: 1 }],
+  'g max tartness': [{ target: 'target', stat: 'evasion', stages: -1, chance: 1 }],
+  'shadow mist': [{ target: 'target', stat: 'evasion', stages: -1, chance: 1 }],
+  'swords dance': [{ target: 'self', stat: 'attack', stages: 2, chance: 1 }],
+  'howl': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'meditate': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'sharpen': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'bulk up': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'dragon dance': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'acupressure': [{ target: 'self', randomStat: true, stages: 2, chance: 1 }],
+  'coil': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'accuracy', stages: 1, chance: 1 }],
+  'gravity': [],
+  'work up': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'growth': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'shift gear': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: 2, chance: 1 }],
+  'harden': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'withdraw': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'defense curl': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'iron defense': [{ target: 'self', stat: 'defense', stages: 2, chance: 1 }],
+  'acid armor': [{ target: 'self', stat: 'defense', stages: 2, chance: 1 }],
+  'cotton guard': [{ target: 'self', stat: 'defense', stages: 3, chance: 1 }],
+  'cosmic power': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'nasty plot': [{ target: 'self', stat: 'special_attack', stages: 2, chance: 1 }],
+  'calm mind': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'tail glow': [{ target: 'self', stat: 'special_attack', stages: 3, chance: 1 }],
+  'charge beam': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 0.7 }],
+  'fiery dance': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 0.5 }],
+  'electro shot': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'geomancy': [{ target: 'self', stat: 'special_attack', stages: 2, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 2, chance: 1 }, { target: 'self', stat: 'speed', stages: 2, chance: 1 }],
+  'max ooze': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'meteor beam': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'mystical power': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'take heart': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'torch song': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }],
+  'amnesia': [{ target: 'self', stat: 'special_defense', stages: 2, chance: 1 }],
+  'aromatic mist': [{ target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'charge': [{ target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'max quake': [{ target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'quiver dance': [{ target: 'self', stat: 'special_attack', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'agility': [{ target: 'self', stat: 'speed', stages: 2, chance: 1 }],
+  'rock polish': [{ target: 'self', stat: 'speed', stages: 2, chance: 1 }],
+  'autotomize': [{ target: 'self', stat: 'speed', stages: 2, chance: 1 }],
+  'flame charge': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'aqua step': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'aura wheel': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'esper wing': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'max airstream': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'rapid spin': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'trailblaze': [{ target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'double team': [{ target: 'self', stat: 'evasion', stages: 1, chance: 1 }],
+  'minimize': [{ target: 'self', stat: 'evasion', stages: 2, chance: 1 }],
+  'hone claws': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'accuracy', stages: 1, chance: 1 }],
+  'close combat': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }],
+  'armor cannon': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }],
+  'clanging scales': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }],
+  'dragon ascent': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }],
+  'headlong rush': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }],
+  'hyperspace fury': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }],
+  'scale shot': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'superpower': [{ target: 'self', stat: 'attack', stages: -1, chance: 1 }, { target: 'self', stat: 'defense', stages: -1, chance: 1 }],
+  'tera blast': [{ target: 'self', statByMoveCategory: { physical: 'attack', special: 'special_attack' }, stages: -1, chance: 1 }],
+  'hammer arm': [{ target: 'self', stat: 'speed', stages: -1, chance: 1 }],
+  'ice hammer': [{ target: 'self', stat: 'speed', stages: -1, chance: 1 }],
+  'spin out': [{ target: 'self', stat: 'speed', stages: -2, chance: 1 }],
+  'curse': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: -1, chance: 1 }],
+  'v create': [{ target: 'self', stat: 'defense', stages: -1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }, { target: 'self', stat: 'speed', stages: -1, chance: 1 }],
+  'overheat': [{ target: 'self', stat: 'special_attack', stages: -2, chance: 1 }],
+  'make it rain': [{ target: 'self', stat: 'special_attack', stages: -1, chance: 1 }],
+  'leaf storm': [{ target: 'self', stat: 'special_attack', stages: -2, chance: 1 }],
+  'draco meteor': [{ target: 'self', stat: 'special_attack', stages: -2, chance: 1 }],
+  'psycho boost': [{ target: 'self', stat: 'special_attack', stages: -2, chance: 1 }],
+  'fleur cannon': [{ target: 'self', stat: 'special_attack', stages: -2, chance: 1 }],
+  'shell smash': [
+    { target: 'self', stat: 'attack', stages: 2, chance: 1 },
+    { target: 'self', stat: 'special_attack', stages: 2, chance: 1 },
+    { target: 'self', stat: 'speed', stages: 2, chance: 1 },
+    { target: 'self', stat: 'defense', stages: -1, chance: 1 },
+    { target: 'self', stat: 'special_defense', stages: -1, chance: 1 }
+  ],
+  // All-or-nothing 10% all-stats boost
+  'ancient power': [
+    { target: 'self', stat: 'attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'speed', stages: 1, chance: 0.1, chanceGroup: 'A' }
+  ],
+  'silver wind': [
+    { target: 'self', stat: 'attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'speed', stages: 1, chance: 0.1, chanceGroup: 'A' }
+  ],
+  'ominous wind': [
+    { target: 'self', stat: 'attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_attack', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'special_defense', stages: 1, chance: 0.1, chanceGroup: 'A' },
+    { target: 'self', stat: 'speed', stages: 1, chance: 0.1, chanceGroup: 'A' }
+  ],
+  // Guaranteed all-stats boosts
+  'clangorous soulblaze': [
+    { target: 'self', stat: 'attack', stages: 1, chance: 1 },
+    { target: 'self', stat: 'defense', stages: 1, chance: 1 },
+    { target: 'self', stat: 'special_attack', stages: 1, chance: 1 },
+    { target: 'self', stat: 'special_defense', stages: 1, chance: 1 },
+    { target: 'self', stat: 'speed', stages: 1, chance: 1 }
+  ],
+  'extreme evoboost': [
+    { target: 'self', stat: 'attack', stages: 2, chance: 1 },
+    { target: 'self', stat: 'defense', stages: 2, chance: 1 },
+    { target: 'self', stat: 'special_attack', stages: 2, chance: 1 },
+    { target: 'self', stat: 'special_defense', stages: 2, chance: 1 },
+    { target: 'self', stat: 'speed', stages: 2, chance: 1 }
+  ],
+  'no retreat': [
+    { target: 'self', stat: 'attack', stages: 1, chance: 1 },
+    { target: 'self', stat: 'defense', stages: 1, chance: 1 },
+    { target: 'self', stat: 'special_attack', stages: 1, chance: 1 },
+    { target: 'self', stat: 'special_defense', stages: 1, chance: 1 },
+    { target: 'self', stat: 'speed', stages: 1, chance: 1 }
+  ],
+  // Single/partial attack boosts
+  'max knuckle': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'metal claw': [{ target: 'self', stat: 'attack', stages: 1, chance: 0.1 }],
+  'meteor mash': [{ target: 'self', stat: 'attack', stages: 1, chance: 0.2 }],
+  'order up': [{ target: 'self', randomFrom: ['attack', 'defense', 'special_attack'], stages: 1, chance: 1 }],
+  'power-up punch': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'rage': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }],
+  'tidy up': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  'victory dance': [{ target: 'self', stat: 'attack', stages: 1, chance: 1 }, { target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'speed', stages: 1, chance: 1 }],
+  // HP-cost boosts: handled specially in executeStandardMove
+  'belly drum': [],
+  'clangorous soul': [],
+  'fillet away': [],
+  // Post-KO boost: handled specially in executeStandardMove
+  'fell stinger': [],
+  // Raise user defense
+  'barrier': [{ target: 'self', stat: 'defense', stages: 2, chance: 1 }],
+  'defend order': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'diamond storm': [{ target: 'self', stat: 'defense', stages: 2, chance: 0.5 }],
+  'flower shield': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'max steelspike': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'psyshield bash': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'shelter': [{ target: 'self', stat: 'defense', stages: 2, chance: 1 }],
+  'skull bash': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }],
+  'steel wing': [{ target: 'self', stat: 'defense', stages: 1, chance: 0.1 }],
+  'stockpile': [{ target: 'self', stat: 'defense', stages: 1, chance: 1 }, { target: 'self', stat: 'special_defense', stages: 1, chance: 1 }],
+  'stuff cheeks': [{ target: 'self', stat: 'defense', stages: 2, chance: 1 }]
+};
+
+function normalizeMoveName(moveName) {
+  return String(moveName || '').toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function ensureBattleStatStages(battleData) {
+  if (!battleData.statStages || typeof battleData.statStages !== 'object') {
+    battleData.statStages = {};
   }
-  let msg = msg2
-await fs.writeFileSync('./data/battle/' +bword+ '.json', JSON.stringify(battleData, null, 2));
-const cc = battleData.c
-const cc2 = battleData.chp
-const cc3 = battleData.cid
-const cc4 = battleData.tem
-const cc5 = battleData.la
-battleData.c = battleData.o
-battleData.chp = battleData.ohp
-battleData.cid = battleData.oid
-battleData.tem = battleData.tem2
-battleData.la = battleData.la2
-battleData.o = cc
-battleData.ohp = cc2
-battleData.oid = cc3
-battleData.tem2 = cc4
-battleData.la2 = cc5
-await fs.writeFileSync('./data/battle/' +bword+ '.json', JSON.stringify(battleData, null, 2));
+  return battleData.statStages;
+}
+
+function ensurePokemonStatStages(battleData, pass) {
+  const all = ensureBattleStatStages(battleData);
+  if (!all[pass] || typeof all[pass] !== 'object') {
+    all[pass] = { attack: 0, defense: 0, special_attack: 0, special_defense: 0, speed: 0, accuracy: 0, evasion: 0 };
+  }
+  const keys = ['attack', 'defense', 'special_attack', 'special_defense', 'speed', 'accuracy', 'evasion'];
+  for (const key of keys) {
+    if (typeof all[pass][key] !== 'number') all[pass][key] = 0;
+  }
+  return all[pass];
+}
+
+function getStageMultiplier(stage) {
+  if (stage >= 0) return (2 + stage) / 2;
+  return 2 / (2 - stage);
+}
+
+function applyStageToStat(baseValue, stage) {
+  return Math.max(1, Math.floor(baseValue * getStageMultiplier(stage)));
+}
+
+function getEffectiveSpeed(baseSpeed, battleData, pass) {
+  const statusAdjusted = getSpeedWithStatus(baseSpeed, battleData, pass);
+  const stages = ensurePokemonStatStages(battleData, pass);
+  return applyStageToStat(statusAdjusted, stages.speed);
+}
+
+function getModifiedAccuracy(baseAccuracy, attackerAccuracyStage, defenderEvasionStage) {
+  const netStage = (attackerAccuracyStage || 0) - (defenderEvasionStage || 0);
+  const acc = Math.floor(baseAccuracy * getStageMultiplier(netStage));
+  return Math.max(1, Math.min(100, acc));
+}
+
+function clampStage(stage) {
+  return Math.max(-6, Math.min(6, stage));
+}
+
+function getStageVerb(delta) {
+  const mag = Math.abs(delta);
+  if (delta > 0) {
+    if (mag >= 3) return 'rose drastically';
+    if (mag === 2) return 'rose sharply';
+    return 'rose';
+  }
+  if (mag >= 3) return 'fell drastically';
+  if (mag === 2) return 'fell harshly';
+  return 'fell';
+}
+
+function getStatLabel(stat) {
+  if (stat === 'special_attack') return 'Special Attack';
+  if (stat === 'special_defense') return 'Special Defense';
+  return c(stat);
+}
+
+function expandEffectStats(effect) {
+  if (effect.stat === 'special') return ['special_attack', 'special_defense'];
+  return [effect.stat];
+}
+
+function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName, defenderName, attackerPass, defenderPass, targetAlive }) {
+  const effects = MOVE_STAT_EFFECTS[moveName] || [];
+  const resolvedMoveCategory = String(moveCategory || '').toLowerCase();
+  if (!effects.length) return '';
+
+  const resolvedChanceGroups = {};
+  for (const effect of effects) {
+    if (effect.chanceGroup !== undefined && !(effect.chanceGroup in resolvedChanceGroups)) {
+      resolvedChanceGroups[effect.chanceGroup] = Math.random() <= (effect.chance ?? 1);
+    }
+  }
+
+  let out = '';
+  for (const effect of effects) {
+    if (effect.chanceGroup !== undefined) {
+      if (!resolvedChanceGroups[effect.chanceGroup]) continue;
+    } else {
+      if (Math.random() > (effect.chance ?? 1)) continue;
+    }
+    if (effect.target === 'target' && !targetAlive) continue;
+    if (effect.target === 'target' && Array.isArray(effect.whenTargetStatusIn) && effect.whenTargetStatusIn.length > 0) {
+      const tStatus = getBattleStatus(battleData, defenderPass);
+      if (!tStatus || !effect.whenTargetStatusIn.includes(tStatus)) continue;
+    }
+
+    const targetPass = effect.target === 'self' ? attackerPass : defenderPass;
+    const targetName = effect.target === 'self' ? attackerName : defenderName;
+    const stages = ensurePokemonStatStages(battleData, targetPass);
+
+    if (effect.randomStat) {
+      const allStats = ['attack', 'defense', 'special_attack', 'special_defense', 'speed', 'accuracy', 'evasion'];
+      const eligible = allStats.filter(s => (stages[s] || 0) < 6);
+      if (eligible.length > 0) {
+        const statKey = eligible[Math.floor(Math.random() * eligible.length)];
+        const prev = stages[statKey] || 0;
+        const next = clampStage(prev + effect.stages);
+        const delta = next - prev;
+        stages[statKey] = next;
+        if (delta !== 0) {
+          out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
+        }
+      }
+      continue;
+    }
+
+    if (effect.randomFrom) {
+      const increasing = (effect.stages || 0) >= 0;
+      const pool = effect.randomFrom.filter(s => increasing ? (stages[s] || 0) < 6 : (stages[s] || 0) > -6);
+      if (pool.length > 0) {
+        const statKey = pool[Math.floor(Math.random() * pool.length)];
+        const prev = stages[statKey] || 0;
+        const next = clampStage(prev + effect.stages);
+        const delta = next - prev;
+        stages[statKey] = next;
+        if (delta !== 0) {
+          out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
+        }
+      }
+      continue;
+    }
+
+    const effectStats = effect.statByMoveCategory ? [effect.statByMoveCategory[resolvedMoveCategory]].filter(Boolean) : expandEffectStats(effect);
+
+    for (const statKey of effectStats) {
+      const prev = stages[statKey] || 0;
+      const next = clampStage(prev + effect.stages);
+      const delta = next - prev;
+      stages[statKey] = next;
+      if (delta !== 0) {
+        out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
+      }
+    }
+  }
+  return out;
+}
+
+if (!battleData.bideState) battleData.bideState = {};
+if (battleData.bideState[action1.c]) { action1.id = battleData.bideState[action1.c].moveId; }
+if (action2 && battleData.bideState[action2.c]) { action2.id = battleData.bideState[action2.c].moveId; }
+battleData.bideCycle = (battleData.bideCycle || 0) + 1;
+
+// If a switch is queued in this turn, delegate to unified resolver (handles switch-first flow)
+if (!singleActionTurn && (action1.type === 'switch' || (action2 && action2.type === 'switch'))) {
+  await resolveQueuedActions(ctx, battleData, bword);
+  return;
+}
+
+let orderedActions = [];
+if (singleActionTurn) {
+  orderedActions = [action1];
+} else {
+  const mv1 = dmoves[action1.id];
+  const mv2 = dmoves[action2.id];
+  if (!mv1 || !mv2) {
+    await resolveQueuedActions(ctx, battleData, bword);
+    return;
+  }
+  const pri1 = getMovePriority(mv1.name);
+  const pri2 = getMovePriority(mv2.name);
+
+  if (pri1 > pri2) { orderedActions = [action1, action2]; }
+  else if (pri2 > pri1) { orderedActions = [action2, action1]; }
+  else {
+      if (speedA > speedB) { orderedActions = [action1, action2]; }
+      else if (speedB > speedA) { orderedActions = [action2, action1]; }
+      else { orderedActions = (Math.random() < 0.5) ? [action1, action2] : [action2, action1]; }
+  }
+}
+
+if (!battleData.turnHits) battleData.turnHits = {};
+battleData.turnHits = {}; // Reset at start of turn
+const isSingleMoveTurn = singleActionTurn || orderedActions.length < 2;
+
+let turnLogs = "\n\n<b>Turn Summary:</b>";
+
+// Ensure context points to who needs to act first
+if (String(battleData.cid) !== String(orderedActions[0].cid)) {
+    fullSwap(battleData);
+}
+
+// Function to execute one standard attack in current context (battleData.cid attacking battleData.oid)
+async function executeStandardMove(act) {
+    if (battleData.chp <= 0 || battleData.ohp <= 0) return; // attacker or defender fainted
+
+    const move = dmoves[act.id];
+    const moveName = normalizeMoveName(move?.name);
+    const isCounterMove = ['counter', 'mirror coat', 'metal burst', 'comeuppance'].includes(moveName);
+    let attacker = await getUserData(battleData.cid);
+    let defender = await getUserData(battleData.oid);
+    let p = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0];
+    let op = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
+    
+    let base1 = pokestats[p.name];
+    let base2 = pokestats[op.name];
+    let level1 = plevel(p.name, p.exp);
+    let level2 = plevel(op.name, op.exp);
+    let stats1 = await Stats(base1, p.ivs, p.evs, c(p.nature), level1);
+    let stats2 = await Stats(base2, op.ivs, op.evs, c(op.nature), level2);
+    
+    // Check type effectiveness
+    const type3 = pokes[op.name].types[0];
+    const type4 = pokes[op.name].types[1] ? c(pokes[op.name].types[1]) : null;
+    let eff1 = 1;
+    if (battleData.set.type_effects) { eff1 = await eff(c(move.type), c(type3), type4); }
+    
+    const atkStages = ensurePokemonStatStages(battleData, battleData.c);
+    const defStages = ensurePokemonStatStages(battleData, battleData.o);
+
+    let atk = applyStageToStat(stats1.attack, atkStages.attack);
+    let def2 = applyStageToStat(stats2.defense, defStages.defense);
+    if (move.category == 'special') {
+      atk = applyStageToStat(stats1.special_attack, atkStages.special_attack);
+      def2 = applyStageToStat(stats2.special_defense, defStages.special_defense);
+    }
+    if (move.category == 'physical' && getBattleStatus(battleData, battleData.c) === 'burn') {
+        atk = Math.max(1, Math.floor(atk / 2));
+    }
+    
+    let msgLocal = "";
+    
+    // ActState (Frozen, Asleep, Paralyzed etc)
+    ensureBattleStatus(battleData); // verify status conditions haven't cleared
+    const actState = canPokemonAct(battleData, battleData.c, p.name);
+    
+    if (!actState.canAct) {
+        msgLocal += "\n" + actState.msg;
+    } else if (moveName === 'bide') {
+        // Bide bypasses accuracy/evasion checks
+        if (!battleData.bideState) battleData.bideState = {};
+        if (!battleData.bideState[battleData.c]) {
+      // Bide stores for exactly 2 turns, then retaliates.
+      battleData.bideState[battleData.c] = { turnsLeft: 2, damage: 0, moveId: act.id, lastAttacker: null, lastProcessedCycle: battleData.bideCycle };
+            msgLocal += '\n-> <b>'+c(p.name)+'</b> is storing energy!';
+        } else {
+            let bState = battleData.bideState[battleData.c];
+        if (bState.lastProcessedCycle === battleData.bideCycle) {
+          msgLocal += '\n-> <b>'+c(p.name)+'</b> is storing energy!';
+        } else if (isSingleMoveTurn) {
+          // Do not progress countdown on one-sided turns.
+          bState.lastProcessedCycle = battleData.bideCycle;
+          msgLocal += '\n-> <b>'+c(p.name)+'</b> is storing energy!';
+        } else if (bState.turnsLeft > 1) {
+                bState.turnsLeft -= 1;
+                bState.lastProcessedCycle = battleData.bideCycle;
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> is storing energy!';
+            } else {
+                bState.lastProcessedCycle = battleData.bideCycle;
+                if (bState.damage === 0) {
+                    msgLocal += '\n-> <b>'+c(p.name)+'</b> unleashed its energy... but it failed!';
+                } else {
+                    var damage = Math.min(bState.damage * 2, battleData.ohp);
+                    battleData.ohp = Math.max((battleData.ohp - damage), 0);
+                    battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+                  battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
+                  if (battleData.bideState && battleData.bideState[battleData.o]) {
+                    battleData.bideState[battleData.o].damage += damage;
+                    battleData.bideState[battleData.o].lastAttacker = battleData.c;
+                  }
+                    msgLocal += '\n-> <b>'+c(p.name)+'</b> unleashed its energy! It dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+                }
+                delete battleData.bideState[battleData.c];
+            }
+        }
+          } else if (isCounterMove) {
+            // Counterattack moves only succeed if this Pokemon was hit earlier this turn.
+            const lastHit = battleData.turnHits[battleData.c];
+            const wasHitByCurrentFoe = lastHit && String(lastHit.from) === String(battleData.o);
+            if (!lastHit || lastHit.damage === 0 || !wasHitByCurrentFoe) {
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+            } else if (moveName === 'counter' && lastHit.category !== 'physical') {
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+            } else if (moveName === 'mirror coat' && lastHit.category !== 'special') {
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+            } else {
+              const multiplier = (moveName === 'metal burst' || moveName === 'comeuppance') ? 1.5 : 2;
+              var damage = Math.min(Math.max(Math.floor(lastHit.damage * multiplier), 1), battleData.ohp);
+              battleData.ohp = Math.max((battleData.ohp - damage), 0);
+              battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+              battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
+              if (battleData.bideState && battleData.bideState[battleData.o]) {
+                battleData.bideState[battleData.o].damage += damage;
+                battleData.bideState[battleData.o].lastAttacker = battleData.c;
+              }
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> retaliated with <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+            }
+          } else {
+        const bypassAccuracyCheck = moveName === 'bind';
+        const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
+        const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), atkStages.accuracy, defStages.evasion) : 100;
+        if (hasAccuracyCheck && Math.random() * 100 > accValue) {
+        msgLocal += '\n-> <b>'+c(p.name)+'</b> <b>'+c(move.name)+'</b> has missed.';
+    } else if (hasAccuracyCheck && Math.random() < 0.05) {
+        msgLocal += '\n-> <b>'+c(op.name)+'</b> Dodged <b>'+c(p.name)+'</b>\'s <b>'+c(move.name)+'</b>';
+    } else {
+            if (moveName === 'leech seed') {
+              if (!battleData.leechSeed || typeof battleData.leechSeed !== 'object') {
+                battleData.leechSeed = {};
+              }
+              const defenderTypes = (pokes[op.name]?.types || []).map((t) => String(t).toLowerCase());
+              if (defenderTypes.includes('grass')) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+              } else if (battleData.leechSeed[battleData.o]) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+              } else {
+                battleData.leechSeed[battleData.o] = battleData.c;
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> planted a seed on <b>'+c(op.name)+'</b>!';
+              }
+            } else if (move.category == 'status' || !move.power) {
+            msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.';
+            msgLocal += applyMoveStatEffects({
+              battleData,
+              moveName,
+              moveCategory: move.category,
+              attackerName: p.name,
+              defenderName: op.name,
+              attackerPass: battleData.c,
+              defenderPass: battleData.o,
+              targetAlive: battleData.ohp > 0
+            });
+
+            if (moveName === 'strength sap') {
+              const targetStages = ensurePokemonStatStages(battleData, battleData.o);
+              const targetAtk = applyStageToStat(stats2.attack, targetStages.attack);
+              const hpBefore = battleData.chp;
+              battleData.chp = Math.min(stats1.hp, battleData.chp + targetAtk);
+              const healed = Math.max(0, battleData.chp - hpBefore);
+              battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || hpBefore) + healed));
+              if (healed > 0) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
+              }
+            }
+
+            if (moveName === 'memento') {
+              const selfBefore = battleData.chp;
+              battleData.chp = 0;
+              battleData.tem[battleData.c] = 0;
+              if (selfBefore > 0) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> fainted after using <b>'+c(move.name)+'</b>!';
+              }
+            }
+
+            if (moveName === 'belly drum') {
+              const bdHalf = Math.floor(stats1.hp / 2);
+              if (battleData.chp > bdHalf) {
+                battleData.chp -= bdHalf;
+                battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || battleData.chp) - bdHalf);
+                const bdStages = ensurePokemonStatStages(battleData, battleData.c);
+                const bdPrev = bdStages.attack || 0;
+                bdStages.attack = 6;
+                const bdDelta = 6 - bdPrev;
+                if (bdDelta > 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Attack</b> '+getStageVerb(bdDelta)+'!';
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its own HP to maximize Attack!';
+              } else {
+                msgLocal += '\n-> But it failed!';
+              }
+            }
+
+            if (moveName === 'clangorous soul') {
+              const csThird = Math.floor(stats1.hp / 3);
+              if (battleData.chp > csThird) {
+                battleData.chp = Math.max(1, battleData.chp - csThird);
+                battleData.tem[battleData.c] = Math.max(1, (battleData.tem[battleData.c] || battleData.chp + csThird) - csThird);
+                const csStages = ensurePokemonStatStages(battleData, battleData.c);
+                for (const s of ['attack','defense','special_attack','special_defense','speed']) {
+                  const prev = csStages[s] || 0; const next = clampStage(prev + 1); const delta = next - prev;
+                  csStages[s] = next;
+                  if (delta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+getStatLabel(s)+'</b> '+getStageVerb(delta)+'!';
+                }
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its HP to power itself up!';
+              } else {
+                msgLocal += '\n-> But it failed!';
+              }
+            }
+
+            if (moveName === 'fillet away') {
+              const faHalf = Math.floor(stats1.hp / 2);
+              if (battleData.chp > faHalf) {
+                battleData.chp -= faHalf;
+                battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || battleData.chp) - faHalf);
+                const faStages = ensurePokemonStatStages(battleData, battleData.c);
+                for (const [s, d] of [['attack',2],['special_attack',2],['speed',2]]) {
+                  const prev = faStages[s] || 0; const next = clampStage(prev + d); const delta = next - prev;
+                  faStages[s] = next;
+                  if (delta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+getStatLabel(s)+'</b> '+getStageVerb(delta)+'!';
+                }
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its HP to sharpen all its senses!';
+              } else {
+                msgLocal += '\n-> But it failed!';
+              }
+            }
+        } else {
+              if (moveName === 'dream eater' && getBattleStatus(battleData, battleData.o) !== 'sleep') {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+              } else {
+            var damage = Math.min(calc(atk, def2, level1, move.power, eff1), battleData.ohp);
+            battleData.ohp = Math.max((battleData.ohp - damage), 0);
+            battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+            msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+
+              const drainRatio = getDrainRatio(moveName);
+              if (drainRatio > 0 && damage > 0) {
+                const healRaw = Math.max(1, Math.floor(damage * drainRatio));
+                const prevHp = battleData.chp;
+                battleData.chp = Math.min(stats1.hp, battleData.chp + healRaw);
+                const healed = Math.max(0, battleData.chp - prevHp);
+                battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || prevHp) + healed));
+                if (healed > 0) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> drained <code>'+healed+'</code> HP!';
+                }
+              }
+            
+            // Record hit for counter-attacks and accumulate bide damage
+              battleData.turnHits[battleData.o] = { damage: damage, category: move.category, from: battleData.c, move: moveName };
+            if (battleData.bideState && battleData.bideState[battleData.o]) {
+                battleData.bideState[battleData.o].damage += damage;
+                battleData.bideState[battleData.o].lastAttacker = battleData.c;
+            }
+            
+            if (eff1 == 0) msgLocal += '\n<b>* It\'s 0x effective!</b>';
+            else if (eff1 == 0.5) msgLocal += '\n<b>* It\'s not very effective...</b>';
+            else if (eff1 == 2) msgLocal += '\n<b>* It\'s super effective!</b>';
+            else if (eff1 == 4) msgLocal += '\n<b>* It\'s incredibly super effective!</b>';
+
+            if (damage > 0) {
+              msgLocal += applyMoveStatEffects({
+                battleData,
+                moveName,
+                moveCategory: move.category,
+                attackerName: p.name,
+                defenderName: op.name,
+                attackerPass: battleData.c,
+                defenderPass: battleData.o,
+                targetAlive: battleData.ohp > 0
+              });
+              if (moveName === 'fell stinger' && battleData.ohp <= 0) {
+                const fsStages = ensurePokemonStatStages(battleData, battleData.c);
+                const fsPrev = fsStages.attack || 0;
+                const fsNext = clampStage(fsPrev + 3);
+                const fsDelta = fsNext - fsPrev;
+                fsStages.attack = fsNext;
+                if (fsDelta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Attack</b> '+getStageVerb(fsDelta)+'!';
+              }
+            }
+            }
+        }
+        
+        // Status condition inflictions
+        const statusEffect = getMoveStatusEffect(move);
+        if (statusEffect && battleData.ohp > 0) {
+            const existingStatus = getBattleStatus(battleData, battleData.o);
+            const defenderTypes = pokes[op.name]?.types || [];
+            if (!existingStatus && !isStatusImmune(statusEffect.status, defenderTypes) && Math.random() < statusEffect.chance) {
+                setBattleStatus(battleData, battleData.o, statusEffect.status);
+                msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.';
+            }
+        }
+    }
+      }
+    
+    msgLocal += applyDefenderResidualDamage(battleData, battleData.o, op.name, stats2.hp);
+
+    // Leech Seed: seeded target loses HP, and the source recovers HP (single-battle context).
+    if (battleData.leechSeed && battleData.leechSeed[battleData.o] && String(battleData.leechSeed[battleData.o]) === String(battleData.c) && battleData.ohp > 0) {
+      const leechDamage = Math.max(1, Math.floor(stats2.hp / 8));
+      const drained = Math.min(leechDamage, battleData.ohp);
+      battleData.ohp = Math.max(0, battleData.ohp - drained);
+      battleData.tem2[battleData.o] = Math.max(0, battleData.tem2[battleData.o] - drained);
+
+      const hpBefore = battleData.chp;
+      battleData.chp = Math.min(stats1.hp, battleData.chp + drained);
+      const healed = Math.max(0, battleData.chp - hpBefore);
+      battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || hpBefore) + healed));
+
+      msgLocal += '\n-> <b>'+c(op.name)+'</b> had its energy sapped by Leech Seed and lost <code>'+drained+'</code> HP.';
+      if (healed > 0) {
+        msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP from Leech Seed.';
+      }
+    }
+    
+    // Reveal Used Move
+    if (!battleData.usedMoves) battleData.usedMoves = {};
+    if (!battleData.usedMoves[battleData.c]) battleData.usedMoves[battleData.c] = [];
+    if (!battleData.usedMoves[battleData.c].includes(act.id)) battleData.usedMoves[battleData.c].push(act.id);
+    
+    turnLogs += msgLocal;
+}
+
+await executeStandardMove(orderedActions[0]);
+
+// Ensure second action executes correctly
+if (!singleActionTurn && battleData.ohp > 0 && battleData.chp > 0) { // both must be alive
+    fullSwap(battleData); // Context swap so opponent becomes Attacker
+    await executeStandardMove(orderedActions[1]);
+} 
+
+// What if someone fainted?
+if (battleData.chp <= 0 || battleData.ohp <= 0) {
+    if (battleData.ohp <= 0 && battleData.chp > 0) {
+        fullSwap(battleData); // ensure cid points to the fainted pokemon so UI logic works below
+    }
+} else {
+    // Nobody fainted, just pick the next selector. 
+    fullSwap(battleData); 
+}
+
+await saveBattleData(bword, battleData);
 
 const attacker = await getUserData(battleData.cid)
 const defender = await getUserData(battleData.oid)
@@ -1138,27 +3131,19 @@ const p1 = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
 const p2 = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0]
 const pp = pokes[p1.name]
 const pp2 = pokes[p2.name]
-if(eff1 == 0){
-msg += '\n<b>✶ It\'s 0x effective!</b>'
-}else if(eff1 == 0.5){
-msg += '\n<b>✶ It\'s not very effective...</b>'
-}else if(eff1 == 2){
-msg += '\n<b>✶ It\'s super effective!</b>'
-}else if(eff1 == 4){
-msg += '\n<b>✶ It\'s incredibly super effective!</b>'
-}
- msg += '\n\n<b>Opponent :</b> <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>'
-  msg += '\n<b>'+c(p2.name)+'</b> ['+c(pp2.types.join(' / '))+']'+getStatusTag(battleData, battleData.o)
-msg += '\n<b>Level :</b> '+plevel(p2.name,p2.exp)+' | <b>HP :</b> '+battleData.ohp+'/'+stats1.hp+''
-msg += '\n<code>'+Bar(stats1.hp,battleData.ohp)+'</code>'
- msg += '\n\n<b>Turn :</b> <a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a>'
-  msg += '\n<b>'+c(p1.name)+'</b> ['+c(pp.types.join(' / '))+']'+getStatusTag(battleData, battleData.c)
-msg += '\n<b>Level :</b> '+plevel(p1.name,p1.exp)+' | <b>HP :</b> '+battleData.chp+'/'+stats2.hp+''
-msg += '\n<code>'+Bar(stats2.hp,battleData.chp)+'</code>'
-const messageData = await loadMessageData();
-    messageData[bword] = { chat:ctx.chat.id,mid: ctx.callbackQuery.message.message_id, times: Date.now(),turn:battleData.cid,oppo:battleData.oid };
+const base1 = pokestats[p2.name]
+const base2 = pokestats[p1.name]
+const level1 = plevel(p2.name,p2.exp)
+const level2 = plevel(p1.name,p1.exp)
+const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
+const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
 
-    await saveMessageData(messageData);
+let msg = turnLogs;
+
+const messageData = await loadMessageData();
+messageData[bword] = { chat:ctx.chat.id,mid: ctx.callbackQuery.message.message_id, times: Date.now(),turn:battleData.cid,oppo:battleData.oid };
+await saveMessageData(messageData);
+
 if(battleData.chp < 1){
 msg += '\n\n<b>'+c(p1.name)+'</b> has fainted. Choose your next pokemon.'
 if(!battleData.set.sandbox){
@@ -1207,7 +3192,7 @@ const messageData = await loadMessageData();
 messageData.battle = messageData.battle.filter((chats)=> chats!==parseInt(messageData[bword].turn) && chats!==parseInt(messageData[bword].oppo))
 delete messageData[bword];
 await saveMessageData(messageData);
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+gpc+' PokeCoins 💷',{parse_mode:'HTML'})
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+gpc+' PokeCoins ðŸ’·',{parse_mode:'HTML'})
 if(Math.random()< 0.00005){
 const idr = (Math.random()<0.5) ? battleData.oid : battleData.cid
 const dr = await getUserData(idr)
@@ -1223,7 +3208,7 @@ const options = {
 
 const d = new Date().toLocaleString('en-US', options)
 const my = String(tutors[Math.floor(Math.random()*tutors.length)])
-const m77 = await sendMessage(ctx,idr,'While you were <b>Battling</b> with a trainer, An expert <b>Move Tutor</b> saw your battle very interestingly. He Impressed with your <b>Battle</b> experience and strategy. He wants to <b>Teach</b> your any of <b>Pokemon</b> a move. It will be available only for next <b>15 Minutes.</b>\n\n✦ <b>'+c(dmoves[my].name)+'</b> ['+c(dmoves[my].type)+' '+emojis[dmoves[my].type]+']\n<b>Power:</b> '+dmoves[my].power+', <b>Accuracy:</b> '+dmoves[my].accuracy+' (<i>'+c(dmoves[my].category)+'</i>) \n\n• Click below to <b>Select</b> pokemon to teach <b>'+c(dmoves[my].name)+'</b>',{parse_mode:'html',reply_markup:{inline_keyboard:[[{text:'Select',callback_data:'tyrt_'+my+'_'+d+''}]]}})
+const m77 = await sendMessage(ctx,idr,'While you were <b>Battling</b> with a trainer, An expert <b>Move Tutor</b> saw your battle very interestingly. He Impressed with your <b>Battle</b> experience and strategy. He wants to <b>Teach</b> your any of <b>Pokemon</b> a move. It will be available only for next <b>15 Minutes.</b>\n\nÃ¢Å“Â¦ <b>'+c(dmoves[my].name)+'</b> ['+c(dmoves[my].type)+' '+emojis[dmoves[my].type]+']\n<b>Power:</b> '+dmoves[my].power+', <b>Accuracy:</b> '+dmoves[my].accuracy+' (<i>'+c(dmoves[my].category)+'</i>) \n\nÃ¢â‚¬Â¢ Click below to <b>Select</b> pokemon to teach <b>'+c(dmoves[my].name)+'</b>',{parse_mode:'html',reply_markup:{inline_keyboard:[[{text:'Select',callback_data:'tyrt_'+my+'_'+d+''}]]}})
 const mdata = await loadMessageData();
 if(!mdata.tutor){
 mdata.tutor = {}
@@ -1245,53 +3230,9 @@ return
 }
 return
 }
-msg += '\n\n<b>Moves :</b>'
-const moves = []
-let img = pp.front_default_image
-const im = shiny.filter((poke)=>poke.name==p1.name)[0]
-if(events[p1.name] && p1.symbol == '🪅'){
-img = events[p1.name]
-}
-if(im && p1.symbol=='✨'){
-img=im.shiny_url
-}
-for(const move2 of p1.moves){
-let move = dmoves[move2]
-msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
-moves.push(''+move2+'')
-}
-const buttons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' }));
-while(buttons.length < 4){
-buttons.push({text:'  ',callback_data:'empty'})
-}
-let ext = {}
-if(battleData.set.preview=='Upper'){
-ext = {link_preview_options:{url:img,show_above_text:true}}
-}else if(battleData.set.preview=='Down'){
-ext = {link_preview_options:{url:img,show_above_text:false}}
-}
-  const rows = [];
-  for (let i = 0; i < buttons.length; i += 2) {
-    rows.push(buttons.slice(i, i + 2));
-  }
-const key2 = [{text:'Bag',callback_data:'multybg_'+bword+''},{text:'Escape',callback_data:'multryn_'+bword+'_multi'},{text:'Pokemon',callback_data:'multichanpok_'+bword+'_'+battleData.cid+''}]
-if(!attacker.inv.stones){
-attacker.inv.stones = []
-}
-const isstone = [...new Set(attacker.inv.stones)].filter(stone => stones[stone]?.pokemon === p1.name)
-if(battleData.set.key_item && isstone.length > 0 && Object.keys(attacker.extra.megas).length == 0 && attacker.inv.ring){
-const rows5 = []
-for(const i of isstone){
-rows5.push({text:'Use '+c(i)+'',callback_data:'megtst_'+i+'_'+bword+''})
-}
-rows.push(rows5)
-}
-
-rows.push(key2)
-  const keyboard = {
-    inline_keyboard: rows
-  };
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:keyboard,...ext})
+const isGroupMmo = ctx.chat.type !== 'private';
+const pvpMmo = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMmo.msg,{parse_mode:'HTML',reply_markup:pvpMmo.keyboard,...pvpMmo.ext})
 })
 bot.action(/multichanpok_/,async ctx => {
 if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
@@ -1308,7 +3249,7 @@ return
 }
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
 } catch (error) {
       battleData = {};
     }
@@ -1358,7 +3299,7 @@ const rows = [[{text:'View Team',callback_data:'viewteam_'+bword+'_'+battleData.
 for (let i = 0; i < buttons.length; i += 2) {
   rows.push(buttons.slice(i, i + 2));
 }
-rows.push([{text:'⬅️ Back',callback_data:'multibttle_'+bword+'_'+battleData.cid+''}])
+rows.push([{text:'Ã¢Â¬â€¦Ã¯Â¸Â Back',callback_data:'multibttle_'+bword+'_'+battleData.cid+''}])
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:rows}})
 })
 bot.action(/multibttle_/,async ctx => {
@@ -1376,7 +3317,7 @@ return
 }
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
 } catch (error) {
       battleData = {};
     }
@@ -1384,65 +3325,15 @@ const attacker = await getUserData(battleData.cid)
 const defender = await getUserData(battleData.oid)
 const p1 = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
 const p2 = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0]
-const pp = pokes[p1.name]
-const pp2 = pokes[p2.name]
 const base1 = pokestats[p2.name]
 const base2 = pokestats[p1.name]
 const level1 = plevel(p2.name,p2.exp)
 const level2 = plevel(p1.name,p1.exp)
 const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
 const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
-let msg = '\n\n<b>Opponent :</b> <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>'
-msg += '\n<b>'+c(p2.name)+'</b> ['+c(pp2.types.join(' / '))+']'+getStatusTag(battleData, battleData.o)
-msg += '\n<b>Level :</b> '+plevel(p2.name,p2.exp)+' | <b>HP :</b> '+battleData.ohp+'/'+stats1.hp+''
-msg += '\n<code>'+Bar(stats1.hp,battleData.ohp)+'</code>'
- msg += '\n\n<b>Turn :</b> <a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a>'
-msg += '\n<b>'+c(p1.name)+'</b> ['+c(pp.types.join(' / '))+']'+getStatusTag(battleData, battleData.c)
-msg += '\n<b>Level :</b> '+plevel(p1.name,p1.exp)+' | <b>HP :</b> '+battleData.chp+'/'+stats2.hp+''
-msg += '\n<code>'+Bar(stats2.hp,battleData.chp)+'</code>'
-msg += '\n\n<b>Moves :</b>'
-const moves = []
-let img = pp.front_default_image
-const im = shiny.filter((poke)=>poke.name==p1.name)[0]
-if(events[p1.name] && p1.symbol == '🪅'){
-img = events[p1.name]
-}
-if(im && p1.symbol=='✨'){
-img=im.shiny_url
-}
-for(const move2 of p1.moves){
-let move = dmoves[move2]
-msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
-moves.push(''+move2+'')
-}
-let ext = {}
-if(battleData.set.preview=='Upper'){
-ext = {link_preview_options:{url:img,show_above_text:true}}
-}else if(battleData.set.preview=='Down'){
-ext = {link_preview_options:{url:img,show_above_text:false}}
-}
-const buttons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' }));
-while(buttons.length < 4){
-buttons.push({text:'  ',callback_data:'empty'})
-}
-  const rows = [];
-  for (let i = 0; i < buttons.length; i += 2) {
-    rows.push(buttons.slice(i, i + 2));
-  }
-const key2 = [{text:'Bag',callback_data:'multybg_'+bword+''},{text:'Escape',callback_data:'multryn_'+bword+'_multi'},{text:'Pokemon',callback_data:'multichanpok_'+bword+'_'+battleData.cid+''}]
-const isstone = [...new Set(attacker.inv.stones)].filter(stone => stones[stone]?.pokemon === p1.name)
-if(battleData.set.key_item && isstone.length > 0 && Object.keys(attacker.extra.megas).length == 0 && attacker.inv.ring){
-const rows5 = []
-for(const i of isstone){
-rows5.push({text:'Use '+c(i)+'',callback_data:'megtst_'+i+'_'+bword+''})
-}
-rows.push(rows5)
-}
-rows.push(key2)
-  const keyboard = {
-    inline_keyboard: rows
-  };
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:keyboard,...ext})
+const isGroupBtl = ctx.chat.type !== 'private';
+const pvpBtl = buildPvpMsg('', battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupBtl);
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpBtl.msg,{parse_mode:'HTML',reply_markup:pvpBtl.keyboard,...pvpBtl.ext})
 })
 bot.action(/megtst_/,async ctx => {
 if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
@@ -1455,7 +3346,7 @@ const stone5 = ctx.callbackQuery.data.split('_')[1]
 const bword = ctx.callbackQuery.data.split('_')[2]
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
 } catch (error) {
       battleData = {};
     }
@@ -1468,7 +3359,6 @@ const d2b = await getUserData(battleData.cid)
 const pke = d2b.pokes.filter((pk)=>pk.pass == battleData.c)[0]
 const n = pke.name
 if(stone.pokemon!=pke.name){
-console.log(pke.name)
 return
 }
 if(!d2b.extra.megas){
@@ -1516,77 +3406,27 @@ battleData.la2 = cc5
 const dl = await getUserData(battleData.cid)
 const p169 = dl.pokes.filter((poke)=>poke.pass==battleData.c)[0]
 msg += '\n<b>'+c(p169.name)+'</b> <i>speed advantage allows to move first</i>'
-await fs.writeFileSync('./data/battle/' +bword+ '.json', JSON.stringify(battleData, null, 2));
+await saveBattleData(bword, battleData);
 const attacker = await getUserData(battleData.cid)
 const defender = await getUserData(battleData.oid)
 const p1 = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
 const p2 = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0]
-const pp = pokes[p1.name]
-const pp2 = pokes[p2.name]
 const base1 = pokestats[p2.name]
 const base2 = pokestats[p1.name]
 const level1 = plevel(p2.name,p2.exp)
 const level2 = plevel(p1.name,p1.exp)
 const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
 const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
- msg += '\n\n<b>Opponent :</b> <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>'
-msg += '\n<b>'+c(p2.name)+'</b> ['+c(pp2.types.join(' / '))+']'+getStatusTag(battleData, battleData.o)
-msg += '\n<b>Level :</b> '+plevel(p2.name,p2.exp)+' | <b>HP :</b> '+battleData.ohp+'/'+stats1.hp+''
-msg += '\n<code>'+Bar(stats1.hp,battleData.ohp)+'</code>'
- msg += '\n\n<b>Turn :</b> <a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a>'
-msg += '\n<b>'+c(p1.name)+'</b> ['+c(pp.types.join(' / '))+']'+getStatusTag(battleData, battleData.c)
-msg += '\n<b>Level :</b> '+plevel(p1.name,p1.exp)+' | <b>HP :</b> '+battleData.chp+'/'+stats2.hp+''
-msg += '\n<code>'+Bar(stats2.hp,battleData.chp)+'</code>'
-msg += '\n\n<b>Moves :</b>'
-const moves = []
-let img = pp.front_default_image
-const im = shiny.filter((poke)=>poke.name==p1.name)[0]
-if(events[p1.name] && p1.symbol == '🪅'){
-img = events[p1.name]
-}
-if(im && p1.symbol=='✨'){
-img=im.shiny_url
-}
-for(const move2 of p1.moves){
-let move = dmoves[move2]
-msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
-moves.push(''+move2+'')
-}
-let ext = {}
-if(battleData.set.preview=='Upper'){
-ext = {link_preview_options:{url:img,show_above_text:true}}
-}else if(battleData.set.preview=='Down'){
-ext = {link_preview_options:{url:img,show_above_text:false}}
-}
-const buttons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' }));
-while(buttons.length < 4){
-buttons.push({text:'  ',callback_data:'empty'})
-}
-  const rows = [];
-  for (let i = 0; i < buttons.length; i += 2) {
-    rows.push(buttons.slice(i, i + 2));
-  }
-const key2 = [{text:'Bag',callback_data:'multybg_'+bword+''},{text:'Escape',callback_data:'multryn_'+bword+'_multi'},{text:'Pokemon',callback_data:'multichanpok_'+bword+'_'+battleData.cid+''}]
-const isstone = [...new Set(attacker.inv.stones)].filter(stone => stones[stone]?.pokemon === p1.name)
-if(battleData.set.key_item && isstone.length > 0 && Object.keys(attacker.extra.megas).length == 0 && attacker.inv.ring){
-const rows5 = []
-for(const i of isstone){
-rows5.push({text:'Use '+c(i)+'',callback_data:'megtst_'+i+'_'+bword+''})
-}
-rows.push(rows5)
-}
-rows.push(key2)
-  const keyboard = {
-    inline_keyboard: rows
-  };
+const isGroupMeg = ctx.chat.type !== 'private';
+const pvpMeg = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMeg);
 const pk = pokes[stone.mega]
 let img2 = pokes[p12.name].front_default_image
 const im2 = shiny.filter((poke)=>poke.name==p12.name)[0]
-if(im2 && p12.symbol=='✨'){
+if(im2 && p12.symbol=='Ã¢Å“Â¨'){
 img2=im2.shiny_url
 }
 await sendMessage(ctx,ctx.chat.id,img2,{caption:'*'+c(n)+'* has transformed into *'+c(pke.name)+'*.',parse_mode:'markdown',reply_to_message_id:ctx.callbackQuery.message.message_id})
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:keyboard,...ext})
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMeg.msg,{parse_mode:'HTML',reply_markup:pvpMeg.keyboard,...pvpMeg.ext})
 })
 
 bot.action(/multidne_/,async ctx => {
@@ -1606,10 +3446,11 @@ return
 }
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
 } catch (error) {
       battleData = {};
     }
+dbg('multidne:click', { bword, from: ctx.from.id, turnId: id, pass, prop, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o, qlen: battleData.queuedActions ? battleData.queuedActions.length : 0, switchPending: battleData.switchPending ? Object.keys(battleData.switchPending) : [] });
 if(battleData.tem[pass] < 1){
 ctx.answerCbQuery('This Poke Is Ded')
 return
@@ -1619,12 +3460,62 @@ ctx.answerCbQuery('This Poke Is Already Batteling')
 return
 }
 
+if(prop == 'change'){
+  if (!battleData.queuedActions) battleData.queuedActions = [];
+  if (!battleData.queuedActions.some(act => String(act.cid) === String(ctx.from.id))) {
+    battleData.queuedActions.push({
+      cid: ctx.from.id,
+      c: battleData.c,
+      type: 'switch',
+      pass: pass
+    });
+    if (!battleData.switchPending) battleData.switchPending = {};
+    battleData.switchPending[String(ctx.from.id)] = { pass, c: battleData.c };
+    ctx.answerCbQuery('Action locked!');
+  } else {
+    ctx.answerCbQuery('You already selected your action!');
+    return;
+  }
+  dbg('multidne:queued', { bword, q: battleData.queuedActions, switchPending: battleData.switchPending ? Object.keys(battleData.switchPending) : [] });
+
+  if (battleData.queuedActions.length < 2) {
+    fullSwap(battleData);
+    await saveBattleData(bword, battleData);
+
+    const attacker = await getUserData(battleData.cid);
+    const defender = await getUserData(battleData.oid);
+    const p1 = attacker.pokes.filter((poke) => poke.pass == battleData.c)[0]
+    const p2 = defender.pokes.filter((poke) => poke.pass == battleData.o)[0]
+    const base1 = pokestats[p2.name]
+    const base2 = pokestats[p1.name]
+    const level1 = plevel(p2.name, p2.exp)
+    const level2 = plevel(p1.name, p1.exp)
+    const stats1 = await Stats(base1, p2.ivs, p2.evs, c(p2.nature), level1)
+    const stats2 = await Stats(base2, p1.ivs, p1.evs, c(p1.nature), level2)
+
+    let msg = `<b>* ${displayName(defender, battleData.oid)} has locked in an action!</b>\n`
+    msg += `<b>Waiting for ${displayName(attacker, battleData.cid)} to select...</b>`
+
+    const isGroupMmo = ctx.chat.type !== 'private';
+    const pvpMmo = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
+    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, pvpMmo.msg, { parse_mode: 'HTML', reply_markup: pvpMmo.keyboard, ...pvpMmo.ext })
+    return
+  }
+
+  dbg('multidne:resolving', { bword });
+  await resolveQueuedActions(ctx, battleData, bword);
+  return
+}
+
 battleData.c = pass
 battleData.chp = battleData.tem[pass]
 const atta = await getUserData(battleData.cid)
 const deffa = await getUserData(battleData.oid)
 const p12 = atta.pokes.filter((poke)=>poke.pass==pass)[0]
 let msg = '<b>'+c(p12.name)+'</b> came for battle'
+if (prop == 'change') {
+  msg = '<b>A Pokemon was switched in.</b>'
+}
 const p22 = deffa.pokes.filter((poke)=>poke.pass==battleData.o)[0]
 const base12 = pokestats[p22.name]
 const base22 = pokestats[p12.name]
@@ -1658,6 +3549,8 @@ const p169 = dl.pokes.filter((poke)=>poke.pass==battleData.c)[0]
 msg += '\n<b>'+c(p169.name)+'</b> <i>speed advantage allows to move first</i>'
 }
 if(prop == 'change'){
+battleData.switchLock = battleData.cid
+battleData.queuedActions = [];
 const cc = battleData.c
 const cc2 = battleData.chp
 const cc3 = battleData.cid
@@ -1674,7 +3567,7 @@ battleData.oid = cc3
 battleData.tem2 = cc4
 battleData.la2 = cc5
 }
-await fs.writeFileSync('./data/battle/' +bword+ '.json', JSON.stringify(battleData, null, 2));
+await saveBattleData(bword, battleData);
 const attacker = await getUserData(battleData.cid)
 const defender = await getUserData(battleData.oid)
 const p1 = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
@@ -1687,59 +3580,99 @@ const level1 = plevel(p2.name,p2.exp)
 const level2 = plevel(p1.name,p1.exp)
 const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
 const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
- msg += '\n\n<b>Opponent :</b> <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>'
-msg += '\n<b>'+c(p2.name)+'</b> ['+c(pp2.types.join(' / '))+']'+getStatusTag(battleData, battleData.o)
-msg += '\n<b>Level :</b> '+plevel(p2.name,p2.exp)+' | <b>HP :</b> '+battleData.ohp+'/'+stats1.hp+''
-msg += '\n<code>'+Bar(stats1.hp,battleData.ohp)+'</code>'
- msg += '\n\n<b>Turn :</b> <a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a>'
-msg += '\n<b>'+c(p1.name)+'</b> ['+c(pp.types.join(' / '))+']'+getStatusTag(battleData, battleData.c)
-msg += '\n<b>Level :</b> '+plevel(p1.name,p1.exp)+' | <b>HP :</b> '+battleData.chp+'/'+stats2.hp+''
-msg += '\n<code>'+Bar(stats2.hp,battleData.chp)+'</code>'
-msg += '\n\n<b>Moves :</b>'
-const moves = []
-let img = pp.front_default_image
-const im = shiny.filter((poke)=>poke.name==p1.name)[0]
-if(events[p1.name] && p1.symbol == '🪅'){
-img = events[p1.name]
-}
-if(im && p1.symbol=='✨'){
-img=im.shiny_url
-}
-for(const move2 of p1.moves){
-let move = dmoves[move2]
-msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
-moves.push(''+move2+'')
-}
-let ext = {}
-if(battleData.set.preview=='Upper'){
-ext = {link_preview_options:{url:img,show_above_text:true}}
-}else if(battleData.set.preview=='Down'){
-ext = {link_preview_options:{url:img,show_above_text:false}}
-}
-const buttons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' }));
-while(buttons.length < 4){
-buttons.push({text:'  ',callback_data:'empty'})
-}
-  const rows = [];
-  for (let i = 0; i < buttons.length; i += 2) {
-    rows.push(buttons.slice(i, i + 2));
-  }
-const key2 = [{text:'Bag',callback_data:'multybg_'+bword+''},{text:'Escape',callback_data:'multryn_'+bword+'_multi'},{text:'Pokemon',callback_data:'multichanpok_'+bword+'_'+battleData.cid+''}]
-const isstone = [...new Set(attacker.inv.stones)].filter(stone => stones[stone]?.pokemon === p1.name)
-if(battleData.set.key_item && isstone.length > 0 && Object.keys(attacker.extra.megas).length == 0 && attacker.inv.ring){
-const rows5 = []
-for(const i of isstone){
-rows5.push({text:'Use '+c(i)+'',callback_data:'megtst_'+i+'_'+bword+''})
-}
-rows.push(rows5)
-}
-rows.push(key2)
-  const keyboard = {
-    inline_keyboard: rows
-  };
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:keyboard,...ext})
+const isGroupDne = ctx.chat.type !== 'private';
+const pvpDne = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupDne);
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpDne.msg,{parse_mode:'HTML',reply_markup:pvpDne.keyboard,...pvpDne.ext})
 })
+
+// Handler: "Ã¢Å¡â€ View Moves" Ã¢â‚¬â€ shows ALL moves as a popup alert to the current player only (Showdown-style)
+bot.action(/multivwmv_/,async ctx => {
+const bword2 = ctx.callbackQuery.data.split('_')[1]
+const turnId2 = ctx.callbackQuery.data.split('_')[2]
+if (String(ctx.from.id) !== String(turnId2)) {
+  ctx.answerCbQuery('Ã¢ÂÅ’ Not your turn!')
+  return
+}
+let battleData2 = {};
+try {
+  battleData2 = loadBattleData(bword2);
+} catch(e) { battleData2 = {}; }
+const attacker2 = await getUserData(battleData2.cid)
+const p1v = attacker2.pokes.filter((poke)=>poke.pass==battleData2.c)[0]
+if (!p1v) { ctx.answerCbQuery('Battle error'); return; }
+// Build move list text for the popup
+let popupText = 'Ã°Å¸â€”Â¡ Your Moves:'
+for (const mid of p1v.moves) {
+  const mv = dmoves[mid]
+  if (mv) {
+    const power = mv.power ?? '?'
+    const acc = mv.accuracy ?? '?'
+    popupText += '\nÃ¢â‚¬Â¢ ' + c(mv.name) + ' [' + c(mv.type) + '] P:' + power + ' A:' + acc
+  }
+}
+if (popupText.length > 195) popupText = popupText.substring(0, 195) + '...';
+await ctx.answerCbQuery(popupText, { show_alert: true })
+})
+
+/*
+// Inline action menu: show moves + escape + pokemon
+bot.action(/multiact_/, async ctx => {
+if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
+  ctx.answerCbQuery('Try Again');
+  return;
+}
+battlec[ctx.chat.id] = Date.now();
+const bword2 = ctx.callbackQuery.data.split('_')[1]
+const turnId2 = ctx.callbackQuery.data.split('_')[2]
+if (String(ctx.from.id) !== String(turnId2)) {
+  ctx.answerCbQuery('Not your turn!');
+  return
+}
+let battleData2 = {};
+try {
+  battleData2 = loadBattleData(bword2);
+} catch(e) { battleData2 = {}; }
+const attacker2 = await getUserData(battleData2.cid)
+const defender2 = await getUserData(battleData2.oid)
+const p1v = attacker2.pokes.filter((poke)=>poke.pass==battleData2.c)[0]
+const p2v = defender2.pokes.filter((poke)=>poke.pass==battleData2.o)[0]
+if (!p1v || !p2v) { ctx.answerCbQuery('Battle error'); return; }
+const base1v = pokestats[p2v.name]
+const base2v = pokestats[p1v.name]
+const level1v = plevel(p2v.name,p2v.exp)
+const level2v = plevel(p1v.name,p1v.exp)
+const stats1v = await Stats(base1v,p2v.ivs,p2v.evs,c(p2v.nature),level1v)
+const stats2v = await Stats(base2v,p1v.ivs,p1v.evs,c(p1v.nature),level2v)
+const isGroupAct = ctx.chat.type !== 'private';
+const pvpAct = buildPvpMsg('', battleData2, attacker2, defender2, p1v, p2v, stats1v, stats2v, bword2, isGroupAct);
+
+const usedMoves2 = battleData2.usedMoves || {};
+const p1UsedMoves2 = usedMoves2[battleData2.c] || [];
+const moveButtons = p1v.moves.map((word) => {
+  const isRevealed = p1UsedMoves2.includes(String(word));
+  const label = (isGroupAct && !isRevealed) ? '???' : c(dmoves[word].name);
+  return { text: label, callback_data: 'multimo_'+word+'_'+bword2+'_'+battleData2.cid+'' };
+});
+while(moveButtons.length < 4) { moveButtons.push({text:'  ',callback_data:'empty'}); }
+const rows = [];
+for (let i = 0; i < moveButtons.length; i += 2) { rows.push(moveButtons.slice(i,i+2)); }
+rows.push([{text:'Bag',callback_data:'multybg_'+bword2+''},{text:'Escape',callback_data:'multryn_'+bword2+'_multi'}]);
+rows.push([{text:'Pokemon',callback_data:'multichanpok_'+bword2+'_'+battleData2.cid+''}]);
+rows.push([{text:'Ã¢Â¬â€¦Ã¯Â¸Â Back',callback_data:'multibttle_'+bword2+'_'+battleData2.cid+''}]);
+
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpAct.msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:rows},...pvpAct.ext})
+})
+*/
 }
 
 module.exports = registerBattleCallbacks;
+
+
+
+
+
+
+
+
+
 

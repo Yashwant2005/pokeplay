@@ -53,15 +53,33 @@ function registerChallengeCommand(bot, deps) {
 
     let settings3 = {};
     try {
-      settings3 = JSON.parse(fs.readFileSync("./data/battle/" + bword + ".json", "utf8"));
+      settings3 = loadBattleData(bword);
     } catch (error) {
       settings3 = {};
     }
-    settings3.set = data.settings;
+    settings3.set = data.settings || {
+      max_poke: 6,
+      min_6l: 0,
+      max_6l: 6,
+      min_level: 1,
+      max_level: 100,
+      switch: true,
+      key_item: true,
+      sandbox: false,
+      random: false,
+      preview: 'no',
+      pin: false,
+      type_effects: true,
+      dual_type: true,
+      allow_regions: [],
+      ban_regions: [],
+      allow_types: [],
+      ban_types: []
+    };
     settings3.users = {};
     settings3.users[ctx.from.id] = true;
     settings3.users[reply.from.id] = false;
-    await fs.writeFileSync("./data/battle/" + bword + ".json", JSON.stringify(settings3, null, 2));
+    await saveBattleData(bword, settings3);
     const settings = settings3.set;
 
     if (settings.max_poke < 6) {

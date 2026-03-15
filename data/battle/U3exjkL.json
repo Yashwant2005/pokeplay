@@ -1,0 +1,83 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "6265981509": true,
+    "8551864967": true
+  },
+  "status": {},
+  "c": "AvJrwuf3",
+  "chp": 51,
+  "o": "Tsxr5AMS",
+  "ohp": 470,
+  "cid": "8551864967",
+  "oid": "6265981509",
+  "tem": {
+    "AvJrwuf3": 51
+  },
+  "la": {
+    "AvJrwuf3": 18
+  },
+  "tem2": {
+    "Tsxr5AMS": 470,
+    "BiLqcvCr": 172,
+    "lTTgD8x0": 118,
+    "Aw7KRyyT": 174,
+    "tIBtUAc4": 56,
+    "q1MmfUoj": 50
+  },
+  "la2": {
+    "Tsxr5AMS": 100,
+    "BiLqcvCr": 52,
+    "lTTgD8x0": 40,
+    "Aw7KRyyT": 37,
+    "tIBtUAc4": 23,
+    "q1MmfUoj": 19
+  },
+  "ot": {
+    "undefined": 51
+  },
+  "usedMoves": {},
+  "queuedActions": [],
+  "statStages": {
+    "Tsxr5AMS": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "AvJrwuf3": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "bideState": {},
+  "runs": [
+    8551864967
+  ]
+}

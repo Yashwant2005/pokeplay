@@ -21,7 +21,7 @@
   },
   "safari": {
     "name": "Safari Ball",
-    "description": "A special Poke Ball used only in the Safari Zone. It has a 1.5x catch rate multiplier.",
+    "description": "A special Poke Ball used only in the Safari Zone. It has a 3x catch rate multiplier.",
     "image": "https://graph.org/file/2e4abf8847b47a3e05927.jpg"
   },
   "premier": {

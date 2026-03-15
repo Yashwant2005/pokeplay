@@ -1,0 +1,101 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "8551864967": true,
+    "8493023103": true
+  },
+  "status": {},
+  "c": "Edn2Rlan",
+  "chp": 140,
+  "o": "9A5KUkEe",
+  "ohp": 85,
+  "cid": "8551864967",
+  "oid": "8493023103",
+  "tem": {
+    "Edn2Rlan": 140,
+    "AvJrwuf3": 60
+  },
+  "la": {
+    "Edn2Rlan": 100,
+    "AvJrwuf3": 22
+  },
+  "tem2": {
+    "9A5KUkEe": 85
+  },
+  "la2": {
+    "9A5KUkEe": 100
+  },
+  "ot": {
+    "undefined": 341
+  },
+  "usedMoves": {
+    "9A5KUkEe": [
+      "344"
+    ],
+    "Edn2Rlan": [
+      "668",
+      "504",
+      "14",
+      "874"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 4,
+  "bideState": {},
+  "statStages": {
+    "9A5KUkEe": {
+      "attack": -1,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "Edn2Rlan": {
+      "attack": 4,
+      "defense": -1,
+      "special_attack": 1,
+      "special_defense": -1,
+      "speed": 2,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "9A5KUkEe": {
+      "damage": 126,
+      "category": "special",
+      "from": "Edn2Rlan",
+      "move": "make it rain"
+    },
+    "Edn2Rlan": {
+      "damage": 103,
+      "category": "physical",
+      "from": "9A5KUkEe",
+      "move": "volt tackle"
+    }
+  },
+  "runs": [
+    8493023103,
+    8551864967
+  ]
+}

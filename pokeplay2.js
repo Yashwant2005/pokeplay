@@ -1,14 +1,34 @@
 let msgsent = []
 const appr = [1072659486,6265981509]
 //const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' //main bot
-const botToken = '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' //backup bot
+const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //backup bot
 //const botToken = '6945557235:AAFkj6PDd9RxwUhAH6FC9UWjuks4r5vJEaQ' // test bot
 const { Telegraf } = require('telegraf')
 const bot = new Telegraf(botToken)
+if (process.env.QUIET_LOGS === '1') {
+  console.log = () => {}
+}
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled promise rejection:', reason)
+})
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception:', err)
+})
 const app = [6265981509]
 const LocalSession = require('telegraf-session-local');
 const session = new LocalSession({ database: 'data/hexa_session.json' });
 bot.use(session.middleware());
+loadGroupIdsFromFile()
+setInterval(saveGroupIdsToFile, 5000)
+process.on('beforeExit', () => {
+  saveGroupIdsToFile()
+})
+bot.use(async (ctx, next) => {
+  if(ctx.chat && ctx.chat.type !== 'private'){
+    addGroupId(ctx.chat.id)
+  }
+  return next()
+})
 const commands = new Map();
 commands.forEach((method, name) => {
   bot.command(name, method)
@@ -51,7 +71,7 @@ const { createCanvas, loadImage, registerFont } = require('canvas');
 const registerCommands = require('./commands');
 const registerCallbacks = require('./callbacks');
 const { buildModuleDeps } = require('./utils');
-registerFont('./CabalBold-78yP.ttf', { family: 'Arial' });
+registerFont('./CabalBold-78yP.ttf', { family: 'Cabal' });
 registerFont('./SparkyStonesRegular-BW6ld.ttf', { family: 'Cool' });
 const moment = require('moment');
 const ballsdata = {
@@ -74,14 +94,19 @@ const ballsdata = {
 }
 bot.on('edited_message',async ctx => {
 })
-// Ignore commands sent before this bot instance started (stale updates)
+// Ignore updates sent before this bot instance started (stale updates)
 bot.use((ctx, next) => {
   try {
-    if (ctx.message && ctx.message.date) {
-      const msgMs = ctx.message.date * 1000;
-      if (msgMs < botStartTime) {
-        return;
-      }
+    let ts;
+    if (ctx.message && ctx.message.date) ts = ctx.message.date;
+    else if (ctx.editedMessage && ctx.editedMessage.date) ts = ctx.editedMessage.date;
+    else if (ctx.callbackQuery && ctx.callbackQuery.message && ctx.callbackQuery.message.date) ts = ctx.callbackQuery.message.date;
+    else if (ctx.update && ctx.update.message && ctx.update.message.date) ts = ctx.update.message.date;
+    else if (ctx.update && ctx.update.edited_message && ctx.update.edited_message.date) ts = ctx.update.edited_message.date;
+    else if (ctx.update && ctx.update.callback_query && ctx.update.callback_query.message && ctx.update.callback_query.message.date) ts = ctx.update.callback_query.message.date;
+    if (ts) {
+      const msgMs = ts * 1000;
+      if (msgMs < botStartTime) return;
     }
   } catch (e) {
     // fall through
@@ -101,6 +126,57 @@ const bags = {
 "10":"https://graph.org/file/5f0681dee62ffd3867a13.jpg"}
 let he = require('he');
 const fs = require('fs')
+const groupListPath = './data/groups.json'
+let groupIds = new Set()
+let groupIdsDirty = false
+
+function loadGroupIdsFromFile(){
+  try{
+    if(fs.existsSync(groupListPath)){
+      const raw = fs.readFileSync(groupListPath,'utf8')
+      const list = JSON.parse(raw)
+      if(Array.isArray(list)){
+        groupIds = new Set(list.map(id => String(id)))
+      }
+    }
+  }catch(e){}
+}
+
+function saveGroupIdsToFile(){
+  if(!groupIdsDirty) return
+  try{
+    if(!fs.existsSync('./data')){
+      fs.mkdirSync('./data', { recursive: true })
+    }
+    fs.writeFileSync(groupListPath, JSON.stringify([...groupIds]))
+    groupIdsDirty = false
+  }catch(e){}
+}
+
+function addGroupId(id){
+  const sid = String(id)
+  if(!groupIds.has(sid)){
+    groupIds.add(sid)
+    groupIdsDirty = true
+  }
+}
+
+function removeGroupIds(ids){
+  let changed = false
+  for(const id of ids){
+    const sid = String(id)
+    if(groupIds.delete(sid)){
+      changed = true
+    }
+  }
+  if(changed){
+    groupIdsDirty = true
+  }
+}
+
+function getGroupIds(){
+  return Array.from(groupIds)
+}
 const safari = JSON.parse(fs.readFileSync('data/safari.json', 'utf8'));
 const events = JSON.parse(fs.readFileSync('data/event.json', 'utf8'));
 const lvls = JSON.parse(fs.readFileSync('data/poke_level.json', 'utf8'));
@@ -123,7 +199,7 @@ const chart = JSON.parse(fs.readFileSync('data/exp_chart.json', 'utf8'));
 const chains = JSON.parse(fs.readFileSync('data/evolution_chains2.json', 'utf8'));
 const growth_rates = JSON.parse(fs.readFileSync('data/pokemon_data2.json', 'utf8'));
 const rdata = JSON.parse(fs.readFileSync('data/pokedex_data.json', 'utf8'));
-const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData,loadMessageData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs} = require('./func.js')
+const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs} = require('./func.js')
 const regions = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Paldea']
 const region = {
 "Kanto":1,
@@ -291,8 +367,8 @@ let lastmsg = {}
 let globalmsg = [];
 let battlec = {}
 const banListFile2 = 'data/ban_list.json';
-const admins = [6265981509]
-const admins35 = [6265981509]
+const admins = [6265981509, 8493023103, 8551864967]
+const admins35 = [6265981509, 8493023103, 8551864967]
 
 // Load the ban list from the file
 let banList2 = [];
@@ -302,7 +378,6 @@ try {
 } catch (error) {
     console.error('Error loading ban list:', error);
 }
-// saveBanList moved near bootstrapping section
 
 const moduleDeps = buildModuleDeps({
   bot,
@@ -327,6 +402,8 @@ const moduleDeps = buildModuleDeps({
   sendMessage,
   editMessage,
   loadMessageData,
+  loadBattleData,
+  saveBattleData,
   regions,
   starters,
   trainerlevel,
@@ -386,7 +463,10 @@ const moduleDeps = buildModuleDeps({
   banListFile2,
   saveBanList,
   admins,
-  admins35
+  admins35,
+  getGroupIds,
+  removeGroupIds,
+  saveGroupIdsToFile
   ,
   pokestats,
   plevel,
@@ -434,7 +514,7 @@ if(banList2.includes(String(ctx.from.id))|| banList2.includes(ctx.from.id)){
 return
 }
     const userId = ctx.from.id;
-    const chatId = ctx.chat ? ctx.chat.id : 000;
+    const chatId = ctx.chat ? ctx.chat.id : 0;
 const globalClicksPerSecond = globalClicks.filter(
   (timestamp) => Date.now() - timestamp < 1000
 );
@@ -489,7 +569,7 @@ const updateTimestamp = ctx.message.date * 1000; // Convert to milliseconds
     return;
   }
 const userId = ctx.from.id;
-    const chatId = ctx.chat ? ctx.chat.id : 000;
+    const chatId = ctx.chat ? ctx.chat.id : 0;
 const globalClicksPerSecond = globalmsg.filter(
   (timestamp) => Date.now() - timestamp < 1000
 );
@@ -526,7 +606,6 @@ var sy = 700
 var sy = 1500
 }
 if (lastClicked2[ctx.from.id] && Date.now() - lastClicked2[ctx.from.id] < sy) {
-console.log('low gap')
     return;
   }
 if(msgsent.includes(chatId)){
@@ -686,7 +765,7 @@ const result = Object.keys(messageData).find(key => {
 if(result){
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+result+'.json', 'utf8'));
+      battleData = loadBattleData(result);
     } catch (error) {
       battleData = {};
     }
@@ -893,89 +972,14 @@ await next();
 console.log(error,ctx.from.id)
 }
 })
-// /start command moved to commands/start.js
-
-// callback moved to callbacks/001_pkege.js
-// callback moved to callbacks/002_suger.js
-// callback moved to callbacks/003_delete.js
-// /stats moved to commands/stats.js
-// callback moved to callbacks/004_stats.js
-
-// callback moved to callbacks/005_moves.js
-// callback moved to callbacks/006_info.js
-// callback moved to callbacks/007_ste.js
-// callback moved to callbacks/008_pkisvs.js
-
-
-// /hunt moved to commands/hunt.js
-// callback moved to callbacks/009_run.js
-// callback moved to callbacks/010_exrtbt.js
-// callback moved to callbacks/011_catch.js
-// callback moved to callbacks/012_atk.js
-// callback moved to callbacks/013_bajkw.js
-// callback moved to callbacks/014_bag.js
-// callback moved to callbacks/015_ball.js
-// callback moved to callbacks/016_btl.js
-// callback moved to callbacks/017_pokemon.js
-// callback moved to callbacks/018_snd.js
-// callback moved to callbacks/019_ev.js
-// /travel moved to commands/travel.js
-// callback moved to callbacks/020_locked.js
-// callback moved to callbacks/021_travel.js
-// /open moved to commands/open.js
-// /close moved to commands/close.js
-// /myteams moved to commands/myteams.js
-// callback moved to callbacks/022_set.js
-// callback moved to callbacks/023_rename.js
-// callback moved to callbacks/024_randomize.js
-
-// callback moved to callbacks/025_teams.js
-// callback moved to callbacks/026_rest.js
-// callback moved to callbacks/027_main.js
-// callback moved to callbacks/028_add.js
-// callback moved to callbacks/029_select.js
-// callback moved to callbacks/030_remove.js
-// callback moved to callbacks/031_rjem.js
-// callback moved to callbacks/032_change_order.js
-
-// callback moved to callbacks/033_fswc.js
-
-// callback moved to callbacks/034_swap_confirm.js
-
-// /mybag moved to commands/mybag.js
-// callback moved to callbacks/035_vyast.js
-// callback moved to callbacks/036_sysu.js
-
-// callback moved to callbacks/037_poag.js
-// callback moved to callbacks/038_vyabll.js
-
-
-// callback moved to callbacks/039_lrn.js
-// callback moved to callbacks/040_elr.js
-// callback moved to callbacks/041_crncl.js
-// callback moved to callbacks/042_mhusz.js
-
-// /pokestore moved to commands/pokestore.js
-// callback moved to callbacks/043_store.js
-
-
-// /sell moved to commands/sell.js
-// callback moved to callbacks/044_keyitem.js
-// callback moved to callbacks/045_syllity.js
-// callback moved to callbacks/046_syr.js
-
-// /buy moved to commands/buy.js
-// /transfer moved to commands/transfer.js
-// callback moved to callbacks/047_evy.js
-
-// /safari_zone moved to commands/safari_zone.js
-// /enter moved to commands/enter.js
-// callback moved to callbacks/048_safari.js
-// /exit moved to commands/exit.js
 
 const groupCommands = [
     { command: '/start', description: 'Start The Bot' },
     { command: '/hunt', description: 'hunt A Poke' },
+{command:'/spin',description:'Magic spin event pokemon'},
+    {command:'/events',description:'View active and upcoming events'},
+    {command:'/daily',description:'Claim commemorative daily rewards'},
+{command:'/claim_safari_pass',description:'Claim your daily safari event pass'},
 {command:'/challenge',description:'Battle With Other Players'},
 {command:'/mybag',description:'Check Your Bag'},
 { command: '/mypokemons', description: 'Check Your All Pokes' },
@@ -1004,10 +1008,7 @@ const groupCommands = [
     // Add more group chat commands as needed
   ];                                                                             
   bot.telegram.setMyCommands(groupCommands, {scope: {type: "default"}});
-// /mycard moved to commands/mycard.js
-// /trainer_card moved to commands/trainer_card.js
-// callback moved to callbacks/049_trainer.js
-// callback moved to callbacks/050_stcrd.js
+
 bot.on('text',async (ctx,next) => {
 if(ctx.message.text && ctx.message.text.toLowerCase().includes('/tm')){
 let num = ctx.message.text.toLowerCase().replace('/tm','')
@@ -1015,14 +1016,11 @@ if(num.includes('@'+bot.botInfo.username.toLowerCase()+'')){
 num = num.replace('@'+bot.botInfo.username.toLowerCase()+'','')
 }
 const data = await getUserData(ctx.from.id)
-console.log(num)
 if(tms.tmnumber[String(num)]){
 if(!data.tms){
 data.tms={}
 }
-console.log('tmfpund')
 if(data.tms[num] && data.tms[num] > 0){
-console.log('yes')
 const m = tms.tmnumber[num]
 let msg = '✦ *TM'+num+'* ('+c(dmoves[m].name)+' '+emojis[dmoves[m].type]+')\n'
 msg += '*Power:* '+dmoves[m].power+', *Accuracy:* '+dmoves[m].accuracy+' (_'+c(dmoves[m].category)+'_)\n'
@@ -1035,21 +1033,6 @@ await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Don\'t Have *TM'+
 }
 await next();
 })
-// callback moved to callbacks/051_tmuse.js
-// callback moved to callbacks/052_tundse.js
-// callback moved to callbacks/053_frgtm.js
-
-
-
-// callback moved to callbacks/054_lrtme.js
-
-
-
-// callback moved to callbacks/055_tmselly.js
-// callback moved to callbacks/056_tsejl.js
-// /challenge command moved to commands/challenge.js
-// callback moved to callbacks/057_reject.js
-// callback moved to callbacks/058_multryn.js
 
 async function editOverdueMessages() {
     const messageData = await loadMessageData();
@@ -1066,9 +1049,19 @@ const options = {
 };
 const currentTime = new Date().toLocaleString('en-US', options)
 const timeDifference = new Date(currentTime) - queryTime;
-console.log(timeDifference)
 if(timeDifference > 900000){
-bot.telegram.editMessageText(messageData.moves[id].chat,id, null,'Unfortunately, Timeout For *15 Min* Has Over & *'+c(messageData.moves[id].poke)+'* Did Not Learnt *'+c(messageData.moves[id].move)+'*',{parse_mode:'markdown'})
+try{
+  if(!id || id === 'undefined' || !messageData.moves[id] || !messageData.moves[id].chat){
+    delete messageData.moves[id]
+  }else{
+    await bot.telegram.editMessageText(messageData.moves[id].chat,id, null,'Unfortunately, Timeout For *15 Min* Has Over & *'+c(messageData.moves[id].poke)+'* Did Not Learnt *'+c(messageData.moves[id].move)+'*',{parse_mode:'markdown'})
+  }
+}catch(error){
+  const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
+  if(!d.includes('message to edit not found')){
+    console.error('Error editing message:', error)
+  }
+}
 delete messageData.moves[id]
 await saveMessageData(messageData)
 }
@@ -1086,9 +1079,19 @@ minute: 'numeric',
 };
 const currentTime = new Date().toLocaleString('en-US', options)
 const timeDifference = new Date(currentTime) - queryTime;
-console.log(timeDifference)
 if(timeDifference > 900000){
-bot.telegram.editMessageText(messageData.tutor[id].chat,id, null,'Unfortunately, Timeout For *15 Min* Has Over & *Move Tutor* has gone, you *Missed* opportunity to teach your pokemon *'+c(messageData.tutor[id].mv)+'*',{parse_mode:'markdown'})
+try{
+  if(!id || id === 'undefined' || !messageData.tutor[id] || !messageData.tutor[id].chat){
+    delete messageData.tutor[id]
+  }else{
+    await bot.telegram.editMessageText(messageData.tutor[id].chat,id, null,'Unfortunately, Timeout For *15 Min* Has Over & *Move Tutor* has gone, you *Missed* opportunity to teach your pokemon *'+c(messageData.tutor[id].mv)+'*',{parse_mode:'markdown'})
+  }
+}catch(error){
+  const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
+  if(!d.includes('message to edit not found')){
+    console.error('Error editing message:', error)
+  }
+}
 delete messageData.tutor[id]
 await saveMessageData(messageData)
 }
@@ -1144,32 +1147,9 @@ bot.telegram.editMessageText(chatId, userMessageData.mid, null, newMessage, {
 }
 
 schedule.scheduleJob('*/2 * * * * *', editOverdueMessages);
-// callback moved to callbacks/059_viewteam.js
-// /reset_battle moved to commands/reset_battle.js
-// /record moved to commands/record.js
-// /trade moved to commands/trade.js
-// callback moved to callbacks/060_tradc.js
-// callback moved to callbacks/061_trade.js
-// callback moved to callbacks/062_trdfe.js
-// callback moved to callbacks/063_trfe.js
-// callback moved to callbacks/064_agtr.js
-// admins declared near bootstrap
-// /add_band moved to commands/add_band.js
-// /status moved to commands/status.js
-// /add moved to commands/add.js
-// /candy moved to commands/candy.js
-// /evolve moved to commands/evolve.js
-// callback moved to callbacks/065_evolve.js
-// callback moved to callbacks/066_candy.js
 
-// /vitamin moved to commands/vitamin.js
-// callback moved to callbacks/067_vitamin.js
-// callback moved to callbacks/068_vitye.js
-// /berry moved to commands/berry.js
-// callback moved to callbacks/069_berry.js
-// callback moved to callbacks/070_brth.js
 const dataFolderPath = './data/db/'; // Replace with the path to your data folder
-// /broad moved to commands/broad.js
+
 
 async function forwardMessageToAllUsers(ctx, msgid,id) {
   const userIds = getUserIdsFromDataFolder();
@@ -1219,29 +1199,13 @@ function getUserIdsFromDataFolder() {
 
   return userIds;
 }
-// /top moved to commands/top.js
-// /display moved to commands/display.js
-// callback moved to callbacks/071_display.js
-// /sort moved to commands/sort.js
-// callback moved to callbacks/072_sort.js
-// /nickname moved to commands/nickname.js
-// callback moved to callbacks/073_nickname.js
-// /referral moved to commands/referral.js
-// callback moved to callbacks/074_refurl.js
-// /mynicknames moved to commands/mynicknames.js
-// callback moved to callbacks/075_nykne.js
-// /pokedex moved to commands/pokedex.js
-// callback moved to callbacks/076_pkydex.js
-// callback moved to callbacks/077_bst.js
-// callback moved to callbacks/078_ryf.js
+
 async function checkseen(ctx,name){
-console.log(name)
 const data56 = await getUserData(ctx.from.id)
 if(!data56.pokeseen){
 data56.pokeseen = []
 }
 if(!data56.pokeseen.includes(name)){
-console.log('not includes '+name)
 data56.pokeseen.push(name)
 await saveUserData2(ctx.from.id,data56)
 }
@@ -1274,30 +1238,13 @@ const regions2 = {
   }
   return formattedDetails.join('\n');
 }
-// callback moved to callbacks/079_tyrt.js
-// callback moved to callbacks/080_trlr.js
-// callback moved to callbacks/081_tryfrg.js
-// callback moved to callbacks/082_trtns.js
-// /ev_train moved to commands/ev_train.js
-// callback moved to callbacks/083_evtrain.js
-// callback moved to callbacks/084_rvyr.js
-// /release moved to commands/release.js
-// callback moved to callbacks/085_release.js
-// callback moved to callbacks/086_relst.js
-// callback moved to callbacks/087_dlt.js
-// /pokeballs moved to commands/pokeballs.js
-// callback moved to callbacks/088_pkbl.js
-// admins35 declared near bootstrap
-// /bfb moved to commands/bfb.js
 
-// Unban command: /unban <id>
-// /ufb moved to commands/ufb.js
+
 function saveBanList() {
     fs.writeFileSync(banListFile2, JSON.stringify(banList2, null, 2), 'utf-8');
 }
-// /settings moved to commands/settings.js
-// /set moved to commands/set.js
-// /hi moved to commands/hi.js
+
+
 async function editMessage(per,ctx, chatId, id, msg, parameters2) {
     let options = {};
 try{
@@ -1323,6 +1270,9 @@ return m.message_id
 }catch(error){
 const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
 if(d.includes('message is not modified')){
+return null
+}
+if(d.includes('canceled by new editmessagemedia request')){
 return null
 }
 console.error('Error sending message:', error)
@@ -1355,7 +1305,6 @@ if (chatId && ctx.chat && ctx.chat.type != 'private') {
   lastmsg[ctx.chat.id] = [...(lastmsg[ctx.chat.id] || []), Date.now()];
 }
 if(options.source){
-console.log('card')
 var m = await bot.telegram.sendPhoto(chatId,parameters1,msg)
 }else if(options.caption){
 var m = await bot.telegram.sendPhoto(chatId,msg,options)
@@ -1387,6 +1336,5 @@ console.error('Error sending message:', error)
 return null
 }
 }
-// /natures moved to commands/natures.js
 bot.launch();
 

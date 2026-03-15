@@ -1,6 +1,6 @@
 function register_019_ev(bot, deps) {
   Object.assign(globalThis, deps, { bot });
-  bot.action(/ev_/,async ctx => {
+  bot.action(/^ev_/,async ctx => {
 const name = ctx.callbackQuery.data.split('_')[1]
 const data = pokes[name]
 let highestEV = { stat: "", value: 0 };

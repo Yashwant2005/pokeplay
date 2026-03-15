@@ -1,7 +1,7 @@
 function registerRelearnerCallbacks(bot, deps) {
   Object.assign(globalThis, deps, { bot });
 
-  const RELEARN_COST = 5000;
+  const RELEARN_COST = 0;
 
   const getRelearnableMoves = (poke) => {
     if (!poke || !pokemoves[poke.name] || !Array.isArray(pokemoves[poke.name].moves_info)) {
@@ -27,8 +27,8 @@ function registerRelearnerCallbacks(bot, deps) {
     }
 
     const data = await getUserData(ctx.from.id);
-    if (!data.inv || data.inv.pc < RELEARN_COST) {
-      ctx.answerCbQuery('You need 5000 PokeCoins.');
+    if (!data.inv) {
+      ctx.answerCbQuery('Start your journey first.');
       return;
     }
 
@@ -84,7 +84,7 @@ function registerRelearnerCallbacks(bot, deps) {
 
     let messageText = `List Of Your Pokes (*Page ${page}*):\n\n`;
     messageText += await pokelist(pks22.map((item) => item.pass), ctx, startIndex);
-    messageText += `\n_Select Poke For Relearner_ (*Cost:* ${RELEARN_COST} PC)`;
+    messageText += `\n_Select Poke For Relearner_ (*Cost:* Free)`;
 
     await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, messageText, {
       parse_mode: 'markdown',
@@ -113,7 +113,7 @@ function registerRelearnerCallbacks(bot, deps) {
     }
 
     let msg = '<b>Pokemon:</b> ' + c(pk.name) + ' (Lv. ' + plevel(pk.name, pk.exp) + ')\n';
-    msg += '<b>Cost:</b> ' + RELEARN_COST + ' PokeCoins\n\n';
+    msg += '<b>Cost:</b> Free\n\n';
     msg += '<i>Select a level-up move to relearn:</i>';
 
     const rows = [];
@@ -159,7 +159,7 @@ function registerRelearnerCallbacks(bot, deps) {
       const msg = 'Are you sure to teach <b>' + c(pk.name) + '</b> this move?\n\n' +
         '<b>Move:</b> ' + c(move.name) + ' [' + c(move.type) + ' ' + emojis[move.type] + ']\n' +
         '<b>Power:</b> ' + move.power + ', <b>Accuracy:</b> ' + move.accuracy + '\n' +
-        '<b>Cost:</b> ' + RELEARN_COST + ' PokeCoins';
+        '<b>Cost:</b> Free';
 
       await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
         parse_mode: 'HTML',
@@ -221,7 +221,7 @@ function registerRelearnerCallbacks(bot, deps) {
 
     const msg = 'Are you sure to replace <b>' + c(dmoves[forgetId].name) + '</b> with <b>' + c(dmoves[moveId].name) + '</b>?\n\n' +
       '<b>Pokemon:</b> ' + c(pk.name) + '\n' +
-      '<b>Cost:</b> ' + RELEARN_COST + ' PokeCoins';
+      '<b>Cost:</b> Free';
 
     await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
       parse_mode: 'HTML',
@@ -245,8 +245,8 @@ function registerRelearnerCallbacks(bot, deps) {
     }
 
     const data = await getUserData(ctx.from.id);
-    if (!data.inv || data.inv.pc < RELEARN_COST) {
-      ctx.answerCbQuery('Not enough PokeCoins.');
+    if (!data.inv) {
+      ctx.answerCbQuery('Start your journey first.');
       return;
     }
 
@@ -277,7 +277,7 @@ function registerRelearnerCallbacks(bot, deps) {
     await saveUserData2(ctx.from.id, data);
 
     await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id,
-      '*Relearner:* *' + c(pk.name) + '* learned *' + c(dmoves[moveId].name) + '*\n-5000 PokeCoins',
+      '*Relearner:* *' + c(pk.name) + '* learned *' + c(dmoves[moveId].name) + '*\n*Cost:* Free',
       { parse_mode: 'markdown' }
     );
   });

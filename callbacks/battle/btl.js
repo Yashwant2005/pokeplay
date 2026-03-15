@@ -10,7 +10,7 @@ battlec[ctx.chat.id] = Date.now();
 const bword = ctx.callbackQuery.data.split('_')[1]
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (error) {
       battleData = {};
     }

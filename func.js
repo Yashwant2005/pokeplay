@@ -32,6 +32,24 @@ const chains = JSON.parse(fs.readFileSync('data/evolution_chains2.json', 'utf8')
 const growth_rates = JSON.parse(fs.readFileSync('data/pokemon_data2.json', 'utf8'));
 const rdata = JSON.parse(fs.readFileSync('data/pokedex_data.json', 'utf8'));
 const spawn = JSON.parse(fs.readFileSync('data/pokemon_status_info.json', 'utf8'));
+
+const USER_CACHE = new Map();
+const USER_DIRTY = new Set();
+const USER_LAST_ACCESS = new Map();
+const USER_CACHE_MTIME = new Map();
+const USER_FLUSH_INTERVAL_MS = 3000;
+const USER_CACHE_TTL_MS = 5 * 60 * 1000;
+
+let messageDataCache = null;
+let messageDataDirty = false;
+let messageDataLastAccess = 0;
+const MESSAGE_FLUSH_INTERVAL_MS = 3000;
+
+const BATTLE_CACHE = new Map();
+const BATTLE_DIRTY = new Set();
+const BATTLE_LAST_ACCESS = new Map();
+const BATTLE_FLUSH_INTERVAL_MS = 3000;
+const BATTLE_CACHE_TTL_MS = 5 * 60 * 1000;
 async function check(ctx, next) {
   const data = await getUserData(ctx.from.id);
 
@@ -65,28 +83,11 @@ await next();
 
 async function saveUserData2(userId, userData) {
   try {
-    const filePath = './data/db/'+userId+'.json';
-    let userDataEntry = [];
-    if (fs.existsSync(filePath)) {
-      const existingData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (Array.isArray(existingData)) {
-        userDataEntry = existingData;
-      } else {
-        // If it's an object, convert to array
-        userDataEntry = [existingData];
-      }
-    } else {
-      userDataEntry = [{ user_id: userId, data: {}, reset: false }];
-    }
-    // Find or create the entry
-    let entry = userDataEntry.find(e => e.user_id == userId);
-    if (!entry) {
-      entry = { user_id: userId, data: {}, reset: false };
-      userDataEntry.push(entry);
-    }
-    entry.data = userData;
-    fs.writeFileSync(filePath, JSON.stringify(userDataEntry, null, 2), 'utf8');
-    console.log('Data saved successfully.');
+    const key = String(userId);
+    USER_CACHE.set(key, userData);
+    USER_DIRTY.add(key);
+    USER_LAST_ACCESS.set(key, Date.now());
+    USER_CACHE_MTIME.set(key, Date.now());
   } catch (error) {
     console.error('Error saving data:', error);
   }
@@ -95,7 +96,34 @@ const saveUserData22 = saveUserData2;
 const FILE_PATH = './data/db.json';
 async function getUserData(userId) {
   try {
+    const key = String(userId);
     const filePath = './data/db/'+userId+'.json';
+    if (USER_CACHE.has(key)) {
+      try {
+        const stat = fs.existsSync(filePath) ? fs.statSync(filePath) : null;
+        const cachedMtime = USER_CACHE_MTIME.get(key) || 0;
+        if (stat && stat.mtimeMs > cachedMtime) {
+          const existingData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          let dataArray = [];
+          if (Array.isArray(existingData)) {
+            dataArray = existingData;
+          } else {
+            dataArray = [existingData];
+          }
+          const userDataEntry = dataArray.filter((data) => data.user_id == userId)[0];
+          if (userDataEntry) {
+            USER_CACHE.set(key, userDataEntry.data);
+            USER_CACHE_MTIME.set(key, stat.mtimeMs);
+            USER_LAST_ACCESS.set(key, Date.now());
+            return userDataEntry.data;
+          }
+        }
+      } catch (err) {
+        // fall through to return cached
+      }
+      USER_LAST_ACCESS.set(key, Date.now());
+      return USER_CACHE.get(key);
+    }
     if (!fs.existsSync(filePath)) {
       return {};
     }
@@ -104,14 +132,20 @@ async function getUserData(userId) {
     if (Array.isArray(existingData)) {
       dataArray = existingData;
     } else {
-      // If it's an object, treat as single entry
       dataArray = [existingData];
     }
     const userDataEntry = dataArray.filter((data) => data.user_id == userId)[0];
     if (!userDataEntry) {
-      console.error('User data not found');
       return {};
     }
+    USER_CACHE.set(key, userDataEntry.data);
+    try {
+      const stat = fs.statSync(filePath);
+      USER_CACHE_MTIME.set(key, stat.mtimeMs);
+    } catch (err) {
+      USER_CACHE_MTIME.set(key, Date.now());
+    }
+    USER_LAST_ACCESS.set(key, Date.now());
     return userDataEntry.data;
   } catch (error) {
     console.error('Error getting data:', error);
@@ -156,7 +190,6 @@ let currentLevel, nextLevel, nextExp;
     }
   }
 
-console.log(currentLevel)
   return {
     currentLevel,
     nextLevel,
@@ -445,8 +478,14 @@ function findEvolutionLevel(pokemonName) {
 }
 function loadMessageData() {
     try {
+        if (messageDataCache) {
+            messageDataLastAccess = Date.now();
+            return messageDataCache;
+        }
         const data = fs.readFileSync('data/msg_data.json', 'utf8');
-        return JSON.parse(data) || {};
+        messageDataCache = JSON.parse(data) || {};
+        messageDataLastAccess = Date.now();
+        return messageDataCache;
     } catch (err) {
         console.error('Error loading message data:', err.message);
         return {};
@@ -454,8 +493,131 @@ function loadMessageData() {
 }
 
 function saveMessageData(data) {
-    fs.writeFileSync('data/msg_data.json', JSON.stringify(data,null,2), 'utf8');
+    messageDataCache = data || {};
+    messageDataDirty = true;
+    messageDataLastAccess = Date.now();
 }
+
+function loadBattleData(bword) {
+  const key = String(bword);
+  if (BATTLE_CACHE.has(key)) {
+    BATTLE_LAST_ACCESS.set(key, Date.now());
+    return BATTLE_CACHE.get(key);
+  }
+  const filePath = './data/battle/' + bword + '.json';
+  if (!fs.existsSync(filePath)) {
+    return {};
+  }
+  try {
+    const raw = fs.readFileSync(filePath, 'utf8');
+    const data = JSON.parse(raw) || {};
+    BATTLE_CACHE.set(key, data);
+    BATTLE_LAST_ACCESS.set(key, Date.now());
+    return data;
+  } catch (error) {
+    return {};
+  }
+}
+
+function saveBattleData(bword, data) {
+  const key = String(bword);
+  BATTLE_CACHE.set(key, data || {});
+  BATTLE_DIRTY.add(key);
+  BATTLE_LAST_ACCESS.set(key, Date.now());
+}
+
+function flushUserCache() {
+  if (USER_DIRTY.size < 1) return;
+  for (const key of Array.from(USER_DIRTY)) {
+    try {
+      const userData = USER_CACHE.get(key);
+      if (!userData) {
+        USER_DIRTY.delete(key);
+        continue;
+      }
+      const filePath = './data/db/' + key + '.json';
+      let userDataEntry = [];
+      if (fs.existsSync(filePath)) {
+        const existingData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        if (Array.isArray(existingData)) {
+          userDataEntry = existingData;
+        } else {
+          userDataEntry = [existingData];
+        }
+      } else {
+        userDataEntry = [{ user_id: key, data: {}, reset: false }];
+      }
+      let entry = userDataEntry.find(e => e.user_id == key);
+      if (!entry) {
+        entry = { user_id: key, data: {}, reset: false };
+        userDataEntry.push(entry);
+      }
+      entry.data = userData;
+      fs.writeFileSync(filePath, JSON.stringify(userDataEntry, null, 2), 'utf8');
+      USER_DIRTY.delete(key);
+    } catch (error) {
+      // keep dirty for next flush
+    }
+  }
+}
+
+function flushMessageData() {
+  if (!messageDataDirty || !messageDataCache) return;
+  try {
+    fs.writeFileSync('data/msg_data.json', JSON.stringify(messageDataCache, null, 2), 'utf8');
+    messageDataDirty = false;
+  } catch (error) {
+    // keep dirty for next flush
+  }
+}
+
+function flushBattleCache() {
+  if (BATTLE_DIRTY.size < 1) return;
+  for (const key of Array.from(BATTLE_DIRTY)) {
+    try {
+      const data = BATTLE_CACHE.get(key);
+      if (!data) {
+        BATTLE_DIRTY.delete(key);
+        continue;
+      }
+      const filePath = './data/battle/' + key + '.json';
+      fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+      BATTLE_DIRTY.delete(key);
+    } catch (error) {
+      // keep dirty for next flush
+    }
+  }
+}
+
+function sweepCache() {
+  const now = Date.now();
+  for (const [key, last] of USER_LAST_ACCESS.entries()) {
+    if (now - last > USER_CACHE_TTL_MS && !USER_DIRTY.has(key)) {
+      USER_CACHE.delete(key);
+      USER_LAST_ACCESS.delete(key);
+      USER_CACHE_MTIME.delete(key);
+    }
+  }
+  if (messageDataCache && now - messageDataLastAccess > USER_CACHE_TTL_MS && !messageDataDirty) {
+    messageDataCache = null;
+  }
+  for (const [key, last] of BATTLE_LAST_ACCESS.entries()) {
+    if (now - last > BATTLE_CACHE_TTL_MS && !BATTLE_DIRTY.has(key)) {
+      BATTLE_CACHE.delete(key);
+      BATTLE_LAST_ACCESS.delete(key);
+    }
+  }
+}
+
+setInterval(flushUserCache, USER_FLUSH_INTERVAL_MS);
+setInterval(flushMessageData, MESSAGE_FLUSH_INTERVAL_MS);
+setInterval(flushBattleCache, BATTLE_FLUSH_INTERVAL_MS);
+setInterval(sweepCache, 60 * 1000);
+process.once('beforeExit', () => {
+  flushUserCache();
+  flushMessageData();
+  flushBattleCache();
+});
 async function pokelisthtml(pokemon,id,str){
 let msg = ''
 const data = await getUserData(id)
@@ -822,5 +984,5 @@ if (!ivs[statToIncrease] || ivs[statToIncrease] < AIv) {
   return ivs;
 }
 
-module.exports = { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel,saveMessageData,loadMessageData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs}
+module.exports = { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel,saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs}
 

@@ -1,0 +1,61 @@
+{
+  "c": "Edn2Rlan",
+  "org": "no",
+  "chp": 341,
+  "ochp": 74,
+  "ohp": 74,
+  "ivs": {
+    "hp": 15,
+    "attack": 16,
+    "defense": 13,
+    "special_attack": 16,
+    "special_defense": 22,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "HZarqTTz",
+  "level": 30,
+  "name": "magneton",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magneton": 74
+  },
+  "symbol": "",
+  "team": {
+    "Edn2Rlan": 341,
+    "AvJrwuf3": 60,
+    "y2LUHEiN": 158,
+    "0J6DFcwM": 124
+  },
+  "la": {
+    "Edn2Rlan": 100,
+    "AvJrwuf3": 22,
+    "y2LUHEiN": 34,
+    "0J6DFcwM": 38
+  }
+}

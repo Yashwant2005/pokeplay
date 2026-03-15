@@ -9,33 +9,54 @@ ctx.answerCbQuery()
 return
 }
 const data = await getUserData(ctx.from.id)
-const matchingLevels = Object.keys(trainerlevel).filter(level => data.inv.exp >= trainerlevel[level]);
-const userLevel = matchingLevels.length > 0 ? parseInt(matchingLevels[matchingLevels.length - 1]) : undefined;
+const regionGroups = {
+  kanto: ['kanto', 'letsgo-kanto'],
+  johto: ['johto'],
+  hoenn: ['hoenn'],
+  sinnoh: ['sinnoh'],
+  hisui: ['hisui'],
+  unova: ['unova'],
+  kalos: ['kalos-central', 'kalos-coastal', 'kalos-mountain'],
+  alola: ['alola', 'melemele', 'akala', 'ulaula', 'poni'],
+  galar: ['galar', 'isle-of-armor', 'crown-tundra'],
+  paldea: ['paldea', 'kitakami', 'blueberry'],
+  national: ['national'],
+  conquest: ['conquest-gallery']
+}
+const getRegionGroup = (value) => {
+const normalized = String(value || '').toLowerCase()
+for(const [groupName, places] of Object.entries(regionGroups)){
+if(places.includes(normalized)){
+return groupName
+}
+}
+return normalized
+}
 if(region=='back'){
 place = true
 var key = [
-  [{ text: userLevel >= 75 ? 'National' : '  ',  callback_data: userLevel >= 75 ? 'travel_national_'+ctx.from.id+'' : 'locked' },],
+  [{ text: 'National',  callback_data: 'travel_national_'+ctx.from.id+'' },],
   [
     { text: 'Kanto', callback_data: 'travel_kanto2_'+ctx.from.id+'' },
-    { text: userLevel >= 5 ? 'Johto' : '  ', callback_data: userLevel >= 5 ? 'travel_johto_'+ctx.from.id+'' : 'locked' },
-    { text: userLevel >= 10 ? 'Hoenn' : '  ', callback_data: userLevel >= 10 ? 'travel_hoenn_'+ctx.from.id+'' : 'locked' }
+    { text: 'Johto', callback_data: 'travel_johto_'+ctx.from.id+'' },
+    { text: 'Hoenn', callback_data: 'travel_hoenn_'+ctx.from.id+'' }
   ],
   [
-    { text: userLevel >= 15 ? 'Sinnoh' : '  ',  callback_data: userLevel >= 15 ? 'travel_sinnoh_'+ctx.from.id+'' : 'locked' },
-    { text: userLevel >= 40 ? 'Hisui' : '  ', callback_data: userLevel >= 40 ? 'travel_hisui_'+ctx.from.id+'' : 'locked' },
-    { text: userLevel >= 20 ? 'Unova' : '  ', callback_data: userLevel >= 20 ? 'travel_unova_'+ctx.from.id+'' : 'locked' },
-    { text: userLevel >= 25 ? 'Kalos' : '  ',  callback_data: userLevel >= 25 ? 'travel_kalos_'+ctx.from.id+'' : 'locked' }
+    { text: 'Sinnoh',  callback_data: 'travel_sinnoh_'+ctx.from.id+'' },
+    { text: 'Hisui', callback_data: 'travel_hisui_'+ctx.from.id+'' },
+    { text: 'Unova', callback_data: 'travel_unova_'+ctx.from.id+'' },
+    { text: 'Kalos',  callback_data: 'travel_kalos_'+ctx.from.id+'' }
   ],
   [
-    { text: userLevel >= 30 ? 'Alola' : '  ', callback_data: userLevel >= 30 ? 'travel_alola2_'+ctx.from.id+'' : 'locked' },
-    { text: userLevel >= 50 ? 'Galar' : '  ',  callback_data: userLevel >= 50 ? 'travel_galar2_'+ctx.from.id+'' : 'locked' },
-    { text: userLevel >= 60 ? 'Paldea' : '  ',  callback_data: userLevel >= 60 ? 'travel_paldea2_'+ctx.from.id+'' : 'locked' }
+    { text: 'Alola', callback_data: 'travel_alola2_'+ctx.from.id+'' },
+    { text: 'Galar',  callback_data: 'travel_galar2_'+ctx.from.id+'' },
+    { text: 'Paldea',  callback_data: 'travel_paldea2_'+ctx.from.id+'' }
   ],
   [
-    { text: userLevel >= 65 ? 'Conquest Gallery' : '  ', callback_data: userLevel >= 65 ? 'travel_conquest-gallery_'+ctx.from.id+'' : 'locked' }
+    { text: 'Conquest Gallery', callback_data: 'travel_conquest-gallery_'+ctx.from.id+'' }
   ]
 ];
-var msg = '*Which Region You Wanna Travel?*'
+var msg = '*Which Region You Wanna Travel?*\n\n*Travel cost:* _500 PokeCoins when changing major region. Same-region travel is free._'
 }else if(region=='kanto2'){
 place = true
 var key = [
@@ -83,9 +104,28 @@ if(data.balls.safari && data.balls.safari > 0){
 ctx.answerCbQuery('You Are In *'+c(data.extra.saf)+' Safari Zone*')
 return
 }
-data.inv.region = ctx.callbackQuery.data.split('_')[1]
+const selectedRegion = ctx.callbackQuery.data.split('_')[1]
+const currentRegion = String(data.inv.region || '').toLowerCase()
+const selectedRegionGroup = getRegionGroup(selectedRegion)
+const currentRegionGroup = getRegionGroup(currentRegion)
+const isPaidTravel = currentRegionGroup !== selectedRegionGroup
+if(isPaidTravel){
+if(!Number.isFinite(data.inv.pc)){
+data.inv.pc = 0
+}
+if(data.inv.pc < 500){
+ctx.answerCbQuery('Need 500 PokeCoins to change region.',{show_alert:true})
+return
+}
+data.inv.pc -= 500
+}
+data.inv.region = selectedRegion
 await saveUserData2(ctx.from.id,data)
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Successfully Arrived To *'+c(ctx.callbackQuery.data.split('_')[1])+'*',{parse_mode:'markdown'})
+let arrivalMessage = 'Successfully Arrived To *'+c(selectedRegion)+'*'
+if(isPaidTravel){
+arrivalMessage += '\n*Cost:* 500 PokeCoins 💷'
+}
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,arrivalMessage,{parse_mode:'markdown'})
 })
 }
 

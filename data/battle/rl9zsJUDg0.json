@@ -1,0 +1,50 @@
+{
+  "c": "m08rfuNt",
+  "org": "no",
+  "chp": 48,
+  "ochp": -102,
+  "ohp": 37,
+  "ivs": {
+    "hp": 16,
+    "attack": 13,
+    "defense": 20,
+    "special_attack": 21,
+    "special_defense": 15,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "3bBTdKge",
+  "level": 11,
+  "name": "pinsir",
+  "omoves": [
+    {
+      "id": 11,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 20,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pinsir": -102
+  },
+  "symbol": "",
+  "team": {
+    "m08rfuNt": 48
+  },
+  "la": {
+    "m08rfuNt": 18
+  }
+}

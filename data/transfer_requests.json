@@ -1,1 +1,27 @@
-{}
+{
+  "9ha0LSBZICHz": {
+    "id": "9ha0LSBZICHz",
+    "status": "approved",
+    "createdAt": "2026-03-11T05:54:47.765Z",
+    "userId": 6265981509,
+    "userTag": "@FLIRTER_KUN",
+    "pokemonName": "yveltal",
+    "nature": "careful",
+    "ivs": {
+      "hp": 30,
+      "attack": 31,
+      "defense": 31,
+      "special_attack": 15,
+      "special_defense": 24,
+      "speed": 25
+    },
+    "shiny": false,
+    "fingerprint": "yveltal|careful|hp:30|atk:31|def:31|spa:15|spd:24|spe:25",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-11T05:55:02.516Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "yveltal"
+    ]
+  }
+}

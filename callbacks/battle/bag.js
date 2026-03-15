@@ -10,16 +10,24 @@ battlec[ctx.chat.id] = Date.now();
 const bword = ctx.callbackQuery.data.split('_')[1]
 let battleData = {};
     try {
-      battleData = JSON.parse(fs.readFileSync('./data/battle/'+bword+'.json', 'utf8'));
+      battleData = loadBattleData(bword);
     } catch (error) {
       battleData = {};
     }
 const data = await getUserData(ctx.from.id)
+if(!battleData || !battleData.c || !battleData.name){
+  ctx.answerCbQuery('Battle expired. Start again.')
+  return
+}
 if(data.extra.evhunt && data.extra.evhunt > 0){
 ctx.answerCbQuery('Cant Catch Poke In Training Zone')
 return
 }
 const p = data.pokes.filter((poke)=>poke.pass==battleData.c)[0]
+if(!p){
+  ctx.answerCbQuery('Battle desynced. Use /reset_battle.')
+  return
+}
 const clevel = plevel(p.name,p.exp)
 const balls = []
 for(const ball in data.balls){
@@ -53,10 +61,15 @@ let move = dmoves[move2]
 msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }
+if(moves.length < 1){
+  ctx.answerCbQuery('Your move data is missing. Use /reset_battle.')
+  return
+}
 msg += '\n\n<i>Choose Which Ball To Use:</i>'
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:rows}})
 })
 }
 
 module.exports = register_014_bag;
+
 

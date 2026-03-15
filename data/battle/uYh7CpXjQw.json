@@ -1,0 +1,66 @@
+{
+  "c": "Tsxr5AMS",
+  "org": "no",
+  "chp": 458,
+  "ochp": -91,
+  "ohp": 95,
+  "ivs": {
+    "hp": 14,
+    "attack": 18,
+    "defense": 12,
+    "special_attack": 21,
+    "special_defense": 16,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "vMBsXrVS",
+  "level": 34,
+  "name": "corvisquire",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 681,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 365,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "corvisquire": -91
+  },
+  "symbol": "",
+  "team": {
+    "Tsxr5AMS": 458,
+    "BiLqcvCr": 169,
+    "lTTgD8x0": 118,
+    "Aw7KRyyT": 174
+  },
+  "la": {
+    "Tsxr5AMS": 100,
+    "BiLqcvCr": 51,
+    "lTTgD8x0": 40,
+    "Aw7KRyyT": 37
+  }
+}

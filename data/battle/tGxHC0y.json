@@ -1,0 +1,102 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "8436771630": true,
+    "7577674783": true
+  },
+  "status": {},
+  "c": "RZEIVl6V",
+  "chp": 0,
+  "o": "bFZvAVgg",
+  "ohp": 75,
+  "cid": "8436771630",
+  "oid": "7577674783",
+  "tem": {
+    "RZEIVl6V": 0
+  },
+  "la": {
+    "RZEIVl6V": 100
+  },
+  "tem2": {
+    "bFZvAVgg": 75,
+    "7MCZA9Su": 261,
+    "4cCrIxsi": 315,
+    "ezUyeQl9": 410,
+    "vD5upjkr": 230,
+    "DC5wBpKS": 231
+  },
+  "la2": {
+    "bFZvAVgg": 100,
+    "7MCZA9Su": 100,
+    "4cCrIxsi": 100,
+    "ezUyeQl9": 100,
+    "vD5upjkr": 100,
+    "DC5wBpKS": 100
+  },
+  "ot": {
+    "undefined": 281
+  },
+  "usedMoves": {
+    "bFZvAVgg": [
+      "731",
+      "729"
+    ],
+    "RZEIVl6V": [
+      "14",
+      "245"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 3,
+  "bideState": {},
+  "statStages": {
+    "bFZvAVgg": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "RZEIVl6V": {
+      "attack": 2,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "RZEIVl6V": {
+      "damage": 33,
+      "category": "physical",
+      "from": "bFZvAVgg",
+      "move": "zippy zap"
+    }
+  },
+  "lastMoveByPass": {
+    "bFZvAVgg": "729",
+    "RZEIVl6V": "245"
+  }
+}

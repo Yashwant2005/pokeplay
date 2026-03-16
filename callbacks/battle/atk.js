@@ -9,6 +9,40 @@ if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
 battlec[ctx.chat.id] = Date.now();
 const move = ctx.callbackQuery.data.split('_')[1]
 const bword = ctx.callbackQuery.data.split('_')[2]
+const normalizeMoveName = (moveName) => String(moveName || '').toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim()
+const RECOIL_MOVE_RULES = {
+  'brave bird': { ratio: 1 / 3 },
+  'double edge': { ratio: 1 / 3 },
+  'flare blitz': { ratio: 1 / 3 },
+  'head charge': { ratio: 1 / 4 },
+  'head smash': { ratio: 1 / 2 },
+  'light of ruin': { ratio: 1 / 2 },
+  'shadow end': { ratio: 1 / 2 },
+  'shadow rush': { ratio: 1 / 4 },
+  'struggle': { maxHpRatio: 1 / 4 },
+  'submission': { ratio: 1 / 4 },
+  'take down': { ratio: 1 / 4 },
+  'volt tackle': { ratio: 1 / 3 },
+  'wave crash': { ratio: 1 / 3 },
+  'wild charge': { ratio: 1 / 4 },
+  'wood hammer': { ratio: 1 / 3 }
+}
+const SELF_FAINT_MOVES = new Set([
+  'explosion',
+  'final gambit',
+  'healing wish',
+  'lunar dance',
+  'memento',
+  'misty explosion',
+  'self destruct'
+])
+const getRecoilDamage = (moveName, damageDealt, attackerMaxHp) => {
+  const rule = RECOIL_MOVE_RULES[normalizeMoveName(moveName)]
+  if (!rule) return 0
+  if (rule.maxHpRatio) return Math.max(1, Math.floor(attackerMaxHp * rule.maxHpRatio))
+  if (damageDealt > 0 && rule.ratio) return Math.max(1, Math.floor(damageDealt * rule.ratio))
+  return 0
+}
 let battleData = {};
     try {
       battleData = loadBattleData(bword);
@@ -55,8 +89,21 @@ battleData.chp = Math.max((battleData.chp-damage2),0)
 battleData.team[battleData.c] = Math.max((battleData.team[battleData.c]-damage2),0)
 battleData.ochp -= damage
 battleData.ot[battleData.name] -= damage
-await saveBattleData(bword, battleData);
 let ms2 = '➩ <b>'+c(p.name)+'</b> Used <b>'+c(move1.name)+'</b> And Dealt <b>'+c(battleData.name)+'</b> <code>'+damage+'</code> HP.'
+const recoil = getRecoilDamage(move1.name, damage, stats.hp)
+if(recoil > 0){
+const selfBefore = battleData.chp
+const recoilTaken = Math.min(recoil, selfBefore)
+battleData.chp = Math.max(0, selfBefore - recoilTaken)
+battleData.team[battleData.c] = Math.max(0, (battleData.team[battleData.c] || selfBefore) - recoilTaken)
+ms2 += '\n<b>✶ '+c(p.name)+'</b> Was Hurt By Recoil And Lost <code>'+recoilTaken+'</code> HP.'
+}
+if(SELF_FAINT_MOVES.has(normalizeMoveName(move1.name)) && battleData.chp > 0){
+battleData.chp = 0
+battleData.team[battleData.c] = 0
+ms2 += '\n<b>✶ '+c(p.name)+'</b> Fainted After Using <b>'+c(move1.name)+'</b>.'
+}
+await saveBattleData(bword, battleData);
 if(eff1 == 0){
 ms2 += '\n<b>✶ It\'s 0x effective!</b>'
 }else if(eff1 == 0.5){

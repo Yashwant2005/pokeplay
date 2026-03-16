@@ -1,10 +1,20 @@
 function registerEnterCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+
+  const getUtcMidnightCountdown = () => {
+    const next = moment.utc().add(1, 'day').startOf('day');
+    const totalSec = Math.max(0, next.diff(moment.utc(), 'seconds'));
+    const hours = String(Math.floor(totalSec / 3600)).padStart(2, '0');
+    const mins = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+    const secs = String(totalSec % 60).padStart(2, '0');
+    return hours + ':' + mins + ':' + secs;
+  };
+
   bot.command('enter',check,check2,async ctx => {
   
   const userData = await getUserData(ctx.from.id);
   
-  const currentDate = moment().format('YYYY-MM-DD');
+  const currentDate = moment.utc().format('YYYY-MM-DD');
   
   if(userData.balls.safari && userData.balls.safari > 0){
   
@@ -72,7 +82,7 @@ function registerEnterCommand(bot, deps) {
   
   }
   
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Have Already Played *Safari* Today',{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:[key5]}})
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Have Already Played *Safari* Today\n*Time remaining:* '+getUtcMidnightCountdown()+' (resets at 00:00 UTC)',{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:[key5]}})
   
   return
   

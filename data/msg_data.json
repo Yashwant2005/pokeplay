@@ -1,5 +1,54 @@
 {
   "battle": [],
-  "moves": {},
+  "moves": {
+    "2898": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "bite"
+    },
+    "2900": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "magical-leaf"
+    },
+    "2901": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "quick-attack"
+    },
+    "2902": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "seed-bomb"
+    },
+    "2903": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "u-turn"
+    },
+    "2904": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "slash"
+    },
+    "2905": {
+      "chat": 8493023103,
+      "td": "3/16, 9:35 AM",
+      "poke": "sprigatito",
+      "move": "energy-ball"
+    },
+    "2908": {
+      "chat": 8493023103,
+      "td": "3/16, 9:36 AM",
+      "poke": "sprigatito",
+      "move": "play-rough"
+    }
+  },
   "tutor": {}
 }

@@ -24,8 +24,13 @@ function registerAddCommand(bot, deps) {
 
     const args = ctx.message.text.split(' ').slice(1);
     const poke = args[0];
-    const level = args[1];
-    const amount = isNaN(args[2]) ? 1 : parseFloat(args[2]);
+    const shinyToken = String(args[1] || '').trim();
+    const hasShinyFlag = shinyToken === '-1' || shinyToken === '0' || shinyToken === '1';
+    const forcedShiny = hasShinyFlag && (shinyToken === '-1' || shinyToken === '1');
+    const levelIndex = hasShinyFlag ? 2 : 1;
+    const amountIndex = hasShinyFlag ? 3 : 2;
+    const level = args[levelIndex];
+    const amount = isNaN(args[amountIndex]) ? 1 : parseFloat(args[amountIndex]);
 
     if (amount > 150) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Dont Keep Too High Amount');
@@ -58,12 +63,14 @@ function registerAddCommand(bot, deps) {
     }
 
     // Custom admin format:
-    // /add <poke_name> <level> <nature> <hp_iv> <atk_iv> <def_iv> <spa_iv> <spd_iv> <spe_iv>
-    if (args.length >= 9) {
+    // /add <poke_name> [<shiny_flag:-1|0|1>] <level> <nature> <hp_iv> <atk_iv> <def_iv> <spa_iv> <spd_iv> <spe_iv>
+    if (args.length >= (hasShinyFlag ? 10 : 9)) {
       const pokeName = poke.toLowerCase();
       const poked = pokes[pokeName];
-      const customNature = String(args[2] || '').toLowerCase();
-      const ivInputs = args.slice(3, 9).map((value) => parseInt(value));
+      const natureIndex = hasShinyFlag ? 3 : 2;
+      const ivStart = hasShinyFlag ? 4 : 3;
+      const customNature = String(args[natureIndex] || '').toLowerCase();
+      const ivInputs = args.slice(ivStart, ivStart + 6).map((value) => parseInt(value));
       const levelInt = parseInt(level);
       const validIvs = ivInputs.length === 6 && ivInputs.every((v) => !isNaN(v) && v >= 0 && v <= 31);
 
@@ -98,7 +105,7 @@ function registerAddCommand(bot, deps) {
           exp: chart[growth.growth_rate][levelInt],
           pass: word(8),
           ivs: iv,
-          symbol: args.slice(9).join(' ').toLowerCase().includes('shiny') ? '✨' : '',
+          symbol: hasShinyFlag ? (forcedShiny ? '✨' : '') : (args.slice(ivStart + 6).join(' ').toLowerCase().includes('shiny') ? '✨' : ''),
           evs: ev,
           moves: buildLevelUpMoves(pokeName, levelInt)
         };
@@ -141,7 +148,7 @@ function registerAddCommand(bot, deps) {
           exp: chart[g.growth_rate][level],
           pass: word(8),
           ivs: iv,
-          symbol: ctx.message.text.includes('shiny') ? '✨' : '',
+          symbol: hasShinyFlag ? (forcedShiny ? '✨' : '') : (ctx.message.text.includes('shiny') ? '✨' : ''),
           evs: ev,
           moves: buildLevelUpMoves(pokeName, level)
         };

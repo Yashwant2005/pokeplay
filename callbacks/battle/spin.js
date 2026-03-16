@@ -42,8 +42,28 @@ function registerSpinCallbacks(bot, deps) {
     return true;
   };
 
+  const getUtcMidnightCountdown = () => {
+    const next = moment.utc().add(1, 'day').startOf('day');
+    const totalSec = Math.max(0, next.diff(moment.utc(), 'seconds'));
+    const hours = String(Math.floor(totalSec / 3600)).padStart(2, '0');
+    const mins = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+    const secs = String(totalSec % 60).padStart(2, '0');
+    return hours + ':' + mins + ':' + secs;
+  };
+
+  const isRestrictedSpinForm = (name) => {
+    const normalized = String(name || '').toLowerCase().replace(/[^a-z0-9-]/g, '');
+    return (
+      normalized.includes('mega') ||
+      normalized.includes('gigantamax') ||
+      normalized.includes('eternamax') ||
+      normalized.includes('terastal') ||
+      normalized.includes('stellar')
+    );
+  };
+
   const ensureSpinState = (data, config) => {
-    const today = moment().format('YYYY-MM-DD');
+    const today = moment.utc().format('YYYY-MM-DD');
     if (!data.extra || typeof data.extra !== 'object') data.extra = {};
     if (!data.extra.spinEvent || typeof data.extra.spinEvent !== 'object') {
       data.extra.spinEvent = { date: today, remaining: config.dailySpins, candidate: null, selectedName: null, awaitingName: false };
@@ -258,13 +278,18 @@ function registerSpinCallbacks(bot, deps) {
         return;
       }
       if (state.remaining <= 0) {
-        ctx.answerCbQuery('No spins left for today.');
+        ctx.answerCbQuery('No spins left. Reset in ' + getUtcMidnightCountdown() + ' (UTC).');
         return;
       }
 
       const selectedName = state.selectedName || state.candidate.name;
       if (!selectedName || !pokes[selectedName]) {
         ctx.answerCbQuery('Use /spin and send a pokemon name first.');
+        return;
+      }
+
+      if (isRestrictedSpinForm(selectedName)) {
+        ctx.answerCbQuery('That form is not allowed in Spin.');
         return;
       }
 
@@ -294,7 +319,7 @@ function registerSpinCallbacks(bot, deps) {
       await saveUserData2(ctx.from.id, data);
 
       await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id,
-        '*Spin canceled.*\nYou still have *' + remaining + '* spins left for today.\nUse /spin when ready.',
+        '*Spin canceled.*\nYou still have *' + remaining + '* spins left for today.\n*Time remaining to claim:* ' + getUtcMidnightCountdown() + ' (resets at 00:00 UTC)\nUse /spin when ready.',
         { parse_mode: 'markdown' }
       );
       return;

@@ -1,5 +1,119 @@
 {
   "factions": [
-
+    {
+      "id": "1773662469245",
+      "name": "Shadow",
+      "captain": 6642049252,
+      "captain_name": "",
+      "members": [
+        "6642049252",
+        "7406582778",
+        "1114074312",
+        "5848489095",
+        "1253339353"
+      ],
+      "memberNames": {
+        "1072659486": "Alex Advertiser | Airdrop Dominator",
+        "1114074312": "~Sʜᴇʀʀʏ ⸙",
+        "1253339353": "Prajawal",
+        "6642049252": "~𝗢𝗥𝗘𝗞𝗜 亗",
+        "6265981509": "𝙵𝙻𝙸𝚁𝚃𝙴𝚁",
+        "7406582778": "~ ᎪᏴᎻⵊ ツ",
+        "5848489095": "χɪᴛᴀᴄʜι●𓅂ㅤ"
+      },
+      "admins": [
+        {
+          "userId": "5848489095",
+          "name": "χɪᴛᴀᴄʜι●𓅂ㅤ"
+        },
+        {
+          "userId": "7406582778",
+          "name": "~ ᎪᏴᎻⵊ ツ"
+        }
+      ],
+      "group": -1003621512244,
+      "pfp": "https://i.postimg.cc/zXrvnT4b/Picsart-26-03-16-17-51-19-943.png",
+      "channelMessageId": 9,
+      "pendingPfp": null
+    },
+    {
+      "id": "1773662750469",
+      "name": "OMEN",
+      "captain": 5926652027,
+      "captain_name": "",
+      "members": [
+        "5926652027",
+        "1335302812",
+        "8264487925"
+      ],
+      "memberNames": {
+        "1072659486": "Alex Advertiser | Airdrop Dominator",
+        "1335302812": "​『王』Wayne",
+        "1470441905": "Kiyotaka『⽕』",
+        "5926652027": "𒌐 𝘾𝙊𝙎𝙈𝙄𝘾υ",
+        "5848489095": "χɪᴛᴀᴄʜι●𓅂ㅤ",
+        "8264487925": "𒌐 ʜᴀᴛᴀᴋᴇメ𝙺𝙰𝙺𝙰𝚂𝙷𝙸"
+      },
+      "admins": [
+        {
+          "userId": "1335302812",
+          "name": "『王』Wayne"
+        }
+      ],
+      "group": -1003651333416,
+      "pfp": "https://files.catbox.moe/5rg0pw.jpg",
+      "channelMessageId": 8
+    },
+    {
+      "id": "1773676651954",
+      "name": "Aura",
+      "captain": 2110889690,
+      "captain_name": "",
+      "members": [
+        "2110889690",
+        "7708811819"
+      ],
+      "memberNames": {
+        "1072659486": "Alex Advertiser | Airdrop Dominator",
+        "2110889690": "Davy D. Xebec",
+        "7708811819": "𓄀Takemichi Kun"
+      },
+      "admins": [],
+      "group": -1003810725865,
+      "pfp": "https://files.catbox.moe/5rg0pw.jpg",
+      "channelMessageId": 10
+    },
+    {
+      "id": "1773677446500",
+      "name": "Kavita Bhambhi Only Fans",
+      "captain": 6265981509,
+      "captain_name": "",
+      "members": [
+        "6265981509",
+        "1072659486",
+        "7074080974",
+        "8551864967"
+      ],
+      "memberNames": {
+        "1072659486": "Alex Advertiser | Airdrop Dominator",
+        "6265981509": "𝙵𝙻𝙸𝚁𝚃𝙴𝚁",
+        "7074080974": "ՏIᑎΣ ⌬♦️亗",
+        "8551864967": "Snowie"
+      },
+      "admins": [
+        {
+          "userId": "7074080974",
+          "name": "ՏIᑎΣ ⌬♦️亗"
+        },
+        {
+          "userId": "8551864967",
+          "name": "Snowie"
+        }
+      ],
+      "group": -1003736053869,
+      "pfp": "https://files.catbox.moe/fdxxlj.jpg",
+      "channelMessageId": 12,
+      "pendingPfp": null
+    }
   ]
 }

@@ -276,18 +276,18 @@
           ]
         },
         {
-          "name": "pelipper",
-          "id": 279,
-          "nature": "Quiet",
+          "name": "dewgong",
+          "id": 87,
+          "nature": "Naughty",
           "exp": 1000000,
-          "pass": "zFzYV5fa",
+          "pass": "QHYSxUG7",
           "ivs": {
-            "hp": 13,
-            "attack": 16,
-            "defense": 15,
-            "special_attack": 12,
-            "special_defense": 13,
-            "speed": 13
+            "hp": 21,
+            "attack": 10,
+            "defense": 26,
+            "special_attack": 20,
+            "special_defense": 22,
+            "speed": 19
           },
           "symbol": "",
           "evs": {
@@ -299,26 +299,26 @@
             "speed": 0
           },
           "moves": [
-            17,
-            352,
-            542,
-            56
+            36,
+            291,
+            401,
+            58
           ],
           "temp_battle": true
         },
         {
-          "name": "azumarill",
-          "id": 184,
-          "nature": "Gentle",
-          "exp": 800000,
-          "pass": "qDTa2zfj",
+          "name": "magcargo",
+          "id": 219,
+          "nature": "Careful",
+          "exp": 1000000,
+          "pass": "3xuYbJDw",
           "ivs": {
-            "hp": 23,
-            "attack": 23,
-            "defense": 13,
-            "special_attack": 14,
-            "special_defense": 21,
-            "speed": 20
+            "hp": 12,
+            "attack": 20,
+            "defense": 12,
+            "special_attack": 18,
+            "special_defense": 10,
+            "speed": 24
           },
           "symbol": "",
           "evs": {
@@ -330,25 +330,56 @@
             "speed": 0
           },
           "moves": [
-            583,
-            56,
-            38,
-            276
+            436,
+            34,
+            53,
+            414
           ],
           "temp_battle": true
         },
         {
-          "name": "grafaiai",
-          "id": 945,
-          "nature": "Quiet",
-          "exp": 1059860,
-          "pass": "W8FL5ku9",
+          "name": "azelf",
+          "id": 482,
+          "nature": "Careful",
+          "exp": 1250000,
+          "pass": "KbzoGo9u",
           "ivs": {
-            "hp": 20,
-            "attack": 29,
-            "defense": 19,
+            "hp": 21,
+            "attack": 15,
+            "defense": 21,
             "special_attack": 19,
-            "special_defense": 19,
+            "special_defense": 11,
+            "speed": 24
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            253,
+            248,
+            387,
+            153
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "grimmsnarl-gmax",
+          "id": 861,
+          "nature": "Hasty",
+          "exp": 1000000,
+          "pass": "6uV32Kbi",
+          "ivs": {
+            "hp": 15,
+            "attack": 18,
+            "defense": 16,
+            "special_attack": 22,
+            "special_defense": 24,
             "speed": 18
           },
           "symbol": "",
@@ -361,56 +392,25 @@
             "speed": 0
           },
           "moves": [
-            369,
-            398,
-            282,
-            441
+            426,
+            414,
+            785,
+            825
           ],
           "temp_battle": true
         },
         {
-          "name": "enamorus-therian",
-          "id": 905,
-          "nature": "Gentle",
-          "exp": 1250000,
-          "pass": "W13y2VOP",
-          "ivs": {
-            "hp": 26,
-            "attack": 19,
-            "defense": 26,
-            "special_attack": 28,
-            "special_defense": 18,
-            "speed": 26
-          },
-          "symbol": "",
-          "evs": {
-            "hp": 0,
-            "attack": 0,
-            "defense": 0,
-            "special_attack": 0,
-            "special_defense": 0,
-            "speed": 0
-          },
-          "moves": [
-            276,
-            585,
-            200,
-            831
-          ],
-          "temp_battle": true
-        },
-        {
-          "name": "furfrou-diamond",
-          "id": 676,
+          "name": "kingdra",
+          "id": 230,
           "nature": "Careful",
-          "exp": 600000,
-          "pass": "NLKSy2g5",
+          "exp": 1000000,
+          "pass": "poGNy8Lw",
           "ivs": {
-            "hp": 10,
-            "attack": 17,
-            "defense": 17,
-            "special_attack": 13,
-            "special_defense": 12,
+            "hp": 20,
+            "attack": 19,
+            "defense": 15,
+            "special_attack": 9,
+            "special_defense": 9,
             "speed": 17
           },
           "symbol": "",
@@ -423,26 +423,26 @@
             "speed": 0
           },
           "moves": [
-            44,
-            514,
-            36,
-            389
+            225,
+            61,
+            406,
+            56
           ],
           "temp_battle": true
         },
         {
-          "name": "genesect-chill",
-          "id": 649,
-          "nature": "Sassy",
+          "name": "arceus-dragon",
+          "id": 493,
+          "nature": "Brave",
           "exp": 1250000,
-          "pass": "3mAJA5fn",
+          "pass": "AZixACjT",
           "ivs": {
-            "hp": 15,
-            "attack": 18,
-            "defense": 12,
-            "special_attack": 26,
-            "special_defense": 23,
-            "speed": 18
+            "hp": 22,
+            "attack": 12,
+            "defense": 23,
+            "special_attack": 21,
+            "special_defense": 12,
+            "speed": 29
           },
           "symbol": "",
           "evs": {
@@ -454,16 +454,16 @@
             "speed": 0
           },
           "moves": [
-            405,
-            192,
-            5463,
-            120
+            245,
+            248,
+            63,
+            4492
           ],
           "temp_battle": true
         }
       ],
       "inv": {
-        "pc": 874798,
+        "pc": 876798,
         "region": "isle-of-armor",
         "exp": 404928,
         "avtar": "1",
@@ -480,7 +480,9 @@
         "stones": [
           "gengarite"
         ],
-        "battle": 0
+        "battle": 0,
+        "league_points": 5,
+        "holowear_tickets": 1
       },
       "balls": {
         "regular": 9,
@@ -491,7 +493,7 @@
       "extra": {
         "date": "12/02/2024",
         "megas": {},
-        "huntd": "2026-03-14",
+        "huntd": "2026-03-15",
         "hunts": 1,
         "hunting": false,
         "saf": "Kanto",
@@ -501,13 +503,13 @@
         ],
         "referred": 5254303126,
         "temp_battle": {
-          "JaS86OC": [
-            "zFzYV5fa",
-            "qDTa2zfj",
-            "W8FL5ku9",
-            "W13y2VOP",
-            "NLKSy2g5",
-            "3mAJA5fn"
+          "YRCa1fA": [
+            "QHYSxUG7",
+            "3xuYbJDw",
+            "KbzoGo9u",
+            "6uV32Kbi",
+            "poGNy8Lw",
+            "AZixACjT"
           ]
         },
         "randombattle_settings": {
@@ -521,12 +523,19 @@
         },
         "sort_order": "desc",
         "spinEvent": {
-          "date": "2026-03-15",
-          "remaining": 0,
+          "date": "2026-03-16",
+          "remaining": 10,
           "candidate": null,
           "selectedName": null,
-          "awaitingName": false
-        }
+          "awaitingName": true
+        },
+        "events": {
+          "commemorativeDaily": {
+            "lastClaimDate": "2026-03-16",
+            "lastClaimAtUtc": "2026-03-16T04:34:03.664Z"
+          }
+        },
+        "refer": []
       },
       "teams": {
         "1": [
@@ -820,7 +829,12 @@
         "wormadam-plant",
         "azumarill",
         "grafaiai",
-        "furfrou-diamond"
+        "furfrou-diamond",
+        "dewgong",
+        "magcargo",
+        "azelf",
+        "grimmsnarl-gmax",
+        "arceus-dragon"
       ],
       "pokecaught": [
         "fuecoco",
@@ -1078,7 +1092,12 @@
         "wormadam-plant",
         "azumarill",
         "grafaiai",
-        "furfrou-diamond"
+        "furfrou-diamond",
+        "dewgong",
+        "magcargo",
+        "azelf",
+        "grimmsnarl-gmax",
+        "arceus-dragon"
       ],
       "settings": {
         "max_poke": 6,

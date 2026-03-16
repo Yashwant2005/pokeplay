@@ -1,5 +1,6 @@
 function registerAddCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
 
   const buildLevelUpMoves = (pokeName, level) => {
     const moves = pokemoves[pokeName];
@@ -63,7 +64,7 @@ function registerAddCommand(bot, deps) {
     }
 
     // Custom admin format:
-    // /add <poke_name> [<shiny_flag:-1|0|1>] <level> <nature> <hp_iv> <atk_iv> <def_iv> <spa_iv> <spd_iv> <spe_iv>
+    // /add <poke_name> [<shiny_flag:-1|0|1>] <level> <nature> <hp_iv> <atk_iv> <def_iv> <spa_iv> <spd_iv> <spe_iv> [ability] [shiny]
     if (args.length >= (hasShinyFlag ? 10 : 9)) {
       const pokeName = poke.toLowerCase();
       const poked = pokes[pokeName];
@@ -71,6 +72,10 @@ function registerAddCommand(bot, deps) {
       const ivStart = hasShinyFlag ? 4 : 3;
       const customNature = String(args[natureIndex] || '').toLowerCase();
       const ivInputs = args.slice(ivStart, ivStart + 6).map((value) => parseInt(value));
+      const tailArgs = args.slice(ivStart + 6).map((x) => String(x || '').toLowerCase());
+      const abilityArg = tailArgs.find((x) => x && x !== 'shiny') || '';
+      const customAbility = abilityArg ? abilityArg.replace(/\s+/g, '-').trim() : '';
+      const shinyRequested = tailArgs.includes('shiny');
       const levelInt = parseInt(level);
       const validIvs = ivInputs.length === 6 && ivInputs.every((v) => !isNaN(v) && v >= 0 && v <= 31);
 
@@ -102,10 +107,11 @@ function registerAddCommand(bot, deps) {
           name: pokeName,
           id: poked.pokedex_number,
           nature: customNature,
+          ability: customAbility || getRandomAbilityForPokemon(pokeName, pokes),
           exp: chart[growth.growth_rate][levelInt],
           pass: word(8),
           ivs: iv,
-          symbol: hasShinyFlag ? (forcedShiny ? '✨' : '') : (args.slice(ivStart + 6).join(' ').toLowerCase().includes('shiny') ? '✨' : ''),
+          symbol: hasShinyFlag ? (forcedShiny ? '✨' : '') : (shinyRequested ? '✨' : ''),
           evs: ev,
           moves: buildLevelUpMoves(pokeName, levelInt)
         };
@@ -145,6 +151,7 @@ function registerAddCommand(bot, deps) {
           name: pokeName,
           id: poked.pokedex_number,
           nature: getRandomNature(),
+          ability: getRandomAbilityForPokemon(pokeName, pokes),
           exp: chart[g.growth_rate][level],
           pass: word(8),
           ivs: iv,

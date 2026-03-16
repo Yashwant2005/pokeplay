@@ -1,5 +1,13 @@
 function register_044_keyitem(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const getStoneSell = (stoneName) => {
+    const poke = stones[stoneName] ? stones[stoneName].pokemon : ''
+    const rate = Number(catch_rates[poke] || 190)
+    if(rate <= 45) return { lp: 120, tier: 'Ultra Rare' }
+    if(rate <= 75) return { lp: 90, tier: 'Rare' }
+    if(rate <= 120) return { lp: 70, tier: 'Uncommon' }
+    return { lp: 50, tier: 'Common' }
+  }
   bot.action(/keyitem_/,async ctx => {
 const id = ctx.callbackQuery.data.split('_')[2]
 if(ctx.from.id!=id){
@@ -38,7 +46,8 @@ if(!data.inv.stones[item*1]){
 ctx.answerCbQuery('Something Went Wrong With This Stone')
 return
 }
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'★ This *Key Item* known as *'+c(data.inv.stones[item*1])+'*\n• Which helps *'+c(stones[data.inv.stones[item*1]].pokemon)+'* to transform into *'+c(stones[data.inv.stones[item*1]].mega)+'* in a battle.\n\n_Do you wanna sell your_ *'+c(data.inv.stones[item*1])+'*',{parse_mode:'markdown',reply_markup:{inline_keyboard:[[{text:'Yes',callback_data:'syllity_'+item+'_'+ctx.from.id+''},{text:'No',callback_data:'keyitem_page_'+ctx.from.id+'_1'}]]}, link_preview_options:{show_above_text:true, url: stones[data.inv.stones[item*1]].image}})
+const meta = getStoneSell(data.inv.stones[item*1])
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'★ This *Key Item* known as *'+c(data.inv.stones[item*1])+'*\n• Which helps *'+c(stones[data.inv.stones[item*1]].pokemon)+'* to transform into *'+c(stones[data.inv.stones[item*1]].mega)+'* in a battle.\n\n*Sell value:* '+meta.lp+' LP ('+meta.tier+')\n\n_Do you wanna sell your_ *'+c(data.inv.stones[item*1])+'*',{parse_mode:'markdown',reply_markup:{inline_keyboard:[[{text:'Yes',callback_data:'syllity_'+item+'_'+ctx.from.id+''},{text:'No',callback_data:'keyitem_page_'+ctx.from.id+'_1'}]]}, link_preview_options:{show_above_text:true, url: stones[data.inv.stones[item*1]].image}})
 })
 }
 

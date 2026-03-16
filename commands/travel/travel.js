@@ -70,7 +70,7 @@ function registerTravelCommand(bot, deps) {
   
   
   
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Which Region You Wanna Travel?*\n\n*Currently :* _'+c(data.inv.region || 'N/A')+'_\n*Travel cost:* _500 PokeCoins when changing major region. Same-region travel is free._',{reply_markup:{inline_keyboard:key}})
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Which Region You Wanna Travel?*\n\n*Currently :* _'+c(data.inv.region || 'N/A')+'_\n*Travel cost:* _100 PokeCoins when changing major region. Same-region travel is free._',{reply_markup:{inline_keyboard:key}})
   
   })
 }

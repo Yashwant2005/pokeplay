@@ -39,11 +39,8 @@ return
 }
 if(item=='special'){
 const its = []
-if(data.inv.ring){
-its.push('mega-ring')
-}
-if(data.inv.gmax_band){
-its.push('gmax-band')
+if(data.inv.omniring || data.inv.ring || data.inv.gmax_band){
+its.push('omniring')
 }
 const bt = [{text:'Back',callback_data:'poag_items_'+ctx.from.id+''}]
 if(its.length < 1){
@@ -175,7 +172,15 @@ if(item=='inventory'){
 if(!data.inv.pc){
 data.inv.pc = 0
 }
+if(!Number.isFinite(data.inv.league_points)){
+data.inv.league_points = 0
+}
+if(!Number.isFinite(data.inv.holowear_tickets)){
+data.inv.holowear_tickets = 0
+}
 let msg = '*💷 PokeCoins:* '+data.inv.pc+'\n'
+msg += '\n• *⭐ LP:* '+data.inv.league_points+''
+msg += '\n• *🎟️ HT:* '+data.inv.holowear_tickets+''
 if(data.inv.candy && data.inv.candy > 0){
 msg += '\n• *🍬 Candies:* '+data.inv.candy+''
 }

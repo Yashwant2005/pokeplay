@@ -1,5 +1,6 @@
 function register_015_ball(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+    const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
   bot.action(/ball_/,async ctx => {
 if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
 
@@ -219,6 +220,7 @@ const pass2 = word(8)
 data.pokes.push({
 name:battleData.name,
 nature:battleData.nat,
+  ability:getRandomAbilityForPokemon(battleData.name, pokes),
 ivs:battleData.ivs,
 evs:battleData.evs,
 moves:ms,

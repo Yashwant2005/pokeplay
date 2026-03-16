@@ -1,3 +1,5 @@
+const { getTrainerLevel, getUnclaimedLevels } = require('../../utils/trainer_rank_rewards');
+
 function registerMycardCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.command('mycard', check, async (ctx) => {
@@ -23,9 +25,9 @@ function registerMycardCommand(bot, deps) {
   
       const fontSize = 45;
   
-      const font = `${fontSize}px "Cabal"`;
+      const font = `${fontSize}px Cool`;
 
-      const font2 = `55px "Cabal"`;
+      const font2 = `55px Cool`;
   
       ctxCanvas.font = font;
   
@@ -59,9 +61,7 @@ function registerMycardCommand(bot, deps) {
   
   }
   
-  const matchingLevels = Object.keys(trainerlevel).filter(level => userData.inv.exp >= trainerlevel[level]);
-  
-  const level = matchingLevels.length > 0 ? parseInt(matchingLevels[matchingLevels.length - 1]) : undefined;
+  const level = getTrainerLevel(userData, trainerlevel, 100);
   
   if(!userData.inv.battle){
   
@@ -138,7 +138,7 @@ function registerMycardCommand(bot, deps) {
   ctxCanvas.fillStyle = "#2b2f36";
   ctxCanvas.fillRect(825, 260, 375, 375);
   ctxCanvas.fillStyle = "#ffffff";
-  ctxCanvas.font = "bold 84px Cabal";
+  ctxCanvas.font = "84px Cool";
   ctxCanvas.fillText("?", 995, 470);
 }
   
@@ -181,7 +181,7 @@ function registerMycardCommand(bot, deps) {
   ctxCanvas.fillStyle = "#2b2f36";
   ctxCanvas.fillRect(37, 400, 400, 400);
   ctxCanvas.fillStyle = "#ffffff";
-  ctxCanvas.font = "bold 84px Cabal";
+  ctxCanvas.font = "84px Cool";
   ctxCanvas.fillText("?", 215, 620);
 }
   
@@ -197,10 +197,16 @@ function registerMycardCommand(bot, deps) {
       canvas.createJPEGStream({ quality: 95 }).pipe(writableStream);
   
       writableStream.on('finish', async () => {
+
+        const unclaimedRewards = getUnclaimedLevels(userData, trainerlevel);
+        const buttons = [[{ text: 'More Info', callback_data: 'cardmore' }]];
+        if (unclaimedRewards > 0) {
+          buttons.push([{ text: 'Claim Rank Rewards (' + unclaimedRewards + ')', callback_data: 'trrank_claim_' + ctx.from.id }]);
+        }
   
         // Send the modified photo back
   
-        await sendMessage(ctx,ctx.chat.id,{ source: fs.readFileSync(modifiedPhotoPath) },{parse_mode:'markdown',reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:[[{text:'More Info',callback_data:'cardmore'}]]}})
+        await sendMessage(ctx,ctx.chat.id,{ source: fs.readFileSync(modifiedPhotoPath) },{parse_mode:'markdown',reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:buttons}})
   
       });
   

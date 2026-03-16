@@ -1,4 +1,5 @@
 function registerStartCommand(bot, deps) {
+  const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
   const {
     getUserData,
     commands,
@@ -168,7 +169,7 @@ function registerStartCommand(bot, deps) {
             const nat = getRandomNature();
             const g = growth_rates[pokeName];
             const exp = chart[g.growth_rate][level2];
-            const da = { name: pokeName, id: poked.pokedex_number, nature: nat, exp: exp, pass: pass2, ivs: iv, symbol: "", evs: ev, moves: ms };
+            const da = { name: pokeName, id: poked.pokedex_number, nature: nat, ability: getRandomAbilityForPokemon(pokeName, pokes), exp: exp, pass: pass2, ivs: iv, symbol: "", evs: ev, moves: ms };
             if (!userData2.pokes) userData2.pokes = [];
             userData2.pokes.push(da);
           }

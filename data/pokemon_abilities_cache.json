@@ -1,0 +1,197 @@
+{
+  "mewtwo": [
+    "pressure",
+    "unnerve"
+  ],
+  "charizard": [
+    "blaze",
+    "solar-power"
+  ],
+  "zamazenta": [
+    "dauntless-shield"
+  ],
+  "zacian": [
+    "intrepid-sword"
+  ],
+  "lucario": [
+    "steadfast",
+    "inner-focus",
+    "justified"
+  ],
+  "groudon": [
+    "drought"
+  ],
+  "kyogre": [
+    "drizzle"
+  ],
+  "garchomp": [
+    "sand-veil",
+    "rough-skin"
+  ],
+  "blaziken": [
+    "blaze",
+    "speed-boost"
+  ],
+  "alakazam": [
+    "synchronize",
+    "inner-focus",
+    "magic-guard"
+  ],
+  "dragonite": [
+    "inner-focus",
+    "multiscale"
+  ],
+  "archaludon": [
+    "stamina",
+    "sturdy",
+    "stalwart"
+  ],
+  "bulbasaur": [
+    "overgrow",
+    "chlorophyll"
+  ],
+  "kyogre-primal": [
+    "primordial-sea"
+  ],
+  "charmander": [
+    "blaze",
+    "solar-power"
+  ],
+  "slaking": [
+    "truant"
+  ],
+  "snorlax": [
+    "immunity",
+    "thick-fat",
+    "gluttony"
+  ],
+  "doduo": [
+    "run-away",
+    "early-bird",
+    "tangled-feet"
+  ],
+  "machoke": [
+    "guts",
+    "no-guard",
+    "steadfast"
+  ],
+  "rockruff-own-tempo": [
+    "own-tempo"
+  ],
+  "solosis": [
+    "overcoat",
+    "magic-guard",
+    "regenerator"
+  ],
+  "vanillite": [
+    "ice-body",
+    "snow-cloak",
+    "weak-armor"
+  ],
+  "fidough": [
+    "own-tempo",
+    "klutz"
+  ],
+  "scorbunny": [
+    "blaze",
+    "libero"
+  ],
+  "eternatus": [
+    "pressure"
+  ],
+  "sprigatito": [
+    "overgrow",
+    "protean"
+  ],
+  "quaxly": [
+    "torrent",
+    "moxie"
+  ],
+  "wailord": [
+    "water-veil",
+    "oblivious",
+    "pressure"
+  ],
+  "sceptile": [
+    "overgrow",
+    "unburden"
+  ],
+  "sharpedo-mega": [
+    "strong-jaw"
+  ],
+  "stonjourner": [
+    "power-spot"
+  ],
+  "bastiodon": [
+    "sturdy",
+    "soundproof"
+  ],
+  "salamence": [
+    "intimidate",
+    "moxie"
+  ],
+  "gengar": [
+    "cursed-body"
+  ],
+  "pikachu-starter": [
+    "static",
+    "lightning-rod"
+  ],
+  "terapagos": [
+    "tera-shift"
+  ],
+  "toxicroak": [
+    "anticipation",
+    "dry-skin",
+    "poison-touch"
+  ],
+  "oinkologne-female": [
+    "aroma-veil",
+    "gluttony",
+    "thick-fat"
+  ],
+  "kangaskhan": [
+    "early-bird",
+    "scrappy",
+    "inner-focus"
+  ],
+  "vivillon-marine": [
+    "shield-dust",
+    "compound-eyes",
+    "friend-guard"
+  ],
+  "pinsir-mega": [
+    "aerilate"
+  ],
+  "furfrou-dandy": [
+    "fur-coat"
+  ],
+  "rillaboom": [
+    "overgrow",
+    "grassy-surge"
+  ],
+  "gengar-gmax": [
+    "cursed-body"
+  ],
+  "passimian": [
+    "receiver",
+    "defiant"
+  ],
+  "plusle": [
+    "plus",
+    "lightning-rod"
+  ],
+  "braviary-hisui": [
+    "keen-eye",
+    "sheer-force",
+    "tinted-lens"
+  ],
+  "minior-indigo": [
+    "shields-down"
+  ],
+  "volbeat": [
+    "illuminate",
+    "swarm",
+    "prankster"
+  ]
+}

@@ -1,3 +1,5 @@
+const { getTrainerLevel, getUnclaimedLevels } = require('../../utils/trainer_rank_rewards');
+
 function register_089_cardmore(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action('cardmore', async ctx => {
@@ -7,8 +9,7 @@ function register_089_cardmore(bot, deps) {
         ctx.answerCbQuery('Start your journey')
         return
       }
-      const matchingLevels = Object.keys(trainerlevel).filter(level => data.inv.exp >= trainerlevel[level]);
-      const level = matchingLevels.length > 0 ? parseInt(matchingLevels[matchingLevels.length - 1]) : 1;
+      const level = getTrainerLevel(data, trainerlevel, 100);
       const caught = data.pokecaught ? data.pokecaught.length : 0
       const seen = data.pokeseen ? data.pokeseen.length : 0
       const wins = data.inv.win || 0
@@ -26,6 +27,7 @@ function register_089_cardmore(bot, deps) {
       msg += `\n*Pokemons Caught:* ${caught}`
       msg += `\n*Dex Entries:* ${seen}`
       msg += `\n*Nicknames:* ${nicknameCount}`
+      msg += `\n*Unclaimed Rank Rewards:* ${getUnclaimedLevels(data, trainerlevel)}`
 
       try{
         await ctx.answerCbQuery()

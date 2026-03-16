@@ -1,5 +1,15 @@
 function register_048_safari(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+
+  const getUtcMidnightCountdown = () => {
+    const next = moment.utc().add(1, 'day').startOf('day');
+    const totalSec = Math.max(0, next.diff(moment.utc(), 'seconds'));
+    const hours = String(Math.floor(totalSec / 3600)).padStart(2, '0');
+    const mins = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+    const secs = String(totalSec % 60).padStart(2, '0');
+    return hours + ':' + mins + ':' + secs;
+  };
+
   bot.action(/^safari_/,check2q,async ctx => {
 const reg = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -8,7 +18,7 @@ if(ctx.from.id!=id){
 ctx.answerCbQuery()
 return
 }
-const currentDate = moment().format('YYYY-MM-DD');
+const currentDate = moment.utc().format('YYYY-MM-DD');
 const userData = await getUserData(ctx.from.id);
 if(!userData.balls.safari){
 userData.balls.safari = 0
@@ -31,7 +41,7 @@ return
 }
 }
 if((!ext || ext!='pass') && userData.extra.lastsafari && userData.extra.lastsafari == currentDate){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You Have Already Played *Safari* Today',{parse_mode:'markdown'})
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You Have Already Played *Safari* Today\n*Time remaining:* '+getUtcMidnightCountdown()+' (resets at 00:00 UTC)',{parse_mode:'markdown'})
 return
 }
 if ((!ext || ext!='pass') && userData.inv.pc < 200) {

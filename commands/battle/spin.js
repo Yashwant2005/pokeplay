@@ -87,8 +87,28 @@ function registerSpinCommand(bot, deps) {
     ].join('\n');
   };
 
+  const getUtcMidnightCountdown = () => {
+    const next = moment.utc().add(1, 'day').startOf('day');
+    const totalSec = Math.max(0, next.diff(moment.utc(), 'seconds'));
+    const hours = String(Math.floor(totalSec / 3600)).padStart(2, '0');
+    const mins = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+    const secs = String(totalSec % 60).padStart(2, '0');
+    return hours + ':' + mins + ':' + secs;
+  };
+
+  const isRestrictedSpinForm = (name) => {
+    const normalized = String(name || '').toLowerCase().replace(/[^a-z0-9-]/g, '');
+    return (
+      normalized.includes('mega') ||
+      normalized.includes('gigantamax') ||
+      normalized.includes('eternamax') ||
+      normalized.includes('terastal') ||
+      normalized.includes('stellar')
+    );
+  };
+
   const ensureSpinState = (data, config) => {
-    const today = moment().format('YYYY-MM-DD');
+    const today = moment.utc().format('YYYY-MM-DD');
     if (!data.extra || typeof data.extra !== 'object') data.extra = {};
     if (!data.extra.spinEvent || typeof data.extra.spinEvent !== 'object') {
       data.extra.spinEvent = {
@@ -251,7 +271,7 @@ function registerSpinCommand(bot, deps) {
     ensureSpinState(data, config);
 
     if (data.extra.spinEvent.remaining <= 0) {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*No spins left for today.*\nTry again after daily reset.', {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*No spins left for today.*\n*Time remaining to claim:* ' + getUtcMidnightCountdown() + ' (resets at 00:00 UTC)', {
         reply_to_message_id: ctx.message.message_id
       });
       return;
@@ -294,7 +314,7 @@ function registerSpinCommand(bot, deps) {
     if (data.extra.spinEvent.remaining <= 0) {
       data.extra.spinEvent.awaitingName = false;
       await saveUserData2(ctx.from.id, data);
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*No spins left for today.*\nTry again after daily reset.');
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*No spins left for today.*\n*Time remaining to claim:* ' + getUtcMidnightCountdown() + ' (resets at 00:00 UTC)');
       return;
     }
 
@@ -302,6 +322,13 @@ function registerSpinCommand(bot, deps) {
     if (!resolvedName) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' },
         '*Pokemon not found.*\nPlease send a valid pokemon name (example: `pikachu`, `mewtwo`, `giratina-origin`).'
+      );
+      return;
+    }
+
+    if (isRestrictedSpinForm(resolvedName)) {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' },
+        '*That form is not allowed in Spin.*\nBlocked keywords: mega, gigantamax, eternamax, terastal, stellar.'
       );
       return;
     }

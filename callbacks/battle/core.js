@@ -75,6 +75,22 @@
       .trim();
   }
 
+  const NO_CONSECUTIVE_USE_MOVES = new Set([
+    'blast burn',
+    'eternabeam',
+    'frenzy plant',
+    'giga impact',
+    'hydro cannon',
+    'hyper beam',
+    'meteor assault',
+    'prismatic laser',
+    'roar of time',
+    'rock wrecker',
+    'shadow half',
+    'blood moon',
+    'gigaton hammer'
+  ]);
+
   // Helper: build PvP battle message + keyboard with Showdown-style hidden moves
   const buildPvpMsg = (prefix, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroup) => {
     const pp = pokes[p1.name];
@@ -123,8 +139,8 @@
 
     let img = pp.front_default_image;
     const imSh = shiny.filter((poke)=>poke.name==p1.name)[0];
-    if (events[p1.name] && p1.symbol == 'Ã°Å¸Âªâ€¦') img = events[p1.name];
-    if (imSh && p1.symbol=='Ã¢Å“Â¨') img = imSh.shiny_url;
+    if (events[p1.name] && p1.symbol == '🪅') img = events[p1.name];
+    if (imSh && p1.symbol=='✨') img = imSh.shiny_url;
 
     let ext = {};
     ext = { link_preview_options: { is_disabled: true } };
@@ -279,6 +295,197 @@ const DRAIN_MOVE_RATIOS = {
 
 function getDrainRatio(moveName) {
   return DRAIN_MOVE_RATIOS[moveName] || 0;
+}
+
+const RECOIL_MOVE_RULES = {
+  'brave bird': { ratio: 1 / 3 },
+  'double edge': { ratio: 1 / 3 },
+  'flare blitz': { ratio: 1 / 3 },
+  'head charge': { ratio: 1 / 4 },
+  'head smash': { ratio: 1 / 2 },
+  'light of ruin': { ratio: 1 / 2 },
+  'shadow end': { ratio: 1 / 2 },
+  'shadow rush': { ratio: 1 / 4 },
+  'struggle': { maxHpRatio: 1 / 4 },
+  'submission': { ratio: 1 / 4 },
+  'take down': { ratio: 1 / 4 },
+  'volt tackle': { ratio: 1 / 3 },
+  'wave crash': { ratio: 1 / 3 },
+  'wild charge': { ratio: 1 / 4 },
+  'wood hammer': { ratio: 1 / 3 }
+};
+
+function getRecoilDamage(moveName, damageDealt, attackerMaxHp) {
+  const rule = RECOIL_MOVE_RULES[moveName];
+  if (!rule) return 0;
+  if (rule.maxHpRatio) return Math.max(1, Math.floor(attackerMaxHp * rule.maxHpRatio));
+  if (damageDealt > 0 && rule.ratio) return Math.max(1, Math.floor(damageDealt * rule.ratio));
+  return 0;
+}
+
+const CRASH_DAMAGE_MOVES = new Set([
+  'axe kick',
+  'high jump kick',
+  'jump kick',
+  'supercell slam'
+]);
+
+function getCrashDamage(moveName, attackerMaxHp) {
+  if (!CRASH_DAMAGE_MOVES.has(moveName)) return 0;
+  return Math.max(1, Math.floor(attackerMaxHp / 2));
+}
+
+function ensureEntryHazards(battleData) {
+  if (!battleData.entryHazards || typeof battleData.entryHazards !== 'object') {
+    battleData.entryHazards = {};
+  }
+  return battleData.entryHazards;
+}
+
+function ensureSideEntryHazards(battleData, sideId) {
+  const all = ensureEntryHazards(battleData);
+  const key = String(sideId);
+  if (!all[key] || typeof all[key] !== 'object') {
+    all[key] = { spikes: 0, toxicSpikes: 0, stealthRock: false, stickyWeb: false, steelSurge: false };
+  }
+  const side = all[key];
+  if (typeof side.spikes !== 'number') side.spikes = 0;
+  if (typeof side.toxicSpikes !== 'number') side.toxicSpikes = 0;
+  if (typeof side.stealthRock !== 'boolean') side.stealthRock = false;
+  if (typeof side.stickyWeb !== 'boolean') side.stickyWeb = false;
+  if (typeof side.steelSurge !== 'boolean') side.steelSurge = false;
+  return side;
+}
+
+function clearSideEntryHazards(battleData, sideId) {
+  const side = ensureSideEntryHazards(battleData, sideId);
+  const hadAny = side.spikes > 0 || side.toxicSpikes > 0 || side.stealthRock || side.stickyWeb || side.steelSurge;
+  side.spikes = 0;
+  side.toxicSpikes = 0;
+  side.stealthRock = false;
+  side.stickyWeb = false;
+  side.steelSurge = false;
+  return hadAny;
+}
+
+function applyEntryHazardSetupByMove(moveName, battleData, targetSideId, didHit) {
+  if (!didHit) return '';
+  const side = ensureSideEntryHazards(battleData, targetSideId);
+
+  if (moveName === 'spikes' || moveName === 'ceaseless edge') {
+    if (side.spikes >= 3) return '\n-> But Spikes cannot be stacked further!';
+    side.spikes += 1;
+    return '\n-> Spikes were scattered on the opposing side! (Layer ' + side.spikes + '/3)';
+  }
+  if (moveName === 'toxic spikes') {
+    if (side.toxicSpikes >= 2) return '\n-> But Toxic Spikes cannot be stacked further!';
+    side.toxicSpikes += 1;
+    return '\n-> Toxic Spikes were scattered on the opposing side! (Layer ' + side.toxicSpikes + '/2)';
+  }
+  if (moveName === 'stealth rock' || moveName === 'stone axe' || moveName === 'g max stonesurge') {
+    if (side.stealthRock) return '\n-> But pointed stones are already surrounding the opposing side!';
+    side.stealthRock = true;
+    return '\n-> Pointed stones float around the opposing side!';
+  }
+  if (moveName === 'g max steelsurge') {
+    if (side.steelSurge) return '\n-> But metal spikes are already surrounding the opposing side!';
+    side.steelSurge = true;
+    return '\n-> Metal spikes now surround the opposing side!';
+  }
+  if (moveName === 'sticky web') {
+    if (side.stickyWeb) return '\n-> But a Sticky Web is already on the opposing side!';
+    side.stickyWeb = true;
+    return '\n-> A Sticky Web was laid out on the opposing side!';
+  }
+
+  return '';
+}
+
+function applyEntryHazardRemovalByMove(moveName, battleData, selfSideId, opposingSideId, didHit) {
+  if (moveName === 'defog') {
+    const removedSelf = clearSideEntryHazards(battleData, selfSideId);
+    const removedOpp = clearSideEntryHazards(battleData, opposingSideId);
+    return (removedSelf || removedOpp) ? '\n-> Defog blew away all entry hazards from both sides!' : '';
+  }
+
+  if (!didHit) return '';
+
+  if (moveName === 'g max wind rage') {
+    const removedSelf = clearSideEntryHazards(battleData, selfSideId);
+    const removedOpp = clearSideEntryHazards(battleData, opposingSideId);
+    return (removedSelf || removedOpp) ? '\n-> G-Max Wind Rage removed all entry hazards from both sides!' : '';
+  }
+  if (moveName === 'rapid spin' || moveName === 'mortal spin' || moveName === 'tidy up') {
+    const removedSelf = clearSideEntryHazards(battleData, selfSideId);
+    return removedSelf ? '\n-> Entry hazards on your side were cleared!' : '';
+  }
+
+  return '';
+}
+
+function isGroundedForEntryHazards(pokemonName) {
+  const types = (pokes[pokemonName]?.types || []).map((t) => String(t).toLowerCase());
+  return !types.includes('flying');
+}
+
+async function applyEntryHazardsOnSwitch({ battleData, sideId, pass, pokemonName, maxHp }) {
+  const side = ensureSideEntryHazards(battleData, sideId);
+  let out = '';
+  let currentHp = Math.max(0, battleData.chp);
+  const types = pokes[pokemonName]?.types || [];
+  const type1 = types[0] ? c(types[0]) : null;
+  const type2 = types[1] ? c(types[1]) : null;
+  const grounded = isGroundedForEntryHazards(pokemonName);
+
+  const applyLoss = (raw, label) => {
+    if (!raw || raw <= 0 || currentHp <= 0) return;
+    const taken = Math.min(raw, currentHp);
+    currentHp = Math.max(0, currentHp - taken);
+    out += '\n-> <b>' + c(pokemonName) + '</b> was hurt by ' + label + ' and lost <code>' + taken + '</code> HP!';
+  };
+
+  if (side.stealthRock && type1) {
+    const effRock = await eff('Rock', type1, type2);
+    if (effRock > 0) applyLoss(Math.max(1, Math.floor((maxHp / 8) * effRock)), 'Stealth Rock');
+  }
+
+  if (side.steelSurge && type1) {
+    const effSteel = await eff('Steel', type1, type2);
+    if (effSteel > 0) applyLoss(Math.max(1, Math.floor((maxHp / 8) * effSteel)), 'Steel Surge');
+  }
+
+  if (grounded && side.spikes > 0) {
+    const spikeRatio = side.spikes >= 3 ? 1 / 4 : side.spikes === 2 ? 1 / 6 : 1 / 8;
+    applyLoss(Math.max(1, Math.floor(maxHp * spikeRatio)), 'Spikes');
+  }
+
+  if (grounded && side.stickyWeb && currentHp > 0) {
+    const stages = ensurePokemonStatStages(battleData, pass);
+    const prev = stages.speed || 0;
+    const next = clampStage(prev - 1);
+    stages.speed = next;
+    if (next < prev) out += '\n-> <b>' + c(pokemonName) + '</b> got caught in Sticky Web and its <b>Speed</b> fell!';
+  }
+
+  if (grounded && side.toxicSpikes > 0 && currentHp > 0) {
+    const loweredTypes = types.map((t) => String(t).toLowerCase());
+    if (loweredTypes.includes('poison')) {
+      side.toxicSpikes = 0;
+      out += '\n-> <b>' + c(pokemonName) + '</b> absorbed the Toxic Spikes!';
+    } else {
+      const existingStatus = getBattleStatus(battleData, pass);
+      if (!existingStatus && !isStatusImmune('poison', types)) {
+        const toxStatus = side.toxicSpikes >= 2 ? 'badly_poisoned' : 'poison';
+        setBattleStatus(battleData, pass, toxStatus);
+        out += '\n-> <b>' + c(pokemonName) + '</b> was ' + (toxStatus === 'badly_poisoned' ? 'badly poisoned' : 'poisoned') + ' by Toxic Spikes!';
+      }
+    }
+  }
+
+  battleData.chp = currentHp;
+  if (!battleData.tem) battleData.tem = {};
+  battleData.tem[pass] = currentHp;
+  return out;
 }
 
 const STAT_KEYS = ['attack', 'defense', 'special_attack', 'special_defense', 'speed', 'accuracy', 'evasion'];
@@ -773,12 +980,24 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       const p12 = attacker.pokes.filter((poke)=>poke.pass==act.pass)[0];
       battleData.c = act.pass;
       battleData.chp = battleData.tem[act.pass];
+      if (!battleData.lastMoveByPass || typeof battleData.lastMoveByPass !== 'object') {
+        battleData.lastMoveByPass = {};
+      }
+      delete battleData.lastMoveByPass[String(previousPass)];
       // Switching out ends Bide for the Pokemon that left the field.
       if (battleData.bideState && battleData.bideState[previousPass]) {
         delete battleData.bideState[previousPass];
       }
       if (p12) {
         turnLogs += '\n-> <b>' + c(p12.name) + '</b> came for battle.';
+        const switchedStats = await Stats(pokestats[p12.name], p12.ivs, p12.evs, c(p12.nature), plevel(p12.name, p12.exp));
+        turnLogs += await applyEntryHazardsOnSwitch({
+          battleData,
+          sideId: battleData.cid,
+          pass: act.pass,
+          pokemonName: p12.name,
+          maxHp: switchedStats.hp
+        });
       }
     }
 
@@ -788,6 +1007,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
       const move = dmoves[act.id];
       const moveName = normalizeMoveName(move?.name);
+      const moveKey = move ? String(act.id) : null;
+      let didAttemptMove = false;
       const isCounterMove = ['counter', 'mirror coat', 'metal burst', 'comeuppance'].includes(moveName);
       let attacker = await getUserData(battleData.cid);
       let defender = await getUserData(battleData.oid);
@@ -828,7 +1049,11 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
       if (!actState.canAct) {
         msgLocal += "\n" + actState.msg;
-      } else if (moveName === 'bide') {
+      } else {
+        didAttemptMove = true;
+      }
+
+      if (actState.canAct && moveName === 'bide') {
         // Bide bypasses accuracy/evasion checks
         if (!battleData.bideState) battleData.bideState = {};
         if (!battleData.bideState[battleData.c]) {
@@ -865,7 +1090,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
             delete battleData.bideState[battleData.c];
           }
         }
-      } else if (isCounterMove) {
+      } else if (actState.canAct && isCounterMove) {
         // Counterattack moves only succeed if this Pokemon was hit earlier this turn.
         const lastHit = battleData.turnHits[battleData.c];
         const wasHitByCurrentFoe = lastHit && String(lastHit.from) === String(battleData.o);
@@ -887,14 +1112,30 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           }
           msgLocal += '\n-> <b>'+c(p.name)+'</b> retaliated with <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
         }
-      } else {
+      } else if (actState.canAct) {
         const bypassAccuracyCheck = moveName === 'bind';
         const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
         const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), atkStages.accuracy, defStages.evasion) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
           msgLocal += '\n-> <b>'+c(p.name)+'</b> <b>'+c(move.name)+'</b> has missed.';
+          const crash = getCrashDamage(moveName, stats1.hp);
+          if (crash > 0) {
+            const selfBefore = battleData.chp;
+            const crashTaken = Math.min(crash, selfBefore);
+            battleData.chp = Math.max(0, selfBefore - crashTaken);
+            battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - crashTaken);
+            msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
+          }
         } else if (hasAccuracyCheck && Math.random() < 0.05) {
           msgLocal += '\n-> <b>'+c(op.name)+'</b> Dodged <b>'+c(p.name)+'</b>\'s <b>'+c(move.name)+'</b>';
+          const crash = getCrashDamage(moveName, stats1.hp);
+          if (crash > 0) {
+            const selfBefore = battleData.chp;
+            const crashTaken = Math.min(crash, selfBefore);
+            battleData.chp = Math.max(0, selfBefore - crashTaken);
+            battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - crashTaken);
+            msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
+          }
         } else {
           if (moveName === 'leech seed') {
             if (!battleData.leechSeed || typeof battleData.leechSeed !== 'object') {
@@ -921,6 +1162,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               defenderPass: battleData.o,
               targetAlive: battleData.ohp > 0
             });
+            msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, true);
+            msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, true);
 
             if (moveName === 'strength sap') {
               const targetStages = ensurePokemonStatStages(battleData, battleData.o);
@@ -1001,6 +1244,17 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
               msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
 
+              if (eff1 === 0) {
+                const crash = getCrashDamage(moveName, stats1.hp);
+                if (crash > 0) {
+                  const selfBefore = battleData.chp;
+                  const crashTaken = Math.min(crash, selfBefore);
+                  battleData.chp = Math.max(0, selfBefore - crashTaken);
+                  battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - crashTaken);
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
+                }
+              }
+
               const drainRatio = getDrainRatio(moveName);
               if (drainRatio > 0 && damage > 0) {
                 const healRaw = Math.max(1, Math.floor(damage * drainRatio));
@@ -1012,6 +1266,17 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                   msgLocal += '\n-> <b>'+c(p.name)+'</b> drained <code>'+healed+'</code> HP!';
                 }
               }
+
+              const recoil = getRecoilDamage(moveName, damage, stats1.hp);
+              if (recoil > 0) {
+                const selfBefore = battleData.chp;
+                const recoilTaken = Math.min(recoil, selfBefore);
+                battleData.chp = Math.max(0, selfBefore - recoilTaken);
+                battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - recoilTaken);
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> was hurt by recoil and lost <code>'+recoilTaken+'</code> HP!';
+              }
+              msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, damage > 0);
+              msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, damage > 0);
 
               // Record hit for counter-attacks and accumulate bide damage
               battleData.turnHits[battleData.o] = { damage: damage, category: move.category, from: battleData.c, move: moveName };
@@ -1079,6 +1344,13 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         if (healed > 0) {
           msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP from Leech Seed.';
         }
+      }
+
+      if (didAttemptMove && moveKey) {
+        if (!battleData.lastMoveByPass || typeof battleData.lastMoveByPass !== 'object') {
+          battleData.lastMoveByPass = {};
+        }
+        battleData.lastMoveByPass[String(battleData.c)] = moveKey;
       }
 
       // Reveal Used Move
@@ -1194,7 +1466,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         messageData.battle = messageData.battle.filter((chats)=> chats!==parseInt(messageData[bword].turn) && chats!==parseInt(messageData[bword].oppo))
         delete messageData[bword];
         await saveMessageData(messageData);
-        await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+gpc+' PokeCoins ðŸ’·',{parse_mode:'HTML'})
+        await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+gpc+' PokeCoins 💷',{parse_mode:'HTML'})
         if(Math.random()< 0.00005){
           const idr = (Math.random()<0.5) ? battleData.oid : battleData.cid
           const dr = await getUserData(idr)
@@ -1210,7 +1482,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
           const d = new Date().toLocaleString('en-US', options)
           const my = String(tutors[Math.floor(Math.random()*tutors.length)])
-          const m77 = await sendMessage(ctx,idr,'While you were <b>Battling</b> with a trainer, An expert <b>Move Tutor</b> saw your battle very interestingly. He Impressed with your <b>Battle</b> experience and strategy. He wants to <b>Teach</b> your any of <b>Pokemon</b> a move. It will be available only for next <b>15 Minutes.</b>\n\nÃ¢Å“Â¦ <b>'+c(dmoves[my].name)+'</b> ['+c(dmoves[my].type)+' '+emojis[dmoves[my].type]+']\n<b>Power:</b> '+dmoves[my].power+', <b>Accuracy:</b> '+dmoves[my].accuracy+' (<i>'+c(dmoves[my].category)+'</i>) \n\nÃ¢â‚¬Â¢ Click below to <b>Select</b> pokemon to teach <b>'+c(dmoves[my].name)+'</b>',{parse_mode:'html',reply_markup:{inline_keyboard:[[{text:'Select',callback_data:'tyrt_'+my+'_'+d+''}]]}})
+          const m77 = await sendMessage(ctx,idr,'While you were <b>Battling</b> with a trainer, An expert <b>Move Tutor</b> saw your battle very interestingly. He Impressed with your <b>Battle</b> experience and strategy. He wants to <b>Teach</b> your any of <b>Pokemon</b> a move. It will be available only for next <b>15 Minutes.</b>\n\n✦ <b>'+c(dmoves[my].name)+'</b> ['+c(dmoves[my].type)+' '+emojis[dmoves[my].type]+']\n<b>Power:</b> '+dmoves[my].power+', <b>Accuracy:</b> '+dmoves[my].accuracy+' (<i>'+c(dmoves[my].category)+'</i>) \n\n• Click below to <b>Select</b> pokemon to teach <b>'+c(dmoves[my].name)+'</b>',{parse_mode:'html',reply_markup:{inline_keyboard:[[{text:'Select',callback_data:'tyrt_'+my+'_'+d+''}]]}})
           const mdata = await loadMessageData();
           if(!mdata.tutor){
             mdata.tutor = {}
@@ -1244,8 +1516,8 @@ const rid = ctx.callbackQuery.data.split('_')[2]
 const bword = ctx.callbackQuery.data.split('_')[3]
 if(ctx.from.id==id){
 const bt = ['max-poke','min-/-max-6l','min-/-max-level','switch','form-change','sandbox-mode','random-mode','preview-mode','types-lock','regions-lock','type-efficiency','dual-type','save-settings']
-const buttons = bt.map((word) => ({ text: 'Ã¢â‚¬Â¢ '+c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_back_'+id+'_'+rid+'_'+bword+''})
+const buttons = bt.map((word) => ({ text: '• '+c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_back_'+id+'_'+rid+'_'+bword+''})
   const rows = [];
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
@@ -1274,7 +1546,7 @@ const d1 = await getUserData(id)
 const d2 = await getUserData(rid)
 const challanger = displayName(d1, id)
 const challanged = displayName(d2, rid)
-let msg = 'Ã¢Å¡â€ <a href="tg://user?id='+id+'"><b>'+challanger+'</b></a> Has Challenged <a href="tg://user?id='+rid+'"><b>'+challanged+'</b></a>\n'
+let msg = '⚔️ <a href="tg://user?id='+id+'"><b>'+challanger+'</b></a> Has Challenged <a href="tg://user?id='+rid+'"><b>'+challanged+'</b></a>\n'
 let f = false
 let msg2 = ''
 if(word=='maxs'){
@@ -1405,74 +1677,74 @@ for (let key in settings3.users) {
 await saveBattleData(bword, settings3);
 if(settings.max_poke < 6){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Max number of pokemon:</b> '+settings.max_poke+''
+msg2 += '\n<b>• Max number of pokemon:</b> '+settings.max_poke+''
 }
 if(settings.min_6l > 0 || settings.max_6l < 6){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Number of legendaries:</b> '+settings.min_6l+'-'+settings.max_6l+''
+msg2 += '\n<b>• Number of legendaries:</b> '+settings.min_6l+'-'+settings.max_6l+''
 }
 if(settings.min_level > 1 || settings.max_level < 100){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Level gap of pokemon:</b> '+settings.min_level+'-'+settings.max_level+''
+msg2 += '\n<b>• Level gap of pokemon:</b> '+settings.min_level+'-'+settings.max_level+''
 }
 if(!settings.switch){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Switching pokemon:</b> Disabled'
+msg2 += '\n<b>• Switching pokemon:</b> Disabled'
 }
 if(!settings.key_item){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Form Changing:</b> Disabled'
+msg2 += '\n<b>• Form Changing:</b> Disabled'
 }
 if(settings.sandbox){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Sandbox mode:</b> Enabled'
+msg2 += '\n<b>• Sandbox mode:</b> Enabled'
 }
 if(settings.random){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Random mode:</b> Enabled'
+msg2 += '\n<b>• Random mode:</b> Enabled'
 }
 if(settings.preview && settings.preview!= 'no'){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Preview mode:</b> '+settings.preview+''
+msg2 += '\n<b>• Preview mode:</b> '+settings.preview+''
 }
 if(settings.pin){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Pin mode:</b> Enabled'
+msg2 += '\n<b>• Pin mode:</b> Enabled'
 }
 if(!settings.type_effects){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Type efficiency:</b> Disabled'
+msg2 += '\n<b>• Type efficiency:</b> Disabled'
 }
 if(!settings.dual_type){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Dual Types:</b> Disabled'
+msg2 += '\n<b>• Dual Types:</b> Disabled'
 }
 if(settings.allow_regions.length > 0){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Only regions:</b> ['+c(settings.allow_regions.join(' , '))+']'
+msg2 += '\n<b>• Only regions:</b> ['+c(settings.allow_regions.join(' , '))+']'
 }
 if(settings.ban_regions.length > 0){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Banned regions:</b> ['+c(settings.ban_regions.join(' , '))+']'
+msg2 += '\n<b>• Banned regions:</b> ['+c(settings.ban_regions.join(' , '))+']'
 }
 if(settings.ban_types.length > 0){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Banned types:</b> ['+c(settings.ban_types.join(' , '))+']'
+msg2 += '\n<b>• Banned types:</b> ['+c(settings.ban_types.join(' , '))+']'
 }
 if(settings.allow_types.length > 0){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Types:</b> ['+c(settings.allow_types.join(' , '))+']'
+msg2 += '\n<b>• Types:</b> ['+c(settings.allow_types.join(' , '))+']'
 }
 
 if(settings3.users[id]){
-var em1 = 'Ã¢Å“â€œ'
+var em1 = '✅'
 }else{
-var em1 = 'Ã¢Å“â€”'
+var em1 = '❌'
 }
 if(settings3.users[rid]){
-var em2 = 'Ã¢Å“â€œ'
+var em2 = '✅'
 }else{
-var em2 = 'Ã¢Å“â€”'
+var em2 = '❌'
 }
 
 if(f){
@@ -1485,7 +1757,7 @@ if(word=='ban-regions'){
 const bt = ['kanto', 'jhoto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_banrg_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -1495,9 +1767,9 @@ return
 }
 if(word=='allow-regions'){
 const bt = ['kanto', 'jhoto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
-const buttons = bt.map((word) => ({ text: settings.allow_types.includes(word) ? c(word)+'Ã¢Å“â€¦' : c(word), callback_data: 'stbtlsyt_allowrg_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
+const buttons = bt.map((word) => ({ text: settings.allow_types.includes(word) ? c(word)+' ✅' : c(word), callback_data: 'stbtlsyt_allowrg_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -1510,7 +1782,7 @@ if(word=='regions-lock'){
 const bt = ['ban-regions','allow-regions']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
 }
@@ -1522,7 +1794,7 @@ if(word=='allowrg'){
 const bt = ['kanto', 'jhoto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_allowrg_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -1534,7 +1806,7 @@ if(word=='banrg'){
 const bt = ['kanto', 'jhoto', 'hoenn', 'sinnoh', 'unova', 'kalos', 'alola', 'galar', 'paldea']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_banrg_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_regions-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -1546,7 +1818,7 @@ if(word=='allowty'){
 const bt = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost',  'dragon', 'dark', 'steel', 'fairy']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_allowty_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -1558,7 +1830,7 @@ if(word=='banty'){
 const bt = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_banty_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -1570,7 +1842,7 @@ if(word=='max-poke'){
 const bt = ['1','2','3','4','5','6']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_maxs_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 3) {
     rows.push(buttons.slice(i, i + 3));
 }
@@ -1582,7 +1854,7 @@ if(word=='min-/-max-6l'){
 const bt = ['min-6l','max-6l']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
 }
@@ -1594,7 +1866,7 @@ if(word=='ban-types'){
 const bt = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_banty_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -1606,7 +1878,7 @@ if(word=='allow-types'){
 const bt = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost',  'dragon', 'dark', 'steel', 'fairy']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_allowty_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
 const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_types-lock_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 4) {
     rows.push(buttons.slice(i, i + 4));
 }
@@ -1621,7 +1893,7 @@ if(word=='types-lock'){
 const bt = ['ban-types','allow-types']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
 }
@@ -1633,7 +1905,7 @@ if(word=='regions-lock'){
 const bt = ['ban-regions','allow-regions']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
 }
@@ -1645,7 +1917,7 @@ if(word=='min-/-max-level'){
 const bt = ['min-level','max-level']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_bac_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
 }
@@ -1657,7 +1929,7 @@ if(word=='min-level'){
 const bt = ['1-10','11-20','21-30','31-40','41-50','51-60','61-70','71-80','81-90','91-100']
 const buttons = bt.map((word) => ({ text: word, callback_data: 'stbtlsyt_minlevel_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_min-/-max-level_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_min-/-max-level_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 3) {
     rows.push(buttons.slice(i, i + 3));
 }
@@ -1670,7 +1942,7 @@ const yu = ctx.callbackQuery.data.split('_')[5]
 const bt = Array.from({ length: (yu.split('-')[1]*1-yu.split('-')[0]*1+1)}, (_, i) => (i + yu.split('-')[0]*1).toString());
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_maxlv_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_max-level_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_max-level_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 5) {
     rows.push(buttons.slice(i, i + 5));
 }
@@ -1683,7 +1955,7 @@ const yu = ctx.callbackQuery.data.split('_')[5]
 const bt = Array.from({ length: (yu.split('-')[1]*1-yu.split('-')[0]*1+1)}, (_, i) => (i + yu.split('-')[0]*1).toString());
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_minlv_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_min-level_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_min-level_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 5) {
     rows.push(buttons.slice(i, i + 5));
 }
@@ -1695,7 +1967,7 @@ if(word=='max-level'){
 const bt = ['1-10','11-20','21-30','31-40','41-50','51-60','61-70','71-80','81-90','91-100']
 const buttons = bt.map((word) => ({ text: word, callback_data: 'stbtlsyt_maxlevel_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_min-/-max-level_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_min-/-max-level_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 3) {
     rows.push(buttons.slice(i, i + 3));
 }
@@ -1708,7 +1980,7 @@ if(word=='min-6l'){
 const bt = ['0','1','2','3','4','5','6']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_min6l_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_min-/-max-6l_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_min-/-max-6l_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 3) {
     rows.push(buttons.slice(i, i + 3));
 }
@@ -1720,7 +1992,7 @@ if(word=='max-6l'){
 const bt = ['0','1','2','3','4','5','6']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'stbtlsyt_max6l_'+id+'_'+rid+'_'+bword+'_'+word+'' }));
   const rows = [];
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_min-/-max-6l_'+id+'_'+rid+'_'+bword+''})
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_min-/-max-6l_'+id+'_'+rid+'_'+bword+''})
   for (let i = 0; i < buttons.length; i += 3) {
     rows.push(buttons.slice(i, i + 3));
 }
@@ -1736,12 +2008,12 @@ ctx.answerCbQuery('Settings Saved!')
 return
 }
 if(word=='back'){
-var rows = [[{text:'Agree Ã¢Å“â€œ',callback_data:'battle_'+id+'_'+rid+'_'+bword+''},{text:'Reject Ã¢Å“â€”',callback_data:'reject_'+id+'_'+rid+'_'+bword+''}],[{text:'Battle Settings Ã¢Å¡â€',callback_data:'sytbr_'+id+'_'+rid+'_'+bword+''}]]
+var rows = [[{text:'Agree ✅',callback_data:'battle_'+id+'_'+rid+'_'+bword+''},{text:'Reject ❌',callback_data:'reject_'+id+'_'+rid+'_'+bword+''}],[{text:'Battle Settings ⚔️',callback_data:'sytbr_'+id+'_'+rid+'_'+bword+''}]]
 }else{
 msg += '\n\nUse /settings to get more info about battle settings.'
 const bt = ['max-poke','min-/-max-6l','min-/-max-level','switch','form-change','sandbox-mode','random-mode','preview-mode','types-lock','regions-lock','type-efficiency','dual-type','save-settings']
-const buttons = bt.map((word) => ({ text: 'Ã¢â‚¬Â¢ '+c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
-buttons.push({text:'Ã°Å¸â€â„¢ Back',callback_data:'stbtlsyt_back_'+id+'_'+rid+'_'+bword+''})
+const buttons = bt.map((word) => ({ text: '• '+c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
+buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_back_'+id+'_'+rid+'_'+bword+''})
   var rows = [];
   for (let i = 0; i < buttons.length; i += 2) {
     rows.push(buttons.slice(i, i + 2));
@@ -2083,78 +2355,78 @@ messageData.battle.push(parseInt(battleData.oid))
     messageData[bword] = { chat:ctx.chat.id,mid: ctx.callbackQuery.message.message_id, times: Date.now(), turn:battleData.cid, oppo:battleData.oid };
     await saveMessageData(messageData);
 }else{
-let msg = 'Ã¢Å¡â€ <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> Has Challenged <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a>\n'
+let msg = '⚔️ <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> Has Challenged <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a>\n'
 let msg2 = ''
 const settings = battleData.set
 if(settings.max_poke < 6){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Max number of pokemon:</b> '+settings.max_poke+''
+msg2 += '\n<b>• Max number of pokemon:</b> '+settings.max_poke+''
 }
 if(settings.min_6l > 0 || settings.max_6l < 6){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Number of legendaries:</b> '+settings.min_6l+'-'+settings.max_6l+''
+msg2 += '\n<b>• Number of legendaries:</b> '+settings.min_6l+'-'+settings.max_6l+''
 }
 if(settings.min_level > 1 || settings.max_level < 100){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Level gap of pokemon:</b> '+settings.min_level+'-'+settings.max_level+''
+msg2 += '\n<b>• Level gap of pokemon:</b> '+settings.min_level+'-'+settings.max_level+''
 }
 if(!settings.switch){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Switching pokemon:</b> Disabled'
+msg2 += '\n<b>• Switching pokemon:</b> Disabled'
 }
 if(!settings.key_item){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Form Changing:</b> Disabled'
+msg2 += '\n<b>• Form Changing:</b> Disabled'
 }
 if(settings.sandbox){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Sandbox mode:</b> Enabled'
+msg2 += '\n<b>• Sandbox mode:</b> Enabled'
 }
 if(settings.random){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Random mode:</b> Enabled'
+msg2 += '\n<b>• Random mode:</b> Enabled'
 }
 if(settings.preview && settings.preview != 'no'){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Preview mode:</b> '+settings.preview+''
+msg2 += '\n<b>• Preview mode:</b> '+settings.preview+''
 }
 if(settings.pin){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Pin mode:</b> Enabled'
+msg2 += '\n<b>• Pin mode:</b> Enabled'
 }
 if(!settings.type_effects){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Type efficiency:</b> Disabled'
+msg2 += '\n<b>• Type efficiency:</b> Disabled'
 }
 if(!settings.dual_type){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Dual Types:</b> Disabled'
+msg2 += '\n<b>• Dual Types:</b> Disabled'
 }
 if(settings.allow_regions.length > 0){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Only regions:</b> ['+c(settings.allow_regions.join(' , '))+']'
+msg2 += '\n<b>• Only regions:</b> ['+c(settings.allow_regions.join(' , '))+']'
 }
 if(settings.ban_regions.length > 0){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Banned regions:</b> ['+c(settings.ban_regions.join(' , '))+']'
+msg2 += '\n<b>• Banned regions:</b> ['+c(settings.ban_regions.join(' , '))+']'
 }
 if(settings.ban_types.length > 0){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Banned types:</b> ['+c(settings.ban_types.join(' , '))+']'
+msg2 += '\n<b>• Banned types:</b> ['+c(settings.ban_types.join(' , '))+']'
 }
 if(settings.allow_types.length > 0){
 f = true
-msg2 += '\n<b>Ã¢â‚¬Â¢ Types:</b> ['+c(settings.allow_types.join(' , '))+']'
+msg2 += '\n<b>• Types:</b> ['+c(settings.allow_types.join(' , '))+']'
 }
 if(battleData.users[id1]){
-var em1 = 'Ã¢Å“â€œ'
+var em1 = '✅'
 }else{
-var em1 = 'Ã¢Å“â€”'
+var em1 = '❌'
 }
 if(battleData.users[id2]){
-var em2 = 'Ã¢Å“â€œ'
+var em2 = '✅'
 }else{
-var em2 = 'Ã¢Å“â€”'
+var em2 = '❌'
 }
 if(f){
 msg += msg2
@@ -2162,7 +2434,7 @@ msg += msg2
 }else{
  msg += '\n\n-> <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> : '+em1+'\n-> <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a> : '+em2+''
 }
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:[[{text:'Agree Ã¢Å“â€œ',callback_data:'battle_'+id1+'_'+id2+'_'+bword+''},{text:'Reject Ã¢Å“â€”',callback_data:'reject_'+id1+'_'+id2+'_'+bword+''}],[{text:'Battle Settings Ã¢Å¡â€',callback_data:'sytbr_'+id1+'_'+id2+'_'+bword+''}]]}})
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:[[{text:'Agree ✅',callback_data:'battle_'+id1+'_'+id2+'_'+bword+''},{text:'Reject ❌',callback_data:'reject_'+id1+'_'+id2+'_'+bword+''}],[{text:'Battle Settings ⚔️',callback_data:'sytbr_'+id1+'_'+id2+'_'+bword+''}]]}})
 }
 })
 
@@ -2186,6 +2458,18 @@ try {
   battleData = {};
 }
 dbg('multimo:click', { bword, from: ctx.from.id, turnId: id, moveid, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o, qlen: battleData.queuedActions ? battleData.queuedActions.length : 0, switchLock: battleData.switchLock || null, switchPending: battleData.switchPending ? Object.keys(battleData.switchPending) : [] });
+const selectedMove = dmoves[moveid];
+const selectedMoveName = normalizeMoveName(selectedMove?.name);
+if (NO_CONSECUTIVE_USE_MOVES.has(selectedMoveName)) {
+  if (!battleData.lastMoveByPass || typeof battleData.lastMoveByPass !== 'object') {
+    battleData.lastMoveByPass = {};
+  }
+  const previousMoveId = String(battleData.lastMoveByPass[String(battleData.c)] || '');
+  if (previousMoveId && previousMoveId === String(moveid)) {
+    ctx.answerCbQuery('You cannot use this move twice in a row!');
+    return;
+  }
+}
 // 1. Queue the Move Action
 if (!battleData.queuedActions) battleData.queuedActions = [];
 if (!battleData.queuedActions.some(act => String(act.cid) === String(ctx.from.id))) {
@@ -2344,6 +2628,44 @@ const DRAIN_MOVE_RATIOS = {
 
 function getDrainRatio(moveName) {
   return DRAIN_MOVE_RATIOS[moveName] || 0;
+}
+
+const RECOIL_MOVE_RULES = {
+  'brave bird': { ratio: 1 / 3 },
+  'double edge': { ratio: 1 / 3 },
+  'flare blitz': { ratio: 1 / 3 },
+  'head charge': { ratio: 1 / 4 },
+  'head smash': { ratio: 1 / 2 },
+  'light of ruin': { ratio: 1 / 2 },
+  'shadow end': { ratio: 1 / 2 },
+  'shadow rush': { ratio: 1 / 4 },
+  'struggle': { maxHpRatio: 1 / 4 },
+  'submission': { ratio: 1 / 4 },
+  'take down': { ratio: 1 / 4 },
+  'volt tackle': { ratio: 1 / 3 },
+  'wave crash': { ratio: 1 / 3 },
+  'wild charge': { ratio: 1 / 4 },
+  'wood hammer': { ratio: 1 / 3 }
+};
+
+function getRecoilDamage(moveName, damageDealt, attackerMaxHp) {
+  const rule = RECOIL_MOVE_RULES[moveName];
+  if (!rule) return 0;
+  if (rule.maxHpRatio) return Math.max(1, Math.floor(attackerMaxHp * rule.maxHpRatio));
+  if (damageDealt > 0 && rule.ratio) return Math.max(1, Math.floor(damageDealt * rule.ratio));
+  return 0;
+}
+
+const CRASH_DAMAGE_MOVES = new Set([
+  'axe kick',
+  'high jump kick',
+  'jump kick',
+  'supercell slam'
+]);
+
+function getCrashDamage(moveName, attackerMaxHp) {
+  if (!CRASH_DAMAGE_MOVES.has(moveName)) return 0;
+  return Math.max(1, Math.floor(attackerMaxHp / 2));
 }
 
 const STAT_KEYS = ['attack', 'defense', 'special_attack', 'special_defense', 'speed', 'accuracy', 'evasion'];
@@ -2909,8 +3231,24 @@ async function executeStandardMove(act) {
         const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), atkStages.accuracy, defStages.evasion) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
         msgLocal += '\n-> <b>'+c(p.name)+'</b> <b>'+c(move.name)+'</b> has missed.';
+            const crash = getCrashDamage(moveName, stats1.hp);
+            if (crash > 0) {
+              const selfBefore = battleData.chp;
+              const crashTaken = Math.min(crash, selfBefore);
+              battleData.chp = Math.max(0, selfBefore - crashTaken);
+              battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - crashTaken);
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
+            }
     } else if (hasAccuracyCheck && Math.random() < 0.05) {
         msgLocal += '\n-> <b>'+c(op.name)+'</b> Dodged <b>'+c(p.name)+'</b>\'s <b>'+c(move.name)+'</b>';
+            const crash = getCrashDamage(moveName, stats1.hp);
+            if (crash > 0) {
+              const selfBefore = battleData.chp;
+              const crashTaken = Math.min(crash, selfBefore);
+              battleData.chp = Math.max(0, selfBefore - crashTaken);
+              battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - crashTaken);
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
+            }
     } else {
             if (moveName === 'leech seed') {
               if (!battleData.leechSeed || typeof battleData.leechSeed !== 'object') {
@@ -2937,6 +3275,8 @@ async function executeStandardMove(act) {
               defenderPass: battleData.o,
               targetAlive: battleData.ohp > 0
             });
+            msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, true);
+            msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, true);
 
             if (moveName === 'strength sap') {
               const targetStages = ensurePokemonStatStages(battleData, battleData.o);
@@ -3017,6 +3357,17 @@ async function executeStandardMove(act) {
             battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
             msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
 
+              if (eff1 === 0) {
+                const crash = getCrashDamage(moveName, stats1.hp);
+                if (crash > 0) {
+                  const selfBefore = battleData.chp;
+                  const crashTaken = Math.min(crash, selfBefore);
+                  battleData.chp = Math.max(0, selfBefore - crashTaken);
+                  battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - crashTaken);
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
+                }
+              }
+
               const drainRatio = getDrainRatio(moveName);
               if (drainRatio > 0 && damage > 0) {
                 const healRaw = Math.max(1, Math.floor(damage * drainRatio));
@@ -3028,6 +3379,17 @@ async function executeStandardMove(act) {
                   msgLocal += '\n-> <b>'+c(p.name)+'</b> drained <code>'+healed+'</code> HP!';
                 }
               }
+
+              const recoil = getRecoilDamage(moveName, damage, stats1.hp);
+              if (recoil > 0) {
+                const selfBefore = battleData.chp;
+                const recoilTaken = Math.min(recoil, selfBefore);
+                battleData.chp = Math.max(0, selfBefore - recoilTaken);
+                battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - recoilTaken);
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> was hurt by recoil and lost <code>'+recoilTaken+'</code> HP!';
+              }
+              msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, damage > 0);
+              msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, damage > 0);
             
             // Record hit for counter-attacks and accumulate bide damage
               battleData.turnHits[battleData.o] = { damage: damage, category: move.category, from: battleData.c, move: moveName };
@@ -3192,7 +3554,7 @@ const messageData = await loadMessageData();
 messageData.battle = messageData.battle.filter((chats)=> chats!==parseInt(messageData[bword].turn) && chats!==parseInt(messageData[bword].oppo))
 delete messageData[bword];
 await saveMessageData(messageData);
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+gpc+' PokeCoins ðŸ’·',{parse_mode:'HTML'})
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+gpc+' PokeCoins 💷',{parse_mode:'HTML'})
 if(Math.random()< 0.00005){
 const idr = (Math.random()<0.5) ? battleData.oid : battleData.cid
 const dr = await getUserData(idr)
@@ -3208,7 +3570,7 @@ const options = {
 
 const d = new Date().toLocaleString('en-US', options)
 const my = String(tutors[Math.floor(Math.random()*tutors.length)])
-const m77 = await sendMessage(ctx,idr,'While you were <b>Battling</b> with a trainer, An expert <b>Move Tutor</b> saw your battle very interestingly. He Impressed with your <b>Battle</b> experience and strategy. He wants to <b>Teach</b> your any of <b>Pokemon</b> a move. It will be available only for next <b>15 Minutes.</b>\n\nÃ¢Å“Â¦ <b>'+c(dmoves[my].name)+'</b> ['+c(dmoves[my].type)+' '+emojis[dmoves[my].type]+']\n<b>Power:</b> '+dmoves[my].power+', <b>Accuracy:</b> '+dmoves[my].accuracy+' (<i>'+c(dmoves[my].category)+'</i>) \n\nÃ¢â‚¬Â¢ Click below to <b>Select</b> pokemon to teach <b>'+c(dmoves[my].name)+'</b>',{parse_mode:'html',reply_markup:{inline_keyboard:[[{text:'Select',callback_data:'tyrt_'+my+'_'+d+''}]]}})
+const m77 = await sendMessage(ctx,idr,'While you were <b>Battling</b> with a trainer, An expert <b>Move Tutor</b> saw your battle very interestingly. He Impressed with your <b>Battle</b> experience and strategy. He wants to <b>Teach</b> your any of <b>Pokemon</b> a move. It will be available only for next <b>15 Minutes.</b>\n\n✦ <b>'+c(dmoves[my].name)+'</b> ['+c(dmoves[my].type)+' '+emojis[dmoves[my].type]+']\n<b>Power:</b> '+dmoves[my].power+', <b>Accuracy:</b> '+dmoves[my].accuracy+' (<i>'+c(dmoves[my].category)+'</i>) \n\n• Click below to <b>Select</b> pokemon to teach <b>'+c(dmoves[my].name)+'</b>',{parse_mode:'html',reply_markup:{inline_keyboard:[[{text:'Select',callback_data:'tyrt_'+my+'_'+d+''}]]}})
 const mdata = await loadMessageData();
 if(!mdata.tutor){
 mdata.tutor = {}
@@ -3299,7 +3661,7 @@ const rows = [[{text:'View Team',callback_data:'viewteam_'+bword+'_'+battleData.
 for (let i = 0; i < buttons.length; i += 2) {
   rows.push(buttons.slice(i, i + 2));
 }
-rows.push([{text:'Ã¢Â¬â€¦Ã¯Â¸Â Back',callback_data:'multibttle_'+bword+'_'+battleData.cid+''}])
+rows.push([{text:'⬅️ Back',callback_data:'multibttle_'+bword+'_'+battleData.cid+''}])
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:rows}})
 })
 bot.action(/multibttle_/,async ctx => {
@@ -3383,6 +3745,13 @@ const level12 = plevel(p22.name,p22.exp)
 const level22 = plevel(p12.name,p12.exp)
 const stats12 = await Stats(base12,p22.ivs,p22.evs,c(p22.nature),level12) 
 const stats22 = await Stats(base22,p12.ivs,p12.evs,c(p12.nature),level22)
+msg += await applyEntryHazardsOnSwitch({
+  battleData,
+  sideId: battleData.cid,
+  pass: pass,
+  pokemonName: p12.name,
+  maxHp: stats22.hp
+})
 const speed12 = getSpeedWithStatus(stats12.speed, battleData, p22.pass)
 const speed22 = getSpeedWithStatus(stats22.speed, battleData, p12.pass)
 const result = speed12 > speed22 ? p22.pass : p12.pass
@@ -3422,7 +3791,7 @@ const pvpMeg = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, 
 const pk = pokes[stone.mega]
 let img2 = pokes[p12.name].front_default_image
 const im2 = shiny.filter((poke)=>poke.name==p12.name)[0]
-if(im2 && p12.symbol=='Ã¢Å“Â¨'){
+if(im2 && p12.symbol=='✨'){
 img2=im2.shiny_url
 }
 await sendMessage(ctx,ctx.chat.id,img2,{caption:'*'+c(n)+'* has transformed into *'+c(pke.name)+'*.',parse_mode:'markdown',reply_to_message_id:ctx.callbackQuery.message.message_id})
@@ -3585,12 +3954,12 @@ const pvpDne = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, 
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpDne.msg,{parse_mode:'HTML',reply_markup:pvpDne.keyboard,...pvpDne.ext})
 })
 
-// Handler: "Ã¢Å¡â€ View Moves" Ã¢â‚¬â€ shows ALL moves as a popup alert to the current player only (Showdown-style)
+// Handler: "View Moves" shows ALL moves as a popup alert to the current player only (Showdown-style)
 bot.action(/multivwmv_/,async ctx => {
 const bword2 = ctx.callbackQuery.data.split('_')[1]
 const turnId2 = ctx.callbackQuery.data.split('_')[2]
 if (String(ctx.from.id) !== String(turnId2)) {
-  ctx.answerCbQuery('Ã¢ÂÅ’ Not your turn!')
+  ctx.answerCbQuery('❌ Not your turn!')
   return
 }
 let battleData2 = {};
@@ -3601,13 +3970,13 @@ const attacker2 = await getUserData(battleData2.cid)
 const p1v = attacker2.pokes.filter((poke)=>poke.pass==battleData2.c)[0]
 if (!p1v) { ctx.answerCbQuery('Battle error'); return; }
 // Build move list text for the popup
-let popupText = 'Ã°Å¸â€”Â¡ Your Moves:'
+let popupText = '🗡️ Your Moves:'
 for (const mid of p1v.moves) {
   const mv = dmoves[mid]
   if (mv) {
     const power = mv.power ?? '?'
     const acc = mv.accuracy ?? '?'
-    popupText += '\nÃ¢â‚¬Â¢ ' + c(mv.name) + ' [' + c(mv.type) + '] P:' + power + ' A:' + acc
+    popupText += '\n• ' + c(mv.name) + ' [' + c(mv.type) + '] P:' + power + ' A:' + acc
   }
 }
 if (popupText.length > 195) popupText = popupText.substring(0, 195) + '...';
@@ -3658,7 +4027,7 @@ const rows = [];
 for (let i = 0; i < moveButtons.length; i += 2) { rows.push(moveButtons.slice(i,i+2)); }
 rows.push([{text:'Bag',callback_data:'multybg_'+bword2+''},{text:'Escape',callback_data:'multryn_'+bword2+'_multi'}]);
 rows.push([{text:'Pokemon',callback_data:'multichanpok_'+bword2+'_'+battleData2.cid+''}]);
-rows.push([{text:'Ã¢Â¬â€¦Ã¯Â¸Â Back',callback_data:'multibttle_'+bword2+'_'+battleData2.cid+''}]);
+rows.push([{text:'⬅️ Back',callback_data:'multibttle_'+bword2+'_'+battleData2.cid+''}]);
 
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpAct.msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:rows},...pvpAct.ext})
 })

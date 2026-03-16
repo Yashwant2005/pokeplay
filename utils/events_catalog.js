@@ -94,6 +94,7 @@ function getEventsCatalog() {
         'Choose a Pokemon name to receive a level 1 commemorative Pokemon.',
         'Preview includes nature and IVs before confirm.',
         'Daily spins: ' + spinConfig.dailySpins,
+        'Daily reset: 00:00 UTC',
         'Command: /spin'
       ]
     },
@@ -106,6 +107,7 @@ function getEventsCatalog() {
       details: [
         'Claim one Safari Pass per day during the event.',
         'Daily passes: ' + safariConfig.dailyPasses,
+        'Daily reset: 00:00 UTC',
         'Safari Pass entry does not consume normal safari quota.',
         'Command: /claim_safari_pass'
       ]

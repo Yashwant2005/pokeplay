@@ -1,6 +1,15 @@
 function registerDailyRewardCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
 
+  const getUtcMidnightCountdown = () => {
+    const next = moment.utc().add(1, 'day').startOf('day');
+    const totalSec = Math.max(0, next.diff(moment.utc(), 'seconds'));
+    const hours = String(Math.floor(totalSec / 3600)).padStart(2, '0');
+    const mins = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+    const secs = String(totalSec % 60).padStart(2, '0');
+    return hours + ':' + mins + ':' + secs;
+  };
+
   bot.command('daily', check, async (ctx) => {
     const data = await getUserData(ctx.from.id);
 
@@ -22,13 +31,14 @@ function registerDailyRewardCommand(bot, deps) {
     const state = data.extra.events.commemorativeDaily;
 
     if (state.lastClaimDate === todayUtc) {
+      const remaining = getUtcMidnightCountdown();
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, [
         '*Daily Reward*',
         '',
         'You already claimed today\'s reward.',
         '*Reward:* 2000 PokeCoins, 5 League Points, 1 Holowear Ticket',
         '',
-        'Come back tomorrow!'
+        '*Time remaining to claim:* ' + remaining + ' (resets at 00:00 UTC)'
       ].join('\n'), {
         reply_to_message_id: ctx.message.message_id
       });

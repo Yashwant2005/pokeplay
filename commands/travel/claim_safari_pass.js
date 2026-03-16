@@ -71,6 +71,15 @@ function registerClaimSafariPassCommand(bot, deps) {
     return formatPoint(start) + ' - ' + formatPoint(end);
   };
 
+  const getUtcMidnightCountdown = () => {
+    const next = moment.utc().add(1, 'day').startOf('day');
+    const totalSec = Math.max(0, next.diff(moment.utc(), 'seconds'));
+    const hours = String(Math.floor(totalSec / 3600)).padStart(2, '0');
+    const mins = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+    const secs = String(totalSec % 60).padStart(2, '0');
+    return hours + ':' + mins + ':' + secs;
+  };
+
   bot.command('claim_safari_pass', check, async (ctx) => {
     const data = await getUserData(ctx.from.id);
     const cfg = loadSafariEventConfig();
@@ -113,7 +122,7 @@ function registerClaimSafariPassCommand(bot, deps) {
         ctx,
         ctx.chat.id,
         { parse_mode: 'markdown' },
-        '*Safari Commemorative Event*\n\nYou already claimed your *Safari Pass* for today.\n\n*Event duration:* ' + formatWindow(cfg) + '\n*Daily claim:* ' + cfg.dailyPasses + ' Safari Pass',
+        '*Safari Commemorative Event*\n\nYou already claimed your *Safari Pass* for today.\n\n*Event duration:* ' + formatWindow(cfg) + '\n*Daily claim:* ' + cfg.dailyPasses + ' Safari Pass\n*Time remaining to claim:* ' + getUtcMidnightCountdown() + ' (resets at 00:00 UTC)',
         { reply_to_message_id: ctx.message.message_id }
       );
       return;

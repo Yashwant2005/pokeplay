@@ -335,6 +335,26 @@ function getCrashDamage(moveName, attackerMaxHp) {
   return Math.max(1, Math.floor(attackerMaxHp / 2));
 }
 
+const SELF_FAINT_MOVES = new Set([
+  'explosion',
+  'final gambit',
+  'healing wish',
+  'lunar dance',
+  'memento',
+  'misty explosion',
+  'self destruct'
+]);
+
+function applySelfFaintAfterMove(moveName, moveLabel, battleData, attackerPass, attackerName) {
+  if (!SELF_FAINT_MOVES.has(moveName)) return '';
+  const selfBefore = Math.max(0, battleData.chp || 0);
+  if (selfBefore <= 0) return '';
+  battleData.chp = 0;
+  if (!battleData.tem || typeof battleData.tem !== 'object') battleData.tem = {};
+  battleData.tem[attackerPass] = 0;
+  return '\n-> <b>'+c(attackerName)+'</b> fainted after using <b>'+c(moveLabel)+'</b>!';
+}
+
 function ensureEntryHazards(battleData) {
   if (!battleData.entryHazards || typeof battleData.entryHazards !== 'object') {
     battleData.entryHazards = {};
@@ -1177,15 +1197,6 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               }
             }
 
-            if (moveName === 'memento') {
-              const selfBefore = battleData.chp;
-              battleData.chp = 0;
-              battleData.tem[battleData.c] = 0;
-              if (selfBefore > 0) {
-                msgLocal += '\n-> <b>'+c(p.name)+'</b> fainted after using <b>'+c(move.name)+'</b>!';
-              }
-            }
-
             if (moveName === 'belly drum') {
               const bdHalf = Math.floor(stats1.hp / 2);
               if (battleData.chp > bdHalf) {
@@ -1235,6 +1246,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 msgLocal += '\n-> But it failed!';
               }
             }
+
+            msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
           } else {
             if (moveName === 'dream eater' && getBattleStatus(battleData, battleData.o) !== 'sleep') {
               msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
@@ -1275,6 +1288,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - recoilTaken);
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> was hurt by recoil and lost <code>'+recoilTaken+'</code> HP!';
               }
+              msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
               msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, damage > 0);
               msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, damage > 0);
 
@@ -2668,6 +2682,26 @@ function getCrashDamage(moveName, attackerMaxHp) {
   return Math.max(1, Math.floor(attackerMaxHp / 2));
 }
 
+const SELF_FAINT_MOVES = new Set([
+  'explosion',
+  'final gambit',
+  'healing wish',
+  'lunar dance',
+  'memento',
+  'misty explosion',
+  'self destruct'
+]);
+
+function applySelfFaintAfterMove(moveName, moveLabel, battleData, attackerPass, attackerName) {
+  if (!SELF_FAINT_MOVES.has(moveName)) return '';
+  const selfBefore = Math.max(0, battleData.chp || 0);
+  if (selfBefore <= 0) return '';
+  battleData.chp = 0;
+  if (!battleData.tem || typeof battleData.tem !== 'object') battleData.tem = {};
+  battleData.tem[attackerPass] = 0;
+  return '\n-> <b>'+c(attackerName)+'</b> fainted after using <b>'+c(moveLabel)+'</b>!';
+}
+
 const STAT_KEYS = ['attack', 'defense', 'special_attack', 'special_defense', 'speed', 'accuracy', 'evasion'];
 
 const MOVE_STAT_EFFECTS = {
@@ -3290,15 +3324,6 @@ async function executeStandardMove(act) {
               }
             }
 
-            if (moveName === 'memento') {
-              const selfBefore = battleData.chp;
-              battleData.chp = 0;
-              battleData.tem[battleData.c] = 0;
-              if (selfBefore > 0) {
-                msgLocal += '\n-> <b>'+c(p.name)+'</b> fainted after using <b>'+c(move.name)+'</b>!';
-              }
-            }
-
             if (moveName === 'belly drum') {
               const bdHalf = Math.floor(stats1.hp / 2);
               if (battleData.chp > bdHalf) {
@@ -3348,6 +3373,8 @@ async function executeStandardMove(act) {
                 msgLocal += '\n-> But it failed!';
               }
             }
+
+            msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
         } else {
               if (moveName === 'dream eater' && getBattleStatus(battleData, battleData.o) !== 'sleep') {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
@@ -3388,6 +3415,7 @@ async function executeStandardMove(act) {
                 battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - recoilTaken);
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> was hurt by recoil and lost <code>'+recoilTaken+'</code> HP!';
               }
+              msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
               msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, damage > 0);
               msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, damage > 0);
             

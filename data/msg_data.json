@@ -1,15 +1,54 @@
 {
-  "battle": [
-    8551864967,
-    8493023103
-  ],
-  "moves": {},
-  "tutor": {},
-  "alkzKSe": {
-    "chat": -1003736053869,
-    "mid": 6872,
-    "times": 1773632096008,
-    "turn": "8551864967",
-    "oppo": "8493023103"
-  }
+  "battle": [],
+  "moves": {
+    "2898": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "bite"
+    },
+    "2900": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "magical-leaf"
+    },
+    "2901": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "quick-attack"
+    },
+    "2902": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "seed-bomb"
+    },
+    "2903": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "u-turn"
+    },
+    "2904": {
+      "chat": 8493023103,
+      "td": "3/16, 9:34 AM",
+      "poke": "sprigatito",
+      "move": "slash"
+    },
+    "2905": {
+      "chat": 8493023103,
+      "td": "3/16, 9:35 AM",
+      "poke": "sprigatito",
+      "move": "energy-ball"
+    },
+    "2908": {
+      "chat": 8493023103,
+      "td": "3/16, 9:36 AM",
+      "poke": "sprigatito",
+      "move": "play-rough"
+    }
+  },
+  "tutor": {}
 }

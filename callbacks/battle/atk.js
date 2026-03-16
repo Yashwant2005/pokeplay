@@ -27,6 +27,15 @@ const RECOIL_MOVE_RULES = {
   'wild charge': { ratio: 1 / 4 },
   'wood hammer': { ratio: 1 / 3 }
 }
+const SELF_FAINT_MOVES = new Set([
+  'explosion',
+  'final gambit',
+  'healing wish',
+  'lunar dance',
+  'memento',
+  'misty explosion',
+  'self destruct'
+])
 const getRecoilDamage = (moveName, damageDealt, attackerMaxHp) => {
   const rule = RECOIL_MOVE_RULES[normalizeMoveName(moveName)]
   if (!rule) return 0
@@ -88,6 +97,11 @@ const recoilTaken = Math.min(recoil, selfBefore)
 battleData.chp = Math.max(0, selfBefore - recoilTaken)
 battleData.team[battleData.c] = Math.max(0, (battleData.team[battleData.c] || selfBefore) - recoilTaken)
 ms2 += '\n<b>✶ '+c(p.name)+'</b> Was Hurt By Recoil And Lost <code>'+recoilTaken+'</code> HP.'
+}
+if(SELF_FAINT_MOVES.has(normalizeMoveName(move1.name)) && battleData.chp > 0){
+battleData.chp = 0
+battleData.team[battleData.c] = 0
+ms2 += '\n<b>✶ '+c(p.name)+'</b> Fainted After Using <b>'+c(move1.name)+'</b>.'
 }
 await saveBattleData(bword, battleData);
 if(eff1 == 0){

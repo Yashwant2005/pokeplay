@@ -32,7 +32,8 @@
           "id": 289,
           "pass": "Tsxr5AMS",
           "cpass": "zxJlvZb4",
-          "symbol": ""
+          "symbol": "",
+          "ability": "truant"
         },
         {
           "name": "dragonite",
@@ -64,7 +65,8 @@
           "gmax": false,
           "pass": "BiLqcvCr",
           "cpass": "nfoVDL7g",
-          "symbol": ""
+          "symbol": "",
+          "ability": "inner-focus"
         },
         {
           "name": "charizard",
@@ -95,7 +97,8 @@
           "id": 6,
           "pass": "lTTgD8x0",
           "cpass": "UwRb1o5L",
-          "symbol": ""
+          "symbol": "",
+          "ability": "solar-power"
         },
         {
           "name": "snorlax",
@@ -126,7 +129,8 @@
           "id": 143,
           "pass": "Aw7KRyyT",
           "cpass": "kwNaKbJ7",
-          "symbol": ""
+          "symbol": "",
+          "ability": "immunity"
         },
         {
           "name": "doduo",
@@ -156,7 +160,8 @@
           "id": 84,
           "pass": "EV6xD1NW",
           "cpass": "3nWk0yQL",
-          "symbol": ""
+          "symbol": "",
+          "ability": "run-away"
         },
         {
           "name": "machoke",
@@ -187,7 +192,8 @@
           "id": 67,
           "pass": "E1l9kgg6",
           "cpass": "YYuWdO6x",
-          "symbol": ""
+          "symbol": "",
+          "ability": "guts"
         },
         {
           "name": "mewtwo",
@@ -218,7 +224,8 @@
           "id": 150,
           "pass": "wqmmqAqo",
           "cpass": "rUDTThlj",
-          "symbol": ""
+          "symbol": "",
+          "ability": "pressure"
         },
         {
           "name": "rockruff-own-tempo",
@@ -248,7 +255,8 @@
           "id": 744,
           "pass": "tIBtUAc4",
           "cpass": "3vnpEPsY",
-          "symbol": ""
+          "symbol": "",
+          "ability": "own-tempo"
         },
         {
           "name": "solosis",
@@ -277,7 +285,8 @@
           "id": 577,
           "pass": "q1MmfUoj",
           "cpass": "s9uIoH28",
-          "symbol": ""
+          "symbol": "",
+          "ability": "overcoat"
         },
         {
           "name": "vanillite",
@@ -308,7 +317,8 @@
           "id": 582,
           "pass": "OH97YPzd",
           "cpass": "6jAhbsTy",
-          "symbol": ""
+          "symbol": "",
+          "ability": "ice-body"
         },
         {
           "name": "fidough",
@@ -337,7 +347,8 @@
           "id": 926,
           "pass": "QJvWVqPL",
           "cpass": "SsWfBCyJ",
-          "symbol": ""
+          "symbol": "",
+          "ability": "klutz"
         }
       ],
       "inv": {

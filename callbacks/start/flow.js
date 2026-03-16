@@ -1,4 +1,5 @@
 function registerStartFlowCallbacks(bot, deps) {
+  const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
   const {
     getUserData,
     regions,
@@ -95,6 +96,7 @@ const exp = chart[g.growth_rate]["5"]
     name:pokeName,
     id: poked.pokedex_number,
     nature:nat,
+    ability:getRandomAbilityForPokemon(pokeName, pokes),
     exp:exp,
     pass:pass2,
     ivs: iv,

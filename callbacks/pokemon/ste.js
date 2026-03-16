@@ -1,5 +1,6 @@
 function register_007_ste(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { titleCaseAbility } = require('../../utils/pokemon_ability');
   bot.action(/ste_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -37,6 +38,7 @@ const natureEffects = {
     Timid: { increased: 'speed', decreased: 'attack' }
   };
 let statsText = '';
+statsText += '*Ability:* '+c(titleCaseAbility(p2.ability || 'none'))+'\n\n';
 statsText += '\n`Stats          Points`\n';
 statsText += '`———————————————————————`\n';
 statsText += `\`HP               ${stats.hp.toString().padStart(2)}\`\n`;

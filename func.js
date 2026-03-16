@@ -50,6 +50,13 @@ const BATTLE_DIRTY = new Set();
 const BATTLE_LAST_ACCESS = new Map();
 const BATTLE_FLUSH_INTERVAL_MS = 3000;
 const BATTLE_CACHE_TTL_MS = 5 * 60 * 1000;
+
+function parseJsonFileNoBom(filePath) {
+  const raw = fs.readFileSync(filePath, 'utf8');
+  const normalized = raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw;
+  return JSON.parse(normalized);
+}
+
 async function check(ctx, next) {
   const data = await getUserData(ctx.from.id);
 
@@ -103,7 +110,7 @@ async function getUserData(userId) {
         const stat = fs.existsSync(filePath) ? fs.statSync(filePath) : null;
         const cachedMtime = USER_CACHE_MTIME.get(key) || 0;
         if (stat && stat.mtimeMs > cachedMtime) {
-          const existingData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+          const existingData = parseJsonFileNoBom(filePath);
           let dataArray = [];
           if (Array.isArray(existingData)) {
             dataArray = existingData;
@@ -127,7 +134,7 @@ async function getUserData(userId) {
     if (!fs.existsSync(filePath)) {
       return {};
     }
-    const existingData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    const existingData = parseJsonFileNoBom(filePath);
     let dataArray = [];
     if (Array.isArray(existingData)) {
       dataArray = existingData;
@@ -838,7 +845,7 @@ async function getAllUserData() {
     const userData = fileNames.map((fileName) => {
       const filePath = path.join(dataFolderPath, fileName);
       try {
-        const fileData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const fileData = parseJsonFileNoBom(filePath);
         return fileData;
       } catch (error) {
         console.error(`Error reading file ${filePath}:`, error);

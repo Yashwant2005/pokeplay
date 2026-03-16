@@ -1,5 +1,94 @@
 function register_043_store(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const {
+    getDaysUntilWeeklyReset,
+    getTmLpPrice,
+    getWeeklyTmShop,
+    refreshWeeklyTmShop,
+    hasPurchasedSlotThisWeek,
+    markPurchasedSlotThisWeek,
+  } = require('../../utils/weekly_tm_shop');
+
+  const buildWeeklyTmMessage = (ctx, data, page) => {
+    const shop = getWeeklyTmShop(data, ctx.from.id, tms, tmprices)
+    const total = shop.selection.length
+    const perPage = 5
+    const maxPage = Math.max(1, Math.ceil(total / perPage))
+    const safePage = Math.min(maxPage, Math.max(1, Number(page || 1)))
+    const start = (safePage - 1) * perPage
+    const view = shop.selection.slice(start, start + perPage)
+    const boughtCount = shop.selection.filter((tm) => hasPurchasedSlotThisWeek(data, tm)).length
+    const daysLeft = getDaysUntilWeeklyReset(shop.weekKey)
+    const lines = []
+    lines.push('<b>【 TMS 】</b>')
+    lines.push('')
+
+    let idx = start + 1
+    for (const t of view) {
+      const m = tms.tmnumber[String(t)]
+      if (!m) continue
+      const lp = getTmLpPrice(t, tmprices)
+      const bought = hasPurchasedSlotThisWeek(data, t)
+      lines.push('<b>TM #'+String(t).padStart(3, '0')+'</b>')
+      lines.push(c(dmoves[m].name))
+      lines.push('────────────')
+      lines.push('Type: '+emojis[dmoves[m].type]+' '+c(dmoves[m].type))
+      lines.push('Category: '+c(dmoves[m].category))
+      lines.push('Power: '+dmoves[m].power)
+      lines.push('Accuracy: '+dmoves[m].accuracy)
+      lines.push('Price: '+lp+' ⭐'+(bought ? ' [Bought]' : ''))
+      lines.push('')
+      idx += 1
+    }
+
+    if(!Number.isFinite(data.inv.pc)) data.inv.pc = 0
+    if(!Number.isFinite(data.inv.league_points)) data.inv.league_points = 0
+    lines.push('Store expires in '+daysLeft+' day'+(daysLeft === 1 ? '' : 's'))
+    lines.push('Your PokeCoins: '+data.inv.pc+' 💷')
+    lines.push('Your League Points: '+data.inv.league_points+' ⭐')
+    lines.push('Page '+safePage+'/'+maxPage+' | Bought: '+boughtCount+'/10')
+
+    return {
+      text: lines.join('\n'),
+      shop,
+      page: safePage,
+      maxPage,
+    }
+  }
+
+  const buildWeeklyTmKeyboard = (ctx, data, shop, page, maxPage) => {
+    const perPage = 5
+    const start = (page - 1) * perPage
+    const view = shop.selection.slice(start, start + perPage)
+    const buyRows = []
+    const row = []
+    for (const t of view) {
+      const bought = hasPurchasedSlotThisWeek(data, t)
+      const label = bought ? 'TM'+t+'✓' : 'TM'+t
+      const cb = bought
+        ? 'crncl'
+        : 'tmbuylp_'+t+'_'+ctx.from.id
+      row.push({text: label, callback_data: cb})
+    }
+    if(row.length > 0) buyRows.push(row)
+
+    buyRows.push([
+      {text:'<',callback_data:'store_tms_'+ctx.from.id+'_'+Math.max(1, page-1)},
+      {text:'Page '+page+'/'+maxPage,callback_data:'crncl'},
+      {text:'>',callback_data:'store_tms_'+ctx.from.id+'_'+Math.min(maxPage, page+1)}
+    ])
+
+    buyRows.push([{text:'Refresh Weekly TMs (10000 PC)',callback_data:'tmrefresh_'+ctx.from.id}])
+
+    const store2 = ['buy','tms','sell']
+    const store = store2.filter((storeitem)=>storeitem!='tms')
+    const buttons = store.map((word) => ({ text: c(word), callback_data: 'store_'+word+'_'+ctx.from.id+'' }))
+    for (let i = 0; i < buttons.length; i += 2) {
+      buyRows.push(buttons.slice(i, i + 2))
+    }
+    return buyRows
+  }
+
   bot.action(/store_/,async ctx => {
 const item = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -75,7 +164,7 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,`*
 *• Candy -* 100 💷
 *• Berry -* 75 💷
 *• Vitamin -* 100 💷
-*• Key Stone -* 5000 💷
+*• OmniRing -* 5000 💷
 
 *Example :-*
 • /buy regular 1
@@ -89,44 +178,76 @@ reply_markup:{inline_keyboard:rows}})
 }
 if(item=='tms'){
 const page = ctx.callbackQuery.data.split('_')[3]*1 || 1
-const startIdx = (page - 1) * 7;
-const endIdx = startIdx + 6;
-if(page<1 || startIdx > Object.keys(tms.tmnumber).length){
-return
-}
 const userData = await getUserData(ctx.from.id)
-const matchingLevels = Object.keys(trainerlevel).filter(level => userData.inv.exp >= trainerlevel[level]);
-const level = matchingLevels.length > 0 ? parseInt(matchingLevels[matchingLevels.length - 1]) : undefined;
-if(level < 35){
-ctx.answerCbQuery('Reach Level 35 To Unlock TMs Store')
-return
-}
-
-let msg = '<b>Welcome To Poke Store (TMs Section) 🏦 :-</b>\n\n'
-const tm = tms.tmnumber
-let b = 1
-for(const t in tm){
-const m = tms.tmnumber[String(t)]
-if(tmprices.buy[String(t)]){
-if(startIdx <= b && b<= endIdx){
-msg += '<b>'+b+'. TM'+t+'</b> - '+tmprices.buy[String(t)]+' 💷\n<b> '+c(dmoves[m].name)+'</b> ['+c(dmoves[m].type)+' '+emojis[dmoves[m].type]+']\n<b>Power :</b> '+dmoves[m].power+', <b>Accuracy :</b> '+dmoves[m].accuracy+' ('+c(dmoves[m].category)+')\n\n'
-}
-b++;
-}
-}
-msg += '\n• <b>Example :-</b> /buy tm2'
-const store2 = ['buy','tms','sell']
-const store = store2.filter((storeitem)=>storeitem!=item)
-const buttons = store.map((word) => ({ text: c(word), callback_data: 'store_'+word+'_'+ctx.from.id+'' }));
-  const rows = [];
-  for (let i = 0; i < buttons.length; i += 2) {
-    rows.push(buttons.slice(i, i + 2));
-  }
-let key2 = [[{text:'<',callback_data:'store_tms_'+ctx.from.id+'_'+(page-1)+''},{text:'>',callback_data:'store_tms_'+ctx.from.id+'_'+(page+1)+''}]]
-var key = key2.concat(rows)
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'html',reply_markup:{inline_keyboard:key}})
+if(!userData.tms) userData.tms = {}
+const built = buildWeeklyTmMessage(ctx, userData, page)
+const key = buildWeeklyTmKeyboard(ctx, userData, built.shop, built.page, built.maxPage)
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,built.text,{parse_mode:'html',reply_markup:{inline_keyboard:key}})
 }
 })
+
+  bot.action(/tmrefresh_/, async ctx => {
+    const id = ctx.callbackQuery.data.split('_')[1]
+    if(ctx.from.id!=id){
+      return
+    }
+
+    const data = await getUserData(ctx.from.id)
+    if(!Number.isFinite(data.inv.pc)) data.inv.pc = 0
+    if(data.inv.pc < 10000){
+      ctx.answerCbQuery('Need 10000 PokeCoins to refresh weekly TMs', {show_alert:true})
+      return
+    }
+
+    data.inv.pc -= 10000
+    if(!data.tms) data.tms = {}
+    refreshWeeklyTmShop(data, ctx.from.id, tms, tmprices)
+    await saveUserData2(ctx.from.id, data)
+
+    const built = buildWeeklyTmMessage(ctx, data, 1)
+    const key = buildWeeklyTmKeyboard(ctx, data, built.shop, built.page, built.maxPage)
+    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,built.text,{parse_mode:'html',reply_markup:{inline_keyboard:key}})
+    ctx.answerCbQuery('Weekly TM list refreshed')
+  })
+
+  bot.action(/tmbuylp_/, async ctx => {
+    const parts = ctx.callbackQuery.data.split('_')
+    const tm = String(parts[1])
+    const id = parts[2]
+    if(ctx.from.id!=id){
+      return
+    }
+
+    const data = await getUserData(ctx.from.id)
+    if(!data.tms) data.tms = {}
+    const shop = getWeeklyTmShop(data, ctx.from.id, tms, tmprices)
+    if(!shop.selection.includes(tm)){
+      ctx.answerCbQuery('This TM is not in your weekly list', {show_alert:true})
+      return
+    }
+
+    if(hasPurchasedSlotThisWeek(data, tm)){
+      ctx.answerCbQuery('This weekly TM slot is already used', {show_alert:true})
+      return
+    }
+
+    if(!Number.isFinite(data.inv.league_points)) data.inv.league_points = 0
+    const lp = getTmLpPrice(tm, tmprices)
+    if(data.inv.league_points < lp){
+      ctx.answerCbQuery('Not enough League Points', {show_alert:true})
+      return
+    }
+
+    data.inv.league_points -= lp
+    data.tms[tm] = Number(data.tms[tm] || 0) + 1
+    markPurchasedSlotThisWeek(data, tm)
+    await saveUserData2(ctx.from.id, data)
+
+    const built = buildWeeklyTmMessage(ctx, data, 1)
+    const key = buildWeeklyTmKeyboard(ctx, data, built.shop, built.page, built.maxPage)
+    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,built.text,{parse_mode:'html',reply_markup:{inline_keyboard:key}})
+    ctx.answerCbQuery('Bought TM'+tm+' for '+lp+' LP')
+  })
 }
 
 module.exports = register_043_store;

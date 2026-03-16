@@ -44,8 +44,8 @@ if((!ext || ext!='pass') && userData.extra.lastsafari && userData.extra.lastsafa
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You Have Already Played *Safari* Today\n*Time remaining:* '+getUtcMidnightCountdown()+' (resets at 00:00 UTC)',{parse_mode:'markdown'})
 return
 }
-if ((!ext || ext!='pass') && userData.inv.pc < 200) {
-    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Entry Fees Is *200 PokeCoins 💷*',{parse_mode:'markdown'});
+if ((!ext || ext!='pass') && userData.inv.pc < 100) {
+  await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Entry Fees Is *100 PokeCoins 💷*',{parse_mode:'markdown'});
     return;
   }
 const regions = {
@@ -71,7 +71,7 @@ userData.inv.pass -= 1
 userData.balls.safari = 30
 userData.extra.saf = ry
 }else{
-userData.inv.pc -= 200
+userData.inv.pc -= 100
 userData.balls.safari = 30
 userData.extra.saf = ry
 userData.extra.lastsafari = currentDate

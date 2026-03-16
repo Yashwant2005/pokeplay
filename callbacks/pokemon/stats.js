@@ -1,5 +1,6 @@
 function register_004_stats(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { titleCaseAbility } = require('../../utils/pokemon_ability');
   bot.action(/stats_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -26,6 +27,7 @@ b7 = p2.exp
 }
 let msg = '➤ *'+c(p2.name)+' '+p2.symbol+'*'
 msg += '\n*Level:* '+currentLevel+' | *Nature:* '+c(p2.nature)+''
+msg += '\n*Ability:* '+c(titleCaseAbility(p2.ability || 'none'))+''
 msg += '\n*Types:* '+c(p.types.join(' / '))+''
 msg += '\n*EXP:* '+p2.exp.toLocaleString()+''
 msg += '\n*Need To Next Level:* '+n2.toLocaleString()+''

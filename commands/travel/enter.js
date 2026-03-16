@@ -88,9 +88,9 @@ function registerEnterCommand(bot, deps) {
   
   }
   
-  if (userData.inv.pc < 200) {
+  if (userData.inv.pc < 100) {
   
-      await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Entry Fees Is *200 PokeCoins 💷*',{reply_to_message_id:ctx.message.message_id});
+      await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Entry Fees Is *100 PokeCoins 💷*',{reply_to_message_id:ctx.message.message_id});
   
       return;
   

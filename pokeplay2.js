@@ -198,6 +198,7 @@ const pokes2 = JSON.parse(fs.readFileSync('data/pokemon_info2.json', 'utf8'));
 const chart = JSON.parse(fs.readFileSync('data/exp_chart.json', 'utf8'));
 const chains = JSON.parse(fs.readFileSync('data/evolution_chains2.json', 'utf8'));
 const growth_rates = JSON.parse(fs.readFileSync('data/pokemon_data2.json', 'utf8'));
+const { getRandomAbilityForPokemon } = require('./utils/pokemon_ability');
 const rdata = JSON.parse(fs.readFileSync('data/pokedex_data.json', 'utf8'));
 const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs} = require('./func.js')
 const regions = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Paldea']
@@ -945,6 +946,7 @@ const exp = chart[g.growth_rate][level]
     name:pokeName,
     id: poked.pokedex_number,
     nature:nat,
+    ability:getRandomAbilityForPokemon(pokeName, pokes),
     exp:exp,
     pass:pass2,
     ivs: iv,
@@ -986,6 +988,7 @@ const groupCommands = [
 {command:'/mycard',description:'View Your Trainer Card'},
 {command:'/trainer_card',description:'Customize Your Trainer Card'},
 {command: '/stats', description: 'Check Stats Of A Poke' },
+{command:'/assignability',description:'Assign Ability If Missing'},
 {command:'/buy',description:'Buy Items From Poke Store'},
 {command:'/sell',description:'Sell Item To Poke Store'},
 {command:'/transfer',description:'transfer PokeCoins To Other Users'},
@@ -1022,10 +1025,12 @@ data.tms={}
 }
 if(data.tms[num] && data.tms[num] > 0){
 const m = tms.tmnumber[num]
+const tmSellValue = Number(tmprices.sell[String(num)] || 0)
+const tmSellLp = Math.max(1, Math.round(tmSellValue / 20))
 let msg = '✦ *TM'+num+'* ('+c(dmoves[m].name)+' '+emojis[dmoves[m].type]+')\n'
 msg += '*Power:* '+dmoves[m].power+', *Accuracy:* '+dmoves[m].accuracy+' (_'+c(dmoves[m].category)+'_)\n'
-msg += '\n• You Can Sell *TM'+num+'* For *'+tmprices.sell[String(num)]+'* 💷'
-await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},msg,{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:[[{text:'Use',callback_data:'tmuse_'+num+'_'+ctx.from.id+''},{text:'Sell',callback_data:'tmselly_'+num+'_'+tmprices.sell[String(num)]+'_'+ctx.from.id+''}]]}})
+msg += '\n• You Can Sell *TM'+num+'* For *'+tmSellLp+' League Points*'
+await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},msg,{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:[[{text:'Use',callback_data:'tmuse_'+num+'_'+ctx.from.id+''},{text:'Sell',callback_data:'tmselly_'+num+'_'+ctx.from.id+''}]]}})
 }else{
 await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Don\'t Have *TM'+num+'*',{reply_to_message_id:ctx.message.message_id})
 }

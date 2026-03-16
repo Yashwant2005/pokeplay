@@ -56,7 +56,7 @@ var key = [
     { text: 'Conquest Gallery', callback_data: 'travel_conquest-gallery_'+ctx.from.id+'' }
   ]
 ];
-var msg = '*Which Region You Wanna Travel?*\n\n*Travel cost:* _500 PokeCoins when changing major region. Same-region travel is free._'
+var msg = '*Which Region You Wanna Travel?*\n\n*Travel cost:* _100 PokeCoins when changing major region. Same-region travel is free._'
 }else if(region=='kanto2'){
 place = true
 var key = [
@@ -113,17 +113,17 @@ if(isPaidTravel){
 if(!Number.isFinite(data.inv.pc)){
 data.inv.pc = 0
 }
-if(data.inv.pc < 500){
-ctx.answerCbQuery('Need 500 PokeCoins to change region.',{show_alert:true})
+if(data.inv.pc < 100){
+ctx.answerCbQuery('Need 100 PokeCoins to change region.',{show_alert:true})
 return
 }
-data.inv.pc -= 500
+data.inv.pc -= 100
 }
 data.inv.region = selectedRegion
 await saveUserData2(ctx.from.id,data)
 let arrivalMessage = 'Successfully Arrived To *'+c(selectedRegion)+'*'
 if(isPaidTravel){
-arrivalMessage += '\n*Cost:* 500 PokeCoins 💷'
+arrivalMessage += '\n*Cost:* 100 PokeCoins 💷'
 }
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,arrivalMessage,{parse_mode:'markdown'})
 })

@@ -43,9 +43,9 @@ function registerTrainerCardCommand(bot, deps) {
   
       const fontSize = 45;
   
-      const font = `${fontSize}px "Cabal"`;
+      const font = `${fontSize}px Cool`;
 
-      const font2 = `55px "Cabal"`;
+      const font2 = `55px Cool`;
   
       ctxCanvas.font = font;
   
@@ -152,7 +152,7 @@ function registerTrainerCardCommand(bot, deps) {
   ctxCanvas.fillStyle = "#2b2f36";
   ctxCanvas.fillRect(825, 260, 375, 375);
   ctxCanvas.fillStyle = "#ffffff";
-  ctxCanvas.font = "bold 84px Cabal";
+  ctxCanvas.font = "84px Cool";
   ctxCanvas.fillText("?", 995, 470);
 }
   
@@ -195,7 +195,7 @@ function registerTrainerCardCommand(bot, deps) {
   ctxCanvas.fillStyle = "#2b2f36";
   ctxCanvas.fillRect(37, 400, 400, 400);
   ctxCanvas.fillStyle = "#ffffff";
-  ctxCanvas.font = "bold 84px Cabal";
+  ctxCanvas.font = "84px Cool";
   ctxCanvas.fillText("?", 215, 620);
 }
   

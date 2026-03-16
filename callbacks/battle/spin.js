@@ -1,5 +1,6 @@
 function registerSpinCallbacks(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
 
   const SPIN_CONFIG_PATH = path.join(process.cwd(), 'data', 'spin_event.json');
 
@@ -174,6 +175,7 @@ function registerSpinCallbacks(bot, deps) {
       name: pokeName,
       id: pokeInfo.pokedex_number,
       nature: String(candidate.nature || getRandomNature()).toLowerCase(),
+      ability: getRandomAbilityForPokemon(pokeName, pokes),
       exp,
       pass: word(8),
       ivs: {

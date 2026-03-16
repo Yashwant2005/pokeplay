@@ -102,17 +102,19 @@ function registerHuntCommand(bot, deps) {
   
   }
   
-  if(!data.inv.gmax_band && (Math.random()< 0.00005 || (gma > 0 && Math.random() < rar))){
+  if(!data.inv.omniring && !data.inv.gmax_band && !data.inv.ring && (Math.random()< 0.00005 || (gma > 0 && Math.random() < rar))){
   
   gma -= 1
   
+  data.inv.omniring = true
   data.inv.gmax_band = true
+  data.inv.ring = true
   
   await saveUserData2(ctx.from.id,data)
   
-  await sendMessage(ctx,ctx.chat.id,gmax,{caption:'You found a *Gmax Band*.',parse_mode:'markdown'})
+  await sendMessage(ctx,ctx.chat.id,gmax,{caption:'You found an *OmniRing*.',parse_mode:'markdown'})
   
-  await sendMessage(ctx,-1003069884900,'#hunt\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) found<code>Gmax Band</code>',{parse_mode:'HTML'})
+  await sendMessage(ctx,-1003069884900,'#hunt\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) found<code>OmniRing</code>',{parse_mode:'HTML'})
   
   return
   

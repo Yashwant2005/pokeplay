@@ -1,3 +1,4 @@
 node_modules/
 data/db/*.json
 !data/db/6265981509.json
+hexa_session.json

@@ -276,17 +276,79 @@
           ]
         },
         {
-          "name": "pelipper",
-          "id": 279,
-          "nature": "Quiet",
-          "exp": 1000000,
-          "pass": "zFzYV5fa",
+          "name": "drifblim",
+          "id": 426,
+          "nature": "Hasty",
+          "exp": 1640000,
+          "pass": "6pCPMLGT",
           "ivs": {
-            "hp": 13,
-            "attack": 16,
-            "defense": 15,
-            "special_attack": 12,
-            "special_defense": 13,
+            "hp": 14,
+            "attack": 23,
+            "defense": 17,
+            "special_attack": 14,
+            "special_defense": 15,
+            "speed": 21
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            506,
+            247,
+            120,
+            153
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "ninjask",
+          "id": 291,
+          "nature": "Careful",
+          "exp": 600000,
+          "pass": "kuyHS6XK",
+          "ivs": {
+            "hp": 3,
+            "attack": 5,
+            "defense": 6,
+            "special_attack": 7,
+            "special_defense": 5,
+            "speed": 5
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            450,
+            154,
+            163,
+            404
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "regidrago",
+          "id": 895,
+          "nature": "Naive",
+          "exp": 1250000,
+          "pass": "TGKBxt8A",
+          "ivs": {
+            "hp": 15,
+            "attack": 25,
+            "defense": 17,
+            "special_attack": 13,
+            "special_defense": 27,
             "speed": 13
           },
           "symbol": "",
@@ -299,57 +361,26 @@
             "speed": 0
           },
           "moves": [
-            17,
-            352,
-            542,
-            56
+            37,
+            820,
+            63,
+            153
           ],
           "temp_battle": true
         },
         {
-          "name": "azumarill",
-          "id": 184,
-          "nature": "Gentle",
-          "exp": 800000,
-          "pass": "qDTa2zfj",
-          "ivs": {
-            "hp": 23,
-            "attack": 23,
-            "defense": 13,
-            "special_attack": 14,
-            "special_defense": 21,
-            "speed": 20
-          },
-          "symbol": "",
-          "evs": {
-            "hp": 0,
-            "attack": 0,
-            "defense": 0,
-            "special_attack": 0,
-            "special_defense": 0,
-            "speed": 0
-          },
-          "moves": [
-            583,
-            56,
-            38,
-            276
-          ],
-          "temp_battle": true
-        },
-        {
-          "name": "grafaiai",
-          "id": 945,
+          "name": "beheeyem",
+          "id": 606,
           "nature": "Quiet",
-          "exp": 1059860,
-          "pass": "W8FL5ku9",
+          "exp": 1000000,
+          "pass": "PCTfl2cg",
           "ivs": {
-            "hp": 20,
-            "attack": 29,
-            "defense": 19,
-            "special_attack": 19,
-            "special_defense": 19,
-            "speed": 18
+            "hp": 13,
+            "attack": 13,
+            "defense": 18,
+            "special_attack": 22,
+            "special_defense": 17,
+            "speed": 16
           },
           "symbol": "",
           "evs": {
@@ -361,57 +392,26 @@
             "speed": 0
           },
           "moves": [
-            369,
-            398,
-            282,
-            441
+            60,
+            29,
+            428,
+            94
           ],
           "temp_battle": true
         },
         {
-          "name": "enamorus-therian",
-          "id": 905,
-          "nature": "Gentle",
-          "exp": 1250000,
-          "pass": "W13y2VOP",
-          "ivs": {
-            "hp": 26,
-            "attack": 19,
-            "defense": 26,
-            "special_attack": 28,
-            "special_defense": 18,
-            "speed": 26
-          },
-          "symbol": "",
-          "evs": {
-            "hp": 0,
-            "attack": 0,
-            "defense": 0,
-            "special_attack": 0,
-            "special_defense": 0,
-            "speed": 0
-          },
-          "moves": [
-            276,
-            585,
-            200,
-            831
-          ],
-          "temp_battle": true
-        },
-        {
-          "name": "furfrou-diamond",
-          "id": 676,
-          "nature": "Careful",
+          "name": "deerling-winter",
+          "id": 585,
+          "nature": "Hasty",
           "exp": 600000,
-          "pass": "NLKSy2g5",
+          "pass": "1hIsT1YN",
           "ivs": {
-            "hp": 10,
-            "attack": 17,
-            "defense": 17,
-            "special_attack": 13,
-            "special_defense": 12,
-            "speed": 17
+            "hp": 18,
+            "attack": 5,
+            "defense": 20,
+            "special_attack": 19,
+            "special_defense": 10,
+            "speed": 9
           },
           "symbol": "",
           "evs": {
@@ -423,26 +423,26 @@
             "speed": 0
           },
           "moves": [
-            44,
-            514,
-            36,
-            389
+            26,
+            412,
+            38,
+            76
           ],
           "temp_battle": true
         },
         {
-          "name": "genesect-chill",
-          "id": 649,
-          "nature": "Sassy",
-          "exp": 1250000,
-          "pass": "3mAJA5fn",
+          "name": "pincurchin",
+          "id": 871,
+          "nature": "Mild",
+          "exp": 1000000,
+          "pass": "bQJS9Jlu",
           "ivs": {
-            "hp": 15,
-            "attack": 18,
-            "defense": 12,
-            "special_attack": 26,
-            "special_defense": 23,
-            "speed": 18
+            "hp": 17,
+            "attack": 16,
+            "defense": 18,
+            "special_attack": 11,
+            "special_defense": 18,
+            "speed": 8
           },
           "symbol": "",
           "evs": {
@@ -454,10 +454,10 @@
             "speed": 0
           },
           "moves": [
-            405,
-            192,
-            5463,
-            120
+            61,
+            398,
+            716,
+            435
           ],
           "temp_battle": true
         }
@@ -501,13 +501,13 @@
         ],
         "referred": 5254303126,
         "temp_battle": {
-          "JaS86OC": [
-            "zFzYV5fa",
-            "qDTa2zfj",
-            "W8FL5ku9",
-            "W13y2VOP",
-            "NLKSy2g5",
-            "3mAJA5fn"
+          "czzdeYr": [
+            "6pCPMLGT",
+            "kuyHS6XK",
+            "TGKBxt8A",
+            "PCTfl2cg",
+            "1hIsT1YN",
+            "bQJS9Jlu"
           ]
         },
         "randombattle_settings": {
@@ -820,7 +820,20 @@
         "wormadam-plant",
         "azumarill",
         "grafaiai",
-        "furfrou-diamond"
+        "furfrou-diamond",
+        "hydreigon",
+        "pumpkaboo-super",
+        "alcremie-gmax",
+        "vivillon-elegant",
+        "furfrou-la-reine",
+        "gorebyss",
+        "gengar",
+        "pyukumuku",
+        "zoroark",
+        "goodra-hisui",
+        "drifblim",
+        "ninjask",
+        "deerling-winter"
       ],
       "pokecaught": [
         "fuecoco",
@@ -1078,7 +1091,20 @@
         "wormadam-plant",
         "azumarill",
         "grafaiai",
-        "furfrou-diamond"
+        "furfrou-diamond",
+        "hydreigon",
+        "pumpkaboo-super",
+        "alcremie-gmax",
+        "vivillon-elegant",
+        "furfrou-la-reine",
+        "gorebyss",
+        "gengar",
+        "pyukumuku",
+        "zoroark",
+        "goodra-hisui",
+        "drifblim",
+        "ninjask",
+        "deerling-winter"
       ],
       "settings": {
         "max_poke": 6,

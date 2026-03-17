@@ -273,6 +273,9 @@ function registerHuntCommand(bot, deps) {
   const fr3 = fr.filter(pk=> !pk.identifier.includes('alola') && !pk.identifier.includes('galar') && !pk.identifier.includes('hisui') && !pk.identifier.includes('paldea'))
   
   
+  if (fr2.length < 1 && fr3.length < 1) {
+    return
+  }
   let name = fr2.length > 0 ? fr2[Math.floor(Math.random()*fr2.length)].identifier : fr3[Math.floor(Math.random()*fr3.length)].identifier
   
   const im = shiny.filter((poke)=>poke.name==name)[0]

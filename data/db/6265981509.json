@@ -32,7 +32,8 @@
           "id": 289,
           "pass": "Tsxr5AMS",
           "cpass": "zxJlvZb4",
-          "symbol": ""
+          "symbol": "",
+          "ability": "truant"
         },
         {
           "name": "dragonite",
@@ -59,12 +60,13 @@
             407,
             200
           ],
-          "exp": 165813,
+          "exp": 207968,
           "id": 149,
           "gmax": false,
           "pass": "BiLqcvCr",
           "cpass": "nfoVDL7g",
-          "symbol": ""
+          "symbol": "",
+          "ability": "multiscale"
         },
         {
           "name": "charizard",
@@ -95,7 +97,8 @@
           "id": 6,
           "pass": "lTTgD8x0",
           "cpass": "UwRb1o5L",
-          "symbol": ""
+          "symbol": "",
+          "ability": "solar-power"
         },
         {
           "name": "snorlax",
@@ -126,7 +129,8 @@
           "id": 143,
           "pass": "Aw7KRyyT",
           "cpass": "kwNaKbJ7",
-          "symbol": ""
+          "symbol": "",
+          "ability": "immunity"
         },
         {
           "name": "doduo",
@@ -156,7 +160,8 @@
           "id": 84,
           "pass": "EV6xD1NW",
           "cpass": "3nWk0yQL",
-          "symbol": ""
+          "symbol": "",
+          "ability": "tangled-feet"
         },
         {
           "name": "machoke",
@@ -187,7 +192,8 @@
           "id": 67,
           "pass": "E1l9kgg6",
           "cpass": "YYuWdO6x",
-          "symbol": ""
+          "symbol": "",
+          "ability": "steadfast"
         },
         {
           "name": "mewtwo",
@@ -218,7 +224,8 @@
           "id": 150,
           "pass": "wqmmqAqo",
           "cpass": "rUDTThlj",
-          "symbol": ""
+          "symbol": "",
+          "ability": "unnerve"
         },
         {
           "name": "greninja-ash",
@@ -245,10 +252,11 @@
           },
           "moves": [
             1
-          ]
+          ],
+          "ability": "battle-bond"
         },
         {
-          "name": "eternatus-eternamax",
+          "name": "eternatus",
           "id": 890,
           "nature": "hasty",
           "exp": 0,
@@ -273,21 +281,22 @@
           "moves": [
             342,
             525
-          ]
+          ],
+          "ability": "pressure"
         },
         {
-          "name": "dewgong",
-          "id": 87,
-          "nature": "Naughty",
-          "exp": 1000000,
-          "pass": "QHYSxUG7",
+          "name": "sawsbuck-spring",
+          "id": 586,
+          "nature": "Relaxed",
+          "exp": 600000,
+          "pass": "QlQkN2vf",
           "ivs": {
-            "hp": 21,
-            "attack": 10,
-            "defense": 26,
-            "special_attack": 20,
-            "special_defense": 22,
-            "speed": 19
+            "hp": 10,
+            "attack": 14,
+            "defense": 20,
+            "special_attack": 16,
+            "special_defense": 15,
+            "speed": 15
           },
           "symbol": "",
           "evs": {
@@ -299,118 +308,25 @@
             "speed": 0
           },
           "moves": [
-            36,
-            291,
-            401,
-            58
+            26,
+            412,
+            38,
+            76
           ],
           "temp_battle": true
         },
         {
-          "name": "magcargo",
-          "id": 219,
-          "nature": "Careful",
-          "exp": 1000000,
-          "pass": "3xuYbJDw",
-          "ivs": {
-            "hp": 12,
-            "attack": 20,
-            "defense": 12,
-            "special_attack": 18,
-            "special_defense": 10,
-            "speed": 24
-          },
-          "symbol": "",
-          "evs": {
-            "hp": 0,
-            "attack": 0,
-            "defense": 0,
-            "special_attack": 0,
-            "special_defense": 0,
-            "speed": 0
-          },
-          "moves": [
-            436,
-            34,
-            53,
-            414
-          ],
-          "temp_battle": true
-        },
-        {
-          "name": "azelf",
-          "id": 482,
-          "nature": "Careful",
+          "name": "braviary-hisui",
+          "id": 628,
+          "nature": "Calm",
           "exp": 1250000,
-          "pass": "KbzoGo9u",
+          "pass": "DP39GYdb",
           "ivs": {
-            "hp": 21,
-            "attack": 15,
+            "hp": 25,
+            "attack": 23,
             "defense": 21,
-            "special_attack": 19,
-            "special_defense": 11,
-            "speed": 24
-          },
-          "symbol": "",
-          "evs": {
-            "hp": 0,
-            "attack": 0,
-            "defense": 0,
-            "special_attack": 0,
-            "special_defense": 0,
-            "speed": 0
-          },
-          "moves": [
-            253,
-            248,
-            387,
-            153
-          ],
-          "temp_battle": true
-        },
-        {
-          "name": "grimmsnarl-gmax",
-          "id": 861,
-          "nature": "Hasty",
-          "exp": 1000000,
-          "pass": "6uV32Kbi",
-          "ivs": {
-            "hp": 15,
-            "attack": 18,
-            "defense": 16,
-            "special_attack": 22,
-            "special_defense": 24,
-            "speed": 18
-          },
-          "symbol": "",
-          "evs": {
-            "hp": 0,
-            "attack": 0,
-            "defense": 0,
-            "special_attack": 0,
-            "special_defense": 0,
-            "speed": 0
-          },
-          "moves": [
-            426,
-            414,
-            785,
-            825
-          ],
-          "temp_battle": true
-        },
-        {
-          "name": "kingdra",
-          "id": 230,
-          "nature": "Careful",
-          "exp": 1000000,
-          "pass": "poGNy8Lw",
-          "ivs": {
-            "hp": 20,
-            "attack": 19,
-            "defense": 15,
-            "special_attack": 9,
-            "special_defense": 9,
+            "special_attack": 14,
+            "special_defense": 27,
             "speed": 17
           },
           "symbol": "",
@@ -423,26 +339,119 @@
             "speed": 0
           },
           "moves": [
-            225,
-            61,
-            406,
-            56
+            306,
+            403,
+            37,
+            542
           ],
           "temp_battle": true
         },
         {
-          "name": "arceus-dragon",
-          "id": 493,
-          "nature": "Brave",
+          "name": "abomasnow",
+          "id": 460,
+          "nature": "Quiet",
           "exp": 1250000,
-          "pass": "AZixACjT",
+          "pass": "f6YsOBJC",
+          "ivs": {
+            "hp": 14,
+            "attack": 8,
+            "defense": 19,
+            "special_attack": 15,
+            "special_defense": 25,
+            "speed": 16
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            75,
+            196,
+            452,
+            59
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "squawkabilly",
+          "id": 931,
+          "nature": "Gentle",
+          "exp": 600000,
+          "pass": "el8rFpLA",
           "ivs": {
             "hp": 22,
-            "attack": 12,
-            "defense": 23,
-            "special_attack": 21,
-            "special_defense": 12,
-            "speed": 29
+            "attack": 20,
+            "defense": 20,
+            "special_attack": 23,
+            "special_defense": 20,
+            "speed": 18
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            253,
+            19,
+            263,
+            413
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "houndoom-mega",
+          "id": 229,
+          "nature": "Lonely",
+          "exp": 1250000,
+          "pass": "VnfLaqyz",
+          "ivs": {
+            "hp": 19,
+            "attack": 20,
+            "defense": 21,
+            "special_attack": 22,
+            "special_defense": 22,
+            "speed": 24
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            492,
+            53,
+            242,
+            517
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "arceus-ghost",
+          "id": 493,
+          "nature": "Careful",
+          "exp": 1250000,
+          "pass": "Cuwx70D5",
+          "ivs": {
+            "hp": 18,
+            "attack": 13,
+            "defense": 24,
+            "special_attack": 11,
+            "special_defense": 22,
+            "speed": 18
           },
           "symbol": "",
           "evs": {
@@ -457,13 +466,13 @@
             245,
             248,
             63,
-            4492
+            4497
           ],
           "temp_battle": true
         }
       ],
       "inv": {
-        "pc": 876798,
+        "pc": 1040798,
         "region": "isle-of-armor",
         "exp": 404928,
         "avtar": "1",
@@ -473,7 +482,7 @@
         "hometown": "Paldea",
         "name": "&#x1D675;&#x1D67B;&#x1D678;&#x1D681;&#x1D683;&#x1D674;&#x1D681;",
         "team": "1",
-        "candy": 10,
+        "candy": 106,
         "win": 11,
         "vitamin": 22,
         "lose": 2,
@@ -481,8 +490,8 @@
           "gengarite"
         ],
         "battle": 0,
-        "league_points": 5,
-        "holowear_tickets": 1
+        "league_points": 6405,
+        "holowear_tickets": 638
       },
       "balls": {
         "regular": 9,
@@ -503,13 +512,13 @@
         ],
         "referred": 5254303126,
         "temp_battle": {
-          "YRCa1fA": [
-            "QHYSxUG7",
-            "3xuYbJDw",
-            "KbzoGo9u",
-            "6uV32Kbi",
-            "poGNy8Lw",
-            "AZixACjT"
+          "xDBw79Y": [
+            "QlQkN2vf",
+            "DP39GYdb",
+            "f6YsOBJC",
+            "el8rFpLA",
+            "VnfLaqyz",
+            "Cuwx70D5"
           ]
         },
         "randombattle_settings": {
@@ -535,7 +544,22 @@
             "lastClaimAtUtc": "2026-03-16T04:34:03.664Z"
           }
         },
-        "refer": []
+        "refer": [],
+        "rankRewards": {
+          "claimedLevel": 75,
+          "lastClaimAtUtc": "2026-03-17T10:16:32.563Z"
+        },
+        "itembox": {
+          "bottleCaps": 0,
+          "goldBottleCaps": 1,
+          "mints": {
+            "adamant mint": 1,
+            "impish mint": 1,
+            "calm mint": 1,
+            "careful mint": 1,
+            "sassy mint": 1
+          }
+        }
       },
       "teams": {
         "1": [
@@ -834,7 +858,18 @@
         "magcargo",
         "azelf",
         "grimmsnarl-gmax",
-        "arceus-dragon"
+        "arceus-dragon",
+        "terapagos-terastal",
+        "minior-red-meteor",
+        "sandslash",
+        "zoroark",
+        "walrein",
+        "shedinja",
+        "zacian",
+        "braviary-hisui",
+        "abomasnow",
+        "houndoom-mega",
+        "arceus-ghost"
       ],
       "pokecaught": [
         "fuecoco",
@@ -1097,7 +1132,18 @@
         "magcargo",
         "azelf",
         "grimmsnarl-gmax",
-        "arceus-dragon"
+        "arceus-dragon",
+        "terapagos-terastal",
+        "minior-red-meteor",
+        "sandslash",
+        "zoroark",
+        "walrein",
+        "shedinja",
+        "zacian",
+        "braviary-hisui",
+        "abomasnow",
+        "houndoom-mega",
+        "arceus-ghost"
       ],
       "settings": {
         "max_poke": 6,
@@ -1117,6 +1163,16 @@
         "ban_regions": [],
         "allow_regions": [],
         "type_effects": true
+      },
+      "tms": {
+        "11": 1,
+        "23": 1,
+        "105": 1,
+        "110": 1,
+        "122": 1,
+        "125": 1,
+        "142": 1,
+        "184": 1
       }
     },
     "reset": false

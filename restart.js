@@ -1,7 +1,7 @@
 const { exec } = require('child_process');
 
-const INTERVAL_MS = 5 * 60 * 1000;
-const CMD = 'pm2 restart pokeplay2';
+const INTERVAL_MS = 4 * 60 * 1000;
+const CMD = 'pm2 start pokeplay2';
 
 function runRestart() {
   exec(CMD, (err, stdout, stderr) => {

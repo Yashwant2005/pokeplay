@@ -96,6 +96,51 @@ const OHKO_MOVES = new Set([
   'horn drill',
   'sheer cold'
 ])
+const VARIABLE_MULTI_HIT_MOVES = new Set([
+  'arm thrust',
+  'barrage',
+  'bone rush',
+  'bullet seed',
+  'comet punch',
+  'double slap',
+  'fury attack',
+  'fury swipes',
+  'icicle spear',
+  'pin missile',
+  'rock blast',
+  'scale shot',
+  'spike cannon',
+  'tail slap',
+  'water shuriken'
+])
+const FIXED_MULTI_HIT_MOVES = {
+  'beat up': 2,
+  'bonemerang': 2,
+  'double hit': 2,
+  'double iron bash': 2,
+  'double kick': 2,
+  'dragon darts': 2,
+  'dual chop': 2,
+  'dual wingbeat': 2,
+  'gear grind': 2,
+  'population bomb': 10,
+  'surging strikes': 3,
+  'tachyon cutter': 2,
+  'triple axel': 3,
+  'triple dive': 3,
+  'triple kick': 3,
+  'twin beam': 2,
+  'twineedle': 2
+}
+const getMultiHitCount = (moveName) => {
+  if (FIXED_MULTI_HIT_MOVES[moveName]) return FIXED_MULTI_HIT_MOVES[moveName]
+  if (!VARIABLE_MULTI_HIT_MOVES.has(moveName)) return 1
+  const roll = Math.random()
+  if (roll < 0.375) return 2
+  if (roll < 0.75) return 3
+  if (roll < 0.875) return 4
+  return 5
+}
 const SELF_FAINT_MOVES = new Set([
   'explosion',
   'final gambit',
@@ -171,8 +216,6 @@ const isPerfectCrit1 = PERFECT_CRIT_MOVES.has(normalizeMoveName(move1.name))
 const isPerfectCrit2 = PERFECT_CRIT_MOVES.has(normalizeMoveName(move2.name))
 const isHighCritMove1 = HIGH_CRIT_RATIO_MOVES.has(normalizeMoveName(move1.name))
 const isHighCritMove2 = HIGH_CRIT_RATIO_MOVES.has(normalizeMoveName(move2.name))
-const didCrit1 = isPerfectCrit1 || (isHighCritMove1 && Math.random() < HIGH_CRIT_RATIO_CHANCE)
-const didCrit2 = isPerfectCrit2 || (isHighCritMove2 && Math.random() < HIGH_CRIT_RATIO_CHANCE)
 const isOhko1 = OHKO_MOVES.has(normalizeMoveName(move1.name))
 const isOhko2 = OHKO_MOVES.has(normalizeMoveName(move2.name))
 let damage = calc(a,d,clevel,move1.power,eff1)
@@ -203,11 +246,47 @@ if (isOhko2) {
     damage2 = battleData.chp
   }
 }
-if(didCrit1 && damage > 0){
-  damage = Math.max(1, Math.floor(damage * CRIT_DAMAGE_MULTIPLIER))
+let hitCount1 = (!ohkoFailed1 && damage > 0) ? getMultiHitCount(normalizeMoveName(move1.name)) : 1
+let hitCount2 = (!ohkoFailed2 && damage2 > 0) ? getMultiHitCount(normalizeMoveName(move2.name)) : 1
+let critHits1 = 0
+let critHits2 = 0
+if(!ohkoFailed1 && damage > 0 && !isOhko1){
+  let totalDamage1 = 0
+  let landedHits1 = 0
+  for(let h=0; h<hitCount1; h+=1){
+    const remainingHp1 = battleData.ochp - totalDamage1
+    if(remainingHp1 <= 0) break
+    let hitDamage1 = damage
+    const didHitCrit1 = isPerfectCrit1 || (isHighCritMove1 && Math.random() < HIGH_CRIT_RATIO_CHANCE)
+    if(didHitCrit1){
+      critHits1 += 1
+      hitDamage1 = Math.max(1, Math.floor(hitDamage1 * CRIT_DAMAGE_MULTIPLIER))
+    }
+    hitDamage1 = Math.min(hitDamage1, remainingHp1)
+    totalDamage1 += hitDamage1
+    landedHits1 += 1
+  }
+  damage = totalDamage1
+  hitCount1 = landedHits1
 }
-if(didCrit2 && damage2 > 0){
-  damage2 = Math.max(1, Math.floor(damage2 * CRIT_DAMAGE_MULTIPLIER))
+if(!ohkoFailed2 && damage2 > 0 && !isOhko2){
+  let totalDamage2 = 0
+  let landedHits2 = 0
+  for(let h=0; h<hitCount2; h+=1){
+    const remainingHp2 = battleData.chp - totalDamage2
+    if(remainingHp2 <= 0) break
+    let hitDamage2 = damage2
+    const didHitCrit2 = isPerfectCrit2 || (isHighCritMove2 && Math.random() < HIGH_CRIT_RATIO_CHANCE)
+    if(didHitCrit2){
+      critHits2 += 1
+      hitDamage2 = Math.max(1, Math.floor(hitDamage2 * CRIT_DAMAGE_MULTIPLIER))
+    }
+    hitDamage2 = Math.min(hitDamage2, remainingHp2)
+    totalDamage2 += hitDamage2
+    landedHits2 += 1
+  }
+  damage2 = totalDamage2
+  hitCount2 = landedHits2
 }
 const wildAbsorb = applyAbsorbMoveAbility({
   battleData,
@@ -243,8 +322,11 @@ let ms2 = '➩ <b>'+c(p.name)+'</b> Used <b>'+c(move1.name)+'</b> And Dealt <b>'
 if(ohkoFailed1){
   ms2 = '➩ <b>'+c(p.name)+'</b> Used <b>'+c(move1.name)+'</b> but it failed.'
 }
-if(didCrit1 && damage > 0){
+if(critHits1 > 0 && damage > 0){
   ms2 += '\n<b>✶ A critical hit!</b>'
+}
+if(!ohkoFailed1 && hitCount1 > 1 && damage > 0){
+  ms2 += '\n<b>✶ It hit '+hitCount1+' times!</b>'
 }
 ms2 += wildAbsorb.message
 const recoil = getRecoilDamage(move1.name, damage, stats.hp)
@@ -289,8 +371,11 @@ let enemyAttackAbilityMsg = playerAbsorb.message
 if(ohkoFailed2){
   enemyAttackAbilityMsg += '\n<b>✶ '+c(battleData.name)+'</b> used <b>'+c(move2.name)+'</b> but it failed.'
 }
-if(didCrit2 && damage2 > 0){
+if(critHits2 > 0 && damage2 > 0){
   enemyAttackAbilityMsg += '\n<b>✶ A critical hit!</b>'
+}
+if(!ohkoFailed2 && hitCount2 > 1 && damage2 > 0){
+  enemyAttackAbilityMsg += '\n<b>✶ It hit '+hitCount2+' times!</b>'
 }
 const playerReactive = applyOnDamageTakenAbilities({
   battleData,

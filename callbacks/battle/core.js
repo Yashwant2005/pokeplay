@@ -229,6 +229,56 @@ function registerBattleCallbacks(bot, deps) {
     'whirlwind'
   ]);
 
+  const VARIABLE_MULTI_HIT_MOVES = new Set([
+    'arm thrust',
+    'barrage',
+    'bone rush',
+    'bullet seed',
+    'comet punch',
+    'double slap',
+    'fury attack',
+    'fury swipes',
+    'icicle spear',
+    'pin missile',
+    'rock blast',
+    'scale shot',
+    'spike cannon',
+    'tail slap',
+    'water shuriken'
+  ]);
+
+  const FIXED_MULTI_HIT_MOVES = {
+    'beat up': 2,
+    'bonemerang': 2,
+    'double hit': 2,
+    'double iron bash': 2,
+    'double kick': 2,
+    'dragon darts': 2,
+    'dual chop': 2,
+    'dual wingbeat': 2,
+    'gear grind': 2,
+    'population bomb': 10,
+    'surging strikes': 3,
+    'tachyon cutter': 2,
+    'triple axel': 3,
+    'triple dive': 3,
+    'triple kick': 3,
+    'twin beam': 2,
+    'twineedle': 2
+  };
+
+  function getMultiHitCount(moveName) {
+    if (FIXED_MULTI_HIT_MOVES[moveName]) return FIXED_MULTI_HIT_MOVES[moveName];
+    if (!VARIABLE_MULTI_HIT_MOVES.has(moveName)) return 1;
+
+    // Gen V+ style weighted roll for 2-5 hit moves.
+    const roll = Math.random();
+    if (roll < 0.375) return 2;
+    if (roll < 0.75) return 3;
+    if (roll < 0.875) return 4;
+    return 5;
+  }
+
   function ensureBattleChargingState(battleData) {
     if (!battleData.chargingState || typeof battleData.chargingState !== 'object') {
       battleData.chargingState = {};
@@ -1660,24 +1710,46 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               }
               const isPerfectCrit = PERFECT_CRIT_MOVES.has(moveName);
               const isHighCritMove = HIGH_CRIT_RATIO_MOVES.has(moveName);
-              const didCrit = isPerfectCrit || (isHighCritMove && Math.random() < HIGH_CRIT_RATIO_CHANCE);
-              if (!ohkoFailed && didCrit && damage > 0) {
-                damage = Math.min(Math.max(1, Math.floor(damage * CRIT_DAMAGE_MULTIPLIER)), battleData.ohp);
-              }
-              if (!ohkoFailed && !didCrit && damage > 0 && !OHKO_MOVES.has(moveName)) {
-                const screenMult = getScreenDamageMultiplier(battleData, battleData.oid, move.category);
-                if (screenMult < 1) {
-                  damage = Math.max(1, Math.floor(damage * screenMult));
+              let hitCount = (!ohkoFailed && damage > 0) ? getMultiHitCount(moveName) : 1;
+              let critHits = 0;
+              if (!ohkoFailed && damage > 0 && !OHKO_MOVES.has(moveName)) {
+                let totalDamage = 0;
+                let landedHits = 0;
+                for (let h = 0; h < hitCount; h += 1) {
+                  const remainingHp = battleData.ohp - totalDamage;
+                  if (remainingHp <= 0) break;
+
+                  let hitDamage = damage;
+                  const didHitCrit = isPerfectCrit || (isHighCritMove && Math.random() < HIGH_CRIT_RATIO_CHANCE);
+                  if (didHitCrit) {
+                    critHits += 1;
+                    hitDamage = Math.max(1, Math.floor(hitDamage * CRIT_DAMAGE_MULTIPLIER));
+                  } else {
+                    const screenMult = getScreenDamageMultiplier(battleData, battleData.oid, move.category);
+                    if (screenMult < 1) {
+                      hitDamage = Math.max(1, Math.floor(hitDamage * screenMult));
+                    }
+                  }
+
+                  hitDamage = Math.min(hitDamage, remainingHp);
+                  totalDamage += hitDamage;
+                  landedHits += 1;
                 }
+                hitCount = landedHits;
+                damage = totalDamage;
               }
+
               battleData.ohp = Math.max((battleData.ohp - damage), 0);
               battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
               if (ohkoFailed) {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
               } else {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+                if (hitCount > 1) {
+                  msgLocal += '\n-> It hit <b>'+hitCount+'</b> times!';
+                }
               }
-              if (!ohkoFailed && didCrit && damage > 0) {
+              if (!ohkoFailed && critHits > 0 && damage > 0) {
                 msgLocal += '\n-> <b>A critical hit!</b>';
               }
 
@@ -3936,24 +4008,46 @@ async function executeStandardMove(act) {
             }
             const isPerfectCrit = PERFECT_CRIT_MOVES.has(moveName);
             const isHighCritMove = HIGH_CRIT_RATIO_MOVES.has(moveName);
-            const didCrit = isPerfectCrit || (isHighCritMove && Math.random() < HIGH_CRIT_RATIO_CHANCE);
-            if (!ohkoFailed && didCrit && damage > 0) {
-              damage = Math.min(Math.max(1, Math.floor(damage * CRIT_DAMAGE_MULTIPLIER)), battleData.ohp);
-            }
-            if (!ohkoFailed && !didCrit && damage > 0 && !OHKO_MOVES.has(moveName)) {
-              const screenMult = getScreenDamageMultiplier(battleData, battleData.oid, move.category);
-              if (screenMult < 1) {
-                damage = Math.max(1, Math.floor(damage * screenMult));
+            let hitCount = (!ohkoFailed && damage > 0) ? getMultiHitCount(moveName) : 1;
+            let critHits = 0;
+            if (!ohkoFailed && damage > 0 && !OHKO_MOVES.has(moveName)) {
+              let totalDamage = 0;
+              let landedHits = 0;
+              for (let h = 0; h < hitCount; h += 1) {
+                const remainingHp = battleData.ohp - totalDamage;
+                if (remainingHp <= 0) break;
+
+                let hitDamage = damage;
+                const didHitCrit = isPerfectCrit || (isHighCritMove && Math.random() < HIGH_CRIT_RATIO_CHANCE);
+                if (didHitCrit) {
+                  critHits += 1;
+                  hitDamage = Math.max(1, Math.floor(hitDamage * CRIT_DAMAGE_MULTIPLIER));
+                } else {
+                  const screenMult = getScreenDamageMultiplier(battleData, battleData.oid, move.category);
+                  if (screenMult < 1) {
+                    hitDamage = Math.max(1, Math.floor(hitDamage * screenMult));
+                  }
+                }
+
+                hitDamage = Math.min(hitDamage, remainingHp);
+                totalDamage += hitDamage;
+                landedHits += 1;
               }
+              hitCount = landedHits;
+              damage = totalDamage;
             }
+
             battleData.ohp = Math.max((battleData.ohp - damage), 0);
             battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
             if (ohkoFailed) {
               msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
             } else {
               msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+              if (hitCount > 1) {
+                msgLocal += '\n-> It hit <b>'+hitCount+'</b> times!';
+              }
             }
-            if (!ohkoFailed && didCrit && damage > 0) {
+            if (!ohkoFailed && critHits > 0 && damage > 0) {
               msgLocal += '\n-> <b>A critical hit!</b>';
             }
 

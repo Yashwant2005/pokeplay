@@ -65,16 +65,25 @@ function registerBerryCommand(bot, deps) {
   msg6 += '*Special Attack :* '+p2.evs.special_attack+'\n'  
   msg6 += '*Special Defense :* '+p2.evs.special_defense+'\n'  
   msg6 += '*Speed :* '+p2.evs.speed+'\n'  
-  msg6 += '\nWhich EV Stat You Wanna Decrease With *10*?'  
-  const key = [  
-  [{text:'HP',callback_data:'brth-hp-'+p2.pass+'-'+ctx.from.id+''},  
-  {text:'Attack',callback_data:'brth-attack-'+p2.pass+'-'+ctx.from.id+''},  
-  {text:'Defense',callback_data:'brth-defense-'+p2.pass+'-'+ctx.from.id+''}],  
-  [{text:'SpA',callback_data:'brth-special_attack-'+p2.pass+'-'+ctx.from.id+''},  
-  {text:'SpD',callback_data:'brth-special_defense-'+p2.pass+'-'+ctx.from.id+''},  
-  {text:'Speed',callback_data:'brth-speed-'+p2.pass+'-'+ctx.from.id+''}]  
-  ]  
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},msg6,{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:key}})  
+  msg6 += '\nWhich EV Stat You Wanna Decrease With *10*?'
+  
+  const key = [
+  
+  [{text:'HP',callback_data:'brth-hp-'+p2.pass+'-'+ctx.from.id+''},
+  
+  {text:'Attack',callback_data:'brth-attack-'+p2.pass+'-'+ctx.from.id+''},
+  
+  {text:'Defense',callback_data:'brth-defense-'+p2.pass+'-'+ctx.from.id+''}],
+  
+  [{text:'SpA',callback_data:'brth-special_attack-'+p2.pass+'-'+ctx.from.id+''},
+  
+  {text:'SpD',callback_data:'brth-special_defense-'+p2.pass+'-'+ctx.from.id+''},
+  
+  {text:'Speed',callback_data:'brth-speed-'+p2.pass+'-'+ctx.from.id+''}]
+  
+  ]
+  
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},msg6,{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:key}})
   }else if(p22.length > 1){  
   const ore = []  
   let message = ''  
@@ -109,4 +118,5 @@ function registerBerryCommand(bot, deps) {
 }
 
 module.exports = registerBerryCommand;
+
 

@@ -69,7 +69,10 @@ function registerCandyCommand(bot, deps) {
   data.inv.candy -= 1  
   p2.exp = exp[currentLevel+1]  
   await saveUserData2(ctx.from.id,data)  
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You gave 1 candy 🍬 to *'+c(p2.name)+'*\n*Level:* '+currentLevel+' --> '+(currentLevel+1)+'',{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:[[{text:'+1 Candy 🍬',callback_data:'candy_'+p2.pass+'_'+ctx.from.id+''}]]}})  
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You gave 1 candy 🍬 to *'+c(p2.name)+'*\n*Level:* '+currentLevel+' --> '+(currentLevel+1)+'',{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:[
+  [{text:'+1 Candy 🍬',callback_data:'candy_'+p2.pass+'_'+ctx.from.id+'_1'} , {text:'+5 Candy',callback_data:'candy_'+p2.pass+'_'+ctx.from.id+'_5'}],
+  [{text:'+10 Candy',callback_data:'candy_'+p2.pass+'_'+ctx.from.id+'_10'} , {text:'+20 Candy',callback_data:'candy_'+p2.pass+'_'+ctx.from.id+'_20'}]
+  ]}})
   const evo = chains.evolution_chains.filter((chain)=>chain.current_pokemon==p2.name)[0]  
   if(evo && evo.evolution_level && evo.evolution_method == 'level-up' && evo.evolution_level <= (currentLevel+1) && evo.evolution_level > currentLevel){  
   if(ctx.chat.type!='private'){  
@@ -96,7 +99,7 @@ function registerCandyCommand(bot, deps) {
     hour12: true,  
   };  
     
-  const d = new Date().toLocaleString('en-US', options)  
+  const d = Date.now()
   if(ctx.chat.type!='private'){  
   await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},'<a href="tg://user?id='+ctx.from.id+'"><b>'+data.inv.name+'</b></a>, <b>'+c(p2.name)+'</b> (<b>Lv.</b> '+(currentLevel+1)+') Wants To Learn A New Move',{reply_markup:{inline_keyboard:[[{text:'Go',url:'t.me/'+bot.botInfo.username+''}]]}})  
   }  

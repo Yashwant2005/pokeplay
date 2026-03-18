@@ -1,12 +1,1 @@
-{
-  "battle": [],
-  "moves": {
-    "undefined": {
-      "chat": 1335302812,
-      "td": "3/17, 6:09 PM",
-      "poke": "aerodactyl",
-      "move": "stone-edge"
-    }
-  },
-  "tutor": {}
-}
+{"battle":[],"moves":{},"tutor":{}}

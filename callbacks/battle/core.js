@@ -484,18 +484,18 @@ function registerBattleCallbacks(bot, deps) {
     // Revealed moves (moves already used - visible to everyone)
     const usedMoves = battleData.usedMoves || {};
     const p1UsedMoves = usedMoves[battleData.c] || [];
-    if (isGroup && p1UsedMoves.length > 0 && !hideTurn) {
-      msg += '\n\n<b>Revealed Moves :</b>';
-      for (const mid of p1UsedMoves) {
-        const mv = dmoves[mid];
-        if (mv) msg += '\n- <b>'+c(mv.name)+'</b> ['+c(mv.type)+' '+emojis[mv.type]+'] <b>Power:</b> '+mv.power+' <b>Acc:</b> '+mv.accuracy+' ('+c(mv.category.charAt(0))+')';
-      }
-    } else if (!isGroup && !hideTurn) {
-      // private chat: show all moves as before
+    const showAllMovesInGroup = !isGroup || battleData.tempBattle === true;
+    if (showAllMovesInGroup && !hideTurn) {
       msg += '\n\n<b>Moves :</b>';
       for (const move2 of p1.moves) {
         let move = dmoves[move2];
         msg += '\n- <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')';
+      }
+    } else if (isGroup && p1UsedMoves.length > 0 && !hideTurn) {
+      msg += '\n\n<b>Revealed Moves :</b>';
+      for (const mid of p1UsedMoves) {
+        const mv = dmoves[mid];
+        if (mv) msg += '\n- <b>'+c(mv.name)+'</b> ['+c(mv.type)+' '+emojis[mv.type]+'] <b>Power:</b> '+mv.power+' <b>Acc:</b> '+mv.accuracy+' ('+c(mv.category.charAt(0))+')';
       }
     }
 
@@ -511,15 +511,14 @@ function registerBattleCallbacks(bot, deps) {
     let rows = [];
     // Row 1: 4 move buttons in a single row
     let moveButtons = [];
-    if (isGroup) {
+    if (showAllMovesInGroup) {
+      moveButtons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' }));
+    } else {
       // Showdown-style: 4 buttons where used moves show real name, unused show ???
       moveButtons = moves.map((word) => {
         const isRevealed = p1UsedMoves.includes(word);
         return { text: isRevealed ? c(dmoves[word].name) : '???', callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' };
       });
-    } else {
-      // Private: show all move buttons with real names directly
-      moveButtons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' }));
     }
     if (moveButtons.length < 1) {
       moveButtons.push({ text: 'No Moves', callback_data: 'empty' });
@@ -2632,42 +2631,43 @@ return
   pokes1 = data.teams[data.inv.team]
   pokes2 = data2.teams[data2.inv.team]
   }
-if(battleData.set.min_level > 1 || battleData.set.max_level < 100){
-pokes1 = pokes1.filter(p=> {
-const pk = data.pokes.find(pok=>pok.pass == p)
-return pk && plevel(pk.name,pk.exp) >= battleData.set.min_level*1 && plevel(pk.name,pk.exp) <= battleData.set.max_level*1
-})
-pokes2 = pokes2.filter(p=> {
+  const skipTempFilters = useTempTeams && battleData.tempBattle;
+  if(!skipTempFilters && (battleData.set.min_level > 1 || battleData.set.max_level < 100)){
+  pokes1 = pokes1.filter(p=> {
+  const pk = data.pokes.find(pok=>pok.pass == p)
+  return pk && plevel(pk.name,pk.exp) >= battleData.set.min_level*1 && plevel(pk.name,pk.exp) <= battleData.set.max_level*1
+  })
+  pokes2 = pokes2.filter(p=> {
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && plevel(pk.name,pk.exp) >= battleData.set.min_level*1 && plevel(pk.name,pk.exp) <= battleData.set.max_level*1
 })
 }
-if(!battleData.set.dual_type){
-pokes1 = pokes1.filter(p=> {
-const pk = data.pokes.find(pok=>pok.pass == p)
-return pk && pokes[pk.name].types.length == 1
-})
-pokes2 = pokes2.filter(p=> {
+  if(!skipTempFilters && !battleData.set.dual_type){
+  pokes1 = pokes1.filter(p=> {
+  const pk = data.pokes.find(pok=>pok.pass == p)
+  return pk && pokes[pk.name].types.length == 1
+  })
+  pokes2 = pokes2.filter(p=> {
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && pokes[pk.name].types.length == 1
 })
 }
-if(battleData.set.allow_types.length > 0){
-pokes1 = pokes1.filter(p=> {
-const pk = data.pokes.find(pok=>pok.pass == p)
-return pk && pokes[pk.name].types.every(type => battleData.set.allow_types.includes(type))
-})
-pokes2 = pokes2.filter(p=> {
+  if(!skipTempFilters && battleData.set.allow_types.length > 0){
+  pokes1 = pokes1.filter(p=> {
+  const pk = data.pokes.find(pok=>pok.pass == p)
+  return pk && pokes[pk.name].types.every(type => battleData.set.allow_types.includes(type))
+  })
+  pokes2 = pokes2.filter(p=> {
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && pokes[pk.name].types.every(type => battleData.set.allow_types.includes(type))
 })
 }
-if(battleData.set.ban_types.length > 0){
-pokes1 = pokes1.filter(p=> {
-const pk = data.pokes.find(pok=>pok.pass == p)
-return pk && pokes[pk.name].types.every(type => !battleData.set.ban_types.includes(type))
-})
-pokes2 = pokes2.filter(p=> {
+  if(!skipTempFilters && battleData.set.ban_types.length > 0){
+  pokes1 = pokes1.filter(p=> {
+  const pk = data.pokes.find(pok=>pok.pass == p)
+  return pk && pokes[pk.name].types.every(type => !battleData.set.ban_types.includes(type))
+  })
+  pokes2 = pokes2.filter(p=> {
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && pokes[pk.name].types.every(type => !battleData.set.ban_types.includes(type))
 })
@@ -2711,22 +2711,22 @@ const prg = {
   }
 }
 
-if(battleData.set.allow_regions.length > 0){
-pokes1 = pokes1.filter(p => {
-const pk = data.pokes.find(pok=>pok.pass == p)
-return pk && battleData.set.allow_regions.some(region => (pokes[pk.name].pokedex_number >= prg[region].start && pokes[pk.name].pokedex_number <= prg[region].end) || (pk.name.includes(region)))
-})
-pokes2 = pokes2.filter(p => {
+ if(!skipTempFilters && battleData.set.allow_regions.length > 0){
+ pokes1 = pokes1.filter(p => {
+ const pk = data.pokes.find(pok=>pok.pass == p)
+ return pk && battleData.set.allow_regions.some(region => (pokes[pk.name].pokedex_number >= prg[region].start && pokes[pk.name].pokedex_number <= prg[region].end) || (pk.name.includes(region)))
+ })
+ pokes2 = pokes2.filter(p => {
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && battleData.set.allow_regions.some(region => (pokes[pk.name].pokedex_number >= prg[region].start && pokes[pk.name].pokedex_number <= prg[region].end) || (pk.name.includes(region)))
 })
 }
-if(battleData.set.ban_regions.length > 0){
-pokes1 = pokes1.filter(p => {
-const pk = data.pokes.find(pok=>pok.pass == p)
-return pk && !battleData.set.ban_regions.some(region => (pokes[pk.name].pokedex_number >= prg[region].start && pokes[pk.name].pokedex_number <= prg[region].end) || (pk.name.includes(region)))
-})
-pokes2 = pokes2.filter(p => {
+ if(!skipTempFilters && battleData.set.ban_regions.length > 0){
+ pokes1 = pokes1.filter(p => {
+ const pk = data.pokes.find(pok=>pok.pass == p)
+ return pk && !battleData.set.ban_regions.some(region => (pokes[pk.name].pokedex_number >= prg[region].start && pokes[pk.name].pokedex_number <= prg[region].end) || (pk.name.includes(region)))
+ })
+ pokes2 = pokes2.filter(p => {
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && !battleData.set.ban_regions.some(region => (pokes[pk.name].pokedex_number >= prg[region].start && pokes[pk.name].pokedex_number <= prg[region].end) || (pk.name.includes(region)))
 })
@@ -2863,6 +2863,17 @@ spe2[pk[0].pass] = stats.speed
 }
 const user1poke = data.pokes.filter((poke)=>poke.pass==pokes1[0])[0]
 const user2poke = data2.pokes.filter((poke)=>poke.pass==pokes2[0])[0]
+if(!user1poke || !user2poke || !pokestats[user1poke?.name] || !pokestats[user2poke?.name]){
+  try{
+    const mdata = await loadMessageData();
+    if(Array.isArray(mdata.battle)){
+      mdata.battle = mdata.battle.filter((id)=> id !== parseInt(id1) && id !== parseInt(id2))
+      await saveMessageData(mdata);
+    }
+  }catch(e){}
+  ctx.answerCbQuery('Battle data invalid. Try again.');
+  return
+}
 const base1 = pokestats[user1poke.name]
 const base2 = pokestats[user2poke.name]
   ensureBattleStatus(battleData)

@@ -1,8 +1,8 @@
 let msgsent = []
 const appr = [1072659486,6265981509]
-const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' //main bot
+//const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' //main bot
 //const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //backup bot
-//const botToken = '6945557235:AAFkj6PDd9RxwUhAH6FC9UWjuks4r5vJEaQ' // test bot
+const botToken = '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' // test bot
 const { Telegraf } = require('telegraf')
 const bot = new Telegraf(botToken)
 if (process.env.QUIET_LOGS === '1') {
@@ -94,6 +94,19 @@ const ballsdata = {
 }
 bot.on('edited_message',async ctx => {
 })
+// Global error guard so one command error doesn't affect others
+bot.use(async (ctx, next) => {
+  try {
+    await next();
+  } catch (error) {
+    console.error('Unhandled command error:', error);
+    try {
+      await ctx.reply('Something went wrong. Please try again.');
+    } catch (e) {
+      // ignore reply failures
+    }
+  }
+});
 // Ignore updates sent before this bot instance started (stale updates)
 bot.use((ctx, next) => {
   try {
@@ -177,30 +190,91 @@ function removeGroupIds(ids){
 function getGroupIds(){
   return Array.from(groupIds)
 }
-const safari = JSON.parse(fs.readFileSync('data/safari.json', 'utf8'));
-const events = JSON.parse(fs.readFileSync('data/event.json', 'utf8'));
-const lvls = JSON.parse(fs.readFileSync('data/poke_level.json', 'utf8'));
-const catch_rates = JSON.parse(fs.readFileSync('data/pokemon_rarity.json', 'utf8'));
-const stones = JSON.parse(fs.readFileSync('data/stones.json', 'utf8'));
-const pokes = JSON.parse(fs.readFileSync('data/pokemon_info55_modified2.json', 'utf8'));
-const pokemoves = JSON.parse(fs.readFileSync('data/moveset_data_updated2.json', 'utf8'));
-const re = JSON.parse(fs.readFileSync('data/poke_rarity.json', 'utf8'));
-const pokestats = JSON.parse(fs.readFileSync('data/pokemon_base_stats_info2.json', 'utf8'));
-const trainerlevel = JSON.parse(fs.readFileSync('data/levels.json', 'utf8'));
-const tmprices = JSON.parse(fs.readFileSync('data/tm_prices.json', 'utf8'));
-const tms = JSON.parse(fs.readFileSync('data/tms2.json', 'utf8'));
-const forms = JSON.parse(fs.readFileSync('data/pokemon_data_updated.json', 'utf8'));
-const shiny = JSON.parse(fs.readFileSync('data/shiny.json', 'utf8'));
-const dmoves = JSON.parse(fs.readFileSync('data/moves_info.json', 'utf8'));
-const spawn = JSON.parse(fs.readFileSync('data/pokemon_status_info.json', 'utf8'));
-const expdata = JSON.parse(fs.readFileSync('data/pokemon_base_exp2.json', 'utf8'));
-const pokes2 = JSON.parse(fs.readFileSync('data/pokemon_info2.json', 'utf8'));
-const chart = JSON.parse(fs.readFileSync('data/exp_chart.json', 'utf8'));
-const chains = JSON.parse(fs.readFileSync('data/evolution_chains2.json', 'utf8'));
-const growth_rates = JSON.parse(fs.readFileSync('data/pokemon_data2.json', 'utf8'));
+function readJsonFile(filePath) {
+  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+
+function replaceInPlace(target, source) {
+  if (Array.isArray(target) && Array.isArray(source)) {
+    target.length = 0;
+    for (const item of source) {
+      target.push(item);
+    }
+    return;
+  }
+  if (
+    target &&
+    source &&
+    typeof target === 'object' &&
+    typeof source === 'object' &&
+    !Array.isArray(target) &&
+    !Array.isArray(source)
+  ) {
+    for (const key of Object.keys(target)) {
+      delete target[key];
+    }
+    for (const [key, value] of Object.entries(source)) {
+      target[key] = value;
+    }
+    return;
+  }
+  console.warn('Cache reload skipped due to type mismatch.');
+}
+
+const safari = readJsonFile('data/safari.json');
+const events = readJsonFile('data/event.json');
+const lvls = readJsonFile('data/poke_level.json');
+const catch_rates = readJsonFile('data/pokemon_rarity.json');
+const stones = readJsonFile('data/stones.json');
+const pokes = readJsonFile('data/pokemon_info55_modified2.json');
+const pokemoves = readJsonFile('data/moveset_data_updated2.json');
+const re = readJsonFile('data/poke_rarity.json');
+const pokestats = readJsonFile('data/pokemon_base_stats_info2.json');
+const trainerlevel = readJsonFile('data/levels.json');
+const tmprices = readJsonFile('data/tm_prices.json');
+const tms = readJsonFile('data/tms2.json');
+const forms = readJsonFile('data/pokemon_data_updated.json');
+const shiny = readJsonFile('data/shiny.json');
+const dmoves = readJsonFile('data/moves_info.json');
+const spawn = readJsonFile('data/pokemon_status_info.json');
+const expdata = readJsonFile('data/pokemon_base_exp2.json');
+const pokes2 = readJsonFile('data/pokemon_info2.json');
+const chart = readJsonFile('data/exp_chart.json');
+const chains = readJsonFile('data/evolution_chains2.json');
+const growth_rates = readJsonFile('data/pokemon_data2.json');
 const { getRandomAbilityForPokemon } = require('./utils/pokemon_ability');
 const { toBaseIdentifier } = require('./utils/base_form_pokemon');
-const rdata = JSON.parse(fs.readFileSync('data/pokedex_data.json', 'utf8'));
+const rdata = readJsonFile('data/pokedex_data.json');
+function reloadStaticData() {
+  try {
+    replaceInPlace(safari, readJsonFile('data/safari.json'));
+    replaceInPlace(events, readJsonFile('data/event.json'));
+    replaceInPlace(lvls, readJsonFile('data/poke_level.json'));
+    replaceInPlace(catch_rates, readJsonFile('data/pokemon_rarity.json'));
+    replaceInPlace(stones, readJsonFile('data/stones.json'));
+    replaceInPlace(pokes, readJsonFile('data/pokemon_info55_modified2.json'));
+    replaceInPlace(pokemoves, readJsonFile('data/moveset_data_updated2.json'));
+    replaceInPlace(re, readJsonFile('data/poke_rarity.json'));
+    replaceInPlace(pokestats, readJsonFile('data/pokemon_base_stats_info2.json'));
+    replaceInPlace(trainerlevel, readJsonFile('data/levels.json'));
+    replaceInPlace(tmprices, readJsonFile('data/tm_prices.json'));
+    replaceInPlace(tms, readJsonFile('data/tms2.json'));
+    replaceInPlace(forms, readJsonFile('data/pokemon_data_updated.json'));
+    replaceInPlace(shiny, readJsonFile('data/shiny.json'));
+    replaceInPlace(dmoves, readJsonFile('data/moves_info.json'));
+    replaceInPlace(spawn, readJsonFile('data/pokemon_status_info.json'));
+    replaceInPlace(expdata, readJsonFile('data/pokemon_base_exp2.json'));
+    replaceInPlace(pokes2, readJsonFile('data/pokemon_info2.json'));
+    replaceInPlace(chart, readJsonFile('data/exp_chart.json'));
+    replaceInPlace(chains, readJsonFile('data/evolution_chains2.json'));
+    replaceInPlace(growth_rates, readJsonFile('data/pokemon_data2.json'));
+    replaceInPlace(rdata, readJsonFile('data/pokedex_data.json'));
+  } catch (error) {
+    console.error('Failed to reload static data cache:', error);
+  }
+}
+
+setInterval(reloadStaticData, 60 * 60 * 1000);
 const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs,applyCaptureIvRules} = require('./func.js')
 const regions = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Paldea']
 const region = {
@@ -505,7 +579,8 @@ const moduleDeps = buildModuleDeps({
   globalClicks,
   lastmsg,
   globalmsg,
-  forwardMessageToAllUsers
+  forwardMessageToAllUsers,
+  reloadStaticData
 });
 registerCommands(bot, moduleDeps);
 registerCallbacks(bot, moduleDeps);
@@ -522,9 +597,9 @@ const globalClicksPerSecond = globalClicks.filter(
   (timestamp) => Date.now() - timestamp < 1000
 );
 
-if (globalClicksPerSecond.length > 25) {
+if (globalClicksPerSecond.length > 40) {
   const waitTime = Math.ceil((globalClicksPerSecond[0] + 1000 - Date.now()) / 1000);
-  ctx.answerCbQuery(`Wait for a second.`);
+  ctx.answerCbQuery(`Hold on 1 sec.`);
   return;
 }
 
@@ -540,20 +615,20 @@ if (ctx.chat && ctx.chat.type != 'private') {
     (timestamp) => timestamp >= currentMinuteStart
   );
 
-  if (clicksPerMinute.length >= 19) {
+  if (clicksPerMinute.length >= 40) {
     const waitTime = Math.ceil((clicksPerMinute[0] + 60000 - Date.now()) / 1000);
     ctx.answerCbQuery(`Too many requests.`);
     return;
   }
 }
 if(ctx.chat.type=='private'){
-var sy = 700
+ var sy = 1000
 }else{
-var sy = 1000
+ var sy = 1000
 }
 if (lastClicked2[ctx.from.id] && Date.now() - lastClicked2[ctx.from.id] < sy) {
 
-  ctx.answerCbQuery('Try after a sec');
+  ctx.answerCbQuery('Hold on 1 sec.');
   return;
 }
 await next();
@@ -577,7 +652,7 @@ const globalClicksPerSecond = globalmsg.filter(
   (timestamp) => Date.now() - timestamp < 1000
 );
 
-if (globalClicksPerSecond.length > 25) {
+if (globalClicksPerSecond.length > 40) {
   const waitTime = Math.ceil((globalClicksPerSecond[0] + 1000 - Date.now()) / 1000);
   return;
 }
@@ -594,7 +669,7 @@ if (ctx.chat && ctx.chat.type != 'private') {
     (timestamp) => timestamp >= currentMinuteStart
   );
 
-  if (clicksPerMinute.length >= 19) {
+  if (clicksPerMinute.length >= 40) {
     const waitTime = Math.ceil((clicksPerMinute[0] + 60000 - Date.now()) / 1000);
 if(!msgsent.includes(chatId)){
 await sendMessage(ctx,ctx.chat.id,'*⚠️ Too many requests*',{parse_mode:'markdown'})
@@ -1163,19 +1238,44 @@ schedule.scheduleJob('*/2 * * * * *', editOverdueMessages);
 const dataFolderPath = './data/db/'; // Replace with the path to your data folder
 
 
+function getRetryAfterSeconds(error) {
+  const retryAfter = error && error.response && error.response.parameters && error.response.parameters.retry_after;
+  if (typeof retryAfter === 'number' && retryAfter > 0) {
+    return retryAfter;
+  }
+  const desc = (error && error.response && error.response.description) ? String(error.response.description) : '';
+  const match = desc.match(/retry after (\d+)/i);
+  if (match) {
+    const value = parseInt(match[1], 10);
+    if (!isNaN(value) && value > 0) return value;
+  }
+  return 0;
+}
+
 async function forwardMessageToAllUsers(ctx, msgid,id) {
   const userIds = getUserIdsFromDataFolder();
+  if (!userIds.length) {
+    await sendMessage(ctx,ctx.chat.id,'No users found for broadcast.');
+    return;
+  }
 
   let successCount = 0;
   let failureCount = 0;
 
-  for (const userId of userIds) {
+  for (let i = 0; i < userIds.length; i++) {
+    const userId = userIds[i];
     try {
 //const msg = await sendMessage(ctx,userId, message,{parse_mode:'markdown'});
 //await ctx.telegram.pinChatMessage(userId,msg.message_id);
-await bot.telegram.forwardMessage(userId,id,msgid)
+ await bot.telegram.forwardMessage(userId,id,msgid)
       successCount++;
     } catch (error) {
+      const retryAfter = getRetryAfterSeconds(error);
+      if (retryAfter > 0) {
+        await sleep((retryAfter + 1) * 1000);
+        i--;
+        continue;
+      }
       const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
       if(d.includes('chat not found') || d.includes('blocked by the user')){
         try{
@@ -1200,6 +1300,9 @@ await bot.telegram.forwardMessage(userId,id,msgid)
 
 function getUserIdsFromDataFolder() {
   const userIds = [];
+  if (!fs.existsSync(dataFolderPath)) {
+    return userIds;
+  }
   const files = fs.readdirSync(dataFolderPath);
 
   for (const file of files) {

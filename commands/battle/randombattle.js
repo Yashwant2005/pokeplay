@@ -40,47 +40,33 @@ function registerRandomBattleCommand(bot, deps) {
     return out;
   }
 
-  function getDamagingMoves(name, level) {
+  function getLevelUpMoves(name, level) {
     const moveSet = pokemoves[name];
     if (!moveSet || !Array.isArray(moveSet.moves_info)) return [];
-    const isDamaging = (id) => {
-      const mv = dmoves[id];
-      if (!mv) return false;
-      const power = Number(mv.power);
-      const accuracy = Number(mv.accuracy);
-      return mv.category !== 'status' && Number.isFinite(power) && power > 0 && Number.isFinite(accuracy) && accuracy > 0;
-    };
     const levelUp = moveSet.moves_info.filter((m) =>
       m.learn_method === 'level-up' &&
-      Number(m.level_learned_at) <= Number(level) &&
-      isDamaging(m.id)
+      Number(m.level_learned_at) <= Number(level)
     );
     if (levelUp.length > 0) {
       const count = Math.min(4, levelUp.length);
       return levelUp.slice(-count).map((m) => Number(m.id));
     }
-    const any = moveSet.moves_info.find((m) => isDamaging(m.id));
+    const any = moveSet.moves_info[0];
     return any ? [Number(any.id)] : [];
   }
 
-  const FALLBACK_DAMAGING = Object.keys(dmoves || {})
+  const FALLBACK_MOVES = Object.keys(dmoves || {})
     .map((k) => Number(k))
-    .filter((id) => {
-      const mv = dmoves[id];
-      if (!mv) return false;
-      const power = Number(mv.power);
-      const accuracy = Number(mv.accuracy);
-      return mv.category !== 'status' && Number.isFinite(power) && power > 0 && Number.isFinite(accuracy) && accuracy > 0;
-    });
+    .filter((id) => !!dmoves[id]);
 
   function ensureMoves(moves) {
     const out = Array.isArray(moves) ? moves.filter((id) => Number.isFinite(Number(id))) : [];
     const max = 4;
     if (out.length >= max) return out.slice(0, max);
-    if (FALLBACK_DAMAGING.length < 1) return out;
-    const pool = FALLBACK_DAMAGING.filter((id) => !out.includes(id));
+    if (FALLBACK_MOVES.length < 1) return out;
+    const pool = FALLBACK_MOVES.filter((id) => !out.includes(id));
     while (out.length < max) {
-      const src = pool.length > 0 ? pool : FALLBACK_DAMAGING;
+      const src = pool.length > 0 ? pool : FALLBACK_MOVES;
       const pick = src[Math.floor(Math.random() * src.length)];
       if (!out.includes(pick)) {
         out.push(pick);
@@ -113,7 +99,7 @@ function registerRandomBattleCommand(bot, deps) {
         special_defense: 0,
         speed: 0
       },
-      moves: ensureMoves(getDamagingMoves(name, level)),
+      moves: ensureMoves(getLevelUpMoves(name, level)),
       temp_battle: true
     };
   }

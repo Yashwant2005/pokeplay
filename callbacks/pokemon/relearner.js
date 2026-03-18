@@ -10,7 +10,7 @@ function registerRelearnerCallbacks(bot, deps) {
     const level = plevel(poke.name, poke.exp);
     const ids = [];
     for (const mv of pokemoves[poke.name].moves_info) {
-      if (mv.learn_method !== 'level-up' || mv.level_learned_at > level || !dmoves[mv.id]) {
+      if (mv.learn_method !== 'level-up' || mv.level_learned_at > level) {
         continue;
       }
       if (!ids.includes(mv.id)) {
@@ -155,10 +155,15 @@ function registerRelearnerCallbacks(bot, deps) {
     }
 
     if (pk.moves.length < 4) {
-      const move = dmoves[moveId];
+      const move = dmoves[moveId] || {};
+      const moveName = move.name ? c(move.name) : 'Unknown Move';
+      const moveType = move.type ? c(move.type) : 'unknown';
+      const moveEmoji = emojis[move.type] || '';
+      const movePower = move.power != null ? move.power : '-';
+      const moveAccuracy = move.accuracy != null ? move.accuracy : '-';
       const msg = 'Are you sure to teach <b>' + c(pk.name) + '</b> this move?\n\n' +
-        '<b>Move:</b> ' + c(move.name) + ' [' + c(move.type) + ' ' + emojis[move.type] + ']\n' +
-        '<b>Power:</b> ' + move.power + ', <b>Accuracy:</b> ' + move.accuracy + '\n' +
+        '<b>Move:</b> ' + moveName + ' [' + moveType + ' ' + moveEmoji + ']\n' +
+        '<b>Power:</b> ' + movePower + ', <b>Accuracy:</b> ' + moveAccuracy + '\n' +
         '<b>Cost:</b> Free';
 
       await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {

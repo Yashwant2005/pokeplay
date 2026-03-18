@@ -14,74 +14,9 @@
     "description": "An ultra-high-performance Poke Ball that has a 2x catch rate multiplier.",
     "image": "https://graph.org/file/8ab712650e39f55ed65bb.jpg"
   },
-  "master": {
-    "name": "Master Ball",
-    "description": "The ultimate Poke Ball. It catches any wild Pokemon without fail.",
-    "image": "https://graph.org/file/77af2c70115b8a464d00e.jpg"
-  },
-  "safari": {
-    "name": "Safari Ball",
-    "description": "A special Poke Ball used only in the Safari Zone. It has a 3x catch rate multiplier.",
-    "image": "https://graph.org/file/2e4abf8847b47a3e05927.jpg"
-  },
-  "premier": {
-    "name": "Premier Ball",
-    "description": "A Poke Ball given as a bonus for buying 10 or more Poke Balls. It has a 1x catch rate multiplier.",
-    "image": "https://graph.org/file/734be799726f3efd232a4.jpg"
-  },
-  "net": {
-    "name": "Net Ball",
-    "description": "A Poke Ball that works especially well on Bug- and Water-type Pokemon. It has a 3x catch rate multiplier. Otherwise it has a 1x catch rate multipler.",
-    "image": "https://graph.org/file/fb9f5eb492b5023633ec8.jpg"
-  },
-  "nest":{
-     "name":"Nest Ball",
-     "description":"A Poke Ball that works well on Pokemon of level less then 30. It has a variable catch rate multiplier.",
-     "image": "https://graph.org/file/fd814098fd22225242ef1.jpg"
-  },
   "repeat": {
     "name": "Repeat Ball",
     "description": "A Poke Ball that works well on Pokemon of the same species that have been caught before. It has a 3x catch rate multiplier. Otherwise it has a 1x catch rate multipler.",
     "image": "https://graph.org/file/56166ffcc6b90735b9e6f.jpg"
-  },
-  "luxury": {
-    "name": "Luxury Ball",
-    "description": "A comfortable Poke Ball that makes a caught Pokemon more friendly toward its Trainer. It has a 1x catch rate multiplier.",
-    "image": "https://graph.org/file/3892c9880f10355567905.jpg"
-  },
-  "quick": {
-    "name": "Quick Ball",
-    "description": "A Poke Ball that catches wild Pokemon easily if thrown at the beginning of a battle. It has a variable catch rate multiplier.",
-    "image": "https://graph.org/file/78feb2d22e0fa994f022b.jpg"
-  },
-  "park": {
-    "name": "Park Ball",
-    "description": "A special Poke Ball mostly used in Pal Park. It has a 1x catch rate multiplier.",
-    "image": "https://graph.org/file/976c9e2def6dfa1b0f691.jpg"
-  },
-  "beast": {
-    "name": "Beast Ball",
-    "description": "A unique Poke Ball used for capturing Mythical. It has a 5x catch rate multiplier. Otherwise it has a 1x catch rate multipler.",
-    "image": "https://graph.org/file/532ca637f3adfca2c2601.jpg"
-  },
-  "level": {
-    "name": "Level Ball",
-    "description": "A Poke Ball that works better if the player's Pokemon is a higher level than the wild Pokemon. It has a variable catch rate multiplier.",
-    "image": "https://graph.org/file/0e6ef5e94c02ce1009403.jpg"
-  },
-  "moon": {
-    "name": "Moon Ball",
-    "description": "A Poke Ball that works well on Pokemon that evolve with a Moon Stone. It has a variable catch rate multiplier.",
-    "image": "https://graph.org/file/70425704ffa2f2e0b5a7f.jpg"
-  },
-  "sport": {
-    "name": "Sport Ball",
-    "description": "A special Poke Ball used for contests. It has a 1x catch rate multiplier.",
-    "image": "https://graph.org/file/6e088fbc3b957ce808a2b.jpg"
-  },
-  "origin": {
-    "name": "Origin Ball",
-    "description": "A special Poke Ball used on origin pokemons. It catches any origin pokemon without failing",
-    "image": "https://graph.org/file/7e923086d6cb6302051c7.jpg"
   }
 }

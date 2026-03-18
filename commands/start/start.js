@@ -56,6 +56,7 @@ function registerStartCommand(bot, deps) {
         reply_markup: { inline_keyboard: key }
       });
       return;
+      const { toBaseIdentifier } = require('../../utils/base_form_pokemon');
     }
 
     if (value && value.startsWith("ref")) {
@@ -180,7 +181,8 @@ function registerStartCommand(bot, deps) {
       await sendMessage(ctx, -1003069884900, "#refer\n\n<b>" + he.encode(ctx.from.first_name) + "</b> (<code>" + ctx.from.id + "</code>) has reached level 20 and <b>" + userData2.inv.name + "</b> (<code>" + id + "</code>) received :-.\n\n" + msg, { parse_mode: "html" });
       await sendMessage(ctx, id, msg, { parse_mode: "HTML" });
       await saveUserData2(id, userData2);
-      await saveUserData2(ctx.from.id, data);
+            let nam = fr[Math.floor(Math.random() * fr.length)].identifier;
+            nam = toBaseIdentifier(nam, forms);
       return;
     }
 

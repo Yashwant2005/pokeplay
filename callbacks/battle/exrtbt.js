@@ -1,12 +1,18 @@
 function register_010_exrtbt(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action(/exrtbt_/,async ctx => {
-if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-
-  ctx.answerCbQuery('Try Again');
-  return;
-}
-battlec[ctx.chat.id] = Date.now();
+    const now = Date.now();
+    const chatKey = ctx.chat && ctx.chat.id;
+    const userId = ctx.from && ctx.from.id;
+    const userKey = 'u_' + String(userId);
+    const chatLimited = chatKey !== undefined && battlec[chatKey] && now - battlec[chatKey] < 2000;
+    const userLimited = userId !== undefined && battlec[userKey] && now - battlec[userKey] < 2000;
+    if (chatLimited || userLimited) {
+      await ctx.answerCbQuery('On cooldown 2 sec');
+      return;
+    }
+    if (chatKey !== undefined) battlec[chatKey] = now;
+    if (userId !== undefined) battlec[userKey] = now;
 const name = ctx.callbackQuery.data.split('_')[1]
 if(ctx.session.name!=ctx.callbackQuery.message.message_id){
 ctx.answerCbQuery(''+c(name)+' Has already gone.')

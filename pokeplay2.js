@@ -199,8 +199,9 @@ const chart = JSON.parse(fs.readFileSync('data/exp_chart.json', 'utf8'));
 const chains = JSON.parse(fs.readFileSync('data/evolution_chains2.json', 'utf8'));
 const growth_rates = JSON.parse(fs.readFileSync('data/pokemon_data2.json', 'utf8'));
 const { getRandomAbilityForPokemon } = require('./utils/pokemon_ability');
+const { toBaseIdentifier } = require('./utils/base_form_pokemon');
 const rdata = JSON.parse(fs.readFileSync('data/pokedex_data.json', 'utf8'));
-const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs} = require('./func.js')
+const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs,applyCaptureIvRules} = require('./func.js')
 const regions = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Paldea']
 const region = {
 "Kanto":1,
@@ -422,6 +423,7 @@ const moduleDeps = buildModuleDeps({
   word,
   getRandomNature,
   generateRandomIVs,
+  applyCaptureIvRules,
   c,
   he,
   fs,
@@ -911,7 +913,8 @@ var list = Object.keys(spawn).filter(pk=>ar.includes(spawn[pk].toLowerCase()) &&
 const name5 = list[Math.floor(Math.random()*list.length)]
 const nut = ['gmax','mega','origin','primal']
 var fr = forms[name5].filter(pk=> !nut.some((pk2)=> pk.identifier.includes(pk2)) && ar.includes(spawn[pk.identifier].toLowerCase()))
-const nam = fr[Math.floor(Math.random()*fr.length)].identifier
+let nam = fr[Math.floor(Math.random()*fr.length)].identifier
+nam = toBaseIdentifier(nam, forms)
 const ul = lvls[nam]
 let m = Math.max(ul.split('-')[0]*1,5)
 let m2 = ul.split('-')[1]*1
@@ -991,6 +994,7 @@ const groupCommands = [
 {command:'/assignability',description:'Assign Ability If Missing'},
 {command:'/buy',description:'Buy Items From Poke Store'},
 {command:'/sell',description:'Sell Item To Poke Store'},
+{command:'/battlebox',description:'Open your Battle Box rewards'},
 {command:'/transfer',description:'transfer PokeCoins To Other Users'},
 {command: '/travel', description: 'Travel Another Place' },
 {command:'/safari_zone',description:'Travel Into Safari Zone'},
@@ -1003,6 +1007,9 @@ const groupCommands = [
 {command:'/candy',description:'Give Candy To Your Pokemon'},
 {command:'/vitamin',description:'Give Vitamins To Your Pokemon'},
 {command:'/berry',description:'Give Berry To Your Pokemon'},
+{command:'/mint',description:'Use Nature Mint On Pokemon'},
+{command:'/bottlecap',description:'Max One IV To 31'},
+{command:'/goldbottlecap',description:'Max All IVs To 31'},
 {command:'/evolve',description:'Evolve Your Pokemon'},
 {command:'/relearner',description:'Relearn Level-Up Moves'},
 {command:'/pokedex',description:'Pokedex A Pokemom'},

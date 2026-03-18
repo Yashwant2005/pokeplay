@@ -96,7 +96,9 @@
     "type": "normal",
     "accuracy": null,
     "category": "status",
-    "stat_changes": {"attack": 2}
+    "stat_changes": {
+      "attack": 2
+    }
   },
   "15": {
     "name": "cut",
@@ -644,7 +646,9 @@
     "type": "poison",
     "accuracy": 90,
     "category": "status",
-    "status_effect": ["badly_poisoned"]
+    "status_effect": [
+      "badly_poisoned"
+    ]
   },
   "93": {
     "name": "confusion",
@@ -3824,34 +3828,6 @@
     "accuracy": 100,
     "category": "special"
   },
-"5461": {
-    "name": "techno-blast",
-    "power": 120,
-    "type": "electric",
-    "accuracy": 100,
-    "category": "special"
-  },
-"5462": {
-    "name": "techno-blast",
-    "power": 120,
-    "type": "fire",
-    "accuracy": 100,
-    "category": "special"
-  },
-"5463": {
-    "name": "techno-blast",
-    "power": 120,
-    "type": "ice",
-    "accuracy": 100,
-    "category": "special"
-  },
-"5464": {
-    "name": "techno-blast",
-    "power": 120,
-    "type": "water",
-    "accuracy": 100,
-    "category": "special"
-  },
   "547": {
     "name": "relic-song",
     "power": 75,
@@ -6463,6 +6439,174 @@
     "accuracy": 100,
     "category": "special"
   },
+  "4490": {
+    "name": "judgment",
+    "power": 100,
+    "type": "bug",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "4491": {
+    "name": "judgment",
+    "power": 100,
+    "type": "dark",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "4492": {
+    "name": "judgment",
+    "power": 100,
+    "type": "dragon",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "4493": {
+    "name": "judgment",
+    "power": 100,
+    "type": "electric",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "4494": {
+    "name": "judgment",
+    "power": 100,
+    "type": "fighting",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "4495": {
+    "name": "judgment",
+    "power": 100,
+    "type": "fire",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "4496": {
+    "name": "judgment",
+    "power": 100,
+    "type": "flying",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "4497": {
+    "name": "judgment",
+    "power": 100,
+    "type": "ghost",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "4498": {
+    "name": "judgment",
+    "power": 100,
+    "type": "grass",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "4499": {
+    "name": "judgment",
+    "power": 100,
+    "type": "ground",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "5461": {
+    "name": "techno-blast",
+    "power": 120,
+    "type": "electric",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "5462": {
+    "name": "techno-blast",
+    "power": 120,
+    "type": "fire",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "5463": {
+    "name": "techno-blast",
+    "power": 120,
+    "type": "ice",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "5464": {
+    "name": "techno-blast",
+    "power": 120,
+    "type": "water",
+    "accuracy": 100,
+    "category": "special"
+  },
+  "7180": {
+    "name": "multi-attack",
+    "power": 120,
+    "type": "fighting",
+    "accuracy": 100,
+    "category": "physical"
+  },
+  "7181": {
+    "name": "multi-attack",
+    "power": 120,
+    "type": "flying",
+    "accuracy": 100,
+    "category": "physical"
+  },
+  "7182": {
+    "name": "multi-attack",
+    "power": 120,
+    "type": "poison",
+    "accuracy": 100,
+    "category": "physical"
+  },
+  "7183": {
+    "name": "multi-attack",
+    "power": 120,
+    "type": "ground",
+    "accuracy": 100,
+    "category": "physical"
+  },
+  "7184": {
+    "name": "multi-attack",
+    "power": 120,
+    "type": "rock",
+    "accuracy": 100,
+    "category": "physical"
+  },
+  "7185": {
+    "name": "multi-attack",
+    "power": 120,
+    "type": "bug",
+    "accuracy": 100,
+    "category": "physical"
+  },
+  "7186": {
+    "name": "multi-attack",
+    "power": 120,
+    "type": "ghost",
+    "accuracy": 100,
+    "category": "physical"
+  },
+  "7187": {
+    "name": "multi-attack",
+    "power": 120,
+    "type": "steel",
+    "accuracy": 100,
+    "category": "physical"
+  },
+  "7188": {
+    "name": "multi-attack",
+    "power": 120,
+    "type": "fire",
+    "accuracy": 100,
+    "category": "physical"
+  },
+  "7189": {
+    "name": "multi-attack",
+    "power": 120,
+    "type": "water",
+    "accuracy": 100,
+    "category": "physical"
+  },
   "10001": {
     "name": "shadow-rush",
     "power": 55,
@@ -6589,276 +6733,102 @@
     "accuracy": null,
     "category": "status"
   },
-"4490": {
-    "name": "judgment",
-    "power": 100,
-    "type": "bug",
-    "accuracy": 100,
-    "category": "special"
-  },
-
-"4491": {
-    "name": "judgment",
-    "power": 100,
-    "type": "dark",
-    "accuracy": 100,
-    "category": "special"
-  },
-
-"4492": {
-    "name": "judgment",
-    "power": 100,
-    "type": "dragon",
-    "accuracy": 100,
-    "category": "special"
-  },
-
-"4493": {
-    "name": "judgment",
-    "power": 100,
-    "type": "electric",
-    "accuracy": 100,
-    "category": "special"
-  },
-
-"4494": {
-    "name": "judgment",
-    "power": 100,
-    "type": "fighting",
-    "accuracy": 100,
-    "category": "special"
-  },
-
-"4495": {
-    "name": "judgment",
-    "power": 100,
-    "type": "fire",
-    "accuracy": 100,
-    "category": "special"
-  },
-
-"4496": {
-    "name": "judgment",
-    "power": 100,
-    "type": "flying",
-    "accuracy": 100,
-    "category": "special"
-  },
-
-"4497": {
-    "name": "judgment",
-    "power": 100,
-    "type": "ghost",
-    "accuracy": 100,
-    "category": "special"
-  },
-
-"4498": {
-    "name": "judgment",
-    "power": 100,
-    "type": "grass",
-    "accuracy": 100,
-    "category": "special"
-  },
-
-"4499": {
-    "name": "judgment",
-    "power": 100,
-    "type": "ground",
-    "accuracy": 100,
-    "category": "special"
-  },
-
-"44910": {
+  "44910": {
     "name": "judgment",
     "power": 100,
     "type": "ice",
     "accuracy": 100,
     "category": "special"
   },
-
-"44911": {
+  "44911": {
     "name": "judgment",
     "power": 100,
     "type": "poison",
     "accuracy": 100,
     "category": "special"
   },
-
-"44912": {
+  "44912": {
     "name": "judgment",
     "power": 100,
     "type": "psychic",
     "accuracy": 100,
     "category": "special"
   },
-
-"44913": {
+  "44913": {
     "name": "judgment",
     "power": 100,
     "type": "rock",
     "accuracy": 100,
     "category": "special"
   },
-
-"44914": {
+  "44914": {
     "name": "judgment",
     "power": 100,
     "type": "steel",
     "accuracy": 100,
     "category": "special"
   },
-
-"44915": {
+  "44915": {
     "name": "judgment",
     "power": 100,
     "type": "water",
     "accuracy": 100,
     "category": "special"
   },
-
-"44916": {
+  "44916": {
     "name": "judgment",
     "power": 100,
     "type": "fairy",
     "accuracy": 100,
     "category": "special"
   },
-"7180": {
-    "name": "multi-attack",
-    "power": 120,
-    "type": "fighting",
-    "accuracy": 100,
-    "category": "physical"
-  },
-
-"7181": {
-    "name": "multi-attack",
-    "power": 120,
-    "type": "flying",
-    "accuracy": 100,
-    "category": "physical"
-  },
-
-"7182": {
-    "name": "multi-attack",
-    "power": 120,
-    "type": "poison",
-    "accuracy": 100,
-    "category": "physical"
-  },
-
-"7183": {
-    "name": "multi-attack",
-    "power": 120,
-    "type": "ground",
-    "accuracy": 100,
-    "category": "physical"
-  },
-
-"7184": {
-    "name": "multi-attack",
-    "power": 120,
-    "type": "rock",
-    "accuracy": 100,
-    "category": "physical"
-  },
-
-"7185": {
-    "name": "multi-attack",
-    "power": 120,
-    "type": "bug",
-    "accuracy": 100,
-    "category": "physical"
-  },
-
-"7186": {
-    "name": "multi-attack",
-    "power": 120,
-    "type": "ghost",
-    "accuracy": 100,
-    "category": "physical"
-  },
-
-"7187": {
-    "name": "multi-attack",
-    "power": 120,
-    "type": "steel",
-    "accuracy": 100,
-    "category": "physical"
-  },
-
-"7188": {
-    "name": "multi-attack",
-    "power": 120,
-    "type": "fire",
-    "accuracy": 100,
-    "category": "physical"
-  },
-
-"7189": {
-    "name": "multi-attack",
-    "power": 120,
-    "type": "water",
-    "accuracy": 100,
-    "category": "physical"
-  },
-
-"71810": {
+  "71810": {
     "name": "multi-attack",
     "power": 120,
     "type": "grass",
     "accuracy": 100,
     "category": "physical"
   },
-
-"71811": {
+  "71811": {
     "name": "multi-attack",
     "power": 120,
     "type": "electric",
     "accuracy": 100,
     "category": "physical"
   },
-
-"71812": {
+  "71812": {
     "name": "multi-attack",
     "power": 120,
     "type": "psychic",
     "accuracy": 100,
     "category": "physical"
   },
-
-"71813": {
+  "71813": {
     "name": "multi-attack",
     "power": 120,
     "type": "ice",
     "accuracy": 100,
     "category": "physical"
   },
-
-"71814": {
+  "71814": {
     "name": "multi-attack",
     "power": 120,
     "type": "dragon",
     "accuracy": 100,
     "category": "physical"
   },
-
-"71815": {
+  "71815": {
     "name": "multi-attack",
     "power": 120,
     "type": "dark",
     "accuracy": 100,
     "category": "physical"
   },
-
-"71816": {
+  "71816": {
     "name": "multi-attack",
     "power": 120,
     "type": "fairy",
     "accuracy": 100,
     "category": "physical"
   }
-
-
 }

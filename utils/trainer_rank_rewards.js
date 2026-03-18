@@ -10,9 +10,33 @@ const CHANCE_REWARDS = [
 ];
 
 const BATTLE_BOX_REWARDS = [
-  { key: 'tm4', chance: 85.0 },
-  { key: 'tm2_stone2', chance: 13.0 },
-  { key: 'stone4', chance: 2.0 }
+  { key: 'holowear_ht_5', chance: 40.0 },
+  { key: 'pokeballs', chance: 30.0 },
+  { key: 'tm4', chance: 20.0 },
+  { key: 'stone1', chance: 7.0 },
+  { key: 'mint1', chance: 2.6 },
+  { key: 'bottlecap1', chance: 0.3 },
+  { key: 'goldcap1', chance: 0.1 }
+];
+
+const POKEBALL_REWARDS = [
+  { key: 'pokeballs_common_15', chance: 99.999 },
+  { key: 'masterball_1', chance: 0.001 }
+];
+
+const BATTLE_BOX_POKEBALL_POOL = [
+  'safari',
+  'premier',
+  'net',
+  'nest',
+  'luxury',
+  'quick',
+  'park',
+  'beast',
+  'level',
+  'moon',
+  'sport',
+  'origin'
 ];
 
 const NATURE_MINT_POOL = [
@@ -110,10 +134,69 @@ function randomStone(stones) {
   return ids[Math.floor(Math.random() * ids.length)];
 }
 
+function addPokeballs(data, ballType, count) {
+  if (!data.inv || typeof data.inv !== 'object') data.inv = {};
+  if (!Number.isFinite(data.inv[ballType])) data.inv[ballType] = 0;
+  data.inv[ballType] += count;
+}
+
+function addHolowearTickets(data, count) {
+  if (!data.inv || typeof data.inv !== 'object') data.inv = {};
+  if (!Number.isFinite(data.inv.holowear_tickets)) data.inv.holowear_tickets = 0;
+  data.inv.holowear_tickets += count;
+}
+
+function addNatureMint(data) {
+  if (!data.extra || typeof data.extra !== 'object') data.extra = {};
+  if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {};
+  if (!data.extra.itembox.mints || typeof data.extra.itembox.mints !== 'object') data.extra.itembox.mints = {};
+  const mintName = NATURE_MINT_POOL[Math.floor(Math.random() * NATURE_MINT_POOL.length)];
+  if (!Number.isFinite(data.extra.itembox.mints[mintName])) data.extra.itembox.mints[mintName] = 0;
+  data.extra.itembox.mints[mintName] += 1;
+  return mintName;
+}
+
+function addBottleCap(data) {
+  if (!data.extra || typeof data.extra !== 'object') data.extra = {};
+  if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {};
+  if (!Number.isFinite(data.extra.itembox.bottleCaps)) data.extra.itembox.bottleCaps = 0;
+  data.extra.itembox.bottleCaps += 1;
+}
+
+function addGoldBottleCap(data) {
+  if (!data.extra || typeof data.extra !== 'object') data.extra = {};
+  if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {};
+  if (!Number.isFinite(data.extra.itembox.goldBottleCaps)) data.extra.itembox.goldBottleCaps = 0;
+  data.extra.itembox.goldBottleCaps += 1;
+}
+
 function applyBattleBox(data, summary, deps) {
   const { tms, stones } = deps;
   const boxRoll = weightedPick(BATTLE_BOX_REWARDS);
   summary.battleBoxes += 1;
+
+  if (boxRoll === 'holowear_ht_5') {
+    addHolowearTickets(data, 5);
+    summary.rewards.ht += 5;
+    summary.holowearTicketsAdded += 5;
+    return;
+  }
+
+  if (boxRoll === 'pokeballs') {
+    const ballRoll = weightedPick(POKEBALL_REWARDS);
+    if (ballRoll === 'pokeballs_common_15') {
+      const ballTypes = BATTLE_BOX_POKEBALL_POOL;
+      const randomBall = ballTypes[Math.floor(Math.random() * ballTypes.length)];
+      addPokeballs(data, randomBall, 15);
+      if (!Number.isFinite(summary.pokeballsAdded[randomBall])) summary.pokeballsAdded[randomBall] = 0;
+      summary.pokeballsAdded[randomBall] += 15;
+    } else if (ballRoll === 'masterball_1') {
+      addPokeballs(data, 'master', 1);
+      if (!Number.isFinite(summary.pokeballsAdded.master)) summary.pokeballsAdded.master = 0;
+      summary.pokeballsAdded.master += 1;
+    }
+    return;
+  }
 
   if (boxRoll === 'tm4') {
     for (let i = 0; i < 4; i++) {
@@ -125,28 +208,72 @@ function applyBattleBox(data, summary, deps) {
     return;
   }
 
-  if (boxRoll === 'tm2_stone2') {
-    for (let i = 0; i < 2; i++) {
-      const tmNo = randomTmNumber(tms);
-      if (!tmNo) continue;
-      addTm(data, tms, tmNo);
-      summary.tmsAdded += 1;
-    }
-    for (let i = 0; i < 2; i++) {
-      const st = randomStone(stones);
-      if (!st) continue;
+  if (boxRoll === 'stone1') {
+    const st = randomStone(stones);
+    if (st) {
       addStone(data, st);
       summary.stonesAdded += 1;
     }
     return;
   }
 
-  for (let i = 0; i < 4; i++) {
-    const st = randomStone(stones);
-    if (!st) continue;
-    addStone(data, st);
-    summary.stonesAdded += 1;
+  if (boxRoll === 'mint1') {
+    const mintName = addNatureMint(data);
+    summary.mintsAdded += 1;
+    if (mintName) {
+      if (!Number.isFinite(summary.mintBreakdown[mintName])) summary.mintBreakdown[mintName] = 0;
+      summary.mintBreakdown[mintName] += 1;
+    }
+    return;
   }
+
+  if (boxRoll === 'bottlecap1') {
+    addBottleCap(data);
+    summary.bottleCapsAdded += 1;
+    return;
+  }
+
+  if (boxRoll === 'goldcap1') {
+    addGoldBottleCap(data);
+    summary.goldBottleCapsAdded += 1;
+    return;
+  }
+}
+
+function openBattleBoxes(data, deps, requestedAmount) {
+  ensureWallet(data);
+  ensureRankRewardState(data);
+
+  const available = Number.isFinite(data.inv.battle_boxes) ? data.inv.battle_boxes : 0;
+  const safeRequested = Math.max(1, Math.floor(Number(requestedAmount) || 1));
+  const toOpen = Math.min(available, safeRequested);
+
+  const summary = {
+    available,
+    opened: 0,
+    remaining: available,
+    rewards: { pc: 0, lp: 0, ht: 0, battleBoxes: 0 },
+    battleBoxes: 0,
+    tmsAdded: 0,
+    stonesAdded: 0,
+    mintsAdded: 0,
+    bottleCapsAdded: 0,
+    goldBottleCapsAdded: 0,
+    holowearTicketsAdded: 0,
+    mintBreakdown: {},
+    pokeballsAdded: {}
+  };
+
+  if (toOpen <= 0) return summary;
+
+  for (let i = 0; i < toOpen; i += 1) {
+    data.inv.battle_boxes -= 1;
+    applyBattleBox(data, summary, deps);
+    summary.opened += 1;
+  }
+
+  summary.remaining = data.inv.battle_boxes;
+  return summary;
 }
 
 function ensureWallet(data) {
@@ -154,6 +281,62 @@ function ensureWallet(data) {
   if (!Number.isFinite(data.inv.pc)) data.inv.pc = 0;
   if (!Number.isFinite(data.inv.league_points)) data.inv.league_points = 0;
   if (!Number.isFinite(data.inv.holowear_tickets)) data.inv.holowear_tickets = 0;
+  if (!Number.isFinite(data.inv.battle_boxes)) data.inv.battle_boxes = 0;
+}
+
+function grantBundle(data, summary) {
+  data.inv.pc += 1000;
+  data.inv.league_points += 100;
+  data.inv.holowear_tickets += 10;
+  summary.rewards.pc += 1000;
+  summary.rewards.lp += 100;
+  summary.rewards.ht += 10;
+}
+
+function grantSingleCycleReward(level, data, summary) {
+  const idx = (level - 1) % 3;
+  if (idx === 0) {
+    data.inv.pc += 1000;
+    summary.rewards.pc += 1000;
+    return;
+  }
+  if (idx === 1) {
+    data.inv.league_points += 100;
+    summary.rewards.lp += 100;
+    return;
+  }
+  data.inv.holowear_tickets += 10;
+  summary.rewards.ht += 10;
+}
+
+function grantBattleBox(data, summary) {
+  data.inv.battle_boxes += 1;
+  summary.rewards.battleBoxes += 1;
+}
+
+function applyRankRewardForLevel(level, data, summary) {
+  if (level <= 30) {
+    grantSingleCycleReward(level, data, summary);
+    return;
+  }
+
+  if (level <= 50) {
+    // Stage 2: levels 31-50 repeat as 2x bundle, then 1x battle box.
+    const cycle = (level - 31) % 3;
+    if (cycle === 2) {
+      grantBattleBox(data, summary);
+    } else {
+      grantBundle(data, summary);
+    }
+    return;
+  }
+
+  // Stage 3: levels 51-100 alternate bundle and battle box.
+  if (level % 2 === 1) {
+    grantBundle(data, summary);
+  } else {
+    grantBattleBox(data, summary);
+  }
 }
 
 function claimTrainerRankRewards(data, deps) {
@@ -167,73 +350,15 @@ function claimTrainerRankRewards(data, deps) {
     currentLevel,
     claimedLevel,
     levelsToClaim,
-    guaranteed: { pc: 0, lp: 0, ht: 0 },
-    bonus: { pc: 0, lp: 0, ht: 0 },
-    battleBoxes: 0,
-    bottleCaps: 0,
-    goldBottleCaps: 0,
-    tmsAdded: 0,
-    stonesAdded: 0,
-    mints: {}
+    rewards: { pc: 0, lp: 0, ht: 0, battleBoxes: 0 }
   };
 
   if (levelsToClaim <= 0) return summary;
 
   ensureWallet(data);
 
-  for (let i = 0; i < levelsToClaim; i++) {
-    data.inv.pc += 1000;
-    data.inv.league_points += 50;
-    data.inv.holowear_tickets += 5;
-    summary.guaranteed.pc += 1000;
-    summary.guaranteed.lp += 50;
-    summary.guaranteed.ht += 5;
-
-    const roll = weightedPick(CHANCE_REWARDS);
-
-    if (roll === 'bundle_small') {
-      data.inv.pc += 1000;
-      data.inv.league_points += 30;
-      data.inv.holowear_tickets += 2;
-      summary.bonus.pc += 1000;
-      summary.bonus.lp += 30;
-      summary.bonus.ht += 2;
-      continue;
-    }
-
-    if (roll === 'bundle_large') {
-      data.inv.pc += 3000;
-      data.inv.league_points += 70;
-      data.inv.holowear_tickets += 10;
-      summary.bonus.pc += 3000;
-      summary.bonus.lp += 70;
-      summary.bonus.ht += 10;
-      continue;
-    }
-
-    if (roll === 'battle_box') {
-      applyBattleBox(data, summary, deps);
-      continue;
-    }
-
-    if (roll === 'nature_mint') {
-      const mint = NATURE_MINT_POOL[Math.floor(Math.random() * NATURE_MINT_POOL.length)];
-      data.extra.itembox.mints[mint] = ensureNumber(data.extra.itembox.mints[mint], 0) + 1;
-      summary.mints[mint] = ensureNumber(summary.mints[mint], 0) + 1;
-      continue;
-    }
-
-    if (roll === 'bottle_cap') {
-      data.extra.itembox.bottleCaps += 1;
-      summary.bottleCaps += 1;
-      continue;
-    }
-
-    if (roll === 'gold_bottle_cap') {
-      data.extra.itembox.goldBottleCaps += 1;
-      summary.goldBottleCaps += 1;
-      continue;
-    }
+  for (let level = claimedLevel + 1; level <= currentLevel; level++) {
+    applyRankRewardForLevel(level, data, summary);
   }
 
   state.claimedLevel = currentLevel;
@@ -298,6 +423,7 @@ module.exports = {
   getUnclaimedLevels,
   ensureRankRewardState,
   claimTrainerRankRewards,
+  openBattleBoxes,
   exchangeDuplicateTmsForVp,
   exchangeDuplicateStonesForVp,
   summarizeMints

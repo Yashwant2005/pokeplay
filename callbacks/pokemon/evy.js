@@ -121,16 +121,7 @@ poke.moves.push(m.id)
 await saveUserData2(ctx.from.id,data)
 await sendMessage(ctx,ctx.from.id,'<b>'+c(poke.name)+'</b> (<b>Lv.</b> '+(plevel(poke.name,poke.exp))+') Has Learnt A New Move <b>'+c(dmoves[m.id].name)+'</b> ['+c(dmoves[m.id].type)+' '+emojis[dmoves[m.id].type]+'].',{parse_mode:'HTML'})
 }else{
-const options = {
-  timeZone: 'Asia/Kolkata',
-  month: 'numeric',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  hour12: true,
-};
-
-const d = new Date().toLocaleString('en-US', options)
+const d = Date.now()
 if(ctx.chat.type!='private'){
 await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},'<a href="tg://user?id='+ctx.from.id+'"><b>'+data.inv.name+'</b></a>, <b>'+c(poke.name)+'</b> (<b>Lv.</b> '+(plevel(poke.name,poke.exp))+') Wants To Learn A New Move',{reply_markup:{inline_keyboard:[[{text:'Go',url:'t.me/'+bot.botInfo.username+''}]]}})
 }

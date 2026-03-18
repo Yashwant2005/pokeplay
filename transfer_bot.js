@@ -22,7 +22,7 @@ const stones = JSON.parse(fs.readFileSync('data/stones.json', 'utf8'));
 const BOT_TOKEN = '8616181555:AAHFesYbqllv11TGDDR4kNAU2rznGR_OLG8';
 const ADMIN_GROUP_ID = -1003736053869;
 const SOURCE_BOT_IDS = [572621020, 7955369039];
-const HEXAMON_BOT_ID = 572621020;
+const STONES_SOURCE_BOT_IDS = [572621020, 7955369039];
 const ADMINS = [6265981509, 1411248872, 8493023103, 8551864967];
 
 const REQUESTS_FILE = path.join('data', 'transfer_requests.json');
@@ -187,10 +187,20 @@ function parseStonesFromText(text) {
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
-    const m = trimmed.match(/^\/([A-Za-z0-9_-]+)/);
-    const rawName = m ? m[1] : trimmed;
-    const key = normalizeStoneName(rawName);
-    if (stones[key]) out.push(key);
+    const slashMatch = trimmed.match(/^\/([A-Za-z0-9_-]+)/);
+    if (slashMatch) {
+      const key = normalizeStoneName(slashMatch[1]);
+      if (stones[key]) out.push(key);
+      continue;
+    }
+    const numberedMatch = trimmed.match(/^\d+\.\s*([A-Za-z0-9' -]+)\s*:\s*(\d+)/);
+    if (numberedMatch) {
+      const key = normalizeStoneName(numberedMatch[1]);
+      const count = Math.max(0, Number(numberedMatch[2]));
+      if (stones[key] && Number.isFinite(count)) {
+        for (let i = 0; i < count; i++) out.push(key);
+      }
+    }
   }
   return out;
 }
@@ -330,7 +340,7 @@ function formatSourceBot(sourceId) {
 
 bot.start(async (ctx) => {
   await ctx.reply(
-    'Transfer bot is active.\n\nUse /add to submit a Pokemon transfer request.\nFlow: Pokemon name -> nature page -> IV/EV page -> admin approval.\n\nUse /stones to submit a stones transfer request from hexamonbot.'
+    'Transfer bot is active.\n\nUse /add to submit a Pokemon transfer request.\nFlow: Pokemon name -> nature page -> IV/EV page -> admin approval.\n\nUse /stones to submit a stones transfer request from hexamonbot or poketalesxbot.'
   );
 });
 
@@ -374,10 +384,17 @@ bot.command('stones', async (ctx) => {
 
   userState.set(ctx.from.id, { step: 'stones_await_forward' });
   await ctx.reply(
-    'Forward your stones page from hexamonbot only.\n\n' +
-    'It should look like:\n' +
+    'Forward your stones page from hexamonbot or poketalesxbot only.\n\n' +
+    'Format 1 (hexamonbot):\n' +
     'Key Stone 🧿: Not Equipped\n' +
     '/Banettite\n/Sablenite\n/Lopunnite\n/Medichamite\n\n' +
+    'Format 2 (poketalesxbot):\n' +
+    'Your Mega Stones:\n' +
+    '1. Delphoxite: 1\n' +
+    '2. Manectite: 1\n' +
+    '3. Dragoninite: 1\n' +
+    '4. Mawilite: 2\n' +
+    '5. Excadrite: 1\n\n' +
     'After that, I will ask you for a screenshot proof with your name visible.'
   );
 });
@@ -391,24 +408,19 @@ bot.on('message', async (ctx, next) => {
   if (!state) return next();
 
   if (state.step === 'stones_await_forward') {
-    if (!ctx.message.forward_date || !ctx.message.forward_from || Number(ctx.message.forward_from.id) !== HEXAMON_BOT_ID) {
-      await ctx.reply('Forward the stones page from hexamonbot only.');
+    if (!ctx.message.forward_date || !ctx.message.forward_from || !STONES_SOURCE_BOT_IDS.includes(Number(ctx.message.forward_from.id))) {
+      await ctx.reply('Forward the stones page from hexamonbot or poketalesxbot only.');
       return;
     }
 
     const text = getMessageText(ctx.message);
     const stoneKeys = parseStonesFromText(text);
     if (stoneKeys.length < 1) {
-      await ctx.reply('No valid stones found. Please forward the stones page again from hexamonbot.');
+      await ctx.reply('No valid stones found. Please forward the stones page again from hexamonbot or poketalesxbot.');
       return;
     }
 
     const keyStoneStatus = parseKeyStoneStatus(text);
-    if (!keyStoneStatus) {
-      await ctx.reply('Key Stone line not found. Please forward the correct stones page from hexamonbot.');
-      return;
-    }
-
     state.stones = stoneKeys;
     state.keyStoneStatus = keyStoneStatus;
     state.sourceBotId = ctx.message.forward_from.id;
@@ -828,3 +840,4 @@ bot.launch().then(() => {
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
+

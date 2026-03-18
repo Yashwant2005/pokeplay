@@ -22,37 +22,43 @@ function registerMybagCommand(bot, deps) {
   
   }
   
-  let msg = '*💷 PokeCoins:* '+data.inv.pc+'\n'
+  let msg = '*ðŸ’· PokeCoins:* '+data.inv.pc+'\n'
   
   let msgg = ''
   
   if(data.inv.candy && data.inv.candy > 0){
   
-  msg += '\n• *🍬 Candies:* '+data.inv.candy+''
+  msg += '\nâ€¢ *ðŸ¬ Candies:* '+data.inv.candy+''
   
+  }
+
+  if(data.inv.daycare_candy && data.inv.daycare_candy > 0){
+
+  msg += '\nâ€¢ *Daycare Candy:* '+data.inv.daycare_candy+''
+
   }
   
   if(data.inv.vitamin && data.inv.vitamin > 0){
   
-  msg += '\n• *💉 Vitamins:* '+data.inv.vitamin+''
+  msg += '\nâ€¢ *ðŸ’‰ Vitamins:* '+data.inv.vitamin+''
   
   }
   
   if(data.inv.berry && data.inv.berry > 0){
   
-  msg += '\n• *🍒 Berries:* '+data.inv.berry+''
+  msg += '\nâ€¢ *ðŸ’ Berries:* '+data.inv.berry+''
   
   }
   
   if(data.inv.omniring || data.inv.ring || data.inv.gmax_band){
   
-  msgg += '\n• *🧬 OmniRing:* Equipped'
+  msgg += '\nâ€¢ *ðŸ§¬ OmniRing:* Equipped'
   
   }
 
   if(data.inv.shiny_charm){
   
-  msgg += '\n• *✨ Shiny Charm:* Owned'
+  msgg += '\nâ€¢ *âœ¨ Shiny Charm:* Owned'
   
   }
 
@@ -70,13 +76,13 @@ function registerMybagCommand(bot, deps) {
 
   msg += msgg
 
-  msg += '\n• *⭐ League Points:* '+data.inv.league_points+''
-  msg += '\n• *🎟️ Holowear Tickets:* '+data.inv.holowear_tickets+''
-  msg += '\n• *🎁 Battle Box:* '+data.inv.battle_boxes+''
+  msg += '\nâ€¢ *â­ League Points:* '+data.inv.league_points+''
+  msg += '\nâ€¢ *ðŸŽŸï¸ Holowear Tickets:* '+data.inv.holowear_tickets+''
+  msg += '\nâ€¢ *ðŸŽ Battle Box:* '+data.inv.battle_boxes+''
   
   if(data.inv.pass && data.inv.pass > 0){
   
-  msg += '\n• *🀄 Safari Pass:* '+data.inv.pass+''
+  msg += '\nâ€¢ *ðŸ€„ Safari Pass:* '+data.inv.pass+''
   
   }
   
@@ -100,4 +106,3 @@ function registerMybagCommand(bot, deps) {
 }
 
 module.exports = registerMybagCommand;
-

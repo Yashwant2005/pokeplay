@@ -213,6 +213,9 @@ msg += '\n• *🎁 Battle Box:* '+data.inv.battle_boxes+''
 if(data.inv.candy && data.inv.candy > 0){
 msg += '\n• *🍬 Candies:* '+data.inv.candy+''
 }
+if(data.inv.daycare_candy && data.inv.daycare_candy > 0){
+msg += '\n• *Daycare Candy:* '+data.inv.daycare_candy+''
+}
 if(data.inv.vitamin && data.inv.vitamin > 0){
 msg += '\n• *💉 Vitamins:* '+data.inv.vitamin+''
 }
@@ -229,4 +232,3 @@ return
 }
 
 module.exports = register_037_poag;
-

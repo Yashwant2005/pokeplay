@@ -50,6 +50,12 @@ function registerMybagCommand(bot, deps) {
   
   }
 
+  if(data.inv.shiny_charm){
+  
+  msgg += '\n• *✨ Shiny Charm:* Owned'
+  
+  }
+
   if(!Number.isFinite(data.inv.league_points)){
   data.inv.league_points = 0
   }
@@ -58,10 +64,15 @@ function registerMybagCommand(bot, deps) {
   data.inv.holowear_tickets = 0
   }
 
+  if(!Number.isFinite(data.inv.battle_boxes)){
+  data.inv.battle_boxes = 0
+  }
+
   msg += msgg
 
-  msg += '\n• *⭐ LP:* '+data.inv.league_points+''
-  msg += '\n• *🎟️ HT:* '+data.inv.holowear_tickets+''
+  msg += '\n• *⭐ League Points:* '+data.inv.league_points+''
+  msg += '\n• *🎟️ Holowear Tickets:* '+data.inv.holowear_tickets+''
+  msg += '\n• *🎁 Battle Box:* '+data.inv.battle_boxes+''
   
   if(data.inv.pass && data.inv.pass > 0){
   
@@ -69,7 +80,7 @@ function registerMybagCommand(bot, deps) {
   
   }
   
-  const items = ['inventory','balls','tms','items']
+  const items = ['inventory','balls','tms','enhance','items']
   
   let item = 'inventory'
   

@@ -1,5 +1,6 @@
 function register_047_evy(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { toBaseIdentifier } = require('../../utils/base_form_pokemon');
   bot.action(/evy_/,check2q,async ctx => {
 const data = await getUserData(ctx.from.id)
 //const name = ctx.callbackQuery.data.split('_')[1]
@@ -83,7 +84,8 @@ var rn = fr
 }
 
 
-const nam = rn[Math.floor(Math.random()*rn.length)].identifier
+let nam = rn[Math.floor(Math.random()*rn.length)].identifier
+nam = toBaseIdentifier(nam, forms)
 const d = pokes[nam]
 poke.name = nam
 poke.id = d.pokedex_number

@@ -1,12 +1,21 @@
+const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
+const { applyEntryAbility } = require('../../utils/battle_abilities');
+
 function register_011_catch(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action(/catch_/,async ctx => {
-if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-
-  ctx.answerCbQuery('Try Again');
-  return;
-}
-battlec[ctx.chat.id] = Date.now();
+      const now = Date.now();
+      const chatKey = ctx.chat && ctx.chat.id;
+      const userId = ctx.from && ctx.from.id;
+      const userKey = 'u_' + String(userId);
+      const chatLimited = chatKey !== undefined && battlec[chatKey] && now - battlec[chatKey] < 2000;
+      const userLimited = userId !== undefined && battlec[userKey] && now - battlec[userKey] < 2000;
+      if (chatLimited || userLimited) {
+        await ctx.answerCbQuery('On cooldown 2 sec');
+        return;
+      }
+      if (chatKey !== undefined) battlec[chatKey] = now;
+      if (userId !== undefined) battlec[userKey] = now;
 const name = ctx.callbackQuery.data.split('_')[1]
 const data56 = await getUserData(ctx.from.id)
 await checkseen(ctx,name)
@@ -118,6 +127,7 @@ rows.push(key2)
     inline_keyboard: rows,key2
   };
 const cp = word(8)
+battleData.opass = word(8)
 battleData.c = p.pass
 battleData.org = org
 battleData.chp = hp
@@ -129,6 +139,7 @@ battleData.nat = nat
 battleData.cpass = cp
 battleData.level = level
 battleData.name = name
+battleData.oability = getRandomAbilityForPokemon(name, pokes)
 battleData.omoves = omoves
 battleData.ded = []
 battleData.ot = {}
@@ -158,6 +169,25 @@ tem[pk[0].pass] = stats.hp
 }
 battleData.team = tem
 battleData.la = la
+const playerEntry = applyEntryAbility({
+  battleData,
+  pass: p.pass,
+  pokemonName: p.name,
+  abilityName: p.ability,
+  selfStats: stats,
+  opponentStats: stats2,
+  c
+})
+const wildEntry = applyEntryAbility({
+  battleData,
+  pass: battleData.opass,
+  pokemonName: name,
+  abilityName: battleData.oability,
+  selfStats: stats2,
+  opponentStats: stats,
+  c
+})
+msg += playerEntry.message + wildEntry.message
 await saveBattleData(bword, battleData);
 ctx.session.name = ''
 if(data.balls.safari && data.balls.safari > 0){

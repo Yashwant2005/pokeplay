@@ -119,6 +119,40 @@ function registerBuyCommand(bot, deps) {
   return
   
   }
+
+  if(item2.toLowerCase()=='shinycharm' || item2.toLowerCase()=='shiny_charm' || ctx.message.text.split(' ').slice(1).join(' ').toLowerCase()== 'shiny charm'){
+  
+  if(data.inv.pc < 15000){
+  
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*You not have enough PokeCoins💷*',{reply_to_message_id:ctx.message.message_id})
+  
+  return
+  
+  }
+  
+  if(data.inv.shiny_charm){
+  
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You already have bought *Shiny Charm*',{reply_to_message_id:ctx.message.message_id})
+  
+  return
+  
+  }
+  
+  data.inv.shiny_charm = true
+  
+  data.inv.pc -= 15000
+  
+  await saveUserData2(ctx.from.id,data)
+  
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Bought *Shiny Charm* For *15000* PokeCoins 💷',{reply_to_message_id:ctx.message.message_id})
+  
+  await sendMessage(ctx,-1003069884900,'#buy\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) bought <code>Shiny Charm</code>',
+  
+  {parse_mode:'HTML'})
+  
+  return
+  
+  }
   
   if(item2.toLowerCase().includes('tm')){
   

@@ -6,7 +6,7 @@ if(ctx.from.id!=id){
 return
 }
 const item = ctx.callbackQuery.data.split('_')[1]
-const items = ['inventory','balls','tms','items']
+const items = ['inventory','balls','tms','enhance','items']
 const data = await getUserData(ctx.from.id)
 const store = items.filter((storeitem)=>storeitem!=item)
 const ind = items.indexOf(item)
@@ -137,9 +137,34 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,me
 return
 }
 if(item=='items'){
-const key = [[{text:'Key Items',callback_data:'poag_transformational_'+ctx.from.id+''},{text:'Evo Items',callback_data:'poag_evolution_'+ctx.from.id+''}],[{text:'Special Items',callback_data:'poag_special_'+ctx.from.id+''}]]
+const key = [[{text:'Key Items',callback_data:'poag_transformational_'+ctx.from.id+''},{text:'Evo Items',callback_data:'poag_evolution_'+ctx.from.id+''}],[{text:'Special Items',callback_data:'poag_special_'+ctx.from.id+''},{text:'Enhance Items',callback_data:'poag_enhance_'+ctx.from.id+''}]]
 key.push(rows)
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Which category of *Items* you wanna check?',{parse_mode:'markdown',reply_markup:{inline_keyboard:key}})
+return
+}
+if(item=='enhance'){
+if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+if(!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
+if(!data.extra.itembox.mints || typeof data.extra.itembox.mints !== 'object') data.extra.itembox.mints = {}
+if(!Number.isFinite(data.extra.itembox.bottleCaps)) data.extra.itembox.bottleCaps = 0
+if(!Number.isFinite(data.extra.itembox.goldBottleCaps)) data.extra.itembox.goldBottleCaps = 0
+
+const mintKeys = Object.keys(data.extra.itembox.mints).filter((k) => Number(data.extra.itembox.mints[k]) > 0)
+const totalMints = mintKeys.reduce((sum, key) => sum + Number(data.extra.itembox.mints[key] || 0), 0)
+
+let msg = '*Enhancement Items*\n\n'
+msg += '• *Nature Mints:* '+totalMints+'\n'
+msg += '• *Bottle Caps:* '+data.extra.itembox.bottleCaps+'\n'
+msg += '• *Gold Bottle Caps:* '+data.extra.itembox.goldBottleCaps+'\n'
+
+if(mintKeys.length > 0){
+msg += '\n*Mint Breakdown:*\n'
+for(const key of mintKeys){
+msg += '- '+c(key)+' x'+data.extra.itembox.mints[key]+'\n'
+}
+}
+
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'markdown',reply_markup:{inline_keyboard:[rows]}})
 return
 }
 if(item=='balls'){
@@ -178,9 +203,13 @@ data.inv.league_points = 0
 if(!Number.isFinite(data.inv.holowear_tickets)){
 data.inv.holowear_tickets = 0
 }
+if(!Number.isFinite(data.inv.battle_boxes)){
+data.inv.battle_boxes = 0
+}
 let msg = '*💷 PokeCoins:* '+data.inv.pc+'\n'
 msg += '\n• *⭐ LP:* '+data.inv.league_points+''
 msg += '\n• *🎟️ HT:* '+data.inv.holowear_tickets+''
+msg += '\n• *🎁 Battle Box:* '+data.inv.battle_boxes+''
 if(data.inv.candy && data.inv.candy > 0){
 msg += '\n• *🍬 Candies:* '+data.inv.candy+''
 }

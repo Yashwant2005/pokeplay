@@ -102,6 +102,8 @@ function registerAddCommand(bot, deps) {
           special_defense: ivInputs[4],
           speed: ivInputs[5]
         };
+        const symbol = hasShinyFlag ? (forcedShiny ? '✨' : '') : (shinyRequested ? '✨' : '');
+        const finalIvs = applyCaptureIvRules(iv, { symbol });
 
         const da = {
           name: pokeName,
@@ -110,8 +112,8 @@ function registerAddCommand(bot, deps) {
           ability: customAbility || getRandomAbilityForPokemon(pokeName, pokes),
           exp: chart[growth.growth_rate][levelInt],
           pass: word(8),
-          ivs: iv,
-          symbol: hasShinyFlag ? (forcedShiny ? '✨' : '') : (shinyRequested ? '✨' : ''),
+          ivs: finalIvs,
+          symbol,
           evs: ev,
           moves: buildLevelUpMoves(pokeName, levelInt)
         };
@@ -154,7 +156,9 @@ function registerAddCommand(bot, deps) {
           ability: getRandomAbilityForPokemon(pokeName, pokes),
           exp: chart[g.growth_rate][level],
           pass: word(8),
-          ivs: iv,
+          ivs: applyCaptureIvRules(iv, {
+            symbol: hasShinyFlag ? (forcedShiny ? '✨' : '') : (ctx.message.text.includes('shiny') ? '✨' : '')
+          }),
           symbol: hasShinyFlag ? (forcedShiny ? '✨' : '') : (ctx.message.text.includes('shiny') ? '✨' : ''),
           evs: ev,
           moves: buildLevelUpMoves(pokeName, level)

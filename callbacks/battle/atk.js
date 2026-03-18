@@ -1,12 +1,32 @@
+const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
+const {
+  applyAbsorbMoveAbility,
+  applyEndTurnAbility,
+  applyKoAbility,
+  applyOnDamageTakenAbilities,
+  applyStageToStat,
+  ensurePokemonStatStages
+} = require('../../utils/battle_abilities');
+const {
+  claimTrainerRankRewards,
+  getTrainerLevel
+} = require('../../utils/trainer_rank_rewards');
+
 function register_012_atk(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action(/atk_/,async ctx => {
-if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-
-  ctx.answerCbQuery('Try Again');
+const now = Date.now();
+const chatKey = ctx.chat && ctx.chat.id;
+const userId = ctx.from && ctx.from.id;
+const userKey = 'u_' + String(userId);
+const chatLimited = chatKey !== undefined && battlec[chatKey] && now - battlec[chatKey] < 2000;
+const userLimited = userId !== undefined && battlec[userKey] && now - battlec[userKey] < 2000;
+if (chatLimited || userLimited) {
+  await ctx.answerCbQuery('On cooldown 2 sec');
   return;
 }
-battlec[ctx.chat.id] = Date.now();
+if (chatKey !== undefined) battlec[chatKey] = now;
+if (userId !== undefined) battlec[userKey] = now;
 const move = ctx.callbackQuery.data.split('_')[1]
 const bword = ctx.callbackQuery.data.split('_')[2]
 const normalizeMoveName = (moveName) => String(moveName || '').toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim()
@@ -27,6 +47,55 @@ const RECOIL_MOVE_RULES = {
   'wild charge': { ratio: 1 / 4 },
   'wood hammer': { ratio: 1 / 3 }
 }
+const PERFECT_CRIT_MOVES = new Set([
+  'flower trick',
+  'frost breath',
+  'storm throw',
+  'surging strikes',
+  'wicked blow',
+  'zippy zap'
+])
+const HIGH_CRIT_RATIO_MOVES = new Set([
+  '10,000,000 volt thunderbolt',
+  '10 000 000 volt thunderbolt',
+  '10000000 volt thunderbolt',
+  'aeroblast',
+  'air cutter',
+  'aqua cutter',
+  'attack order',
+  'blaze kick',
+  'crabhammer',
+  'cross chop',
+  'cross poison',
+  'dire claw',
+  'drill run',
+  'esper wing',
+  'ivy cudgel',
+  'karate chop',
+  'leaf blade',
+  'night slash',
+  'plasma fists',
+  'poison tail',
+  'psycho cut',
+  'razor leaf',
+  'razor wind',
+  'shadow blast',
+  'shadow claw',
+  'sky attack',
+  'slash',
+  'snipe shot',
+  'spacial rend',
+  'stone edge',
+  'triple arrows'
+])
+const CRIT_DAMAGE_MULTIPLIER = 1.5
+const HIGH_CRIT_RATIO_CHANCE = 0.125
+const OHKO_MOVES = new Set([
+  'fissure',
+  'guillotine',
+  'horn drill',
+  'sheer cold'
+])
 const SELF_FAINT_MOVES = new Set([
   'explosion',
   'final gambit',
@@ -42,6 +111,10 @@ const getRecoilDamage = (moveName, damageDealt, attackerMaxHp) => {
   if (rule.maxHpRatio) return Math.max(1, Math.floor(attackerMaxHp * rule.maxHpRatio))
   if (damageDealt > 0 && rule.ratio) return Math.max(1, Math.floor(damageDealt * rule.ratio))
   return 0
+}
+const getOhkoHitChance = (attackerLevel, defenderLevel) => {
+  const chance = 30 + (Number(attackerLevel) - Number(defenderLevel))
+  return Math.max(0, Math.min(100, chance))
 }
 let battleData = {};
     try {
@@ -67,29 +140,113 @@ const uname = he.encode(ctx.from.first_name)
 const stats2 = await Stats(base,battleData.ivs,battleData.evs,c(battleData.nat),battleData.level)
 const clevel = plevel(p.name,p.exp)
 const stats = await Stats(base2,p.ivs,p.evs,c(p.nature),clevel)
-let a = stats.attack
-let d = stats2.defense
-let a2 = stats2.attack
-let d2 = stats.defense
+const opponentPass = battleData.opass || 'wild-opponent'
+battleData.opass = opponentPass
+if(!battleData.oability){
+  battleData.oability = getRandomAbilityForPokemon(battleData.name, pokes)
+}
+const playerAbility = p.ability || 'none'
+const wildAbility = battleData.oability || 'none'
+const playerStages = ensurePokemonStatStages(battleData, p.pass)
+const wildStages = ensurePokemonStatStages(battleData, opponentPass)
 const t1 = pokes[battleData.name].types[0]
 const t2 = pokes[battleData.name].types[1] ? c(pokes[battleData.name].types[1]) : null
 const eff1 = await eff(c(move1.type),c(t1),t2)
 const t3 = pokes[p.name].types[0]
 const t4 = pokes[p.name].types[1] ? c(pokes[p.name].types[1]) : null
 const eff2 = await eff(c(move2.type),c(t3),t4)
-if(move1.category=='special' || move2.category == 'special'){
-a = stats.special_attack
-d = stats2.special_defense
-a2 = stats2.special_attack
-d2 = stats.special_defense
+let a = move1.category == 'special'
+  ? applyStageToStat(stats.special_attack, playerStages.special_attack)
+  : applyStageToStat(stats.attack, playerStages.attack)
+let d = move1.category == 'special'
+  ? applyStageToStat(stats2.special_defense, wildStages.special_defense)
+  : applyStageToStat(stats2.defense, wildStages.defense)
+let a2 = move2.category == 'special'
+  ? applyStageToStat(stats2.special_attack, wildStages.special_attack)
+  : applyStageToStat(stats2.attack, wildStages.attack)
+let d2 = move2.category == 'special'
+  ? applyStageToStat(stats.special_defense, playerStages.special_defense)
+  : applyStageToStat(stats.defense, playerStages.defense)
+const isPerfectCrit1 = PERFECT_CRIT_MOVES.has(normalizeMoveName(move1.name))
+const isPerfectCrit2 = PERFECT_CRIT_MOVES.has(normalizeMoveName(move2.name))
+const isHighCritMove1 = HIGH_CRIT_RATIO_MOVES.has(normalizeMoveName(move1.name))
+const isHighCritMove2 = HIGH_CRIT_RATIO_MOVES.has(normalizeMoveName(move2.name))
+const didCrit1 = isPerfectCrit1 || (isHighCritMove1 && Math.random() < HIGH_CRIT_RATIO_CHANCE)
+const didCrit2 = isPerfectCrit2 || (isHighCritMove2 && Math.random() < HIGH_CRIT_RATIO_CHANCE)
+const isOhko1 = OHKO_MOVES.has(normalizeMoveName(move1.name))
+const isOhko2 = OHKO_MOVES.has(normalizeMoveName(move2.name))
+let damage = calc(a,d,clevel,move1.power,eff1)
+let damage2 = calc(a2,d2,battleData.level,move2.power,eff2)
+let ohkoFailed1 = false
+let ohkoFailed2 = false
+if (isOhko1) {
+  const targetTypes = (pokes[battleData.name]?.types || []).map((t) => String(t).toLowerCase())
+  const userTypes = (pokes[p.name]?.types || []).map((t) => String(t).toLowerCase())
+  const sheerColdBlocked = normalizeMoveName(move1.name) == 'sheer cold' && targetTypes.includes('ice') && !userTypes.includes('ice')
+  const chance = getOhkoHitChance(clevel, battleData.level)
+  if (clevel < battleData.level || sheerColdBlocked || Math.random() * 100 >= chance) {
+    damage = 0
+    ohkoFailed1 = true
+  } else {
+    damage = battleData.ochp
+  }
 }
-const damage = calc(a,d,clevel,move1.power,eff1)
-const damage2 = calc(a2,d2,battleData.level,move2.power,eff2)
+if (isOhko2) {
+  const targetTypes = (pokes[p.name]?.types || []).map((t) => String(t).toLowerCase())
+  const userTypes = (pokes[battleData.name]?.types || []).map((t) => String(t).toLowerCase())
+  const sheerColdBlocked = normalizeMoveName(move2.name) == 'sheer cold' && targetTypes.includes('ice') && !userTypes.includes('ice')
+  const chance = getOhkoHitChance(battleData.level, clevel)
+  if (battleData.level < clevel || sheerColdBlocked || Math.random() * 100 >= chance) {
+    damage2 = 0
+    ohkoFailed2 = true
+  } else {
+    damage2 = battleData.chp
+  }
+}
+if(didCrit1 && damage > 0){
+  damage = Math.max(1, Math.floor(damage * CRIT_DAMAGE_MULTIPLIER))
+}
+if(didCrit2 && damage2 > 0){
+  damage2 = Math.max(1, Math.floor(damage2 * CRIT_DAMAGE_MULTIPLIER))
+}
+const wildAbsorb = applyAbsorbMoveAbility({
+  battleData,
+  pass: opponentPass,
+  pokemonName: battleData.name,
+  abilityName: wildAbility,
+  moveType: move1.type,
+  moveName: move1.name,
+  c
+})
+if(wildAbsorb.blocked){
+  damage = 0
+}
+const playerAbsorb = applyAbsorbMoveAbility({
+  battleData,
+  pass: p.pass,
+  pokemonName: p.name,
+  abilityName: playerAbility,
+  moveType: move2.type,
+  moveName: move2.name,
+  c
+})
+if(playerAbsorb.blocked){
+  damage2 = 0
+}
+const playerHpBeforeHit = battleData.chp
+const wildHpBeforeHit = battleData.ochp
 battleData.chp = Math.max((battleData.chp-damage2),0)
 battleData.team[battleData.c] = Math.max((battleData.team[battleData.c]-damage2),0)
-battleData.ochp -= damage
-battleData.ot[battleData.name] -= damage
+battleData.ochp = Math.max((battleData.ochp-damage),0)
+battleData.ot[battleData.name] = Math.max((battleData.ot[battleData.name]-damage),0)
 let ms2 = '➩ <b>'+c(p.name)+'</b> Used <b>'+c(move1.name)+'</b> And Dealt <b>'+c(battleData.name)+'</b> <code>'+damage+'</code> HP.'
+if(ohkoFailed1){
+  ms2 = '➩ <b>'+c(p.name)+'</b> Used <b>'+c(move1.name)+'</b> but it failed.'
+}
+if(didCrit1 && damage > 0){
+  ms2 += '\n<b>✶ A critical hit!</b>'
+}
+ms2 += wildAbsorb.message
 const recoil = getRecoilDamage(move1.name, damage, stats.hp)
 if(recoil > 0){
 const selfBefore = battleData.chp
@@ -103,14 +260,71 @@ battleData.chp = 0
 battleData.team[battleData.c] = 0
 ms2 += '\n<b>✶ '+c(p.name)+'</b> Fainted After Using <b>'+c(move1.name)+'</b>.'
 }
+const wildReactive = applyOnDamageTakenAbilities({
+  battleData,
+  pass: opponentPass,
+  pokemonName: battleData.name,
+  abilityName: wildAbility,
+  moveType: move1.type,
+  moveCategory: move1.category,
+  hpBefore: wildHpBeforeHit,
+  hpAfter: battleData.ochp,
+  maxHp: battleData.ohp,
+  damageDealt: damage,
+  c
+})
+ms2 += wildReactive.message
+if(battleData.ochp < 1){
+  const playerKoBoost = applyKoAbility({
+    battleData,
+    pass: p.pass,
+    pokemonName: p.name,
+    abilityName: playerAbility,
+    stats,
+    c
+  })
+  ms2 += playerKoBoost.message
+}
+let enemyAttackAbilityMsg = playerAbsorb.message
+if(ohkoFailed2){
+  enemyAttackAbilityMsg += '\n<b>✶ '+c(battleData.name)+'</b> used <b>'+c(move2.name)+'</b> but it failed.'
+}
+if(didCrit2 && damage2 > 0){
+  enemyAttackAbilityMsg += '\n<b>✶ A critical hit!</b>'
+}
+const playerReactive = applyOnDamageTakenAbilities({
+  battleData,
+  pass: p.pass,
+  pokemonName: p.name,
+  abilityName: playerAbility,
+  moveType: move2.type,
+  moveCategory: move2.category,
+  hpBefore: playerHpBeforeHit,
+  hpAfter: battleData.chp,
+  maxHp: stats.hp,
+  damageDealt: damage2,
+  c
+})
+enemyAttackAbilityMsg += playerReactive.message
+if(battleData.chp < 1){
+  const wildKoBoost = applyKoAbility({
+    battleData,
+    pass: opponentPass,
+    pokemonName: battleData.name,
+    abilityName: wildAbility,
+    stats: stats2,
+    c
+  })
+  enemyAttackAbilityMsg += wildKoBoost.message
+}
 await saveBattleData(bword, battleData);
-if(eff1 == 0){
+if(!ohkoFailed1 && eff1 == 0){
 ms2 += '\n<b>✶ It\'s 0x effective!</b>'
-}else if(eff1 == 0.5){
+}else if(!ohkoFailed1 && eff1 == 0.5){
 ms2 += '\n<b>✶ It\'s not very effective...</b>'
-}else if(eff1 == 2){
+}else if(!ohkoFailed1 && eff1 == 2){
 ms2 += '\n<b>✶ It\'s super effective!</b>'
-}else if(eff1 == 4){
+}else if(!ohkoFailed1 && eff1 == 4){
 ms2 += '\n<b>✶ It\'s incredibly super effective!</b>'
 }
 if(battleData.ochp < 1){
@@ -196,8 +410,14 @@ data.inv.pc += ai
 if(!data.inv.exp){
 data.inv.exp = 0
 }
+const oldTrainerLevel = getTrainerLevel(data, trainerlevel, 100)
 const ei = Math.floor(Math.random()*700)+200
 data.inv.exp += ei
+const newTrainerLevel = getTrainerLevel(data, trainerlevel, 100)
+let rankSummary = null
+if(newTrainerLevel > oldTrainerLevel){
+  rankSummary = claimTrainerRankRewards(data, { trainerlevel, tms, stones })
+}
 data.extra.hunting = false
 await saveUserData2(ctx.from.id,data)
 const messageData = await loadMessageData();
@@ -206,7 +426,17 @@ delete messageData[ctx.from.id];
 }
 messageData.battle = messageData.battle.filter((chats) => chats !== ctx.from.id)
 await saveMessageData(messageData)
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'*'+c(battleData.name)+'* Has Been Fainted\n+'+ai+' 💷',{parse_mode:'markdown'})
+let finalMsg = '*'+c(battleData.name)+'* Has Been Fainted\n+'+ai+' 💷\n+'+ei+' Trainer EXP'
+if(rankSummary && rankSummary.levelsToClaim > 0){
+  finalMsg += '\n\n*Trainer Rank Levelup!* '
+  finalMsg += '\nLevel '+oldTrainerLevel+' -> '+newTrainerLevel
+  finalMsg += '\n\n*Rewards:*'
+  if(rankSummary.rewards.pc > 0) finalMsg += '\n- '+rankSummary.rewards.pc+' PokeCoins 💷'
+  if(rankSummary.rewards.lp > 0) finalMsg += '\n- '+rankSummary.rewards.lp+' League Points ⭐'
+  if(rankSummary.rewards.ht > 0) finalMsg += '\n- '+rankSummary.rewards.ht+' Holowear Tickets 🎟️'
+  if(rankSummary.rewards.battleBoxes > 0) finalMsg += '\n- '+rankSummary.rewards.battleBoxes+' Battle Box 🎁'
+}
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,finalMsg,{parse_mode:'markdown'})
 return
 }else{
 	const nu = battleData.name
@@ -330,20 +560,38 @@ await saveMessageData(messageData)
 }
 data.extra.hunting = false
 await saveUserData2(ctx.from.id,data)
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(battleData.name)+'</b> Used <b>'+c(move2.name)+'</b> And Dealt <b>'+c(p.name)+'</b> <code>'+damage2+'</code> HP.\n\n- <b>'+c(p.name)+'</b> has fainted And You Got <b>Defeated</b>.',{parse_mode:'html'})
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(battleData.name)+'</b> Used <b>'+c(move2.name)+'</b> And Dealt <b>'+c(p.name)+'</b> <code>'+damage2+'</code> HP.'+enemyAttackAbilityMsg+'\n\n- <b>'+c(p.name)+'</b> has fainted And You Got <b>Defeated</b>.',{parse_mode:'html'})
 return
 }
 }
 
+const playerEndTurn = applyEndTurnAbility({
+  battleData,
+  pass: p.pass,
+  pokemonName: p.name,
+  abilityName: playerAbility,
+  c
+})
+const wildEndTurn = applyEndTurnAbility({
+  battleData,
+  pass: opponentPass,
+  pokemonName: battleData.name,
+  abilityName: wildAbility,
+  c
+})
+enemyAttackAbilityMsg += playerEndTurn.message + wildEndTurn.message
+await saveBattleData(bword, battleData)
+
 const op = pokes[battleData.name]
 let msg = '➩ <b>'+c(battleData.name)+'</b> Used <b>'+c(move2.name)+'</b> And Dealt <b>'+c(p.name)+'</b> <code>'+damage2+'</code> HP.'
-if(eff1 == 0){
+msg += enemyAttackAbilityMsg
+if(!ohkoFailed2 && eff2 == 0){
 msg += '\n<b>✶ It\'s 0x effective!</b>'
-}else if(eff1 == 0.5){
+}else if(!ohkoFailed2 && eff2 == 0.5){
 msg += '\n<b>✶ It\'s not very effective...</b>'
-}else if(eff1 == 2){
+}else if(!ohkoFailed2 && eff2 == 2){
 msg += '\n<b>✶ It\'s super effective!</b>'
-}else if(eff1 == 4){
+}else if(!ohkoFailed2 && eff2 == 4){
 msg += '\n<b>✶ It\'s incredibly super effective!</b>'
 }
 msg += '\n\n<b>wild</b> '+c(battleData.name)+' ['+c(op.types.join(' / '))+']'

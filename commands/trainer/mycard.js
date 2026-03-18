@@ -1,4 +1,4 @@
-const { getTrainerLevel, getUnclaimedLevels } = require('../../utils/trainer_rank_rewards');
+const { getTrainerLevel } = require('../../utils/trainer_rank_rewards');
 
 function registerMycardCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -198,11 +198,7 @@ function registerMycardCommand(bot, deps) {
   
       writableStream.on('finish', async () => {
 
-        const unclaimedRewards = getUnclaimedLevels(userData, trainerlevel);
         const buttons = [[{ text: 'More Info', callback_data: 'cardmore' }]];
-        if (unclaimedRewards > 0) {
-          buttons.push([{ text: 'Claim Rank Rewards (' + unclaimedRewards + ')', callback_data: 'trrank_claim_' + ctx.from.id }]);
-        }
   
         // Send the modified photo back
   

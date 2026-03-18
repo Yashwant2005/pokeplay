@@ -39,6 +39,26 @@ function registerAddItemCommand(bot, deps) {
     'sassy mint'
   ];
 
+  const POKEBALL_POOL = [
+    'regular',
+    'great',
+    'ultra',
+    'repeat',
+    'safari',
+    'premier',
+    'net',
+    'nest',
+    'luxury',
+    'quick',
+    'park',
+    'beast',
+    'level',
+    'moon',
+    'sport',
+    'origin',
+    'master'
+  ];
+
   bot.command('additem', async (ctx) => {
     if (!admins.includes(ctx.from.id)) return;
 
@@ -52,7 +72,7 @@ function registerAddItemCommand(bot, deps) {
     const item = toKey(args[0]);
 
     if (!item) {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:*\n/additem pc 1000\n/additem lp 500\n/additem ht 20\n/additem tm 44 2\n/additem tm any 3\n/additem stone charizardite-x 1\n/additem stone any 2\n/additem mint jolly mint 2\n/additem mint any 5');
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:*\n/additem pc 1000\n/additem lp 500\n/additem ht 20\n/additem battlebox 5\n/additem tm 44 2\n/additem tm any 3\n/additem stone charizardite-x 1\n/additem stone any 2\n/additem mint jolly mint 2\n/additem mint any 5\n/additem ball master 1\n/additem ball any 3\n/additem bottlecap 2\n/additem goldbottlecap 1');
       return;
     }
 
@@ -83,6 +103,11 @@ function registerAddItemCommand(bot, deps) {
       if (!Number.isFinite(data.inv.holowear_tickets)) data.inv.holowear_tickets = 0;
       data.inv.holowear_tickets += amount;
       result = 'Added *' + amount + '* Holowear Tickets 🎟️';
+    } else if (['battlebox', 'battleboxes', 'battle_box', 'battle_boxes', 'box', 'boxes'].includes(item)) {
+      const amount = parsePositiveInt(args[1], 1);
+      if (!Number.isFinite(data.inv.battle_boxes)) data.inv.battle_boxes = 0;
+      data.inv.battle_boxes += amount;
+      result = 'Added *' + amount + '* Battle Box 🎁';
     } else if (['vp'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.vp)) data.inv.vp = 0;
@@ -158,8 +183,30 @@ function registerAddItemCommand(bot, deps) {
       if (!Number.isFinite(data.extra.itembox.goldBottleCaps)) data.extra.itembox.goldBottleCaps = 0;
       data.extra.itembox.goldBottleCaps += amount;
       result = 'Added *' + amount + '* Gold Bottle Cap(s).';
+    } else if (['ball', 'balls', 'pokeball', 'pokeballs'].includes(item)) {
+      const parsed = parseNameAndAmount(args.slice(1));
+      const ballRaw = toKey(parsed.name);
+      const amount = parsed.amount;
+      if (!ballRaw) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:* /additem ball <ball_name|any> [amount]');
+        return;
+      }
+      if (!Array.isArray(data.inv.balls)) data.inv.balls = [];
+
+      for (let i = 0; i < amount; i += 1) {
+        let ballName = ballRaw;
+        if (ballName === 'any') {
+          ballName = POKEBALL_POOL[Math.floor(Math.random() * POKEBALL_POOL.length)];
+        }
+        if (!POKEBALL_POOL.includes(ballName)) {
+          await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Invalid ball:* ' + c(ballName));
+          return;
+        }
+        data.inv.balls.push(ballName);
+      }
+      result = 'Added *' + amount + '* Pokéball(s).';
     } else {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Unknown item type.*\nTry: pc, lp, ht, vp, tm, stone, mint, bottlecap, goldbottlecap');
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Unknown item type.*\nTry: pc, lp, ht, vp, tm, stone, mint, ball, bottlecap, goldbottlecap');
       return;
     }
 

@@ -32,7 +32,8 @@
           "id": 289,
           "pass": "Tsxr5AMS",
           "cpass": "zxJlvZb4",
-          "symbol": ""
+          "symbol": "",
+          "ability": "truant"
         },
         {
           "name": "dragonite",
@@ -59,12 +60,13 @@
             407,
             200
           ],
-          "exp": 165813,
+          "exp": 207968,
           "id": 149,
           "gmax": false,
           "pass": "BiLqcvCr",
           "cpass": "nfoVDL7g",
-          "symbol": ""
+          "symbol": "",
+          "ability": "multiscale"
         },
         {
           "name": "charizard",
@@ -95,7 +97,8 @@
           "id": 6,
           "pass": "lTTgD8x0",
           "cpass": "UwRb1o5L",
-          "symbol": ""
+          "symbol": "",
+          "ability": "solar-power"
         },
         {
           "name": "snorlax",
@@ -126,7 +129,8 @@
           "id": 143,
           "pass": "Aw7KRyyT",
           "cpass": "kwNaKbJ7",
-          "symbol": ""
+          "symbol": "",
+          "ability": "immunity"
         },
         {
           "name": "doduo",
@@ -156,7 +160,8 @@
           "id": 84,
           "pass": "EV6xD1NW",
           "cpass": "3nWk0yQL",
-          "symbol": ""
+          "symbol": "",
+          "ability": "tangled-feet"
         },
         {
           "name": "machoke",
@@ -187,7 +192,8 @@
           "id": 67,
           "pass": "E1l9kgg6",
           "cpass": "YYuWdO6x",
-          "symbol": ""
+          "symbol": "",
+          "ability": "steadfast"
         },
         {
           "name": "mewtwo",
@@ -218,7 +224,8 @@
           "id": 150,
           "pass": "wqmmqAqo",
           "cpass": "rUDTThlj",
-          "symbol": ""
+          "symbol": "",
+          "ability": "unnerve"
         },
         {
           "name": "greninja-ash",
@@ -245,10 +252,11 @@
           },
           "moves": [
             1
-          ]
+          ],
+          "ability": "battle-bond"
         },
         {
-          "name": "eternatus-eternamax",
+          "name": "eternatus",
           "id": 890,
           "nature": "hasty",
           "exp": 0,
@@ -273,7 +281,8 @@
           "moves": [
             342,
             525
-          ]
+          ],
+          "ability": "pressure"
         },
         {
           "name": "pelipper",
@@ -463,7 +472,7 @@
         }
       ],
       "inv": {
-        "pc": 874798,
+        "pc": 1040798,
         "region": "isle-of-armor",
         "exp": 404928,
         "avtar": "1",
@@ -473,14 +482,16 @@
         "hometown": "Paldea",
         "name": "&#x1D675;&#x1D67B;&#x1D678;&#x1D681;&#x1D683;&#x1D674;&#x1D681;",
         "team": "1",
-        "candy": 10,
+        "candy": 106,
         "win": 11,
         "vitamin": 22,
         "lose": 2,
         "stones": [
           "gengarite"
         ],
-        "battle": 0
+        "battle": 0,
+        "league_points": 6405,
+        "holowear_tickets": 638
       },
       "balls": {
         "regular": 9,
@@ -491,7 +502,7 @@
       "extra": {
         "date": "12/02/2024",
         "megas": {},
-        "huntd": "2026-03-14",
+        "huntd": "2026-03-15",
         "hunts": 1,
         "hunting": false,
         "saf": "Kanto",
@@ -521,11 +532,33 @@
         },
         "sort_order": "desc",
         "spinEvent": {
-          "date": "2026-03-15",
-          "remaining": 0,
+          "date": "2026-03-16",
+          "remaining": 10,
           "candidate": null,
           "selectedName": null,
-          "awaitingName": false
+          "awaitingName": true
+        },
+        "events": {
+          "commemorativeDaily": {
+            "lastClaimDate": "2026-03-16",
+            "lastClaimAtUtc": "2026-03-16T04:34:03.664Z"
+          }
+        },
+        "refer": [],
+        "rankRewards": {
+          "claimedLevel": 75,
+          "lastClaimAtUtc": "2026-03-17T10:16:32.563Z"
+        },
+        "itembox": {
+          "bottleCaps": 0,
+          "goldBottleCaps": 1,
+          "mints": {
+            "adamant mint": 1,
+            "impish mint": 1,
+            "calm mint": 1,
+            "careful mint": 1,
+            "sassy mint": 1
+          }
         }
       },
       "teams": {
@@ -1098,6 +1131,16 @@
         "ban_regions": [],
         "allow_regions": [],
         "type_effects": true
+      },
+      "tms": {
+        "11": 1,
+        "23": 1,
+        "105": 1,
+        "110": 1,
+        "122": 1,
+        "125": 1,
+        "142": 1,
+        "184": 1
       }
     },
     "reset": false

@@ -300,31 +300,31 @@ const starters = {
   "Kalos": ["Chespin", "Fennekin", "Froakie"]
 };
 const emojis = {
-  "normal": "ðŸ”˜",
-  "fire": "ðŸ”¥",
-  "water": "ðŸ’§",
-  "electric": "âš¡",
-  "grass": "ðŸŒ±",
-  "ice": "â„ï¸",
-  "fighting": "ðŸ¥Š",
-  "poison": "â˜ ï¸",
-  "ground": "ðŸŒ",
-  "flying": "ðŸ¦…",
-  "psychic": "ðŸ§ ",
-  "bug": "ðŸ›",
-  "rock": "ðŸª¨",
-  "ghost": "ðŸ‘»",
-  "dragon": "ðŸ²",
-  "dark": "ðŸŒ‘",
-  "steel": "ðŸ”©",
-  "fairy": "ðŸ§š"
+  "normal": "🔘",
+  "fire": "🔥",
+  "water": "💧",
+  "electric": "⚡",
+  "grass": "🌱",
+  "ice": "❄️",
+  "fighting": "🥊",
+  "poison": "☠️",
+  "ground": "🌍",
+  "flying": "🦅",
+  "psychic": "🧠",
+  "bug": "🐛",
+  "rock": "🪨",
+  "ghost": "👻",
+  "dragon": "🐲",
+  "dark": "🌑",
+  "steel": "🔩",
+  "fairy": "🧚"
 }
 const STATUS_ICONS = {
-  burn: "ðŸ”¥",
-  poison: "â˜ ï¸",
-  badly_poisoned: "â˜ ï¸",
-  freeze: "â„ï¸",
-  paralyze: "âš¡"
+  burn: "🔥",
+  poison: "☠️",
+  badly_poisoned: "☠️",
+  freeze: "❄️",
+  paralyze: "⚡"
 }
 
 function ensureBattleStatus(battleData) {

@@ -2,12 +2,18 @@ function register_015_ball(bot, deps) {
   Object.assign(globalThis, deps, { bot });
     const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
   bot.action(/ball_/,async ctx => {
-if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-
-  ctx.answerCbQuery('Try Again');
+const now = Date.now();
+const chatKey = ctx.chat && ctx.chat.id;
+const userId = ctx.from && ctx.from.id;
+const userKey = 'u_' + String(userId);
+const chatLimited = chatKey !== undefined && battlec[chatKey] && now - battlec[chatKey] < 2000;
+const userLimited = userId !== undefined && battlec[userKey] && now - battlec[userKey] < 2000;
+if (chatLimited || userLimited) {
+  await ctx.answerCbQuery('On cooldown 2 sec');
   return;
 }
-battlec[ctx.chat.id] = Date.now();
+if (chatKey !== undefined) battlec[chatKey] = now;
+if (userId !== undefined) battlec[userKey] = now;
 const ball = ctx.callbackQuery.data.split('_')[1]
 const bword = ctx.callbackQuery.data.split('_')[2]
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You Thrown A '+c(ball)+' Ball')
@@ -217,11 +223,15 @@ for(const m of battleData.omoves){
 ms.push(m.id)
 }
 const pass2 = word(8)
+const caughtIvs = applyCaptureIvRules(battleData.ivs, {
+  isSafari: ball === 'safari',
+  symbol: battleData.symbol
+})
 data.pokes.push({
 name:battleData.name,
 nature:battleData.nat,
   ability:getRandomAbilityForPokemon(battleData.name, pokes),
-ivs:battleData.ivs,
+ivs:caughtIvs,
 evs:battleData.evs,
 moves:ms,
 exp:exp,

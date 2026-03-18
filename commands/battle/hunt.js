@@ -1,5 +1,6 @@
 function registerHuntCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { toBaseIdentifier } = require('../../utils/base_form_pokemon');
   commands.set('hunt', async (ctx) => {
   
   const data = await getUserData(ctx.from.id)
@@ -274,6 +275,7 @@ function registerHuntCommand(bot, deps) {
   
   
   let name = fr2.length > 0 ? fr2[Math.floor(Math.random()*fr2.length)].identifier : fr3[Math.floor(Math.random()*fr3.length)].identifier
+  name = toBaseIdentifier(name, forms)
   
   const im = shiny.filter((poke)=>poke.name==name)[0]
   
@@ -291,12 +293,15 @@ function registerHuntCommand(bot, deps) {
   
   const l = Math.random()
   
-  let chyi = 0.0001
+  let chyi = 1 / 40960
   
-  if(org=='yes'){
-  
-  chyi = 0.05
-  
+  if(data.inv && data.inv.shiny_charm){
+    const regionPokemon = rdata[region] || []
+    const caughtSet = new Set(data.pokecaught || [])
+    const allCaughtInRegion = regionPokemon.every(pkName => caughtSet.has(pkName))
+    if(allCaughtInRegion){
+      chyi = 1 / 27306
+    }
   }
   
   if(im && l<chyi){

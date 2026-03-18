@@ -1,5 +1,6 @@
 function registerRandomBattleCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { isBaseIdentifier } = require('../../utils/base_form_pokemon');
 
   const REGION_RANGES = {
     kanto: { start: 1, end: 151 },
@@ -122,6 +123,7 @@ function registerRandomBattleCommand(bot, deps) {
     const allowLegendary = settings.allow_legendary !== false;
     const allowNonLegendary = settings.allow_non_legendary !== false;
     return Object.keys(pokes).filter((name) => {
+      if (!isBaseIdentifier(name, forms)) return false;
       if (!isFinalEvolution(name)) return false;
       if (region) {
         const dex = pokes[name].pokedex_number;

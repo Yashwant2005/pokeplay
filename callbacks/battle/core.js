@@ -1,4 +1,12 @@
-﻿function registerBattleCallbacks(bot, deps) {
+﻿const {
+  applyAbsorbMoveAbility: applyAbilityAbsorbMove,
+  applyEndTurnAbility: applyAbilityEndTurn,
+  applyEntryAbility: applyAbilityEntry,
+  applyKoAbility: applyAbilityKo,
+  applyOnDamageTakenAbilities: applyAbilityOnDamageTaken
+} = require('../../utils/battle_abilities');
+
+function registerBattleCallbacks(bot, deps) {
   const {
     getUserData,
     editMessage,
@@ -54,6 +62,19 @@
     }
   }
 
+  function hitBattleCooldown(ctx, ms = 2000) {
+    const now = Date.now();
+    const chatKey = ctx && ctx.chat ? ctx.chat.id : undefined;
+    const userId = ctx && ctx.from ? ctx.from.id : undefined;
+    const userKey = 'u_' + String(userId);
+    const chatLimited = chatKey !== undefined && battlec[chatKey] && now - battlec[chatKey] < ms;
+    const userLimited = userId !== undefined && battlec[userKey] && now - battlec[userKey] < ms;
+    if (chatLimited || userLimited) return true;
+    if (chatKey !== undefined) battlec[chatKey] = now;
+    if (userId !== undefined) battlec[userKey] = now;
+    return false;
+  }
+
   const safeName = (raw) => {
     const txt = String(raw || "Trainer");
     if (he && typeof he.decode === "function" && typeof he.encode === "function") {
@@ -90,6 +111,297 @@
     'blood moon',
     'gigaton hammer'
   ]);
+
+  const PERFECT_CRIT_MOVES = new Set([
+    'flower trick',
+    'frost breath',
+    'storm throw',
+    'surging strikes',
+    'wicked blow',
+    'zippy zap'
+  ]);
+
+  const HIGH_CRIT_RATIO_MOVES = new Set([
+    '10,000,000 volt thunderbolt',
+    '10 000 000 volt thunderbolt',
+    '10000000 volt thunderbolt',
+    'aeroblast',
+    'air cutter',
+    'aqua cutter',
+    'attack order',
+    'blaze kick',
+    'crabhammer',
+    'cross chop',
+    'cross poison',
+    'dire claw',
+    'drill run',
+    'esper wing',
+    'ivy cudgel',
+    'karate chop',
+    'leaf blade',
+    'night slash',
+    'plasma fists',
+    'poison tail',
+    'psycho cut',
+    'razor leaf',
+    'razor wind',
+    'shadow blast',
+    'shadow claw',
+    'sky attack',
+    'slash',
+    'snipe shot',
+    'spacial rend',
+    'stone edge',
+    'triple arrows'
+  ]);
+
+  const CRIT_DAMAGE_MULTIPLIER = 1.5;
+  const HIGH_CRIT_RATIO_CHANCE = 0.125;
+  const OHKO_MOVES = new Set([
+    'fissure',
+    'guillotine',
+    'horn drill',
+    'sheer cold'
+  ]);
+  const MINIMIZE_PUNISH_MOVES = new Set([
+    'astonish',
+    'body slam',
+    'double iron bash',
+    'dragon rush',
+    'extrasensory',
+    'flying press',
+    'heat crash',
+    'heavy slam',
+    'malicious moonsault',
+    'needle arm',
+    'phantom force',
+    'shadow force',
+    'steamroller',
+    'stomp'
+  ]);
+  const MINIMIZE_PUNISH_MULTIPLIER = 2;
+  const CHARGING_TURN_MOVES = new Set([
+    'bounce',
+    'dig',
+    'dive',
+    'electro shot',
+    'fly',
+    'freeze shock',
+    'geomancy',
+    'ice burn',
+    'meteor beam',
+    'phantom force',
+    'razor wind',
+    'shadow force',
+    'skull bash',
+    'sky attack',
+    'sky drop',
+    'solar beam',
+    'solar blade'
+  ]);
+  const CHARGE_START_STAT_MOVES = new Set(['electro shot', 'meteor beam', 'skull bash']);
+  const SEMI_INVULNERABLE_CHARGE_MOVES = new Set([
+    'bounce',
+    'dig',
+    'dive',
+    'fly',
+    'phantom force',
+    'shadow force',
+    'sky drop'
+  ]);
+  const CAN_HIT_SEMI_INVULNERABLE_MOVES = new Set([
+    'bide',
+    'earthquake',
+    'fissure',
+    'gust',
+    'helping hand',
+    'hurricane',
+    'magnitude',
+    'sky uppercut',
+    'smack down',
+    'surf',
+    'swift',
+    'thousand arrows',
+    'thunder',
+    'toxic',
+    'twister',
+    'whirlpool',
+    'whirlwind'
+  ]);
+
+  function ensureBattleChargingState(battleData) {
+    if (!battleData.chargingState || typeof battleData.chargingState !== 'object') {
+      battleData.chargingState = {};
+    }
+    return battleData.chargingState;
+  }
+
+  function getChargingStateForPass(battleData, pass) {
+    const all = ensureBattleChargingState(battleData);
+    return all[String(pass)] || null;
+  }
+
+  function setChargingStateForPass(battleData, pass, moveId, moveName) {
+    const all = ensureBattleChargingState(battleData);
+    all[String(pass)] = { moveId: String(moveId), moveName: String(moveName || '') };
+  }
+
+  function clearChargingStateForPass(battleData, pass) {
+    const all = ensureBattleChargingState(battleData);
+    delete all[String(pass)];
+  }
+
+  function ensureSemiInvulnerableState(battleData) {
+    if (!battleData.semiInvulnerableState || typeof battleData.semiInvulnerableState !== 'object') {
+      battleData.semiInvulnerableState = {};
+    }
+    return battleData.semiInvulnerableState;
+  }
+
+  function getSemiInvulnerableStateForPass(battleData, pass) {
+    const all = ensureSemiInvulnerableState(battleData);
+    return all[String(pass)] || null;
+  }
+
+  function setSemiInvulnerableStateForPass(battleData, pass, moveName) {
+    const all = ensureSemiInvulnerableState(battleData);
+    all[String(pass)] = { moveName: String(moveName || '') };
+  }
+
+  function clearSemiInvulnerableStateForPass(battleData, pass) {
+    const all = ensureSemiInvulnerableState(battleData);
+    delete all[String(pass)];
+  }
+
+  function isSemiInvulnerableAvoidedMove(battleData, defenderPass, moveCategory, moveName) {
+    const st = getSemiInvulnerableStateForPass(battleData, defenderPass);
+    if (!st || !st.moveName) return false;
+    if (CAN_HIT_SEMI_INVULNERABLE_MOVES.has(moveName)) return false;
+    return String(moveCategory || '').toLowerCase() !== 'status';
+  }
+
+  function getChargingTurnMessage(pokemonName, moveName) {
+    const byMove = {
+      fly: 'flew up high!',
+      bounce: 'sprang up high!',
+      dig: 'dug underground!',
+      dive: 'hid underwater!',
+      'phantom force': 'vanished instantly!',
+      'shadow force': 'vanished into the shadows!',
+      'sky drop': 'took to the sky!'
+    };
+    const suffix = byMove[moveName] || 'began charging power!';
+    return '\n-> <b>' + c(pokemonName) + '</b> ' + suffix;
+  }
+
+  function getSemiInvulnerableAvoidMessage(defenderName, moveName) {
+    const byMove = {
+      fly: 'is high in the sky',
+      bounce: 'is high in the sky',
+      dig: 'is underground',
+      dive: 'is underwater',
+      'phantom force': 'has vanished',
+      'shadow force': 'has vanished',
+      'sky drop': 'is airborne'
+    };
+    const where = byMove[moveName] || 'is semi-invulnerable';
+    return '\n-> <b>' + c(defenderName) + '</b> avoided the attack because it ' + where + '!';
+  }
+
+  function getOhkoHitChance(attackerLevel, defenderLevel) {
+    const chance = 30 + (Number(attackerLevel) - Number(defenderLevel));
+    return Math.max(0, Math.min(100, chance));
+  }
+
+  function ensureBattleScreens(battleData) {
+    if (!battleData.screens || typeof battleData.screens !== 'object') {
+      battleData.screens = {};
+    }
+    return battleData.screens;
+  }
+
+  function ensureSideScreens(battleData, sideId) {
+    const all = ensureBattleScreens(battleData);
+    const key = String(sideId);
+    if (!all[key] || typeof all[key] !== 'object') {
+      all[key] = { reflect: 0, lightScreen: 0, auroraVeil: 0 };
+    }
+    const side = all[key];
+    if (typeof side.reflect !== 'number') side.reflect = 0;
+    if (typeof side.lightScreen !== 'number') side.lightScreen = 0;
+    if (typeof side.auroraVeil !== 'number') side.auroraVeil = 0;
+    return side;
+  }
+
+  function applyScreenSetupByMove(moveName, battleData, sideId, didHit) {
+    const side = ensureSideScreens(battleData, sideId);
+    if (moveName === 'reflect' || (moveName === 'baddy bad' && didHit)) {
+      side.reflect = 5;
+      return '\n-> Reflect went up on the user\'s side!';
+    }
+    if (moveName === 'light screen' || (moveName === 'glitzy glow' && didHit)) {
+      side.lightScreen = 5;
+      return '\n-> Light Screen went up on the user\'s side!';
+    }
+    if (moveName === 'aurora veil' || (moveName === 'g max resonance' && didHit)) {
+      side.auroraVeil = 5;
+      return '\n-> Aurora Veil went up on the user\'s side!';
+    }
+    return '';
+  }
+
+  function applyScreenRemovalByMove(moveName, battleData, defenderSideId, didHit) {
+    const removers = new Set([
+      'brick break',
+      'defog',
+      'g max wind rage',
+      'psychic fangs',
+      'raging bull',
+      'shadow shed'
+    ]);
+    if (!didHit || !removers.has(moveName)) return '';
+    const side = ensureSideScreens(battleData, defenderSideId);
+    if (side.reflect <= 0 && side.lightScreen <= 0 && side.auroraVeil <= 0) return '';
+    side.reflect = 0;
+    side.lightScreen = 0;
+    side.auroraVeil = 0;
+    return '\n-> The opposing side\'s screens were shattered!';
+  }
+
+  function getScreenDamageMultiplier(battleData, defenderSideId, moveCategory) {
+    const side = ensureSideScreens(battleData, defenderSideId);
+    if (side.auroraVeil > 0) return 0.5;
+    if (String(moveCategory || '').toLowerCase() === 'physical' && side.reflect > 0) return 0.5;
+    if (String(moveCategory || '').toLowerCase() === 'special' && side.lightScreen > 0) return 0.5;
+    return 1;
+  }
+
+  function tickScreensForTurn(battleData) {
+    const all = ensureBattleScreens(battleData);
+    for (const key of Object.keys(all)) {
+      const side = ensureSideScreens(battleData, key);
+      if (side.reflect > 0) side.reflect -= 1;
+      if (side.lightScreen > 0) side.lightScreen -= 1;
+      if (side.auroraVeil > 0) side.auroraVeil -= 1;
+    }
+  }
+
+  function ensureBattleMinimizeState(battleData) {
+    if (!battleData.minimized || typeof battleData.minimized !== 'object') {
+      battleData.minimized = {};
+    }
+    return battleData.minimized;
+  }
+
+  function isPokemonMinimized(battleData, pass) {
+    const all = ensureBattleMinimizeState(battleData);
+    return all[String(pass)] === true;
+  }
+
+  function setPokemonMinimized(battleData, pass, value) {
+    const all = ensureBattleMinimizeState(battleData);
+    all[String(pass)] = !!value;
+  }
 
   // Helper: build PvP battle message + keyboard with Showdown-style hidden moves
   const buildPvpMsg = (prefix, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroup) => {
@@ -940,6 +1252,10 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       if (battleData.bideState[act.c] && battleData.bideState[act.c].moveId) {
         act.id = battleData.bideState[act.c].moveId;
       }
+      const chargingState = getChargingStateForPass(battleData, act.c);
+      if (chargingState && chargingState.moveId) {
+        act.id = chargingState.moveId;
+      }
     }
 
     let speedA = 0;
@@ -997,7 +1313,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       }
       const previousPass = battleData.c;
       const attacker = await getUserData(battleData.cid);
+      const defender = await getUserData(battleData.oid);
       const p12 = attacker.pokes.filter((poke)=>poke.pass==act.pass)[0];
+      const opposingPokemon = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
       battleData.c = act.pass;
       battleData.chp = battleData.tem[act.pass];
       if (!battleData.lastMoveByPass || typeof battleData.lastMoveByPass !== 'object') {
@@ -1008,6 +1326,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       if (battleData.bideState && battleData.bideState[previousPass]) {
         delete battleData.bideState[previousPass];
       }
+      clearChargingStateForPass(battleData, previousPass);
+      clearSemiInvulnerableStateForPass(battleData, previousPass);
+      setPokemonMinimized(battleData, previousPass, false);
       if (p12) {
         turnLogs += '\n-> <b>' + c(p12.name) + '</b> came for battle.';
         const switchedStats = await Stats(pokestats[p12.name], p12.ivs, p12.evs, c(p12.nature), plevel(p12.name, p12.exp));
@@ -1018,6 +1339,18 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           pokemonName: p12.name,
           maxHp: switchedStats.hp
         });
+        if (opposingPokemon) {
+          const opposingStats = await Stats(pokestats[opposingPokemon.name], opposingPokemon.ivs, opposingPokemon.evs, c(opposingPokemon.nature), plevel(opposingPokemon.name, opposingPokemon.exp));
+          turnLogs += applyAbilityEntry({
+            battleData,
+            pass: p12.pass,
+            pokemonName: p12.name,
+            abilityName: p12.ability,
+            selfStats: switchedStats,
+            opponentStats: opposingStats,
+            c
+          }).message;
+        }
       }
     }
 
@@ -1027,6 +1360,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
       const move = dmoves[act.id];
       const moveName = normalizeMoveName(move?.name);
+      const hitsMinimizedBonus = MINIMIZE_PUNISH_MOVES.has(moveName) && isPokemonMinimized(battleData, battleData.o);
       const moveKey = move ? String(act.id) : null;
       let didAttemptMove = false;
       const isCounterMove = ['counter', 'mirror coat', 'metal burst', 'comeuppance'].includes(moveName);
@@ -1034,6 +1368,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       let defender = await getUserData(battleData.oid);
       let p = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0];
       let op = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
+      const attackerAbility = p && p.ability ? p.ability : 'none';
+      const defenderAbility = op && op.ability ? op.ability : 'none';
 
       let base1 = pokestats[p.name];
       let base2 = pokestats[op.name];
@@ -1066,11 +1402,22 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       // ActState (Frozen, Asleep, Paralyzed etc)
       ensureBattleStatus(battleData); // verify status conditions haven't cleared
       const actState = canPokemonAct(battleData, battleData.c, p.name);
+      const chargingState = getChargingStateForPass(battleData, battleData.c);
+      const isChargeReleaseTurn = !!(chargingState && String(chargingState.moveId) === String(act.id));
+      if (!actState.canAct && isChargeReleaseTurn) {
+        clearChargingStateForPass(battleData, battleData.c);
+        clearSemiInvulnerableStateForPass(battleData, battleData.c);
+      }
 
       if (!actState.canAct) {
         msgLocal += "\n" + actState.msg;
       } else {
         didAttemptMove = true;
+        if (isChargeReleaseTurn) {
+          clearChargingStateForPass(battleData, battleData.c);
+          clearSemiInvulnerableStateForPass(battleData, battleData.c);
+          msgLocal += '\n-> <b>'+c(p.name)+'</b> unleashed <b>'+c(move.name)+'</b>!';
+        }
       }
 
       if (actState.canAct && moveName === 'bide') {
@@ -1132,8 +1479,30 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           }
           msgLocal += '\n-> <b>'+c(p.name)+'</b> retaliated with <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
         }
+      } else if (actState.canAct && !isChargeReleaseTurn && CHARGING_TURN_MOVES.has(moveName)) {
+        setChargingStateForPass(battleData, battleData.c, act.id, moveName);
+        if (SEMI_INVULNERABLE_CHARGE_MOVES.has(moveName)) {
+          setSemiInvulnerableStateForPass(battleData, battleData.c, moveName);
+        }
+        msgLocal += getChargingTurnMessage(p.name, moveName);
+        if (CHARGE_START_STAT_MOVES.has(moveName)) {
+          msgLocal += applyMoveStatEffects({
+            battleData,
+            moveName,
+            moveCategory: move.category,
+            attackerName: p.name,
+            defenderName: op.name,
+            attackerPass: battleData.c,
+            defenderPass: battleData.o,
+            targetAlive: battleData.ohp > 0
+          });
+        }
       } else if (actState.canAct) {
-        const bypassAccuracyCheck = moveName === 'bind';
+        if (isSemiInvulnerableAvoidedMove(battleData, battleData.o, move.category, moveName)) {
+          const opSemi = getSemiInvulnerableStateForPass(battleData, battleData.o);
+          msgLocal += getSemiInvulnerableAvoidMessage(op.name, opSemi ? opSemi.moveName : '');
+        } else {
+        const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus;
         const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
         const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), atkStages.accuracy, defStages.evasion) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
@@ -1170,7 +1539,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               battleData.leechSeed[battleData.o] = battleData.c;
               msgLocal += '\n-> <b>'+c(p.name)+'</b> planted a seed on <b>'+c(op.name)+'</b>!';
             }
-          } else if (move.category == 'status' || !move.power) {
+          } else if ((move.category == 'status' || !move.power) && !OHKO_MOVES.has(moveName)) {
             msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.';
             msgLocal += applyMoveStatEffects({
               battleData,
@@ -1247,15 +1616,71 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               }
             }
 
+            if (moveName === 'minimize') {
+              setPokemonMinimized(battleData, battleData.c, true);
+            }
+
+            msgLocal += applyScreenSetupByMove(moveName, battleData, battleData.cid, true);
+            msgLocal += applyScreenRemovalByMove(moveName, battleData, battleData.oid, true);
+
             msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
           } else {
+            const absorbedByAbility = applyAbilityAbsorbMove({
+              battleData,
+              pass: battleData.o,
+              pokemonName: op.name,
+              abilityName: defenderAbility,
+              moveType: move.type,
+              moveName: move.name,
+              c
+            });
+            if (absorbedByAbility.blocked) {
+              msgLocal += '\n-> <b>'+c(op.name)+'</b> nullified <b>'+c(move.name)+'</b>.';
+              msgLocal += absorbedByAbility.message;
+            } else {
             if (moveName === 'dream eater' && getBattleStatus(battleData, battleData.o) !== 'sleep') {
               msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
             } else {
+              const defenderHpBeforeHit = battleData.ohp;
               var damage = Math.min(calc(atk, def2, level1, move.power, eff1), battleData.ohp);
+              let ohkoFailed = false;
+              if (OHKO_MOVES.has(moveName)) {
+                const attackerTypes = (pokes[p.name]?.types || []).map((t) => String(t).toLowerCase());
+                const defenderTypes = (pokes[op.name]?.types || []).map((t) => String(t).toLowerCase());
+                const sheerColdBlocked = moveName === 'sheer cold' && defenderTypes.includes('ice') && !attackerTypes.includes('ice');
+                const ohkoChance = getOhkoHitChance(level1, level2);
+                if (level1 < level2 || sheerColdBlocked || Math.random() * 100 >= ohkoChance) {
+                  damage = 0;
+                  ohkoFailed = true;
+                } else {
+                  damage = battleData.ohp;
+                }
+              }
+              if (!ohkoFailed && hitsMinimizedBonus && damage > 0) {
+                damage = Math.min(Math.max(1, Math.floor(damage * MINIMIZE_PUNISH_MULTIPLIER)), battleData.ohp);
+              }
+              const isPerfectCrit = PERFECT_CRIT_MOVES.has(moveName);
+              const isHighCritMove = HIGH_CRIT_RATIO_MOVES.has(moveName);
+              const didCrit = isPerfectCrit || (isHighCritMove && Math.random() < HIGH_CRIT_RATIO_CHANCE);
+              if (!ohkoFailed && didCrit && damage > 0) {
+                damage = Math.min(Math.max(1, Math.floor(damage * CRIT_DAMAGE_MULTIPLIER)), battleData.ohp);
+              }
+              if (!ohkoFailed && !didCrit && damage > 0 && !OHKO_MOVES.has(moveName)) {
+                const screenMult = getScreenDamageMultiplier(battleData, battleData.oid, move.category);
+                if (screenMult < 1) {
+                  damage = Math.max(1, Math.floor(damage * screenMult));
+                }
+              }
               battleData.ohp = Math.max((battleData.ohp - damage), 0);
               battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
-              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+              if (ohkoFailed) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+              } else {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+              }
+              if (!ohkoFailed && didCrit && damage > 0) {
+                msgLocal += '\n-> <b>A critical hit!</b>';
+              }
 
               if (eff1 === 0) {
                 const crash = getCrashDamage(moveName, stats1.hp);
@@ -1291,6 +1716,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
               msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, damage > 0);
               msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, damage > 0);
+              msgLocal += applyScreenSetupByMove(moveName, battleData, battleData.cid, damage > 0);
+              msgLocal += applyScreenRemovalByMove(moveName, battleData, battleData.oid, damage > 0);
 
               // Record hit for counter-attacks and accumulate bide damage
               battleData.turnHits[battleData.o] = { damage: damage, category: move.category, from: battleData.c, move: moveName };
@@ -1299,10 +1726,10 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 battleData.bideState[battleData.o].lastAttacker = battleData.c;
               }
 
-              if (eff1 == 0) msgLocal += '\n<b>* It\'s 0x effective!</b>';
-              else if (eff1 == 0.5) msgLocal += '\n<b>* It\'s not very effective...</b>';
-              else if (eff1 == 2) msgLocal += '\n<b>* It\'s super effective!</b>';
-              else if (eff1 == 4) msgLocal += '\n<b>* It\'s incredibly super effective!</b>';
+              if (!ohkoFailed && eff1 == 0) msgLocal += '\n<b>* It\'s 0x effective!</b>';
+              else if (!ohkoFailed && eff1 == 0.5) msgLocal += '\n<b>* It\'s not very effective...</b>';
+              else if (!ohkoFailed && eff1 == 2) msgLocal += '\n<b>* It\'s super effective!</b>';
+              else if (!ohkoFailed && eff1 == 4) msgLocal += '\n<b>* It\'s incredibly super effective!</b>';
 
               if (damage > 0) {
                 msgLocal += applyMoveStatEffects({
@@ -1324,6 +1751,30 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                   if (fsDelta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Attack</b> '+getStageVerb(fsDelta)+'!';
                 }
               }
+              msgLocal += applyAbilityOnDamageTaken({
+                battleData,
+                pass: battleData.o,
+                pokemonName: op.name,
+                abilityName: defenderAbility,
+                moveType: move.type,
+                moveCategory: move.category,
+                hpBefore: defenderHpBeforeHit,
+                hpAfter: battleData.ohp,
+                maxHp: stats2.hp,
+                damageDealt: damage,
+                c
+              }).message;
+              if (battleData.ohp <= 0) {
+                msgLocal += applyAbilityKo({
+                  battleData,
+                  pass: battleData.c,
+                  pokemonName: p.name,
+                  abilityName: attackerAbility,
+                  stats: stats1,
+                  c
+                }).message;
+              }
+            }
             }
           }
 
@@ -1337,6 +1788,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.';
             }
           }
+        }
         }
       }
 
@@ -1409,6 +1861,33 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       // Nobody fainted, just pick the next selector.
       fullSwap(battleData);
     }
+
+    if (battleData.chp > 0 && battleData.ohp > 0) {
+      const endTurnAttacker = await getUserData(battleData.cid);
+      const endTurnDefender = await getUserData(battleData.oid);
+      const endTurnCurrent = endTurnAttacker.pokes.filter((poke)=>poke.pass==battleData.c)[0];
+      const endTurnOther = endTurnDefender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
+      if (endTurnCurrent) {
+        turnLogs += applyAbilityEndTurn({
+          battleData,
+          pass: battleData.c,
+          pokemonName: endTurnCurrent.name,
+          abilityName: endTurnCurrent.ability,
+          c
+        }).message;
+      }
+      if (endTurnOther) {
+        turnLogs += applyAbilityEndTurn({
+          battleData,
+          pass: battleData.o,
+          pokemonName: endTurnOther.name,
+          abilityName: endTurnOther.ability,
+          c
+        }).message;
+      }
+    }
+
+    tickScreensForTurn(battleData);
 
     await saveBattleData(bword, battleData);
     dbg('resolve:done', { bword, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o, chp: battleData.chp, ohp: battleData.ohp });
@@ -2036,12 +2515,10 @@ buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_back_'+id+'_'+rid+'_'+bwo
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'html',reply_markup:{inline_keyboard:rows}})
 })
 bot.action(/battle_/,async ctx => {
-if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-
-  ctx.answerCbQuery('Try Again');
+if (hitBattleCooldown(ctx)) {
+  await ctx.answerCbQuery('On cooldown 2 sec');
   return;
 }
-battlec[ctx.chat.id] = Date.now();
 const id1 = ctx.callbackQuery.data.split('_')[1]
 const id2 = ctx.callbackQuery.data.split('_')[2]
 if(ctx.from.id!=id2 && ctx.from.id!=id1){
@@ -2453,11 +2930,10 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,ms
 })
 
 bot.action(/multimo_/, async ctx => {
-if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-  ctx.answerCbQuery('Try Again');
+if (hitBattleCooldown(ctx)) {
+  await ctx.answerCbQuery('On cooldown 2 sec');
   return;
 }
-battlec[ctx.chat.id] = Date.now();
 const moveid = ctx.callbackQuery.data.split('_')[1]
 const bword = ctx.callbackQuery.data.split('_')[2]
 const id = ctx.callbackQuery.data.split('_')[3]
@@ -3113,7 +3589,19 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 if (!battleData.bideState) battleData.bideState = {};
 if (battleData.bideState[action1.c]) { action1.id = battleData.bideState[action1.c].moveId; }
 if (action2 && battleData.bideState[action2.c]) { action2.id = battleData.bideState[action2.c].moveId; }
+const chargingState1 = getChargingStateForPass(battleData, action1.c);
+if (chargingState1 && chargingState1.moveId) { action1.id = chargingState1.moveId; }
+if (action2) {
+  const chargingState2 = getChargingStateForPass(battleData, action2.c);
+  if (chargingState2 && chargingState2.moveId) { action2.id = chargingState2.moveId; }
+}
 battleData.bideCycle = (battleData.bideCycle || 0) + 1;
+
+// Use the unified resolver for standard two-action turns so ability hooks stay consistent.
+if (!singleActionTurn) {
+  await resolveQueuedActions(ctx, battleData, bword);
+  return;
+}
 
 // If a switch is queued in this turn, delegate to unified resolver (handles switch-first flow)
 if (!singleActionTurn && (action1.type === 'switch' || (action2 && action2.type === 'switch'))) {
@@ -3160,12 +3648,12 @@ async function executeStandardMove(act) {
 
     const move = dmoves[act.id];
     const moveName = normalizeMoveName(move?.name);
+    const hitsMinimizedBonus = MINIMIZE_PUNISH_MOVES.has(moveName) && isPokemonMinimized(battleData, battleData.o);
     const isCounterMove = ['counter', 'mirror coat', 'metal burst', 'comeuppance'].includes(moveName);
     let attacker = await getUserData(battleData.cid);
     let defender = await getUserData(battleData.oid);
     let p = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0];
     let op = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
-    
     let base1 = pokestats[p.name];
     let base2 = pokestats[op.name];
     let level1 = plevel(p.name, p.exp);
@@ -3197,9 +3685,19 @@ async function executeStandardMove(act) {
     // ActState (Frozen, Asleep, Paralyzed etc)
     ensureBattleStatus(battleData); // verify status conditions haven't cleared
     const actState = canPokemonAct(battleData, battleData.c, p.name);
+    const chargingState = getChargingStateForPass(battleData, battleData.c);
+    const isChargeReleaseTurn = !!(chargingState && String(chargingState.moveId) === String(act.id));
+    if (!actState.canAct && isChargeReleaseTurn) {
+      clearChargingStateForPass(battleData, battleData.c);
+      clearSemiInvulnerableStateForPass(battleData, battleData.c);
+    }
     
     if (!actState.canAct) {
         msgLocal += "\n" + actState.msg;
+    } else if (isChargeReleaseTurn) {
+      clearChargingStateForPass(battleData, battleData.c);
+      clearSemiInvulnerableStateForPass(battleData, battleData.c);
+      msgLocal += '\n-> <b>'+c(p.name)+'</b> unleashed <b>'+c(move.name)+'</b>!';
     } else if (moveName === 'bide') {
         // Bide bypasses accuracy/evasion checks
         if (!battleData.bideState) battleData.bideState = {};
@@ -3237,6 +3735,24 @@ async function executeStandardMove(act) {
                 delete battleData.bideState[battleData.c];
             }
         }
+          } else if (CHARGING_TURN_MOVES.has(moveName)) {
+            setChargingStateForPass(battleData, battleData.c, act.id, moveName);
+            if (SEMI_INVULNERABLE_CHARGE_MOVES.has(moveName)) {
+              setSemiInvulnerableStateForPass(battleData, battleData.c, moveName);
+            }
+            msgLocal += getChargingTurnMessage(p.name, moveName);
+            if (CHARGE_START_STAT_MOVES.has(moveName)) {
+              msgLocal += applyMoveStatEffects({
+                battleData,
+                moveName,
+                moveCategory: move.category,
+                attackerName: p.name,
+                defenderName: op.name,
+                attackerPass: battleData.c,
+                defenderPass: battleData.o,
+                targetAlive: battleData.ohp > 0
+              });
+            }
           } else if (isCounterMove) {
             // Counterattack moves only succeed if this Pokemon was hit earlier this turn.
             const lastHit = battleData.turnHits[battleData.c];
@@ -3260,7 +3776,11 @@ async function executeStandardMove(act) {
               msgLocal += '\n-> <b>'+c(p.name)+'</b> retaliated with <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
             }
           } else {
-        const bypassAccuracyCheck = moveName === 'bind';
+        if (isSemiInvulnerableAvoidedMove(battleData, battleData.o, move.category, moveName)) {
+          const opSemi = getSemiInvulnerableStateForPass(battleData, battleData.o);
+          msgLocal += getSemiInvulnerableAvoidMessage(op.name, opSemi ? opSemi.moveName : '');
+        } else {
+        const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus;
         const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
         const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), atkStages.accuracy, defStages.evasion) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
@@ -3297,7 +3817,7 @@ async function executeStandardMove(act) {
                 battleData.leechSeed[battleData.o] = battleData.c;
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> planted a seed on <b>'+c(op.name)+'</b>!';
               }
-            } else if (move.category == 'status' || !move.power) {
+            } else if ((move.category == 'status' || !move.power) && !OHKO_MOVES.has(moveName)) {
             msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.';
             msgLocal += applyMoveStatEffects({
               battleData,
@@ -3374,15 +3894,57 @@ async function executeStandardMove(act) {
               }
             }
 
+            if (moveName === 'minimize') {
+              setPokemonMinimized(battleData, battleData.c, true);
+            }
+
+            msgLocal += applyScreenSetupByMove(moveName, battleData, battleData.cid, true);
+            msgLocal += applyScreenRemovalByMove(moveName, battleData, battleData.oid, true);
+
             msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
         } else {
               if (moveName === 'dream eater' && getBattleStatus(battleData, battleData.o) !== 'sleep') {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
               } else {
             var damage = Math.min(calc(atk, def2, level1, move.power, eff1), battleData.ohp);
+            let ohkoFailed = false;
+            if (OHKO_MOVES.has(moveName)) {
+              const attackerTypes = (pokes[p.name]?.types || []).map((t) => String(t).toLowerCase());
+              const defenderTypes = (pokes[op.name]?.types || []).map((t) => String(t).toLowerCase());
+              const sheerColdBlocked = moveName === 'sheer cold' && defenderTypes.includes('ice') && !attackerTypes.includes('ice');
+              const ohkoChance = getOhkoHitChance(level1, level2);
+              if (level1 < level2 || sheerColdBlocked || Math.random() * 100 >= ohkoChance) {
+                damage = 0;
+                ohkoFailed = true;
+              } else {
+                damage = battleData.ohp;
+              }
+            }
+            if (!ohkoFailed && hitsMinimizedBonus && damage > 0) {
+              damage = Math.min(Math.max(1, Math.floor(damage * MINIMIZE_PUNISH_MULTIPLIER)), battleData.ohp);
+            }
+            const isPerfectCrit = PERFECT_CRIT_MOVES.has(moveName);
+            const isHighCritMove = HIGH_CRIT_RATIO_MOVES.has(moveName);
+            const didCrit = isPerfectCrit || (isHighCritMove && Math.random() < HIGH_CRIT_RATIO_CHANCE);
+            if (!ohkoFailed && didCrit && damage > 0) {
+              damage = Math.min(Math.max(1, Math.floor(damage * CRIT_DAMAGE_MULTIPLIER)), battleData.ohp);
+            }
+            if (!ohkoFailed && !didCrit && damage > 0 && !OHKO_MOVES.has(moveName)) {
+              const screenMult = getScreenDamageMultiplier(battleData, battleData.oid, move.category);
+              if (screenMult < 1) {
+                damage = Math.max(1, Math.floor(damage * screenMult));
+              }
+            }
             battleData.ohp = Math.max((battleData.ohp - damage), 0);
             battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
-            msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+            if (ohkoFailed) {
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+            } else {
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+            }
+            if (!ohkoFailed && didCrit && damage > 0) {
+              msgLocal += '\n-> <b>A critical hit!</b>';
+            }
 
               if (eff1 === 0) {
                 const crash = getCrashDamage(moveName, stats1.hp);
@@ -3418,6 +3980,8 @@ async function executeStandardMove(act) {
               msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
               msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, damage > 0);
               msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, damage > 0);
+              msgLocal += applyScreenSetupByMove(moveName, battleData, battleData.cid, damage > 0);
+              msgLocal += applyScreenRemovalByMove(moveName, battleData, battleData.oid, damage > 0);
             
             // Record hit for counter-attacks and accumulate bide damage
               battleData.turnHits[battleData.o] = { damage: damage, category: move.category, from: battleData.c, move: moveName };
@@ -3426,10 +3990,10 @@ async function executeStandardMove(act) {
                 battleData.bideState[battleData.o].lastAttacker = battleData.c;
             }
             
-            if (eff1 == 0) msgLocal += '\n<b>* It\'s 0x effective!</b>';
-            else if (eff1 == 0.5) msgLocal += '\n<b>* It\'s not very effective...</b>';
-            else if (eff1 == 2) msgLocal += '\n<b>* It\'s super effective!</b>';
-            else if (eff1 == 4) msgLocal += '\n<b>* It\'s incredibly super effective!</b>';
+            if (!ohkoFailed && eff1 == 0) msgLocal += '\n<b>* It\'s 0x effective!</b>';
+            else if (!ohkoFailed && eff1 == 0.5) msgLocal += '\n<b>* It\'s not very effective...</b>';
+            else if (!ohkoFailed && eff1 == 2) msgLocal += '\n<b>* It\'s super effective!</b>';
+            else if (!ohkoFailed && eff1 == 4) msgLocal += '\n<b>* It\'s incredibly super effective!</b>';
 
             if (damage > 0) {
               msgLocal += applyMoveStatEffects({
@@ -3463,6 +4027,7 @@ async function executeStandardMove(act) {
                 setBattleStatus(battleData, battleData.o, statusEffect.status);
                 msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.';
             }
+        }
         }
     }
       }
@@ -3513,6 +4078,7 @@ if (battleData.chp <= 0 || battleData.ohp <= 0) {
     fullSwap(battleData); 
 }
 
+tickScreensForTurn(battleData);
 await saveBattleData(bword, battleData);
 
 const attacker = await getUserData(battleData.cid)
@@ -3625,12 +4191,10 @@ const pvpMmo = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, 
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMmo.msg,{parse_mode:'HTML',reply_markup:pvpMmo.keyboard,...pvpMmo.ext})
 })
 bot.action(/multichanpok_/,async ctx => {
-if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-
-  ctx.answerCbQuery('Try Again');
+if (hitBattleCooldown(ctx)) {
+  await ctx.answerCbQuery('On cooldown 2 sec');
   return;
 }
-battlec[ctx.chat.id] = Date.now();
 const bword = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
 if(ctx.from.id!=id){
@@ -3693,12 +4257,10 @@ rows.push([{text:'⬅️ Back',callback_data:'multibttle_'+bword+'_'+battleData.
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:rows}})
 })
 bot.action(/multibttle_/,async ctx => {
-if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-
-  ctx.answerCbQuery('Try Again');
+if (hitBattleCooldown(ctx)) {
+  await ctx.answerCbQuery('On cooldown 2 sec');
   return;
 }
-battlec[ctx.chat.id] = Date.now();
 const bword = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
 if(ctx.from.id!=id){
@@ -3726,12 +4288,10 @@ const pvpBtl = buildPvpMsg('', battleData, attacker, defender, p1, p2, stats1, s
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpBtl.msg,{parse_mode:'HTML',reply_markup:pvpBtl.keyboard,...pvpBtl.ext})
 })
 bot.action(/megtst_/,async ctx => {
-if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-
-  ctx.answerCbQuery('Try Again');
+if (hitBattleCooldown(ctx)) {
+  await ctx.answerCbQuery('On cooldown 2 sec');
   return;
 }
-battlec[ctx.chat.id] = Date.now();
 const stone5 = ctx.callbackQuery.data.split('_')[1]
 const bword = ctx.callbackQuery.data.split('_')[2]
 let battleData = {};
@@ -3827,12 +4387,10 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pv
 })
 
 bot.action(/multidne_/,async ctx => {
-if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-
-  ctx.answerCbQuery('Try Again');
+if (hitBattleCooldown(ctx)) {
+  await ctx.answerCbQuery('On cooldown 2 sec');
   return;
 }
-battlec[ctx.chat.id] = Date.now();
 const pass = ctx.callbackQuery.data.split('_')[1]
 const bword = ctx.callbackQuery.data.split('_')[2]
 const id = ctx.callbackQuery.data.split('_')[3]

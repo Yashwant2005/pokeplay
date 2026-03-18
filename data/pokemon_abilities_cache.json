@@ -58,7 +58,8 @@
     "solar-power"
   ],
   "slaking": [
-    "truant"
+    "truant",
+    "anger-shell"
   ],
   "snorlax": [
     "immunity",
@@ -193,5 +194,8 @@
     "illuminate",
     "swarm",
     "prankster"
+  ],
+  "eternatus-eternamax": [
+    "anger-point"
   ]
 }

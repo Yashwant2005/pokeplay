@@ -6,6 +6,7 @@ const {
   saveUserData2,
   word,
   generateRandomIVs,
+  applyCaptureIvRules,
   c
 } = require('./func');
 
@@ -265,7 +266,10 @@ async function addApprovedPokemonToUser(userId, pokemonName, nature, providedIvs
     data.pokeseen = [];
   }
 
-  const baseIvs = providedIvs || generateRandomIVs((spawn[pokemonName] || '').toLowerCase());
+  const baseIvs = applyCaptureIvRules(
+    providedIvs || generateRandomIVs((spawn[pokemonName] || '').toLowerCase()),
+    { isShiny: shiny }
+  );
   const safeNature = nature || 'hardy';
 
   const addedNames = [];

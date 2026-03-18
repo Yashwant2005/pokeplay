@@ -37,8 +37,10 @@ const USER_CACHE = new Map();
 const USER_DIRTY = new Set();
 const USER_LAST_ACCESS = new Map();
 const USER_CACHE_MTIME = new Map();
+const USER_LAST_FILE_CHECK = new Map();
 const USER_FLUSH_INTERVAL_MS = 3000;
 const USER_CACHE_TTL_MS = 5 * 60 * 1000;
+const USER_CACHE_FILE_CHECK_INTERVAL_MS = 2000;
 
 let messageDataCache = null;
 let messageDataDirty = false;
@@ -95,6 +97,7 @@ async function saveUserData2(userId, userData) {
     USER_DIRTY.add(key);
     USER_LAST_ACCESS.set(key, Date.now());
     USER_CACHE_MTIME.set(key, Date.now());
+    USER_LAST_FILE_CHECK.set(key, Date.now());
   } catch (error) {
     console.error('Error saving data:', error);
   }
@@ -106,6 +109,20 @@ async function getUserData(userId) {
     const key = String(userId);
     const filePath = './data/db/'+userId+'.json';
     if (USER_CACHE.has(key)) {
+      // If this process already has newer in-memory changes, avoid disk checks.
+      if (USER_DIRTY.has(key)) {
+        USER_LAST_ACCESS.set(key, Date.now());
+        return USER_CACHE.get(key);
+      }
+
+      const now = Date.now();
+      const lastCheck = USER_LAST_FILE_CHECK.get(key) || 0;
+      if (now - lastCheck < USER_CACHE_FILE_CHECK_INTERVAL_MS) {
+        USER_LAST_ACCESS.set(key, now);
+        return USER_CACHE.get(key);
+      }
+
+      USER_LAST_FILE_CHECK.set(key, now);
       try {
         const stat = fs.existsSync(filePath) ? fs.statSync(filePath) : null;
         const cachedMtime = USER_CACHE_MTIME.get(key) || 0;
@@ -152,6 +169,7 @@ async function getUserData(userId) {
     } catch (err) {
       USER_CACHE_MTIME.set(key, Date.now());
     }
+    USER_LAST_FILE_CHECK.set(key, Date.now());
     USER_LAST_ACCESS.set(key, Date.now());
     return userDataEntry.data;
   } catch (error) {
@@ -560,7 +578,7 @@ function flushUserCache() {
         userDataEntry.push(entry);
       }
       entry.data = userData;
-      fs.writeFileSync(filePath, JSON.stringify(userDataEntry, null, 2), 'utf8');
+      fs.writeFileSync(filePath, JSON.stringify(userDataEntry), 'utf8');
       USER_DIRTY.delete(key);
     } catch (error) {
       // keep dirty for next flush
@@ -571,7 +589,7 @@ function flushUserCache() {
 function flushMessageData() {
   if (!messageDataDirty || !messageDataCache) return;
   try {
-    fs.writeFileSync('data/msg_data.json', JSON.stringify(messageDataCache, null, 2), 'utf8');
+    fs.writeFileSync('data/msg_data.json', JSON.stringify(messageDataCache), 'utf8');
     messageDataDirty = false;
   } catch (error) {
     // keep dirty for next flush
@@ -588,7 +606,7 @@ function flushBattleCache() {
         continue;
       }
       const filePath = './data/battle/' + key + '.json';
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+      fs.writeFileSync(filePath, JSON.stringify(data), 'utf8');
       BATTLE_DIRTY.delete(key);
     } catch (error) {
       // keep dirty for next flush
@@ -603,6 +621,7 @@ function sweepCache() {
       USER_CACHE.delete(key);
       USER_LAST_ACCESS.delete(key);
       USER_CACHE_MTIME.delete(key);
+      USER_LAST_FILE_CHECK.delete(key);
     }
   }
   if (messageDataCache && now - messageDataLastAccess > USER_CACHE_TTL_MS && !messageDataDirty) {
@@ -991,5 +1010,32 @@ if (!ivs[statToIncrease] || ivs[statToIncrease] < AIv) {
   return ivs;
 }
 
-module.exports = { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel,saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs}
+function clampIvValue(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 0;
+  return Math.max(0, Math.min(31, Math.floor(n)));
+}
+
+function withMinimumIvs(ivs, minPerStat) {
+  const stats = ['hp', 'attack', 'defense', 'special_attack', 'special_defense', 'speed'];
+  const out = {};
+  const minIv = Math.max(0, Math.min(31, Math.floor(Number(minPerStat) || 0)));
+  for (const statName of stats) {
+    const base = clampIvValue(ivs && ivs[statName]);
+    out[statName] = Math.max(minIv, base);
+  }
+  return out;
+}
+
+function applyCaptureIvRules(ivs, options = {}) {
+  const symbol = String(options.symbol || '');
+  const isShiny = Boolean(options.isShiny) || symbol === '✨' || symbol === '?';
+  const isSafari = Boolean(options.isSafari);
+  let minPerStat = 0;
+  if (isSafari) minPerStat = Math.max(minPerStat, 10);
+  if (isShiny) minPerStat = Math.max(minPerStat, 20);
+  return withMinimumIvs(ivs, minPerStat);
+}
+
+module.exports = { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel,saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs,applyCaptureIvRules}
 

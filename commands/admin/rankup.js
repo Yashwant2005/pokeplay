@@ -1,4 +1,4 @@
-const { getTrainerLevel } = require('../../utils/trainer_rank_rewards');
+const { getTrainerLevel, claimTrainerRankRewards } = require('../../utils/trainer_rank_rewards');
 
 function getCurrentLevel(data) {
   return getTrainerLevel(data, trainerlevel, 100);
@@ -48,12 +48,31 @@ function registerRankupCommand(bot, deps) {
 
     data.extra.rankLevel = Math.max(Number(data.extra.rankLevel) || 1, targetLevel);
 
+    // Keep claimedLevel at or below old level so new /rankup levels always claim rewards.
+    if (!data.extra.rankRewards || typeof data.extra.rankRewards !== 'object') {
+      data.extra.rankRewards = { claimedLevel: 0, lastClaimAtUtc: null };
+    }
+    if (!Number.isFinite(data.extra.rankRewards.claimedLevel)) {
+      data.extra.rankRewards.claimedLevel = 0;
+    }
+    data.extra.rankRewards.claimedLevel = Math.min(data.extra.rankRewards.claimedLevel, currentLevel);
+
+    const summary = claimTrainerRankRewards(data, { trainerlevel, tms, stones });
     await saveUserData2(targetId, data);
 
     const newLevel = getCurrentLevel(data);
-    await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' },
-      'Ranked up *' + c(reply.from.first_name) + '* from *' + currentLevel + '* to *' + newLevel + '*.'
-    );
+    let msg = 'Ranked up *' + c(reply.from.first_name) + '* from *' + currentLevel + '* to *' + newLevel + '*.';
+    if (summary && summary.levelsToClaim > 0) {
+      msg += '\n\n*Rankup Rewards Applied:*';
+      if (summary.rewards.pc > 0) msg += '\n- ' + summary.rewards.pc + ' PokeCoins 💷';
+      if (summary.rewards.lp > 0) msg += '\n- ' + summary.rewards.lp + ' League Points ⭐';
+      if (summary.rewards.ht > 0) msg += '\n- ' + summary.rewards.ht + ' Holowear Tickets 🎟️';
+      if (summary.rewards.battleBoxes > 0) msg += '\n- ' + summary.rewards.battleBoxes + ' Battle Box 🎁';
+    } else {
+      msg += '\n\nNo new rank rewards were claimable.';
+    }
+
+    await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, msg);
   });
 }
 

@@ -1,12 +1,20 @@
+const { applyEntryAbility } = require('../../utils/battle_abilities');
+
 function register_018_snd(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action(/snd_/,async ctx => {
-if (battlec[ctx.chat.id] && Date.now() - battlec[ctx.chat.id] < 1600) {
-
-  ctx.answerCbQuery('Try Again');
+const now = Date.now();
+const chatKey = ctx.chat && ctx.chat.id;
+const userId = ctx.from && ctx.from.id;
+const userKey = 'u_' + String(userId);
+const chatLimited = chatKey !== undefined && battlec[chatKey] && now - battlec[chatKey] < 2000;
+const userLimited = userId !== undefined && battlec[userKey] && now - battlec[userKey] < 2000;
+if (chatLimited || userLimited) {
+  await ctx.answerCbQuery('On cooldown 2 sec');
   return;
 }
-battlec[ctx.chat.id] = Date.now();
+if (chatKey !== undefined) battlec[chatKey] = now;
+if (userId !== undefined) battlec[userKey] = now;
 const bword = ctx.callbackQuery.data.split('_')[2]
 let battleData = {};
     try {
@@ -33,8 +41,21 @@ const uname = he.encode(ctx.from.first_name)
 const clevel = plevel(p.name,p.exp)
 const op = pokes[battleData.name]
 const base2 = pokestats[p.name]
+const baseWild = pokestats[battleData.name]
 const stats = await Stats(base2,p.ivs,p.evs,c(p.nature),clevel)
+const wildStats = await Stats(baseWild,battleData.ivs,battleData.evs,c(battleData.nat),battleData.level)
+const entryAbility = applyEntryAbility({
+  battleData,
+  pass: p.pass,
+  pokemonName: p.name,
+  abilityName: p.ability,
+  selfStats: stats,
+  opponentStats: wildStats,
+  c
+})
+await saveBattleData(bword, battleData);
 let msg = '<i> Sent '+p.name+' For Battle</i>'
+msg += entryAbility.message
 msg += '\n\n<b>wild</b> '+c(battleData.name)+' ['+c(op.types.join(' / '))+']'
 msg += '\n<b>Level :</b> '+battleData.level+' | <b>HP :</b> '+battleData.ochp+'/'+battleData.ohp+''
 msg += '\n<code>'+Bar(battleData.ohp,battleData.ochp)+'</code>'

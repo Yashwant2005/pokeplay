@@ -1115,7 +1115,7 @@ const tmSellValue = Number(tmprices.sell[String(num)] || 0)
 const tmSellLp = Math.max(1, Math.round(tmSellValue / 20))
 let msg = 'âœ¦ *TM'+num+'* ('+c(dmoves[m].name)+' '+emojis[dmoves[m].type]+')\n'
 msg += '*Power:* '+dmoves[m].power+', *Accuracy:* '+dmoves[m].accuracy+' (_'+c(dmoves[m].category)+'_)\n'
-msg += '\nâ€¢ You Can Sell *TM'+num+'* For *'+tmSellLp+' League Points*'
+msg += '\n• You Can Sell *TM'+num+'* For *'+tmSellLp+' League Points*'
 await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},msg,{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:[[{text:'Use',callback_data:'tmuse_'+num+'_'+ctx.from.id+''},{text:'Sell',callback_data:'tmselly_'+num+'_'+ctx.from.id+''}]]}})
 }else{
 await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Don\'t Have *TM'+num+'*',{reply_to_message_id:ctx.message.message_id})
@@ -1359,7 +1359,7 @@ const regions2 = {
       return detail ? detail.replace(/[-_]/g, ' ') : '';
     }).filter(Boolean);
     if (regionDetails.length > 0) {
-      formattedDetails.push(`â€¢ <b>${c(region)}</b> - [${c(regionDetails.join(' , '))}]`);
+      formattedDetails.push(`• <b>${c(region)}</b> - [${c(regionDetails.join(' , '))}]`);
     }
   }
   return formattedDetails.join('\n');

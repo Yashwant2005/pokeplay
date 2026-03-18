@@ -434,7 +434,7 @@ function registerBattleCallbacks(bot, deps) {
     // Revealed moves (moves already used - visible to everyone)
     const usedMoves = battleData.usedMoves || {};
     const p1UsedMoves = usedMoves[battleData.c] || [];
-    const showAllMovesInGroup = !isGroup || (battleData.set && battleData.set.random) || battleData.tempBattle;
+    const showAllMovesInGroup = !isGroup || battleData.tempBattle === true;
     if (showAllMovesInGroup && !hideTurn) {
       msg += '\n\n<b>Moves :</b>';
       for (const move2 of p1.moves) {
@@ -2791,6 +2791,17 @@ spe2[pk[0].pass] = stats.speed
 }
 const user1poke = data.pokes.filter((poke)=>poke.pass==pokes1[0])[0]
 const user2poke = data2.pokes.filter((poke)=>poke.pass==pokes2[0])[0]
+if(!user1poke || !user2poke || !pokestats[user1poke?.name] || !pokestats[user2poke?.name]){
+  try{
+    const mdata = await loadMessageData();
+    if(Array.isArray(mdata.battle)){
+      mdata.battle = mdata.battle.filter((id)=> id !== parseInt(id1) && id !== parseInt(id2))
+      await saveMessageData(mdata);
+    }
+  }catch(e){}
+  ctx.answerCbQuery('Battle data invalid. Try again.');
+  return
+}
 const base1 = pokestats[user1poke.name]
 const base2 = pokestats[user2poke.name]
   ensureBattleStatus(battleData)

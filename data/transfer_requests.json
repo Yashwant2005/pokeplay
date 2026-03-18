@@ -2629,5 +2629,219 @@
     "shiny": false,
     "fingerprint": "arceus-steel|naive|hp:20|atk:24|def:16|spa:20|spd:30|spe:31",
     "duplicateOf": []
+  },
+  "ZIN5Jcrl97hE": {
+    "id": "ZIN5Jcrl97hE",
+    "status": "approved",
+    "createdAt": "2026-03-18T11:58:06.546Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "dragapult",
+    "nature": "bashful",
+    "ivs": {
+      "hp": 18,
+      "attack": 28,
+      "defense": 14,
+      "special_attack": 26,
+      "special_defense": 15,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "dragapult|bashful|hp:18|atk:28|def:14|spa:26|spd:15|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T11:59:12.814Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "dragapult"
+    ]
+  },
+  "65HN7OfjoQj6": {
+    "id": "65HN7OfjoQj6",
+    "status": "approved",
+    "createdAt": "2026-03-18T12:43:21.812Z",
+    "userId": 1470441905,
+    "userTag": "@Koji_kunn",
+    "pokemonName": "dreepy",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 26,
+      "attack": 21,
+      "defense": 5,
+      "special_attack": 1,
+      "special_defense": 31,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "dreepy|hasty|hp:26|atk:21|def:5|spa:1|spd:31|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T13:56:31.417Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "dreepy"
+    ]
+  },
+  "EoN9Xpt0VTpO": {
+    "id": "EoN9Xpt0VTpO",
+    "status": "approved",
+    "createdAt": "2026-03-18T12:56:25.913Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "calyrex-ice",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 28,
+      "attack": 30,
+      "defense": 29,
+      "special_attack": 28,
+      "special_defense": 16,
+      "speed": 16
+    },
+    "shiny": false,
+    "fingerprint": "calyrex-ice|adamant|hp:28|atk:30|def:29|spa:28|spd:16|spe:16",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T13:56:28.742Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "calyrex-ice"
+    ]
+  },
+  "eK1CeCU1nep0": {
+    "id": "eK1CeCU1nep0",
+    "status": "approved",
+    "createdAt": "2026-03-18T12:57:18.897Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "urshifu-single-strike",
+    "nature": "careful",
+    "ivs": {
+      "hp": 25,
+      "attack": 29,
+      "defense": 27,
+      "special_attack": 28,
+      "special_defense": 16,
+      "speed": 24
+    },
+    "shiny": false,
+    "fingerprint": "urshifu-single-strike|careful|hp:25|atk:29|def:27|spa:28|spd:16|spe:24",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T13:56:26.434Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "urshifu-single-strike"
+    ]
+  },
+  "iseXyALoImvt": {
+    "id": "iseXyALoImvt",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-18T13:03:48.168Z",
+    "userId": 1001484109,
+    "userTag": "@Mega_Evolutions",
+    "sourceBotId": 572621020,
+    "stones": [
+      "absolite",
+      "glalitite",
+      "banettite",
+      "swampertite",
+      "altarianite",
+      "aggronite",
+      "jade-orb",
+      "blue-orb",
+      "alakazite",
+      "sharpedonite",
+      "mawilite",
+      "lopunnite",
+      "latiosite",
+      "galladite",
+      "salamencite",
+      "lucarionite",
+      "mewtwonite-y",
+      "pinsirite",
+      "metagrossite",
+      "slowbronite",
+      "sablenite",
+      "red-orb",
+      "sceptilite",
+      "charizardite-y"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 1001484109,
+    "forwardMessageId": 4191,
+    "proofPhotoId": "AgACAgUAAxkBAAIQYWm6orN_EJXUPk_gBmr8P2TPsU-wAAJ4DmsbRPbYVTF6Nziy1Pv7AQADAgADdwADOgQ",
+    "reviewedAt": "2026-03-18T13:56:18.612Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "absolite",
+      "glalitite",
+      "banettite",
+      "swampertite",
+      "altarianite",
+      "aggronite",
+      "jade-orb",
+      "blue-orb",
+      "alakazite",
+      "sharpedonite",
+      "mawilite",
+      "lopunnite",
+      "latiosite",
+      "galladite",
+      "salamencite",
+      "lucarionite",
+      "mewtwonite-y",
+      "pinsirite",
+      "metagrossite",
+      "slowbronite",
+      "sablenite",
+      "red-orb",
+      "sceptilite",
+      "charizardite-y"
+    ]
+  },
+  "ViUI2e4iKyFo": {
+    "id": "ViUI2e4iKyFo",
+    "status": "approved",
+    "createdAt": "2026-03-18T14:13:16.105Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "kyogre",
+    "nature": "bold",
+    "ivs": {
+      "hp": 19,
+      "attack": 31,
+      "defense": 31,
+      "special_attack": 31,
+      "special_defense": 15,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "kyogre|bold|hp:19|atk:31|def:31|spa:31|spd:15|spe:23",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T14:13:31.391Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "kyogre"
+    ]
+  },
+  "rPhluSnOQdQz": {
+    "id": "rPhluSnOQdQz",
+    "status": "pending",
+    "createdAt": "2026-03-18T14:18:24.014Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "rayquaza",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 28,
+      "attack": 20,
+      "defense": 24,
+      "special_attack": 27,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "rayquaza|jolly|hp:28|atk:20|def:24|spa:27|spd:31|spe:31",
+    "duplicateOf": [
+      "3MY8abWeSCo4"
+    ]
   }
 }

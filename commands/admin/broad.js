@@ -18,12 +18,14 @@ function registerBroadCommand(bot, deps) {
     
     // Start the message forwarding process  
     isBroadcasting = true;
-    try {
-      await sendMessage(ctx, ctx.chat.id, 'Broadcast started.');
-      await forwardMessageToAllUsers(ctx, message.message_id, message.chat.id);
-    } finally {
-      isBroadcasting = false;
-    }
+    await sendMessage(ctx, ctx.chat.id, 'Broadcast started in background.');
+    forwardMessageToAllUsers(ctx, message.message_id, message.chat.id)
+      .catch((error) => {
+        console.error('Broadcast failed:', error);
+      })
+      .finally(() => {
+        isBroadcasting = false;
+      });
   });
 }
 

@@ -441,6 +441,7 @@ let lastClicked2 = {}
 let globalClicks = [];
 let lastmsg = {}
 let globalmsg = [];
+let lastInteractionAt = 0;
 let battlec = {}
 const banListFile2 = 'data/ban_list.json';
 const admins = [6265981509, 8493023103, 8551864967]
@@ -591,6 +592,7 @@ bot.on('callback_query', async (ctx, next) => {
 if(banList2.includes(String(ctx.from.id))|| banList2.includes(ctx.from.id)){
 return
 }
+    lastInteractionAt = Date.now();
     const userId = ctx.from.id;
     const chatId = ctx.chat ? ctx.chat.id : 0;
 const globalClicksPerSecond = globalClicks.filter(
@@ -641,6 +643,7 @@ try{
 if(banList2.includes(String(ctx.from.id))|| banList2.includes(ctx.from.id)){
 return
 }
+lastInteractionAt = Date.now();
 ctx.session.groupChatLimitReached = false;
 const updateTimestamp = ctx.message.date * 1000; // Convert to milliseconds
   if (updateTimestamp < botStartTime) {
@@ -1265,6 +1268,13 @@ async function forwardMessageToAllUsers(ctx, msgid,id) {
   for (let i = 0; i < userIds.length; i++) {
     const userId = userIds[i];
     try {
+      const idleMs = Date.now() - lastInteractionAt;
+      if (idleMs < 1200) {
+        await sleep(1200 - idleMs);
+      }
+      if (i > 0 && i % 20 === 0) {
+        await new Promise((resolve) => setImmediate(resolve));
+      }
 //const msg = await sendMessage(ctx,userId, message,{parse_mode:'markdown'});
 //await ctx.telegram.pinChatMessage(userId,msg.message_id);
  await bot.telegram.forwardMessage(userId,id,msgid)

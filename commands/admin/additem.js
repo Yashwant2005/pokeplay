@@ -1,4 +1,4 @@
-function toKey(value) {
+﻿function toKey(value) {
   return String(value || '').trim().toLowerCase();
 }
 
@@ -72,7 +72,7 @@ function registerAddItemCommand(bot, deps) {
     const item = toKey(args[0]);
 
     if (!item) {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:*\n/additem pc 1000\n/additem lp 500\n/additem ht 20\n/additem battlebox 5\n/additem tm 44 2\n/additem tm any 3\n/additem stone charizardite-x 1\n/additem stone any 2\n/additem mint jolly mint 2\n/additem mint any 5\n/additem ball master 1\n/additem ball any 3\n/additem bottlecap 2\n/additem goldbottlecap 1');
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:*\n/additem pc 1000\n/additem lp 500\n/additem ht 20\n/additem battlebox 5\n/additem daycarecandy 3\n/additem tm 44 2\n/additem tm any 3\n/additem stone charizardite-x 1\n/additem stone any 2\n/additem mint jolly mint 2\n/additem mint any 5\n/additem ball master 1\n/additem ball any 3\n/additem bottlecap 2\n/additem goldbottlecap 1');
       return;
     }
 
@@ -92,27 +92,32 @@ function registerAddItemCommand(bot, deps) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.pc)) data.inv.pc = 0;
       data.inv.pc += amount;
-      result = 'Added *' + amount + '* PokeCoins 💷';
+      result = 'Added *' + amount + '* PokeCoins ðŸ’·';
     } else if (['lp', 'leaguepoint', 'leaguepoints', 'league_points'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.league_points)) data.inv.league_points = 0;
       data.inv.league_points += amount;
-      result = 'Added *' + amount + '* League Points ⭐';
+      result = 'Added *' + amount + '* League Points â­';
     } else if (['ht', 'holowear', 'holowear_ticket', 'holowear_tickets', 'ticket', 'tickets'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.holowear_tickets)) data.inv.holowear_tickets = 0;
       data.inv.holowear_tickets += amount;
-      result = 'Added *' + amount + '* Holowear Tickets 🎟️';
+      result = 'Added *' + amount + '* Holowear Tickets ðŸŽŸï¸';
     } else if (['battlebox', 'battleboxes', 'battle_box', 'battle_boxes', 'box', 'boxes'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.battle_boxes)) data.inv.battle_boxes = 0;
       data.inv.battle_boxes += amount;
-      result = 'Added *' + amount + '* Battle Box 🎁';
+      result = 'Added *' + amount + '* Battle Box ðŸŽ';
+    } else if (['daycarecandy', 'daycare_candy', 'daycare-candy', 'dccandy', 'dcandy'].includes(item)) {
+      const amount = parsePositiveInt(args[1], 1);
+      if (!Number.isFinite(data.inv.daycare_candy)) data.inv.daycare_candy = 0;
+      data.inv.daycare_candy += amount;
+      result = 'Added *' + amount + '* Daycare Candy';
     } else if (['vp'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.vp)) data.inv.vp = 0;
       data.inv.vp += amount;
-      result = 'Added *' + amount + '* VP ⭐';
+      result = 'Added *' + amount + '* VP â­';
     } else if (['tm', 'tms'].includes(item)) {
       const tmRaw = toKey(args[1]);
       const amount = parsePositiveInt(args[2], 1);
@@ -204,9 +209,9 @@ function registerAddItemCommand(bot, deps) {
         }
         data.inv.balls.push(ballName);
       }
-      result = 'Added *' + amount + '* Pokéball(s).';
+      result = 'Added *' + amount + '* PokÃ©ball(s).';
     } else {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Unknown item type.*\nTry: pc, lp, ht, vp, tm, stone, mint, ball, bottlecap, goldbottlecap');
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Unknown item type.*\nTry: pc, lp, ht, battlebox, daycarecandy, vp, tm, stone, mint, ball, bottlecap, goldbottlecap');
       return;
     }
 
@@ -216,3 +221,4 @@ function registerAddItemCommand(bot, deps) {
 }
 
 module.exports = registerAddItemCommand;
+

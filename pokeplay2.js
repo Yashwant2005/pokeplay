@@ -1,4 +1,4 @@
-let msgsent = []
+﻿let msgsent = []
 const appr = [1072659486,6265981509]
 //const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' //main bot
 //const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //backup bot
@@ -373,12 +373,12 @@ function canPokemonAct(battleData, pass, pokeName) {
   if (status === "freeze") {
     if (Math.random() < 0.2) {
       setBattleStatus(battleData, pass, null);
-      return { canAct: true, msg: `➣ <b>${c(pokeName)}</b> thawed out.` };
+      return { canAct: true, msg: `âž£ <b>${c(pokeName)}</b> thawed out.` };
     }
-    return { canAct: false, msg: `➣ <b>${c(pokeName)}</b> is frozen solid.` };
+    return { canAct: false, msg: `âž£ <b>${c(pokeName)}</b> is frozen solid.` };
   }
   if (status === "paralyze" && Math.random() < 0.25) {
-    return { canAct: false, msg: `➣ <b>${c(pokeName)}</b> is fully paralyzed and cannot move.` };
+    return { canAct: false, msg: `âž£ <b>${c(pokeName)}</b> is fully paralyzed and cannot move.` };
   }
   return { canAct: true, msg: "" };
 }
@@ -431,7 +431,7 @@ function applyDefenderResidualDamage(battleData, defenderPass, defenderName, def
   const residual = Math.max(1, Math.floor(defenderMaxHp / divisor));
   battleData.ohp = Math.max(0, battleData.ohp - residual);
   battleData.tem2[defenderPass] = Math.max(0, battleData.tem2[defenderPass] - residual);
-  return `\n➣ <b>${c(defenderName)}</b> is hurt by ${status === "burn" ? "burn" : "poison"} and lost <code>${residual}</code> HP.`;
+  return `\nâž£ <b>${c(defenderName)}</b> is hurt by ${status === "burn" ? "burn" : "poison"} and lost <code>${residual}</code> HP.`;
 }
 
 let botStartTime = new Date().getTime();
@@ -675,7 +675,7 @@ if (ctx.chat && ctx.chat.type != 'private') {
   if (clicksPerMinute.length >= 40) {
     const waitTime = Math.ceil((clicksPerMinute[0] + 60000 - Date.now()) / 1000);
 if(!msgsent.includes(chatId)){
-await sendMessage(ctx,ctx.chat.id,'*⚠️ Too many requests*',{parse_mode:'markdown'})
+await sendMessage(ctx,ctx.chat.id,'*âš ï¸ Too many requests*',{parse_mode:'markdown'})
 msgsent.push(chatId)
 }
     return;
@@ -909,10 +909,10 @@ userData2.extra.refer.push(ctx.from.id)
 data.inv.pc += 1000
 data.extra.referred = id
 delete data.extra.pending
-await sendMessage(ctx,ctx.from.id,'You have successfully reached <b>Level 20</b> and your refer by <b>'+userData2.inv.name+' has been completed.\n+ 1k PC 💷</b>',{parse_mode:'HTML'})
+await sendMessage(ctx,ctx.from.id,'You have successfully reached <b>Level 20</b> and your refer by <b>'+userData2.inv.name+' has been completed.\n+ 1k PC ðŸ’·</b>',{parse_mode:'HTML'})
 let msg = '<b>'+ctx.from.first_name+'</b> has reached <b>Level 20</b>.'
 userData2.inv.pc += 500
-msg += '\n<b>+500</b> PokeCoins 💷'
+msg += '\n<b>+500</b> PokeCoins ðŸ’·'
 if (userData2.refers % 3 === 0) {
 const ballTypes = ['level','friend','moon','sport','net','nest','luxury','premier','quick','park','beast'];
 
@@ -945,7 +945,7 @@ if(!userData2.inv.pass){
 userData2.inv.pass = 0
 }
 userData2.inv.pass += 1
-msg += '\n<b>+1</b> TM'+num+' ⚙\n<b>+1</b> Safari Pass\n<b>+1000</b> PokeCoins 💷'
+msg += '\n<b>+1</b> TM'+num+' âš™\n<b>+1</b> Safari Pass\n<b>+1000</b> PokeCoins ðŸ’·'
 }
 if(userData2.refers % 13 === 0){
 const n5 = Object.keys(tms.tmnumber)
@@ -972,7 +972,7 @@ if(!userData2.inv.pass){
 userData2.inv.pass = 0
 }
 userData2.inv.pass += 1
-msg += '\n<b>+1</b> TM'+num+' ⚙\n<b>+1</b> TM'+num2+' ⚙\n<b>+1</b> TM'+num3+' ⚙\n<b>+1</b> Safari Pass\n<b>+3000</b> PokeCoins 💷'
+msg += '\n<b>+1</b> TM'+num+' âš™\n<b>+1</b> TM'+num2+' âš™\n<b>+1</b> TM'+num3+' âš™\n<b>+1</b> Safari Pass\n<b>+3000</b> PokeCoins ðŸ’·'
 }
 
   if (userData2.refers % 22 === 0) {
@@ -1077,6 +1077,7 @@ const groupCommands = [
 {command: '/travel', description: 'Travel Another Place' },
 {command:'/safari_zone',description:'Travel Into Safari Zone'},
 {command:'/ev_train',description:'Train EVs Of Your Poke'},
+{command:'/daycare',description:'Train Pokemon to Lv100 in daycare'},
 {command:'/myteams',description:' Setup Your Teams'},
 {command:'/pokestore',description:'Visit PokeStore'},
 {command:'/trade',description:'Trade Pokemons With Others (Paid)'},
@@ -1112,9 +1113,9 @@ if(data.tms[num] && data.tms[num] > 0){
 const m = tms.tmnumber[num]
 const tmSellValue = Number(tmprices.sell[String(num)] || 0)
 const tmSellLp = Math.max(1, Math.round(tmSellValue / 20))
-let msg = '✦ *TM'+num+'* ('+c(dmoves[m].name)+' '+emojis[dmoves[m].type]+')\n'
+let msg = 'âœ¦ *TM'+num+'* ('+c(dmoves[m].name)+' '+emojis[dmoves[m].type]+')\n'
 msg += '*Power:* '+dmoves[m].power+', *Accuracy:* '+dmoves[m].accuracy+' (_'+c(dmoves[m].category)+'_)\n'
-msg += '\n• You Can Sell *TM'+num+'* For *'+tmSellLp+' League Points*'
+msg += '\nâ€¢ You Can Sell *TM'+num+'* For *'+tmSellLp+' League Points*'
 await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},msg,{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:[[{text:'Use',callback_data:'tmuse_'+num+'_'+ctx.from.id+''},{text:'Sell',callback_data:'tmselly_'+num+'_'+ctx.from.id+''}]]}})
 }else{
 await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Don\'t Have *TM'+num+'*',{reply_to_message_id:ctx.message.message_id})
@@ -1201,8 +1202,8 @@ await saveMessageData(messageData)
                 const elapsedTime = Date.now() - userMessageData.times;
 
                 if (elapsedTime > 130000) {
-                    let newMessage = `<a href="tg://user?id=${turn}"><b>${d1.inv.name}</b></a> has not moved and losses <b>25</b> PokeCoins 💷.`;
-                    newMessage += `\n<a href="tg://user?id=${oppo}"><b>${d2.inv.name}</b></a> <b>+25</b> PokeCoins 💷.`;
+                    let newMessage = `<a href="tg://user?id=${turn}"><b>${d1.inv.name}</b></a> has not moved and losses <b>25</b> PokeCoins ðŸ’·.`;
+                    newMessage += `\n<a href="tg://user?id=${oppo}"><b>${d2.inv.name}</b></a> <b>+25</b> PokeCoins ðŸ’·.`;
 
                     if (d1.inv.pc > 25) {
                         d1.inv.pc -= 25;
@@ -1358,7 +1359,7 @@ const regions2 = {
       return detail ? detail.replace(/[-_]/g, ' ') : '';
     }).filter(Boolean);
     if (regionDetails.length > 0) {
-      formattedDetails.push(`• <b>${c(region)}</b> - [${c(regionDetails.join(' , '))}]`);
+      formattedDetails.push(`â€¢ <b>${c(region)}</b> - [${c(regionDetails.join(' , '))}]`);
     }
   }
   return formattedDetails.join('\n');
@@ -1462,4 +1463,5 @@ return null
 }
 }
 bot.launch();
+
 

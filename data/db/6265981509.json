@@ -285,80 +285,80 @@
           "ability": "pressure"
         },
         {
-          "name": "pelipper",
-          "id": 279,
-          "nature": "Quiet",
-          "exp": 1000000,
-          "pass": "zFzYV5fa",
-          "ivs": {
-            "hp": 13,
-            "attack": 16,
-            "defense": 15,
-            "special_attack": 12,
-            "special_defense": 13,
-            "speed": 13
-          },
-          "symbol": "",
-          "evs": {
-            "hp": 0,
-            "attack": 0,
-            "defense": 0,
-            "special_attack": 0,
-            "special_defense": 0,
-            "speed": 0
-          },
-          "moves": [
-            17,
-            352,
-            542,
-            56
-          ],
-          "temp_battle": true
-        },
-        {
-          "name": "azumarill",
-          "id": 184,
-          "nature": "Gentle",
-          "exp": 800000,
-          "pass": "qDTa2zfj",
-          "ivs": {
-            "hp": 23,
-            "attack": 23,
-            "defense": 13,
-            "special_attack": 14,
-            "special_defense": 21,
-            "speed": 20
-          },
-          "symbol": "",
-          "evs": {
-            "hp": 0,
-            "attack": 0,
-            "defense": 0,
-            "special_attack": 0,
-            "special_defense": 0,
-            "speed": 0
-          },
-          "moves": [
-            583,
-            56,
-            38,
-            276
-          ],
-          "temp_battle": true
-        },
-        {
-          "name": "grafaiai",
-          "id": 945,
-          "nature": "Quiet",
+          "name": "blaziken-mega",
+          "id": 257,
+          "nature": "Bold",
           "exp": 1059860,
-          "pass": "W8FL5ku9",
+          "pass": "NSD2sMRG",
           "ivs": {
-            "hp": 20,
-            "attack": 29,
+            "hp": 17,
+            "attack": 21,
+            "defense": 17,
+            "special_attack": 22,
+            "special_defense": 30,
+            "speed": 21
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            163,
+            413,
+            327,
+            394
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "clawitzer",
+          "id": 693,
+          "nature": "Adamant",
+          "exp": 1250000,
+          "pass": "4XKho6FP",
+          "ivs": {
+            "hp": 12,
+            "attack": 14,
+            "defense": 20,
+            "special_attack": 12,
+            "special_defense": 14,
+            "speed": 15
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            396,
+            340,
+            330,
+            152
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "miraidon",
+          "id": 1008,
+          "nature": "Quirky",
+          "exp": 1250000,
+          "pass": "uxlkcGv7",
+          "ivs": {
+            "hp": 24,
+            "attack": 21,
             "defense": 19,
             "special_attack": 19,
-            "special_defense": 19,
-            "speed": 18
+            "special_defense": 23,
+            "speed": 23
           },
           "symbol": "",
           "evs": {
@@ -370,87 +370,25 @@
             "speed": 0
           },
           "moves": [
-            369,
-            398,
-            282,
-            441
-          ],
-          "temp_battle": true
-        },
-        {
-          "name": "enamorus-therian",
-          "id": 905,
-          "nature": "Gentle",
-          "exp": 1250000,
-          "pass": "W13y2VOP",
-          "ivs": {
-            "hp": 26,
-            "attack": 19,
-            "defense": 26,
-            "special_attack": 28,
-            "special_defense": 18,
-            "speed": 26
-          },
-          "symbol": "",
-          "evs": {
-            "hp": 0,
-            "attack": 0,
-            "defense": 0,
-            "special_attack": 0,
-            "special_defense": 0,
-            "speed": 0
-          },
-          "moves": [
-            276,
-            585,
             200,
-            831
+            87,
+            315,
+            63
           ],
           "temp_battle": true
         },
         {
-          "name": "furfrou-diamond",
-          "id": 676,
-          "nature": "Careful",
-          "exp": 600000,
-          "pass": "NLKSy2g5",
-          "ivs": {
-            "hp": 10,
-            "attack": 17,
-            "defense": 17,
-            "special_attack": 13,
-            "special_defense": 12,
-            "speed": 17
-          },
-          "symbol": "",
-          "evs": {
-            "hp": 0,
-            "attack": 0,
-            "defense": 0,
-            "special_attack": 0,
-            "special_defense": 0,
-            "speed": 0
-          },
-          "moves": [
-            44,
-            514,
-            36,
-            389
-          ],
-          "temp_battle": true
-        },
-        {
-          "name": "genesect-chill",
-          "id": 649,
-          "nature": "Sassy",
-          "exp": 1250000,
-          "pass": "3mAJA5fn",
+          "name": "rabsca",
+          "id": 954,
+          "nature": "Calm",
+          "exp": 800000,
+          "pass": "TMh4IVEL",
           "ivs": {
             "hp": 15,
-            "attack": 18,
-            "defense": 12,
-            "special_attack": 26,
-            "special_defense": 23,
+            "attack": 23,
+            "defense": 17,
+            "special_attack": 13,
+            "special_defense": 14,
             "speed": 18
           },
           "symbol": "",
@@ -463,18 +401,80 @@
             "speed": 0
           },
           "moves": [
+            385,
+            683,
             405,
-            192,
-            5463,
-            120
+            94
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "meowth-alola",
+          "id": 52,
+          "nature": "Quirky",
+          "exp": 1000000,
+          "pass": "UfsMCTyk",
+          "ivs": {
+            "hp": 20,
+            "attack": 18,
+            "defense": 18,
+            "special_attack": 18,
+            "special_defense": 25,
+            "speed": 28
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            103,
+            400,
+            417,
+            583
+          ],
+          "temp_battle": true
+        },
+        {
+          "name": "froslass",
+          "id": 478,
+          "nature": "Gentle",
+          "exp": 1000000,
+          "pass": "04X9kHMW",
+          "ivs": {
+            "hp": 6,
+            "attack": 6,
+            "defense": 6,
+            "special_attack": 5,
+            "special_defense": 4,
+            "speed": 5
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            261,
+            694,
+            247,
+            59
           ],
           "temp_battle": true
         }
       ],
       "inv": {
-        "pc": 1040798,
+        "pc": 1040788,
         "region": "isle-of-armor",
-        "exp": 404928,
+        "exp": 404968,
         "avtar": "1",
         "template": "9",
         "id": "grey",
@@ -483,7 +483,7 @@
         "name": "&#x1D675;&#x1D67B;&#x1D678;&#x1D681;&#x1D683;&#x1D674;&#x1D681;",
         "team": "1",
         "candy": 106,
-        "win": 11,
+        "win": 12,
         "vitamin": 22,
         "lose": 2,
         "stones": [
@@ -512,13 +512,13 @@
         ],
         "referred": 5254303126,
         "temp_battle": {
-          "JaS86OC": [
-            "zFzYV5fa",
-            "qDTa2zfj",
-            "W8FL5ku9",
-            "W13y2VOP",
-            "NLKSy2g5",
-            "3mAJA5fn"
+          "knc1Apa": [
+            "NSD2sMRG",
+            "4XKho6FP",
+            "uxlkcGv7",
+            "TMh4IVEL",
+            "UfsMCTyk",
+            "04X9kHMW"
           ]
         },
         "randombattle_settings": {
@@ -853,7 +853,33 @@
         "wormadam-plant",
         "azumarill",
         "grafaiai",
-        "furfrou-diamond"
+        "furfrou-diamond",
+        "aggron",
+        "vivillon-modern",
+        "minior-orange",
+        "emolga",
+        "kricketune",
+        "deerling-summer",
+        "pangoro",
+        "lilligant-hisui",
+        "dugtrio-alola",
+        "tyranitar-mega",
+        "urshifu-single-strike",
+        "goodra",
+        "rhyperior",
+        "cinderace",
+        "tyrantrum",
+        "musharna",
+        "iron-treads",
+        "barbaracle",
+        "leavanny",
+        "druddigon",
+        "blaziken-mega",
+        "clawitzer",
+        "miraidon",
+        "rabsca",
+        "meowth-alola",
+        "froslass"
       ],
       "pokecaught": [
         "fuecoco",
@@ -1111,7 +1137,33 @@
         "wormadam-plant",
         "azumarill",
         "grafaiai",
-        "furfrou-diamond"
+        "furfrou-diamond",
+        "aggron",
+        "vivillon-modern",
+        "minior-orange",
+        "emolga",
+        "kricketune",
+        "deerling-summer",
+        "pangoro",
+        "lilligant-hisui",
+        "dugtrio-alola",
+        "tyranitar-mega",
+        "urshifu-single-strike",
+        "goodra",
+        "rhyperior",
+        "cinderace",
+        "tyrantrum",
+        "musharna",
+        "iron-treads",
+        "barbaracle",
+        "leavanny",
+        "druddigon",
+        "blaziken-mega",
+        "clawitzer",
+        "miraidon",
+        "rabsca",
+        "meowth-alola",
+        "froslass"
       ],
       "settings": {
         "max_poke": 6,

@@ -203,49 +203,70 @@ let currentLevel, nextLevel, nextExp;
     nextExp
   };
 }
-function Stats(baseStats, ivs, evs, natureName, level) {
-  const stats = {};
+const NATURE_MODIFIERS = {
+  Adamant: { increased: 'attack', decreased: 'special_attack' },
+  Bashful: {},
+  Bold: { increased: 'defense', decreased: 'attack' },
+  Brave: { increased: 'attack', decreased: 'speed' },
+  Calm: { increased: 'special_defense', decreased: 'attack' },
+  Careful: { increased: 'special_defense', decreased: 'special_attack' },
+  Docile: {},
+  Gentle: { increased: 'special_defense', decreased: 'defense' },
+  Hardy: {},
+  Hasty: { increased: 'speed', decreased: 'defense' },
+  Impish: { increased: 'defense', decreased: 'special_attack' },
+  Jolly: { increased: 'speed', decreased: 'special_attack' },
+  Lax: { increased: 'defense', decreased: 'special_defense' },
+  Lonely: { increased: 'attack', decreased: 'defense' },
+  Mild: { increased: 'special_attack', decreased: 'defense' },
+  Modest: { increased: 'special_attack', decreased: 'attack' },
+  Naive: { increased: 'speed', decreased: 'special_defense' },
+  Naughty: { increased: 'attack', decreased: 'special_defense' },
+  Quiet: { increased: 'special_attack', decreased: 'speed' },
+  Quirky: {},
+  Rash: { increased: 'special_attack', decreased: 'special_defense' },
+  Relaxed: { increased: 'defense', decreased: 'speed' },
+  Sassy: { increased: 'special_defense', decreased: 'speed' },
+  Serious: {},
+  Timid: { increased: 'speed', decreased: 'attack' },
+};
 
-  // Nature modifiers for each stat
-  const natureModifiers = {
-    Adamant: { increased: 'attack', decreased: 'special_attack' },
-    Bashful: {},
-    Bold: { increased: 'defense', decreased: 'attack' },
-    Brave: { increased: 'attack', decreased: 'speed' },
-    Calm: { increased: 'special_defense', decreased: 'attack' },
-    Careful: { increased: 'special_defense', decreased: 'special_attack' },
-    Docile: {},
-    Gentle: { increased: 'special_defense', decreased: 'defense' },
-    Hardy: {},
-    Hasty: { increased: 'speed', decreased: 'defense' },
-    Impish: { increased: 'defense', decreased: 'special_attack' },
-    Jolly: { increased: 'speed', decreased: 'special_attack' },
-    Lax: { increased: 'defense', decreased: 'special_defense' },
-    Lonely: { increased: 'attack', decreased: 'defense' },
-    Mild: { increased: 'special_attack', decreased: 'defense' },
-    Modest: { increased: 'special_attack', decreased: 'attack' },
-    Naive: { increased: 'speed', decreased: 'special_defense' },
-    Naughty: { increased: 'attack', decreased: 'special_defense' },
-    Quiet: { increased: 'special_attack', decreased: 'speed' },
-    Quirky: {},
-    Rash: { increased: 'special_attack', decreased: 'special_defense' },
-    Relaxed: { increased: 'defense', decreased: 'speed' },
-    Sassy: { increased: 'special_defense', decreased: 'speed' },
-    Serious: {},
-    Timid: { increased: 'speed', decreased: 'attack' },
-  };
+const STAT_NAMES = ['attack', 'defense', 'special_attack', 'special_defense', 'speed'];
+
+const STATS_CACHE = new Map();
+const STATS_CACHE_MAX = 5000;
+const STATS_CACHE_TTL_MS = 5 * 60 * 1000;
+
+function getStatsCacheKey(baseStats, ivs, evs, natureName, level) {
+  const b = baseStats || {};
+  const i = ivs || {};
+  const e = evs || {};
+  return [
+    natureName || '',
+    level || 0,
+    b.hp || 0, b.attack || 0, b.defense || 0, b.special_attack || 0, b.special_defense || 0, b.speed || 0,
+    i.hp || 0, i.attack || 0, i.defense || 0, i.special_attack || 0, i.special_defense || 0, i.speed || 0,
+    e.hp || 0, e.attack || 0, e.defense || 0, e.special_attack || 0, e.special_defense || 0, e.speed || 0
+  ].join('|');
+}
+
+function Stats(baseStats, ivs, evs, natureName, level) {
+  const cacheKey = getStatsCacheKey(baseStats, ivs, evs, natureName, level);
+  const cached = STATS_CACHE.get(cacheKey);
+  if (cached && (Date.now() - cached.t) < STATS_CACHE_TTL_MS) {
+    return cached.v;
+  }
+  const stats = {};
 
   // Calculate HP
   stats.hp = Math.floor(((2 * baseStats.hp + ivs.hp + Math.floor(evs.hp / 4)) * level) / 100) + level + 10;
 
   // Calculate other stats (Attack, Defense, Special Attack, Special Defense, Speed)
-  const statNames = ['attack', 'defense', 'special_attack', 'special_defense', 'speed'];
-
-  statNames.forEach((stat) => {
+  STAT_NAMES.forEach((stat) => {
     // Apply nature modifiers
-    const natureModifier = natureModifiers[natureName] && natureModifiers[natureName].increased === stat
+    const natureModifier = NATURE_MODIFIERS[natureName] && NATURE_MODIFIERS[natureName].increased === stat
       ? 1.1
-      : natureModifiers[natureName] && natureModifiers[natureName].decreased === stat
+      : NATURE_MODIFIERS[natureName] && NATURE_MODIFIERS[natureName].decreased === stat
       ? 0.9
       : 1;
 
@@ -260,6 +281,13 @@ function Stats(baseStats, ivs, evs, natureName, level) {
     // Apply EVs
 //    stats[stat] += Math.floor(evs[stat] / 4);
   });
+  STATS_CACHE.set(cacheKey, { v: stats, t: Date.now() });
+  if (STATS_CACHE.size > STATS_CACHE_MAX) {
+    const firstKey = STATS_CACHE.keys().next().value;
+    if (firstKey) {
+      STATS_CACHE.delete(firstKey);
+    }
+  }
 
   return stats;
 }

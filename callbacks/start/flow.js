@@ -106,6 +106,7 @@ const exp = chart[g.growth_rate]["5"]
     id: poked.pokedex_number,
     nature:nat,
     ability:starterAbility || getRandomAbilityForPokemon(pokeName, pokes),
+    held_item:'none',
     exp:exp,
     pass:pass2,
     ivs: iv,

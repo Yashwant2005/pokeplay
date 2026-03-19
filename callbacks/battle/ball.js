@@ -231,6 +231,7 @@ data.pokes.push({
 name:battleData.name,
 nature:battleData.nat,
   ability:getRandomAbilityForPokemon(battleData.name, pokes),
+held_item:'none',
 ivs:caughtIvs,
 evs:battleData.evs,
 moves:ms,

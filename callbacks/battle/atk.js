@@ -6,8 +6,15 @@ const {
   applyEndTurnAbility,
   applyStaminaOnHit,
   applySturdySurvival,
+  applyFocusSashSurvival,
   applyWeakArmorOnHit,
+  applyWhiteHerbIfNeeded,
+  consumeBattleHeldItem,
   getAttackStatMultiplier,
+  getBattleHeldItemName,
+  getBattleMovePower,
+  getAirBalloonInfo,
+  getHeldItemStatMultipliers,
   getLevitateInfo,
   getPinchAbilityInfo,
   getPinchPowerMultiplier,
@@ -15,6 +22,7 @@ const {
   getSupremeOverlordInfo,
   getTechnicianPowerInfo,
   getUnawareBattleModifiers,
+  isDirectDamageMove,
   normalizeAbilityName,
   applyKoAbility,
   applyOnDamageTakenAbilities,
@@ -179,8 +187,14 @@ const formatAbilityLabel = (abilityName) => String(abilityName || 'none')
   .split('-')
   .map((part) => part ? part.charAt(0).toUpperCase() + part.slice(1) : part)
   .join(' ')
-const getDisplayedMovePower = (move, abilityName, currentHp, maxHp) => {
-  const rawPower = Number(move && move.power)
+const getDisplayedMovePower = (move, abilityName, currentHp, maxHp, battleDataArg, pass, pokemonName) => {
+  const rawPower = getBattleMovePower({
+    battleData: battleDataArg,
+    pass,
+    pokemonName,
+    moveName: move && move.name,
+    movePower: move && move.power
+  })
   if (!Number.isFinite(rawPower) || rawPower <= 0) return move && move.power
   const technicianInfo = getTechnicianPowerInfo({
     abilityName,
@@ -211,9 +225,8 @@ if(!battleData || !battleData.c || !battleData.name || !battleData.omoves || bat
   return
 }
 const move1 = dmoves[move]
-const move2 = dmoves[battleData.omoves[Math.floor(Math.random()*battleData.omoves.length)].id]
 const p = data.pokes.filter((poke)=>poke.pass==battleData.c)[0]
-if(!move1 || !move2 || !p){
+if(!move1 || !p){
   ctx.answerCbQuery('Battle desynced. Use /reset_battle.')
   return
 }
@@ -230,6 +243,19 @@ if(!battleData.oability){
 }
 const playerAbility = p.ability || 'none'
 const wildAbility = battleData.oability || 'none'
+const wildHeldItemInfo = getHeldItemStatMultipliers({
+  pokemonName: battleData.name,
+  heldItem: getBattleHeldItemName({ battleData, pass: opponentPass, heldItem: battleData.oheld_item }),
+  evolutionChains: chains
+})
+const wildMovePool = wildHeldItemInfo.assaultVestActive
+  ? battleData.omoves.filter((row) => {
+      const mv = dmoves[row.id]
+      const normalizedName = normalizeMoveName(mv && mv.name)
+      return mv && (mv.category !== 'status' || normalizedName === 'me first')
+    })
+  : battleData.omoves
+const move2 = dmoves[(wildMovePool[Math.floor(Math.random() * wildMovePool.length)] || battleData.omoves[Math.floor(Math.random() * battleData.omoves.length)]).id]
 const playerStages = ensurePokemonStatStages(battleData, p.pass)
 const wildStages = ensurePokemonStatStages(battleData, opponentPass)
 const playerUnawareModifiers = getUnawareBattleModifiers({
@@ -243,6 +269,11 @@ const playerSupremeOverlordInfo = getSupremeOverlordInfo({
   abilityName: playerAbility,
   partyHpMap: battleData.team,
   activePass: p.pass
+})
+const playerHeldItemInfo = getHeldItemStatMultipliers({
+  pokemonName: p.name,
+  heldItem: getBattleHeldItemName({ battleData, pass: p.pass, heldItem: p.held_item }),
+  evolutionChains: chains
 })
 const wildUnawareModifiers = getUnawareBattleModifiers({
   attackerAbility: wildAbility,
@@ -273,8 +304,10 @@ const t4 = pokes[p.name].types[1] ? c(pokes[p.name].types[1]) : null
 const eff2 = await eff(c(move2.type),c(t3),t4)
 const wildLevitateInfo = getLevitateInfo({ abilityName: wildAbility })
 const playerLevitateInfo = getLevitateInfo({ abilityName: playerAbility })
-const playerGroundBlocked = wildLevitateInfo.active && String(move1.type || '').toLowerCase() == 'ground'
-const wildGroundBlocked = playerLevitateInfo.active && String(move2.type || '').toLowerCase() == 'ground'
+const wildAirBalloonInfo = getAirBalloonInfo({ battleData, pass: opponentPass, heldItem: battleData.oheld_item })
+const playerAirBalloonInfo = getAirBalloonInfo({ battleData, pass: p.pass, heldItem: p.held_item })
+const playerGroundBlocked = (wildLevitateInfo.active || wildAirBalloonInfo.active) && String(move1.type || '').toLowerCase() == 'ground'
+const wildGroundBlocked = (playerLevitateInfo.active || playerAirBalloonInfo.active) && String(move2.type || '').toLowerCase() == 'ground'
 const finalEff1 = playerGroundBlocked ? 0 : eff1
 const finalEff2 = wildGroundBlocked ? 0 : eff2
 let a = move1.category == 'special'
@@ -289,6 +322,13 @@ let a2 = move2.category == 'special'
 if (move1.category == 'physical') {
   a = Math.max(1, Math.floor(a * getAttackStatMultiplier(playerAbility, move1.category)))
 }
+if (move1.category == 'special') {
+  a = Math.max(1, Math.floor(a * playerHeldItemInfo.special_attack))
+  d = Math.max(1, Math.floor(d * wildHeldItemInfo.special_defense))
+} else {
+  a = Math.max(1, Math.floor(a * playerHeldItemInfo.attack))
+  d = Math.max(1, Math.floor(d * wildHeldItemInfo.defense))
+}
 a = Math.max(1, Math.floor(a * playerSupremeOverlordInfo.multiplier))
 if (move2.category == 'physical') {
   a2 = Math.max(1, Math.floor(a2 * getAttackStatMultiplier(wildAbility, move2.category)))
@@ -296,6 +336,13 @@ if (move2.category == 'physical') {
 let d2 = move2.category == 'special'
   ? applyStageToStat(stats.special_defense, wildUnawareModifiers.defenseStage)
   : applyStageToStat(stats.defense, wildUnawareModifiers.defenseStage)
+if (move2.category == 'special') {
+  a2 = Math.max(1, Math.floor(a2 * wildHeldItemInfo.special_attack))
+  d2 = Math.max(1, Math.floor(d2 * playerHeldItemInfo.special_defense))
+} else {
+  a2 = Math.max(1, Math.floor(a2 * wildHeldItemInfo.attack))
+  d2 = Math.max(1, Math.floor(d2 * playerHeldItemInfo.defense))
+}
 const isPerfectCrit1 = PERFECT_CRIT_MOVES.has(normalizeMoveName(move1.name))
 const isPerfectCrit2 = PERFECT_CRIT_MOVES.has(normalizeMoveName(move2.name))
 const isHighCritMove1 = HIGH_CRIT_RATIO_MOVES.has(normalizeMoveName(move1.name))
@@ -336,6 +383,14 @@ const wildStabInfo = getStabInfo({
 })
 let damage = Math.max(0, Math.floor(calc(a,d,clevel,playerPower,finalEff1) * playerStabInfo.multiplier))
 let damage2 = Math.max(0, Math.floor(calc(a2,d2,battleData.level,wildPower,finalEff2) * wildStabInfo.multiplier))
+const playerLifeOrbBoostActive = playerHeldItemInfo.lifeOrbActive && !isDirectDamageMove(normalizeMoveName(move1.name))
+const wildLifeOrbBoostActive = wildHeldItemInfo.lifeOrbActive && !isDirectDamageMove(normalizeMoveName(move2.name))
+if(playerLifeOrbBoostActive && damage > 0){
+  damage = Math.max(1, Math.floor(damage * playerHeldItemInfo.damageMultiplier))
+}
+if(wildLifeOrbBoostActive && damage2 > 0){
+  damage2 = Math.max(1, Math.floor(damage2 * wildHeldItemInfo.damageMultiplier))
+}
 let ohkoFailed1 = false
 let ohkoFailed2 = false
 if (isOhko1) {
@@ -374,6 +429,12 @@ let wildSturdyMessage = ''
 let playerSturdyMessage = ''
 let wildLevitateMessage = playerGroundBlocked ? '\n<b>✶ '+c(battleData.name)+'</b>\'s <b>Levitate</b> activated!' : ''
 let playerLevitateMessage = wildGroundBlocked ? '\n<b>✶ '+c(p.name)+'</b>\'s <b>Levitate</b> activated!' : ''
+if(playerGroundBlocked && wildAirBalloonInfo.active){
+  wildLevitateMessage += '\n<b>✶ '+c(battleData.name)+'</b>\'s <b>Air Balloon</b> activated!'
+}
+if(wildGroundBlocked && playerAirBalloonInfo.active){
+  playerLevitateMessage += '\n<b>✶ '+c(p.name)+'</b>\'s <b>Air Balloon</b> activated!'
+}
 let wildStaminaMessage = ''
 let playerStaminaMessage = ''
 let wildWeakArmorMessage = ''
@@ -427,6 +488,21 @@ if(!ohkoFailed1 && damage > 0 && !isOhko1){
     if(sturdyResult1.activated && !wildSturdyMessage){
       wildSturdyMessage = sturdyResult1.message
     }
+    const focusSashResult1 = applyFocusSashSurvival({
+      battleData,
+      pass: opponentPass,
+      heldItem: battleData.oheld_item,
+      currentHp: remainingHp1,
+      maxHp: battleData.ohp,
+      incomingDamage: hitDamage1,
+      pokemonName: battleData.name,
+      moveName: move1.name,
+      c
+    })
+    hitDamage1 = focusSashResult1.damage
+    if(focusSashResult1.activated && !wildSturdyMessage){
+      wildSturdyMessage = focusSashResult1.message
+    }
     hitDamage1 = Math.min(hitDamage1, remainingHp1)
     totalDamage1 += hitDamage1
     landedHits1 += 1
@@ -446,9 +522,18 @@ if(!ohkoFailed1 && damage > 0 && !isOhko1){
       abilityName: wildAbility,
       moveCategory: move1.category,
       damageDealt: hitDamage1,
-      c
+      c,
+      deferWhiteHerb: hitCount1 > 1
     })
     wildWeakArmorMessage += weakArmor1.message
+  }
+  if(hitCount1 > 1){
+    wildWeakArmorMessage += applyWhiteHerbIfNeeded({
+      battleData,
+      pass: opponentPass,
+      pokemonName: battleData.name,
+      c
+    }).message
   }
   damage = totalDamage1
   hitCount1 = landedHits1
@@ -502,6 +587,21 @@ if(!ohkoFailed2 && damage2 > 0 && !isOhko2){
     if(sturdyResult2.activated && !playerSturdyMessage){
       playerSturdyMessage = sturdyResult2.message
     }
+    const focusSashResult2 = applyFocusSashSurvival({
+      battleData,
+      pass: p.pass,
+      heldItem: p.held_item,
+      currentHp: remainingHp2,
+      maxHp: stats.hp,
+      incomingDamage: hitDamage2,
+      pokemonName: p.name,
+      moveName: move2.name,
+      c
+    })
+    hitDamage2 = focusSashResult2.damage
+    if(focusSashResult2.activated && !playerSturdyMessage){
+      playerSturdyMessage = focusSashResult2.message
+    }
     hitDamage2 = Math.min(hitDamage2, remainingHp2)
     totalDamage2 += hitDamage2
     landedHits2 += 1
@@ -521,9 +621,18 @@ if(!ohkoFailed2 && damage2 > 0 && !isOhko2){
       abilityName: playerAbility,
       moveCategory: move2.category,
       damageDealt: hitDamage2,
-      c
+      c,
+      deferWhiteHerb: hitCount2 > 1
     })
     playerWeakArmorMessage += weakArmor2.message
+  }
+  if(hitCount2 > 1){
+    playerWeakArmorMessage += applyWhiteHerbIfNeeded({
+      battleData,
+      pass: p.pass,
+      pokemonName: p.name,
+      c
+    }).message
   }
   damage2 = totalDamage2
   hitCount2 = landedHits2
@@ -586,6 +695,19 @@ if(!wildAbsorb.blocked && isOhko1 && damage > 0){
   })
   damage = sturdyResult1.damage
   if(sturdyResult1.activated) wildSturdyMessage = sturdyResult1.message
+  const focusSashResult1 = applyFocusSashSurvival({
+    battleData,
+    pass: opponentPass,
+    heldItem: battleData.oheld_item,
+    currentHp: battleData.ochp,
+    maxHp: battleData.ohp,
+    incomingDamage: damage,
+    pokemonName: battleData.name,
+    moveName: move1.name,
+    c
+  })
+  damage = focusSashResult1.damage
+  if(focusSashResult1.activated) wildSturdyMessage = focusSashResult1.message
   wildStaminaMessage += applyStaminaOnHit({
     battleData,
     pass: opponentPass,
@@ -627,6 +749,19 @@ if(!playerAbsorb.blocked && isOhko2 && damage2 > 0){
   })
   damage2 = sturdyResult2.damage
   if(sturdyResult2.activated) playerSturdyMessage = sturdyResult2.message
+  const focusSashResult2 = applyFocusSashSurvival({
+    battleData,
+    pass: p.pass,
+    heldItem: p.held_item,
+    currentHp: battleData.chp,
+    maxHp: stats.hp,
+    incomingDamage: damage2,
+    pokemonName: p.name,
+    moveName: move2.name,
+    c
+  })
+  damage2 = focusSashResult2.damage
+  if(focusSashResult2.activated) playerSturdyMessage = focusSashResult2.message
   playerStaminaMessage += applyStaminaOnHit({
     battleData,
     pass: p.pass,
@@ -670,6 +805,10 @@ ms2 += wildShieldMessage
 ms2 += wildMultiscaleMessage
 ms2 += wildSturdyMessage
 ms2 += wildLevitateMessage
+if(damage > 0 && (move1.category == 'physical' || move1.category == 'special') && wildAirBalloonInfo.active){
+consumeBattleHeldItem({ battleData, pass: opponentPass, heldItem: battleData.oheld_item })
+ms2 += '\n<b>✶ '+c(battleData.name)+'</b>\'s <b>Air Balloon</b> popped!'
+}
 const recoil = getRecoilDamage(move1.name, damage, stats.hp)
 if(recoil > 0){
 const selfBefore = battleData.chp
@@ -683,13 +822,29 @@ battleData.chp = 0
 battleData.team[battleData.c] = 0
 ms2 += '\n<b>✶ '+c(p.name)+'</b> Fainted After Using <b>'+c(move1.name)+'</b>.'
 }
+if(playerHeldItemInfo.lifeOrbActive && move1.category !== 'status' && !ohkoFailed1 && normalizeMoveName(move1.name) !== 'fling' && battleData.chp > 0){
+const selfBefore = battleData.chp
+const lifeOrbDamage = Math.max(1, Math.floor(stats.hp / 10))
+const taken = Math.min(lifeOrbDamage, selfBefore)
+battleData.chp = Math.max(0, selfBefore - taken)
+battleData.team[battleData.c] = Math.max(0, (battleData.team[battleData.c] || selfBefore) - taken)
+ms2 += '\n<b>✶ '+c(p.name)+'</b>\'s <b>Life Orb</b> activated!'
+ms2 += '\n<b>✶ '+c(p.name)+'</b> lost <code>'+taken+'</code> HP from its <b>Life Orb</b>.'
+}
 const wildReactive = applyOnDamageTakenAbilities({
   battleData,
   pass: opponentPass,
   pokemonName: battleData.name,
+  attackerPass: p.pass,
+  attackerName: p.name,
   abilityName: wildAbility,
+  heldItem: battleData.oheld_item,
+  attackerAbility: playerAbility,
+  moveName: move1.name,
+  typeEffectiveness: finalEff1,
   moveType: move1.type,
   moveCategory: move1.category,
+  attackerMaxHp: stats.hp,
   hpBefore: wildHpBeforeHit,
   hpAfter: battleData.ochp,
   maxHp: battleData.ohp,
@@ -746,9 +901,16 @@ const playerReactive = applyOnDamageTakenAbilities({
   battleData,
   pass: p.pass,
   pokemonName: p.name,
+  attackerPass: opponentPass,
+  attackerName: battleData.name,
   abilityName: playerAbility,
+  heldItem: p.held_item,
+  attackerAbility: wildAbility,
+  moveName: move2.name,
+  typeEffectiveness: finalEff2,
   moveType: move2.type,
   moveCategory: move2.category,
+  attackerMaxHp: battleData.ohp,
   hpBefore: playerHpBeforeHit,
   hpAfter: battleData.chp,
   maxHp: stats.hp,
@@ -762,6 +924,10 @@ enemyAttackAbilityMsg += playerShieldMessage
 enemyAttackAbilityMsg += playerMultiscaleMessage
 enemyAttackAbilityMsg += playerSturdyMessage
 enemyAttackAbilityMsg += playerLevitateMessage
+if(damage2 > 0 && (move2.category == 'physical' || move2.category == 'special') && playerAirBalloonInfo.active){
+consumeBattleHeldItem({ battleData, pass: p.pass, heldItem: p.held_item })
+enemyAttackAbilityMsg += '\n<b>✶ '+c(p.name)+'</b>\'s <b>Air Balloon</b> popped!'
+}
 if(battleData.chp < 1){
   if (normalizeMoveName(move2.name) == 'fell stinger') {
     enemyAttackAbilityMsg += applyStageChanges({
@@ -786,6 +952,15 @@ if(battleData.chp < 1){
     })
     enemyAttackAbilityMsg += wildKoBoost.message
   }
+}
+if(wildHeldItemInfo.lifeOrbActive && move2.category !== 'status' && !ohkoFailed2 && normalizeMoveName(move2.name) !== 'fling' && battleData.ochp > 0){
+const selfBefore = battleData.ochp
+const lifeOrbDamage = Math.max(1, Math.floor(battleData.ohp / 10))
+const taken = Math.min(lifeOrbDamage, selfBefore)
+battleData.ochp = Math.max(0, selfBefore - taken)
+battleData.ot[battleData.name] = Math.max(0, (battleData.ot[battleData.name] || selfBefore) - taken)
+enemyAttackAbilityMsg += '\n<b>✶ '+c(battleData.name)+'</b>\'s <b>Life Orb</b> activated!'
+enemyAttackAbilityMsg += '\n<b>✶ '+c(battleData.name)+'</b> lost <code>'+taken+'</code> HP from its <b>Life Orb</b>.'
 }
 await saveBattleData(bword, battleData);
 if(!ohkoFailed1 && finalEff1 == 0){
@@ -1015,7 +1190,7 @@ msg += '\n\n<b>Moves :</b>'
 const moves = []
 for(const move2 of p.moves){
 const move = dmoves[move2]
-const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp)
+const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name)
 msg += '\n<b>'+c(move.name)+'</b>['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }
@@ -1041,6 +1216,8 @@ const playerEndTurn = applyEndTurnAbility({
   pass: p.pass,
   pokemonName: p.name,
   abilityName: playerAbility,
+  heldItem: p.held_item,
+  maxHp: stats.hp,
   c
 })
 const wildEndTurn = applyEndTurnAbility({
@@ -1048,6 +1225,8 @@ const wildEndTurn = applyEndTurnAbility({
   pass: opponentPass,
   pokemonName: battleData.name,
   abilityName: wildAbility,
+  heldItem: battleData.oheld_item,
+  maxHp: battleData.ohp,
   c
 })
 enemyAttackAbilityMsg += playerEndTurn.message + wildEndTurn.message
@@ -1077,7 +1256,7 @@ msg += '\n\n<b>Moves :</b>'
 const moves = []
 for(const move2 of p.moves){
 let move = dmoves[move2]
-const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp)
+const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name)
 msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }

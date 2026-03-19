@@ -152,6 +152,7 @@ battleData.symbol = '✨'
 }
 var la = {}
 var tem = {}
+const heldItems = {}
 for(const p of data.teams[data.inv.team]){
 const pk = data.pokes.filter((poke)=> poke.pass == p)
 if(pk){
@@ -160,10 +161,12 @@ const clevel = plevel(pk[0].name,pk[0].exp)
 const stats = await Stats(base,pk[0].ivs,pk[0].evs,c(pk[0].nature),clevel)
 la[pk[0].pass] = clevel
 tem[pk[0].pass] = stats.hp
+heldItems[pk[0].pass] = pk[0].held_item || 'none'
 }
 }
 battleData.team = tem
 battleData.la = la
+battleData.heldItems = heldItems
 await saveBattleData(bword, battleData);
 ctx.session.name = ''
 var mg = await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},msg,{reply_markup:keyboard})

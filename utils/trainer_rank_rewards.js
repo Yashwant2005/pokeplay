@@ -135,9 +135,9 @@ function randomStone(stones) {
 }
 
 function addPokeballs(data, ballType, count) {
-  if (!data.inv || typeof data.inv !== 'object') data.inv = {};
-  if (!Number.isFinite(data.inv[ballType])) data.inv[ballType] = 0;
-  data.inv[ballType] += count;
+  if (!data.balls || typeof data.balls !== 'object') data.balls = {};
+  if (!Number.isFinite(data.balls[ballType])) data.balls[ballType] = 0;
+  data.balls[ballType] += count;
 }
 
 function addHolowearTickets(data, count) {

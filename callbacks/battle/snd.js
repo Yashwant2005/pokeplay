@@ -1,4 +1,4 @@
-const { applyEntryAbility, getPinchAbilityInfo } = require('../../utils/battle_abilities');
+const { applyEntryAbility, getBattleMovePower, getPinchAbilityInfo } = require('../../utils/battle_abilities');
 
 function register_018_snd(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -71,7 +71,7 @@ msg += '\n\n<b>Moves :</b>'
 const moves = []
 for(const move2 of p.moves){
 let move = dmoves[move2]
-const rawPower = Number(move && move.power)
+const rawPower = getBattleMovePower({ battleData, pass: p.pass, pokemonName: p.name, moveName: move && move.name, movePower: move && move.power })
 const pinchInfo = getPinchAbilityInfo({ abilityName: p.ability, moveType: move && move.type, currentHp: battleData.chp, maxHp: stats.hp })
 const shownPower = Number.isFinite(rawPower) && rawPower > 0 && pinchInfo.active
   ? rawPower + ' (x' + pinchInfo.multiplier + ' ' + pinchInfo.abilityLabel + ')'

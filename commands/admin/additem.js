@@ -59,6 +59,35 @@ function registerAddItemCommand(bot, deps) {
     'master'
   ];
 
+  const HELD_ITEM_POOL = [
+    'air-balloon',
+    'assault-vest',
+    'big-root',
+    'clear-amulet',
+    'rocky-helmet',
+    'tatsugiri-lunchbox',
+    'choice-band',
+    'choice-scarf',
+    'choice-specs',
+    'eviolite',
+    'focus-sash',
+    'life-orb',
+    'light-ball',
+    'blunder-policy',
+    'leftovers',
+    'weakness-policy',
+    'white-herb',
+    'power-herb'
+  ];
+
+  function normalizeHeldItemName(value) {
+    return String(value || '')
+      .trim()
+      .toLowerCase()
+      .replace(/[_\s]+/g, '-')
+      .replace(/-+/g, '-');
+  }
+
   bot.command('additem', async (ctx) => {
     if (!admins.includes(ctx.from.id)) return;
 
@@ -72,7 +101,7 @@ function registerAddItemCommand(bot, deps) {
     const item = toKey(args[0]);
 
     if (!item) {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:*\n/additem pc 1000\n/additem lp 500\n/additem ht 20\n/additem battlebox 5\n/additem daycarecandy 3\n/additem tm 44 2\n/additem tm any 3\n/additem stone charizardite-x 1\n/additem stone any 2\n/additem mint jolly mint 2\n/additem mint any 5\n/additem ball master 1\n/additem ball any 3\n/additem bottlecap 2\n/additem goldbottlecap 1');
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:*\n/additem pc 1000\n/additem lp 500\n/additem ht 20\n/additem battlebox 5\n/additem daycarecandy 3\n/additem tm 44 2\n/additem tm any 3\n/additem stone charizardite-x 1\n/additem stone any 2\n/additem mint jolly mint 2\n/additem mint any 5\n/additem ball master 1\n/additem ball any 3\n/additem held light-ball 1\n/additem held eviolite 1\n/additem held white-herb 1\n/additem held power-herb 1\n/additem held big-root 1\n/additem held clear-amulet 1\n/additem held rocky-helmet 1\n/additem held tatsugiri-lunchbox 1\n/additem held air-balloon 1\n/additem held focus-sash 1\n/additem held life-orb 1\n/additem held leftovers 1\n/additem held weakness-policy 1\n/additem held blunder-policy 1\n/additem held assault-vest 1\n/additem held choice-band 1\n/additem held choice-specs 1\n/additem held choice-scarf 1\n/additem bottlecap 2\n/additem goldbottlecap 1');
       return;
     }
 
@@ -83,6 +112,7 @@ function registerAddItemCommand(bot, deps) {
     if (!data.extra || typeof data.extra !== 'object') data.extra = {};
     if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {};
     if (!data.extra.itembox.mints || typeof data.extra.itembox.mints !== 'object') data.extra.itembox.mints = {};
+    if (!data.extra.itembox.heldItems || typeof data.extra.itembox.heldItems !== 'object') data.extra.itembox.heldItems = {};
     if (!Array.isArray(data.inv.stones)) data.inv.stones = [];
     if (!data.tms || typeof data.tms !== 'object') data.tms = {};
 
@@ -178,6 +208,28 @@ function registerAddItemCommand(bot, deps) {
         data.extra.itembox.mints[mintName] += 1;
       }
       result = 'Added *' + amount + '* Nature Mint item(s).';
+    } else if (['held', 'helditem', 'held-item', 'held_item', 'helditems', 'held-items', 'held_items'].includes(item)) {
+      const parsed = parseNameAndAmount(args.slice(1));
+      const heldRaw = normalizeHeldItemName(parsed.name);
+      const amount = parsed.amount;
+      if (!heldRaw) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:* /additem held <item_name|any> [amount]');
+        return;
+      }
+
+      for (let i = 0; i < amount; i += 1) {
+        let heldName = heldRaw;
+        if (heldName === 'any') {
+          heldName = HELD_ITEM_POOL[Math.floor(Math.random() * HELD_ITEM_POOL.length)];
+        }
+        if (!HELD_ITEM_POOL.includes(heldName)) {
+          await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Invalid held item:* ' + c(heldName.replace(/-/g, ' ')));
+          return;
+        }
+        if (!Number.isFinite(data.extra.itembox.heldItems[heldName])) data.extra.itembox.heldItems[heldName] = 0;
+        data.extra.itembox.heldItems[heldName] += 1;
+      }
+      result = 'Added *' + amount + '* Held Item(s).';
     } else if (['bottlecap', 'bottle-cap', 'bcap'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.extra.itembox.bottleCaps)) data.extra.itembox.bottleCaps = 0;
@@ -211,7 +263,7 @@ function registerAddItemCommand(bot, deps) {
       }
       result = 'Added *' + amount + '* PokÃ©ball(s).';
     } else {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Unknown item type.*\nTry: pc, lp, ht, battlebox, daycarecandy, vp, tm, stone, mint, ball, bottlecap, goldbottlecap');
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Unknown item type.*\nTry: pc, lp, ht, battlebox, daycarecandy, vp, tm, stone, mint, held, ball, bottlecap, goldbottlecap');
       return;
     }
 

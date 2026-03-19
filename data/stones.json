@@ -1,0 +1,277 @@
+{
+  "gengarite": {
+    "image": "https://te.legra.ph/file/7699d1fd7f965cd0bcbb1.jpg",
+    "pokemon": "gengar",
+    "mega": "gengar-mega"
+  },
+  "gardevoirite": {
+    "image": "https://te.legra.ph/file/2d4db0c2e8b2a8c7c4e60.jpg",
+    "pokemon": "gardevoir",
+    "mega": "gardevoir-mega"
+  },
+  "ampharosite": {
+    "image": "https://te.legra.ph/file/51a489689fa4547755656.jpg",
+    "pokemon": "ampharos",
+    "mega": "ampharos-mega"
+  },
+  "venusaurite": {
+    "image": "https://te.legra.ph/file/9c487f8dca12e8ede01d9.jpg",
+    "pokemon": "venusaur",
+    "mega": "venusaur-mega"
+  },
+  "blastoisinite": {
+    "image": "https://te.legra.ph/file/2ad7246200b57581c07bc.jpg",
+    "pokemon": "blastoise",
+    "mega": "blastoise-mega"
+  },
+  "mewtwonite-x": {
+    "image": "https://te.legra.ph/file/58794d48985067801cc5b.jpg",
+    "pokemon": "mewtwo",
+    "mega": "mewtwo-mega-x"
+  },
+  "mewtwonite-y": {
+    "image": "https://te.legra.ph/file/d5f9365f79d03af0deaa7.jpg",
+    "pokemon": "mewtwo",
+    "mega": "mewtwo-mega-y"
+  },
+  "blazikenite": {
+    "image": "https://te.legra.ph/file/8880b524bc6e0a78f7fc1.jpg",
+    "pokemon": "blaziken",
+    "mega": "blaziken-mega"
+  },
+  "medichamite": {
+    "image": "https://te.legra.ph/file/0590c9bc89d9be563c48d.jpg",
+    "pokemon": "medicham",
+    "mega": "medicham-mega"
+  },
+  "houndoominite": {
+    "image": "https://te.legra.ph/file/59dd1d7d8c53fc19c0230.jpg",
+    "pokemon": "houndoom",
+    "mega": "houndoom-mega"
+  },
+  "aggronite": {
+    "image": "https://te.legra.ph/file/21ae02f64c2595ba830fd.jpg",
+    "pokemon": "aggron",
+    "mega": "aggron-mega"
+  },
+  "banettite": {
+    "image": "https://te.legra.ph/file/82e5daf5a4f35ec9a2258.jpg",
+    "pokemon": "banette",
+    "mega": "banette-mega"
+  },
+  "tyranitarite": {
+    "image": "https://te.legra.ph/file/a923f4b6137427f328e85.jpg",
+    "pokemon": "tyranitar",
+    "mega": "tyranitar-mega"
+  },
+  "scizorite": {
+    "image": "https://te.legra.ph/file/6b754433309398be1c587.jpg",
+    "pokemon": "scizor",
+    "mega": "scizor-mega"
+  },
+  "pinsirite": {
+    "image": "https://te.legra.ph/file/79f4e26bc202fb514aa91.jpg",
+    "pokemon": "pinsir",
+    "mega": "pinsir-mega"
+  },
+  "aerodactylite": {
+    "image": "https://te.legra.ph/file/9ad6906eddb4f4022f252.jpg",
+    "pokemon": "aerodactyl",
+    "mega": "aerodactyl-mega"
+  },
+  "lucarionite": {
+    "image": "https://te.legra.ph/file/43001c49f568c48c74ec5.jpg",
+    "pokemon": "lucario",
+    "mega": "lucario-mega"
+  },
+  "abomasite": {
+    "image": "https://te.legra.ph/file/f80fb5b921ab01620cc36.jpg",
+    "pokemon": "abomasnow",
+    "mega": "abomasnow-mega"
+  },
+  "kangaskhanite": {
+    "image": "https://te.legra.ph/file/6118fc63fe7a15699fd5e.jpg",
+    "pokemon": "kangaskhan",
+    "mega": "kangaskhan-mega"
+  },
+  "gyaradosnite": {
+    "image": "https://te.legra.ph/file/8e38968b44f31da631fb5.jpg",
+    "pokemon": "gyarados",
+    "mega": "gyarados-mega"
+  },
+  "absolite": {
+    "image": "https://te.legra.ph/file/07028e8da463f898cf395.jpg",
+    "pokemon": "absol",
+    "mega": "absol-mega"
+  },
+  "charizardite-y": {
+    "image": "https://te.legra.ph/file/fab481f16f77be5b698f3.jpg",
+    "pokemon": "charizard",
+    "mega": "charizard-mega-y"
+  },
+  "alakazite": {
+    "image": "https://te.legra.ph/file/66bdb393c0caa47365fc1.jpg",
+    "pokemon": "alakazam",
+    "mega": "alakazam-mega"
+  },
+  "charizardite-x": {
+    "image": "https://te.legra.ph/file/4d87f0b4ecb673b9affa8.jpg",
+    "pokemon": "charizard",
+    "mega": "charizard-mega-x"
+  },
+  "heracronite": {
+    "image": "https://te.legra.ph/file/271359a53068c545e67de.jpg",
+    "pokemon": "heracross",
+    "mega": "heracross-mega"
+  },
+  "mawilite": {
+    "image": "https://te.legra.ph/file/83d851db4e7909b07f150.jpg",
+    "pokemon": "mawile",
+    "mega": "mawile-mega"
+  },
+  "manectite": {
+    "image": "https://te.legra.ph/file/8935059796ab01ac2332d.jpg",
+    "pokemon": "manectric",
+    "mega": "manectric-mega"
+  },
+  "garchompite": {
+    "image": "https://te.legra.ph/file/df8ba87873328b157b913.jpg",
+    "pokemon": "garchomp",
+    "mega": "garchomp-mega"
+  },
+  "latiasite": {
+    "image": "https://te.legra.ph/file/9b2910fe00f627728702e.jpg",
+    "pokemon": "latias",
+    "mega": "latias-mega"
+  },
+  "latiosite": {
+    "image": "https://te.legra.ph/file/b1aa1144bb60acfac2411.jpg",
+    "pokemon": "latios",
+    "mega": "latios-mega"
+  },
+  "swampertite": {
+    "image": "https://te.legra.ph/file/cc05fec9b264ab2dc86fb.jpg",
+    "pokemon": "swampert",
+    "mega": "swampert-mega"
+  },
+  "sceptilite": {
+    "image": "https://te.legra.ph/file/b59e6e76ef151762a26a2.jpg",
+    "pokemon": "sceptile",
+    "mega": "sceptile-mega"
+  },
+  "sablenite": {
+    "image": "https://te.legra.ph/file/65abd298dc799f038f1ed.jpg",
+    "pokemon": "sableye",
+    "mega": "sableye-mega"
+  },
+  "altarianite": {
+    "image": "https://te.legra.ph/file/f481795a3247f86b6ce24.jpg",
+    "pokemon": "altaria",
+    "mega": "altaria-mega"
+  },
+  "galladite": {
+    "image": "https://te.legra.ph/file/084afcb7e1b27142c0e5e.jpg",
+    "pokemon": "gallade",
+    "mega": "gallade-mega"
+  },
+  "audinite": {
+    "image": "https://te.legra.ph/file/40eaffeb7a49639aa9e84.jpg",
+    "pokemon": "audino",
+    "mega": "audino-mega"
+  },
+  "metagrossite": {
+    "image": "https://te.legra.ph/file/52efd4e28633e36edf85b.jpg",
+    "pokemon": "metagross",
+    "mega": "metagross-mega"
+  },
+  "sharpedonite": {
+    "image": "https://te.legra.ph/file/ba7579d7c93b2e16d43df.jpg",
+    "pokemon": "sharpedo",
+    "mega": "sharpedo-mega"
+  },
+  "slowbronite": {
+    "image": "https://te.legra.ph/file/a6df4e1d074d31826152f.jpg",
+    "pokemon": "slowbro",
+    "mega": "slowbro-mega"
+  },
+  "steelixite": {
+    "image": "https://te.legra.ph/file/7fef817234300b657098e.jpg",
+    "pokemon": "steelix",
+    "mega": "steelix-mega"
+  },
+  "pidgeotite": {
+    "image": "https://te.legra.ph/file/a3634e9b3c35de642c9bf.jpg",
+    "pokemon": "pidgeot",
+    "mega": "pidgeot-mega"
+  },
+  "glalitite": {
+    "image": "https://te.legra.ph/file/21c60ab1b4f6a3bd408b4.jpg",
+    "pokemon": "glalie",
+    "mega": "glalie-mega"
+  },
+  "diancite": {
+    "image": "https://te.legra.ph/file/4072edace9958527a4142.jpg",
+    "pokemon": "diancie",
+    "mega": "diancie-mega"
+  },
+  "cameruptnite": {
+    "image": "https://te.legra.ph/file/d42929d28f28a516bd73c.jpg",
+    "pokemon": "camerupt",
+    "mega": "camerupt-mega"
+  },
+  "lopunnite": {
+    "image": "https://te.legra.ph/file/4f0ea95693a57ac031453.jpg",
+    "pokemon": "lopunny",
+    "mega": "lopunny-mega"
+  },
+  "salamencite": {
+    "image": "https://te.legra.ph/file/3bd4af2e907ba37682f48.jpg",
+    "pokemon": "salamence",
+    "mega": "salamence-mega"
+  },
+  "beedrillite": {
+    "image": "https://te.legra.ph/file/cd63f949c8fe9e00eb00b.jpg",
+    "pokemon": "beedrill",
+    "mega": "beedrill-mega"
+  },
+  "blue-orb": {
+    "image": "https://te.legra.ph/file/35677abfb408344810054.jpg",
+    "pokemon": "kyogre",
+    "mega": "kyogre-primal"
+  },
+  "red-orb": {
+    "image": "https://te.legra.ph/file/3599780705a6ebdee097d.jpg",
+    "pokemon": "groudon",
+    "mega": "groudon-primal"
+  },
+  "jade-orb": {
+    "image": "https://graph.org/file/f537b38775e0aec0bf1e7.jpg",
+    "pokemon": "rayquaza",
+    "mega": "rayquaza-mega"
+  },
+  "great-diamond-orb": {
+    "image": "https://graph.org/file/3fdf24198c679680db333.jpg",
+    "pokemon": "dialga",
+    "mega": "dialga-origin"
+  },
+  "great-pearl-orb": {
+    "image": "https://graph.org/file/d0003cf441e4f5dfdd38f.jpg",
+    "pokemon": "palkia",
+    "mega": "palkia-origin"
+  },
+  "great-platinum-orb": {
+    "image": "https://graph.org/file/a64b8a6db3af8b68bae22.jpg",
+    "pokemon": "giratina",
+    "mega": "giratina-origin"
+  },
+  "rusted-sword": {
+    "image": "https://graph.org/file/98e7677e0d21525d50dd2.jpg",
+    "pokemon": "zacian",
+    "mega": "zacian-crowned"
+  },
+  "rusted-shield": {
+    "image": "https://graph.org/file/38c01f438f231fa5174c5.jpg",
+    "pokemon": "zamazenta",
+    "mega": "zamazenta-crowned"
+  }
+}

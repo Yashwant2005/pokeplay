@@ -3,7 +3,8 @@
     "pressure",
     "unnerve",
     "moxie",
-    "infiltrator"
+    "infiltrator",
+    "prankster"
   ],
   "charizard": [
     "blaze",
@@ -69,7 +70,8 @@
     "contrary",
     "moxie",
     "technician",
-    "stamina"
+    "stamina",
+    "unaware"
   ],
   "snorlax": [
     "immunity",
@@ -472,7 +474,8 @@
     "volt-absorb"
   ],
   "solgaleo": [
-    "full-metal-body"
+    "full-metal-body",
+    "supreme-overload"
   ],
   "noibat": [
     "frisk",
@@ -1861,7 +1864,8 @@
     "clear-body"
   ],
   "gholdengo": [
-    "good-as-gold"
+    "good-as-gold",
+    "levitate"
   ],
   "zarude-dada": [
     "leaf-guard"
@@ -3440,7 +3444,8 @@
   "dragapult": [
     "clear-body",
     "infiltrator",
-    "cursed-body"
+    "cursed-body",
+    "adaptability"
   ],
   "diggersby": [
     "pickup",

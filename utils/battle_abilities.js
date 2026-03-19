@@ -123,6 +123,10 @@ function shouldApplyReactiveLoweringAbility(abilityName) {
   return abilityName === 'competitive' || abilityName === 'defiant';
 }
 
+function blocksOpponentStatLowering(abilityName) {
+  return abilityName === 'clear-body' || abilityName === 'white-smoke' || abilityName === 'full-metal-body';
+}
+
 function applyStageChanges(options) {
   const {
     battleData,
@@ -137,9 +141,17 @@ function applyStageChanges(options) {
   const stages = ensurePokemonStatStages(battleData, pass);
   const deltas = [];
   let message = '';
+  let blockedLoweringLogged = false;
 
   for (const change of changes || []) {
     if (!change || !change.stat || !change.delta) continue;
+    if (fromOpponent && change.delta < 0 && blocksOpponentStatLowering(normalizedAbility)) {
+      if (!blockedLoweringLogged) {
+        message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + titleCaseHyphenated(abilityName || normalizedAbility) + '</b> activated!';
+        blockedLoweringLogged = true;
+      }
+      continue;
+    }
     const actualDeltaIntent = normalizedAbility === 'contrary' ? change.delta * -1 : change.delta;
     const previous = stages[change.stat] || 0;
     const next = clampStage(previous + actualDeltaIntent);
@@ -214,7 +226,7 @@ function getEntryBoostStat(abilityName) {
 }
 
 function applyEntryAbility(options) {
-  const { battleData, pass, pokemonName, abilityName, selfStats, opponentStats, opponentPass, opponentName, opponentAbility, c } = options;
+  const { battleData, pass, pokemonName, abilityName, selfStats, opponentStats, opponentPass, opponentName, opponentAbility, partyHpMap, c } = options;
   const ability = normalizeAbilityName(abilityName);
   const state = ensureAbilityState(battleData);
   let message = '';
@@ -273,6 +285,13 @@ function applyEntryAbility(options) {
       message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Intimidate</b> activated!';
       message += applied.message;
       deltas = deltas.concat(applied.deltas);
+    }
+  }
+
+  if (ability === 'supreme-overlord') {
+    const info = getSupremeOverlordInfo({ abilityName, partyHpMap, activePass: pass });
+    if (info.active) {
+      message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Supreme Overlord</b> activated!';
     }
   }
 
@@ -383,6 +402,104 @@ function getInfiltratorInfo(options) {
   };
 }
 
+function getGoodAsGoldInfo(options) {
+  const { abilityName } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const active = ability === 'good-as-gold';
+  return {
+    active,
+    abilityName: ability,
+    abilityLabel: titleCaseHyphenated(abilityName || ability)
+  };
+}
+
+function getLevitateInfo(options) {
+  const { abilityName } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const active = ability === 'levitate';
+  return {
+    active,
+    abilityName: ability,
+    abilityLabel: titleCaseHyphenated(abilityName || ability)
+  };
+}
+
+function getUnawareInfo(options) {
+  const { abilityName } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const active = ability === 'unaware';
+  return {
+    active,
+    abilityName: ability,
+    abilityLabel: titleCaseHyphenated(abilityName || ability)
+  };
+}
+
+function getUnawareBattleModifiers(options) {
+  const {
+    attackerAbility,
+    defenderAbility,
+    moveCategory,
+    attackerStages,
+    defenderStages
+  } = options || {};
+  const attackerInfo = getUnawareInfo({ abilityName: attackerAbility });
+  const defenderInfo = getUnawareInfo({ abilityName: defenderAbility });
+  const category = String(moveCategory || '').toLowerCase();
+  const attackStageKey = category === 'special' ? 'special_attack' : 'attack';
+  const defenseStageKey = category === 'special' ? 'special_defense' : 'defense';
+  const atkStages = attackerStages || {};
+  const defStages = defenderStages || {};
+  const defenderStatStage = Number(defStages[defenseStageKey]) || 0;
+  const attackerStatStage = Number(atkStages[attackStageKey]) || 0;
+  const defenderEvasionStage = Number(defStages.evasion) || 0;
+  const attackerAccuracyStage = Number(atkStages.accuracy) || 0;
+
+  return {
+    attackStage: defenderInfo.active ? 0 : attackerStatStage,
+    defenseStage: attackerInfo.active ? 0 : defenderStatStage,
+    accuracyStage: defenderInfo.active ? 0 : attackerAccuracyStage,
+    evasionStage: attackerInfo.active ? 0 : defenderEvasionStage,
+    attackerActivated: attackerInfo.active && (defenderStatStage !== 0 || defenderEvasionStage !== 0),
+    defenderActivated: defenderInfo.active && (attackerStatStage !== 0 || attackerAccuracyStage !== 0)
+  };
+}
+
+function getStabInfo(options) {
+  const { abilityName, moveType, pokemonTypes } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const type = String(moveType || '').toLowerCase();
+  const ownTypes = Array.isArray(pokemonTypes)
+    ? pokemonTypes.map((entry) => String(entry || '').toLowerCase())
+    : [];
+  const matches = !!type && ownTypes.includes(type);
+  const active = matches;
+  const multiplier = !matches ? 1 : (ability === 'adaptability' ? 2 : 1.5);
+  return {
+    active,
+    multiplier,
+    adaptabilityActive: matches && ability === 'adaptability',
+    abilityName: ability,
+    abilityLabel: titleCaseHyphenated(abilityName || ability)
+  };
+}
+
+function getSupremeOverlordInfo(options) {
+  const { abilityName, partyHpMap, activePass } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  if (ability !== 'supreme-overlord') {
+    return { active: false, multiplier: 1, faintedAllies: 0, abilityName: ability, abilityLabel: titleCaseHyphenated(abilityName || ability) };
+  }
+  const faintedAllies = Math.min(5, Object.keys(partyHpMap || {}).filter((pass) => String(pass) !== String(activePass) && (Number(partyHpMap[pass]) || 0) <= 0).length);
+  return {
+    active: faintedAllies > 0,
+    multiplier: 1 + (faintedAllies * 0.1),
+    faintedAllies,
+    abilityName: ability,
+    abilityLabel: titleCaseHyphenated(abilityName || ability)
+  };
+}
+
 function getAttackStatMultiplier(abilityName, moveCategory) {
   const ability = normalizeAbilityName(abilityName);
   const category = String(moveCategory || '').toLowerCase();
@@ -426,6 +543,28 @@ function applyShadowShieldReduction(options) {
     activated: reducedDamage !== damage,
     message: reducedDamage !== damage
       ? '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Shadow Shield</b> weakened the attack!'
+      : ''
+  };
+}
+
+function applyMultiscaleReduction(options) {
+  const { abilityName, currentHp, maxHp, incomingDamage, pokemonName, c } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const hpNow = Number(currentHp);
+  const hpMax = Number(maxHp);
+  const damage = Math.max(0, Number(incomingDamage) || 0);
+  if (ability !== 'multiscale' || !Number.isFinite(hpNow) || !Number.isFinite(hpMax) || hpNow <= 0 || hpMax <= 0) {
+    return { damage, activated: false, message: '' };
+  }
+  if (hpNow !== hpMax) {
+    return { damage, activated: false, message: '' };
+  }
+  const reducedDamage = Math.max(0, Math.floor(damage / 2));
+  return {
+    damage: reducedDamage,
+    activated: reducedDamage !== damage,
+    message: reducedDamage !== damage
+      ? '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Multiscale</b> activated!'
       : ''
   };
 }
@@ -689,6 +828,7 @@ module.exports = {
   applyEntryAbility,
   applyKoAbility,
   applyOnDamageTakenAbilities,
+  applyMultiscaleReduction,
   applyShadowShieldReduction,
   applyOpportunistCopy,
   applyStaminaOnHit,
@@ -701,10 +841,16 @@ module.exports = {
   ensurePokemonStatStages,
   applySturdySurvival,
   getAttackStatMultiplier,
+  getGoodAsGoldInfo,
   getPinchAbilityInfo,
   getPinchPowerMultiplier,
   getInfiltratorInfo,
+  getLevitateInfo,
+  getStabInfo,
+  getSupremeOverlordInfo,
   getTechnicianPowerInfo,
+  getUnawareBattleModifiers,
+  getUnawareInfo,
   getHighestStatKey,
   getStageMultiplier,
   getStageVerb,

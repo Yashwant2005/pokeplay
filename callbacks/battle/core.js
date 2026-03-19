@@ -1,6 +1,7 @@
 ﻿const {
   applyAbsorbMoveAbility: applyAbilityAbsorbMove,
   applyStageChanges,
+  applyMultiscaleReduction,
   applyShadowShieldReduction,
   applyStaminaOnHit,
   applySturdySurvival,
@@ -8,10 +9,15 @@
   applyEndTurnAbility: applyAbilityEndTurn,
   applyEntryAbility: applyAbilityEntry,
   getAttackStatMultiplier,
+  getGoodAsGoldInfo,
   getInfiltratorInfo,
+  getLevitateInfo,
   getPinchAbilityInfo,
   getPinchPowerMultiplier,
+  getStabInfo,
+  getSupremeOverlordInfo,
   getTechnicianPowerInfo,
+  getUnawareBattleModifiers,
   normalizeAbilityName,
   applyKoAbility: applyAbilityKo,
   applyOnDamageTakenAbilities: applyAbilityOnDamageTaken
@@ -114,6 +120,32 @@ function registerBattleCallbacks(bot, deps) {
       .join(' ');
   }
 
+  function getAbilityActivationMessage(pokemonName, abilityLabel) {
+    return '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + abilityLabel + '</b> activated!';
+  }
+
+  function isOpponentTargetingStatusMove(move, moveName) {
+    const normalizedMove = normalizeMoveName(moveName || (move && move.name));
+    if (normalizedMove === 'leech seed') return true;
+    const statusEffect = getMoveStatusEffect(move);
+    if (statusEffect) return true;
+    const effects = MOVE_STAT_EFFECTS[normalizedMove] || [];
+    return effects.some((effect) => effect && effect.target === 'target');
+  }
+
+  function getUnawareActivationMessages(options) {
+    const { attackerName, defenderName, unawareModifiers } = options || {};
+    if (!unawareModifiers) return '';
+    let message = '';
+    if (unawareModifiers.attackerActivated) {
+      message += getAbilityActivationMessage(attackerName, 'Unaware');
+    }
+    if (unawareModifiers.defenderActivated) {
+      message += getAbilityActivationMessage(defenderName, 'Unaware');
+    }
+    return message;
+  }
+
   function getDisplayedMovePower(move, abilityName, currentHp, maxHp) {
     const rawPower = Number(move && move.power);
     if (!Number.isFinite(rawPower) || rawPower <= 0) return move && move.power;
@@ -166,11 +198,19 @@ function registerBattleCallbacks(bot, deps) {
       pokemonName: defenderName,
       c
     });
-    const sturdyResult = applySturdySurvival({
+    const multiscaleResult = applyMultiscaleReduction({
       abilityName: defenderAbility,
       currentHp: battleData.ohp,
       maxHp: defenderMaxHp,
       incomingDamage: shieldResult.damage,
+      pokemonName: defenderName,
+      c
+    });
+    const sturdyResult = applySturdySurvival({
+      abilityName: defenderAbility,
+      currentHp: battleData.ohp,
+      maxHp: defenderMaxHp,
+      incomingDamage: multiscaleResult.damage,
       pokemonName: defenderName,
       c
     });
@@ -179,8 +219,8 @@ function registerBattleCallbacks(bot, deps) {
     battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] || 0) - actualDamage, 0);
     return {
       damage: actualDamage,
-      message: shieldResult.message + sturdyResult.message,
-      activated: shieldResult.activated || sturdyResult.activated
+      message: shieldResult.message + multiscaleResult.message + sturdyResult.message,
+      activated: shieldResult.activated || multiscaleResult.activated || sturdyResult.activated
     };
   }
 
@@ -674,8 +714,10 @@ function registerBattleCallbacks(bot, deps) {
     bd.o = cc; bd.ohp = cc2; bd.oid = cc3; bd.tem2 = cc4; bd.la2 = cc5;
   }
 
-  function getMovePriority(moveName) {
+  function getMovePriority(moveName, moveCategory, abilityName) {
     const name = String(moveName || '').toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+    const category = String(moveCategory || '').toLowerCase();
+    const ability = normalizeAbilityName(abilityName);
 
     const PRIORITY_BY_MOVE = {
       // Increased priority moves
@@ -741,7 +783,8 @@ function registerBattleCallbacks(bot, deps) {
       'wonder room': -7
     };
 
-    return PRIORITY_BY_MOVE[name] ?? 0;
+    const basePriority = PRIORITY_BY_MOVE[name] ?? 0;
+    return basePriority + (ability === 'prankster' && category === 'status' ? 1 : 0);
   }
 
 const DRAIN_MOVE_RATIOS = {
@@ -910,19 +953,20 @@ function applyEntryHazardRemovalByMove(moveName, battleData, selfSideId, opposin
   return '';
 }
 
-function isGroundedForEntryHazards(pokemonName) {
-  const types = (pokes[pokemonName]?.types || []).map((t) => String(t).toLowerCase());
-  return !types.includes('flying');
-}
+  function isGroundedForEntryHazards(pokemonName, abilityName) {
+    const types = (pokes[pokemonName]?.types || []).map((t) => String(t).toLowerCase());
+    const levitateInfo = getLevitateInfo({ abilityName });
+    return !types.includes('flying') && !levitateInfo.active;
+  }
 
-async function applyEntryHazardsOnSwitch({ battleData, sideId, pass, pokemonName, maxHp }) {
+async function applyEntryHazardsOnSwitch({ battleData, sideId, pass, pokemonName, abilityName, maxHp }) {
   const side = ensureSideEntryHazards(battleData, sideId);
   let out = '';
   let currentHp = Math.max(0, battleData.chp);
   const types = pokes[pokemonName]?.types || [];
   const type1 = types[0] ? c(types[0]) : null;
   const type2 = types[1] ? c(types[1]) : null;
-  const grounded = isGroundedForEntryHazards(pokemonName);
+  const grounded = isGroundedForEntryHazards(pokemonName, abilityName);
 
   const applyLoss = (raw, label) => {
     if (!raw || raw <= 0 || currentHp <= 0) return;
@@ -947,11 +991,20 @@ async function applyEntryHazardsOnSwitch({ battleData, sideId, pass, pokemonName
   }
 
   if (grounded && side.stickyWeb && currentHp > 0) {
-    const stages = ensurePokemonStatStages(battleData, pass);
-    const prev = stages.speed || 0;
-    const next = clampStage(prev - 1);
-    stages.speed = next;
-    if (next < prev) out += '\n-> <b>' + c(pokemonName) + '</b> got caught in Sticky Web and its <b>Speed</b> fell!';
+    const stickyWebApplied = applyStageChanges({
+      battleData,
+      pass,
+      pokemonName,
+      abilityName,
+      changes: [{ stat: 'speed', delta: -1 }],
+      c,
+      fromOpponent: true
+    });
+    if (stickyWebApplied.deltas.some((entry) => entry && entry.delta < 0)) {
+      out += '\n-> <b>' + c(pokemonName) + '</b> got caught in Sticky Web and its <b>Speed</b> fell!';
+    } else {
+      out += stickyWebApplied.message;
+    }
   }
 
   if (grounded && side.toxicSpikes > 0 && currentHp > 0) {
@@ -1422,11 +1475,13 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
     let speedA = 0;
     let speedB = 0;
+    let pkA = null;
+    let pkB = null;
     if (moveActions.length === 2) {
       const usrA = await getUserData(action1.cid);
       const usrB = await getUserData(action2.cid);
-      const pkA = usrA.pokes.filter(p => p.pass == action1.c)[0];
-      const pkB = usrB.pokes.filter(p => p.pass == action2.c)[0];
+      pkA = usrA.pokes.filter(p => p.pass == action1.c)[0];
+      pkB = usrB.pokes.filter(p => p.pass == action2.c)[0];
       if (!pkA || !pkB) {
         dbg('resolve:speed_missing_poke', { bword, pkA: !!pkA, pkB: !!pkB, a1: action1, a2: action2 });
         // Keep going; we'll fall back to priority/random ordering below.
@@ -1447,8 +1502,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
     } else if (moveActions.length === 2) {
       const mv1 = dmoves[action1.id];
       const mv2 = dmoves[action2.id];
-      const pri1 = mv1 ? getMovePriority(mv1.name) : 0;
-      const pri2 = mv2 ? getMovePriority(mv2.name) : 0;
+      const pri1 = mv1 ? getMovePriority(mv1.name, mv1.category, pkA && pkA.ability) : 0;
+      const pri2 = mv2 ? getMovePriority(mv2.name, mv2.category, pkB && pkB.ability) : 0;
       if (!mv1 || !mv2) {
         dbg('resolve:missing_move_data', { bword, mv1: !!mv1, mv2: !!mv2, a1: action1, a2: action2 });
       }
@@ -1501,6 +1556,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           sideId: battleData.cid,
           pass: act.pass,
           pokemonName: p12.name,
+          abilityName: p12.ability,
           maxHp: switchedStats.hp
         });
         if (opposingPokemon) {
@@ -1515,6 +1571,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
             opponentPass: battleData.o,
             opponentName: opposingPokemon.name,
             opponentAbility: opposingPokemon.ability,
+            partyHpMap: battleData.tem,
             c
           }).message;
         }
@@ -1550,23 +1607,45 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       const type4 = pokes[op.name].types[1] ? c(pokes[op.name].types[1]) : null;
       let eff1 = 1;
       if (battleData.set.type_effects) { eff1 = await eff(c(move.type), c(type3), type4); }
+      const defenderLevitateInfo = getLevitateInfo({ abilityName: defenderAbility });
+      const levitateBlockedMove = defenderLevitateInfo.active && String(move.type || '').toLowerCase() === 'ground';
+      if (levitateBlockedMove) eff1 = 0;
 
       const atkStages = ensurePokemonStatStages(battleData, battleData.c);
       const defStages = ensurePokemonStatStages(battleData, battleData.o);
+      const unawareModifiers = getUnawareBattleModifiers({
+        attackerAbility,
+        defenderAbility,
+        moveCategory: move.category,
+        attackerStages: atkStages,
+        defenderStages: defStages
+      });
+      const unawareMessage = getUnawareActivationMessages({
+        attackerName: p.name,
+        defenderName: op.name,
+        unawareModifiers
+      });
+      const supremeOverlordInfo = getSupremeOverlordInfo({
+        abilityName: attackerAbility,
+        partyHpMap: battleData.tem,
+        activePass: battleData.c
+      });
 
-      let atk = applyStageToStat(stats1.attack, atkStages.attack);
-      let def2 = applyStageToStat(stats2.defense, defStages.defense);
+      let atk = applyStageToStat(stats1.attack, unawareModifiers.attackStage);
+      let def2 = applyStageToStat(stats2.defense, unawareModifiers.defenseStage);
       if (move.category == 'special') {
-        atk = applyStageToStat(stats1.special_attack, atkStages.special_attack);
-        def2 = applyStageToStat(stats2.special_defense, defStages.special_defense);
+        atk = applyStageToStat(stats1.special_attack, unawareModifiers.attackStage);
+        def2 = applyStageToStat(stats2.special_defense, unawareModifiers.defenseStage);
       } else {
         atk = Math.max(1, Math.floor(atk * getAttackStatMultiplier(attackerAbility, move.category)));
       }
+      atk = Math.max(1, Math.floor(atk * supremeOverlordInfo.multiplier));
       if (move.category == 'physical' && getBattleStatus(battleData, battleData.c) === 'burn') {
         atk = Math.max(1, Math.floor(atk / 2));
       }
 
       let msgLocal = "";
+      let blockedByGoodAsGold = false;
 
       // ActState (Frozen, Asleep, Paralyzed etc)
       ensureBattleStatus(battleData); // verify status conditions haven't cleared
@@ -1691,8 +1770,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         } else {
         const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus;
         const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
-        const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), atkStages.accuracy, defStages.evasion) : 100;
+        const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), unawareModifiers.accuracyStage, unawareModifiers.evasionStage) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
+          msgLocal += unawareMessage;
           msgLocal += '\n-> <b>'+c(p.name)+'</b> <b>'+c(move.name)+'</b> has missed.';
           const crash = getCrashDamage(moveName, stats1.hp);
           if (crash > 0) {
@@ -1703,6 +1783,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
             msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
           }
         } else if (hasAccuracyCheck && Math.random() < 0.05) {
+          msgLocal += unawareMessage;
           msgLocal += '\n-> <b>'+c(op.name)+'</b> Dodged <b>'+c(p.name)+'</b>\'s <b>'+c(move.name)+'</b>';
           const crash = getCrashDamage(moveName, stats1.hp);
           if (crash > 0) {
@@ -1727,35 +1808,44 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               msgLocal += '\n-> <b>'+c(p.name)+'</b> planted a seed on <b>'+c(op.name)+'</b>!';
             }
           } else if ((move.category == 'status' || !move.power) && !OHKO_MOVES.has(moveName)) {
-            msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.';
-            msgLocal += applyMoveStatEffects({
-              battleData,
-              moveName,
-              moveCategory: move.category,
-              attackerName: p.name,
-              defenderName: op.name,
-              attackerPass: battleData.c,
-              defenderPass: battleData.o,
-              attackerAbility,
-              defenderAbility,
-              targetAlive: battleData.ohp > 0
-            });
-            msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, true);
-            msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, true);
+            const goodAsGoldInfo = getGoodAsGoldInfo({ abilityName: defenderAbility });
+            if (goodAsGoldInfo.active && isOpponentTargetingStatusMove(move, moveName)) {
+              blockedByGoodAsGold = true;
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.';
+              msgLocal += getAbilityActivationMessage(op.name, 'Good As Gold');
+              msgLocal += unawareMessage;
+              msgLocal += '\n-> It had no effect on <b>'+c(op.name)+'</b>!';
+            } else {
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.';
+              msgLocal += unawareMessage;
+              msgLocal += applyMoveStatEffects({
+                battleData,
+                moveName,
+                moveCategory: move.category,
+                attackerName: p.name,
+                defenderName: op.name,
+                attackerPass: battleData.c,
+                defenderPass: battleData.o,
+                attackerAbility,
+                defenderAbility,
+                targetAlive: battleData.ohp > 0
+              });
+              msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, true);
+              msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, true);
 
-            if (moveName === 'strength sap') {
-              const targetStages = ensurePokemonStatStages(battleData, battleData.o);
-              const targetAtk = applyStageToStat(stats2.attack, targetStages.attack);
-              const hpBefore = battleData.chp;
-              battleData.chp = Math.min(stats1.hp, battleData.chp + targetAtk);
-              const healed = Math.max(0, battleData.chp - hpBefore);
-              battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || hpBefore) + healed));
-              if (healed > 0) {
-                msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
+              if (moveName === 'strength sap') {
+                const targetStages = ensurePokemonStatStages(battleData, battleData.o);
+                const targetAtk = applyStageToStat(stats2.attack, targetStages.attack);
+                const hpBefore = battleData.chp;
+                battleData.chp = Math.min(stats1.hp, battleData.chp + targetAtk);
+                const healed = Math.max(0, battleData.chp - hpBefore);
+                battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || hpBefore) + healed));
+                if (healed > 0) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
+                }
               }
-            }
 
-            if (moveName === 'belly drum') {
+              if (moveName === 'belly drum') {
               const bdHalf = Math.floor(stats1.hp / 2);
               if (battleData.chp > bdHalf) {
                 battleData.chp -= bdHalf;
@@ -1778,9 +1868,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               } else {
                 msgLocal += '\n-> But it failed!';
               }
-            }
+              }
 
-            if (moveName === 'clangorous soul') {
+              if (moveName === 'clangorous soul') {
               const csThird = Math.floor(stats1.hp / 3);
               if (battleData.chp > csThird) {
                 battleData.chp = Math.max(1, battleData.chp - csThird);
@@ -1798,9 +1888,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               } else {
                 msgLocal += '\n-> But it failed!';
               }
-            }
+              }
 
-            if (moveName === 'fillet away') {
+              if (moveName === 'fillet away') {
               const faHalf = Math.floor(stats1.hp / 2);
               if (battleData.chp > faHalf) {
                 battleData.chp -= faHalf;
@@ -1818,16 +1908,17 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               } else {
                 msgLocal += '\n-> But it failed!';
               }
+              }
+
+              if (moveName === 'minimize') {
+                setPokemonMinimized(battleData, battleData.c, true);
+              }
+
+              msgLocal += applyScreenSetupByMove(moveName, battleData, battleData.cid, true);
+              msgLocal += applyScreenRemovalByMove(moveName, battleData, battleData.oid, true);
+
+              msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
             }
-
-            if (moveName === 'minimize') {
-              setPokemonMinimized(battleData, battleData.c, true);
-            }
-
-            msgLocal += applyScreenSetupByMove(moveName, battleData, battleData.cid, true);
-            msgLocal += applyScreenRemovalByMove(moveName, battleData, battleData.oid, true);
-
-            msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
           } else {
             const absorbedByAbility = applyAbilityAbsorbMove({
               battleData,
@@ -1857,7 +1948,12 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 movePower: move.power
               });
               const boostedPower = Math.max(1, Math.floor(Number(move.power || 0) * pinchPowerMult * technicianInfo.multiplier));
-              var damage = Math.min(calc(atk, def2, level1, boostedPower, eff1), battleData.ohp);
+              const stabInfo = getStabInfo({
+                abilityName: attackerAbility,
+                moveType: move.type,
+                pokemonTypes: pokes[p.name]?.types || []
+              });
+              var damage = Math.min(Math.max(0, Math.floor(calc(atk, def2, level1, boostedPower, eff1) * stabInfo.multiplier)), battleData.ohp);
               let ohkoFailed = false;
               if (OHKO_MOVES.has(moveName)) {
                 const attackerTypes = (pokes[p.name]?.types || []).map((t) => String(t).toLowerCase());
@@ -1882,6 +1978,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               let weakArmorMessage = '';
               let shieldMessage = '';
               let sturdyMessage = '';
+              let multiscaleMessage = '';
+              let levitateMessage = '';
               if (!ohkoFailed && damage > 0 && !OHKO_MOVES.has(moveName)) {
                 let totalDamage = 0;
                 let landedHits = 0;
@@ -1913,6 +2011,18 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                   hitDamage = shieldResult.damage;
                   if (shieldResult.activated && !shieldMessage) {
                     shieldMessage = shieldResult.message;
+                  }
+                  const multiscaleResult = applyMultiscaleReduction({
+                    abilityName: defenderAbility,
+                    currentHp: remainingHp,
+                    maxHp: stats2.hp,
+                    incomingDamage: hitDamage,
+                    pokemonName: op.name,
+                    c
+                  });
+                  hitDamage = multiscaleResult.damage;
+                  if (multiscaleResult.activated && !multiscaleMessage) {
+                    multiscaleMessage = multiscaleResult.message;
                   }
                   const sturdyResult = applySturdySurvival({
                     abilityName: defenderAbility,
@@ -1977,6 +2087,10 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
               } else {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+                msgLocal += unawareMessage;
+                if (levitateBlockedMove) {
+                  levitateMessage = '\n-> <b>'+c(op.name)+'</b>\'s <b>Levitate</b> activated!';
+                }
                 msgLocal += getInfiltratorBypassMessage(battleData, battleData.oid, move.category, attackerAbility, p.name, moveName);
                 if (pinchPowerMult > 1) {
                   msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+c(formatAbilityLabel(attackerAbility))+'</b> boosted its '+c(move.type)+'-type move!';
@@ -1985,9 +2099,17 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 if (technicianInfo.active) {
                   msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Technician</b> activated!';
                 }
+                if (stabInfo.adaptabilityActive && damage > 0) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Adaptability</b> activated!';
+                }
+                if (supremeOverlordInfo.active && damage > 0) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Supreme Overlord</b> activated!';
+                }
                 msgLocal += weakArmorMessage;
                 msgLocal += shieldMessage;
+                msgLocal += multiscaleMessage;
                 msgLocal += sturdyMessage;
+                msgLocal += levitateMessage;
                 if (hitCount > 1) {
                   msgLocal += '\n-> It hit <b>'+hitCount+'</b> times!';
                 }
@@ -2102,7 +2224,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
           // Status condition inflictions
           const statusEffect = getMoveStatusEffect(move);
-          if (statusEffect && battleData.ohp > 0) {
+          if (statusEffect && battleData.ohp > 0 && !blockedByGoodAsGold) {
             const existingStatus = getBattleStatus(battleData, battleData.o);
             const defenderTypes = pokes[op.name]?.types || [];
             if (!existingStatus && !isStatusImmune(statusEffect.status, defenderTypes) && Math.random() < statusEffect.chance) {
@@ -3364,8 +3486,10 @@ await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id
  await resolveQueuedActions(ctx, battleData, bword);
  return;
  
- function getMovePriority(moveName) {
+ function getMovePriority(moveName, moveCategory, abilityName) {
    const name = String(moveName || '').toLowerCase().replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const category = String(moveCategory || '').toLowerCase();
+  const ability = normalizeAbilityName(abilityName);
 
   const PRIORITY_BY_MOVE = {
     // Increased priority moves
@@ -3431,7 +3555,8 @@ await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id
     'wonder room': -7
   };
 
-  return PRIORITY_BY_MOVE[name] ?? 0;
+  const basePriority = PRIORITY_BY_MOVE[name] ?? 0;
+  return basePriority + (ability === 'prankster' && category === 'status' ? 1 : 0);
 }
 
 const DRAIN_MOVE_RATIOS = {
@@ -3960,8 +4085,12 @@ if (singleActionTurn) {
     await resolveQueuedActions(ctx, battleData, bword);
     return;
   }
-  const pri1 = getMovePriority(mv1.name);
-  const pri2 = getMovePriority(mv2.name);
+  const usrA = await getUserData(action1.cid);
+  const usrB = await getUserData(action2.cid);
+  const pkA = usrA.pokes.filter((p) => p.pass == action1.c)[0];
+  const pkB = usrB.pokes.filter((p) => p.pass == action2.c)[0];
+  const pri1 = getMovePriority(mv1.name, mv1.category, pkA && pkA.ability);
+  const pri2 = getMovePriority(mv2.name, mv2.category, pkB && pkB.ability);
 
   if (pri1 > pri2) { orderedActions = [action1, action2]; }
   else if (pri2 > pri1) { orderedActions = [action2, action1]; }
@@ -4010,23 +4139,45 @@ async function executeStandardMove(act) {
     const type4 = pokes[op.name].types[1] ? c(pokes[op.name].types[1]) : null;
     let eff1 = 1;
     if (battleData.set.type_effects) { eff1 = await eff(c(move.type), c(type3), type4); }
+    const defenderLevitateInfo = getLevitateInfo({ abilityName: defenderAbility });
+    const levitateBlockedMove = defenderLevitateInfo.active && String(move.type || '').toLowerCase() === 'ground';
+    if (levitateBlockedMove) eff1 = 0;
     
     const atkStages = ensurePokemonStatStages(battleData, battleData.c);
     const defStages = ensurePokemonStatStages(battleData, battleData.o);
+    const unawareModifiers = getUnawareBattleModifiers({
+      attackerAbility,
+      defenderAbility,
+      moveCategory: move.category,
+      attackerStages: atkStages,
+      defenderStages: defStages
+    });
+    const unawareMessage = getUnawareActivationMessages({
+      attackerName: p.name,
+      defenderName: op.name,
+      unawareModifiers
+    });
+    const supremeOverlordInfo = getSupremeOverlordInfo({
+      abilityName: attackerAbility,
+      partyHpMap: battleData.tem,
+      activePass: battleData.c
+    });
 
-    let atk = applyStageToStat(stats1.attack, atkStages.attack);
-    let def2 = applyStageToStat(stats2.defense, defStages.defense);
+    let atk = applyStageToStat(stats1.attack, unawareModifiers.attackStage);
+    let def2 = applyStageToStat(stats2.defense, unawareModifiers.defenseStage);
     if (move.category == 'special') {
-      atk = applyStageToStat(stats1.special_attack, atkStages.special_attack);
-      def2 = applyStageToStat(stats2.special_defense, defStages.special_defense);
+      atk = applyStageToStat(stats1.special_attack, unawareModifiers.attackStage);
+      def2 = applyStageToStat(stats2.special_defense, unawareModifiers.defenseStage);
     } else {
       atk = Math.max(1, Math.floor(atk * getAttackStatMultiplier(attackerAbility, move.category)));
     }
+    atk = Math.max(1, Math.floor(atk * supremeOverlordInfo.multiplier));
     if (move.category == 'physical' && getBattleStatus(battleData, battleData.c) === 'burn') {
         atk = Math.max(1, Math.floor(atk / 2));
     }
     
     let msgLocal = "";
+    let blockedByGoodAsGold = false;
     
     // ActState (Frozen, Asleep, Paralyzed etc)
     ensureBattleStatus(battleData); // verify status conditions haven't cleared
@@ -4146,8 +4297,9 @@ async function executeStandardMove(act) {
         } else {
         const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus;
         const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
-        const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), atkStages.accuracy, defStages.evasion) : 100;
+        const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), unawareModifiers.accuracyStage, unawareModifiers.evasionStage) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
+        msgLocal += unawareMessage;
         msgLocal += '\n-> <b>'+c(p.name)+'</b> <b>'+c(move.name)+'</b> has missed.';
             const crash = getCrashDamage(moveName, stats1.hp);
             if (crash > 0) {
@@ -4158,6 +4310,7 @@ async function executeStandardMove(act) {
               msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
             }
     } else if (hasAccuracyCheck && Math.random() < 0.05) {
+        msgLocal += unawareMessage;
         msgLocal += '\n-> <b>'+c(op.name)+'</b> Dodged <b>'+c(p.name)+'</b>\'s <b>'+c(move.name)+'</b>';
             const crash = getCrashDamage(moveName, stats1.hp);
             if (crash > 0) {
@@ -4182,7 +4335,16 @@ async function executeStandardMove(act) {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> planted a seed on <b>'+c(op.name)+'</b>!';
               }
             } else if ((move.category == 'status' || !move.power) && !OHKO_MOVES.has(moveName)) {
+            const goodAsGoldInfo = getGoodAsGoldInfo({ abilityName: defenderAbility });
+            if (goodAsGoldInfo.active && isOpponentTargetingStatusMove(move, moveName)) {
+              blockedByGoodAsGold = true;
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.';
+              msgLocal += getAbilityActivationMessage(op.name, 'Good As Gold');
+              msgLocal += unawareMessage;
+              msgLocal += '\n-> It had no effect on <b>'+c(op.name)+'</b>!';
+            } else {
             msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.';
+            msgLocal += unawareMessage;
             msgLocal += applyMoveStatEffects({
               battleData,
               moveName,
@@ -4283,6 +4445,7 @@ async function executeStandardMove(act) {
             msgLocal += applyScreenRemovalByMove(moveName, battleData, battleData.oid, true);
 
             msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
+            }
         } else {
               if (moveName === 'dream eater' && getBattleStatus(battleData, battleData.o) !== 'sleep') {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
@@ -4298,7 +4461,12 @@ async function executeStandardMove(act) {
               movePower: move.power
             });
             const boostedPower = Math.max(1, Math.floor(Number(move.power || 0) * pinchPowerMult * technicianInfo.multiplier));
-            var damage = Math.min(calc(atk, def2, level1, boostedPower, eff1), battleData.ohp);
+            const stabInfo = getStabInfo({
+              abilityName: attackerAbility,
+              moveType: move.type,
+              pokemonTypes: pokes[p.name]?.types || []
+            });
+            var damage = Math.min(Math.max(0, Math.floor(calc(atk, def2, level1, boostedPower, eff1) * stabInfo.multiplier)), battleData.ohp);
             let ohkoFailed = false;
             if (OHKO_MOVES.has(moveName)) {
               const attackerTypes = (pokes[p.name]?.types || []).map((t) => String(t).toLowerCase());
@@ -4317,13 +4485,15 @@ async function executeStandardMove(act) {
             }
             const isPerfectCrit = PERFECT_CRIT_MOVES.has(moveName);
             const isHighCritMove = HIGH_CRIT_RATIO_MOVES.has(moveName);
-            let hitCount = (!ohkoFailed && damage > 0) ? getMultiHitCount(moveName) : 1;
-            let critHits = 0;
-            let staminaMessage = '';
-            let weakArmorMessage = '';
-            let shieldMessage = '';
-            let sturdyMessage = '';
-            if (!ohkoFailed && damage > 0 && !OHKO_MOVES.has(moveName)) {
+              let hitCount = (!ohkoFailed && damage > 0) ? getMultiHitCount(moveName) : 1;
+              let critHits = 0;
+              let staminaMessage = '';
+              let weakArmorMessage = '';
+              let shieldMessage = '';
+              let sturdyMessage = '';
+              let multiscaleMessage = '';
+              let levitateMessage = '';
+              if (!ohkoFailed && damage > 0 && !OHKO_MOVES.has(moveName)) {
               let totalDamage = 0;
               let landedHits = 0;
               for (let h = 0; h < hitCount; h += 1) {
@@ -4342,8 +4512,8 @@ async function executeStandardMove(act) {
                   }
                 }
 
-                const shieldResult = applyShadowShieldReduction({
-                  abilityName: defenderAbility,
+                  const shieldResult = applyShadowShieldReduction({
+                    abilityName: defenderAbility,
                   currentHp: remainingHp,
                   maxHp: stats2.hp,
                   incomingDamage: hitDamage,
@@ -4351,10 +4521,22 @@ async function executeStandardMove(act) {
                   pokemonName: op.name,
                   c
                 });
-                hitDamage = shieldResult.damage;
-                if (shieldResult.activated && !shieldMessage) {
-                  shieldMessage = shieldResult.message;
-                }
+                  hitDamage = shieldResult.damage;
+                  if (shieldResult.activated && !shieldMessage) {
+                    shieldMessage = shieldResult.message;
+                  }
+                  const multiscaleResult = applyMultiscaleReduction({
+                    abilityName: defenderAbility,
+                    currentHp: remainingHp,
+                    maxHp: stats2.hp,
+                    incomingDamage: hitDamage,
+                    pokemonName: op.name,
+                    c
+                  });
+                  hitDamage = multiscaleResult.damage;
+                  if (multiscaleResult.activated && !multiscaleMessage) {
+                    multiscaleMessage = multiscaleResult.message;
+                  }
                 const sturdyResult = applySturdySurvival({
                   abilityName: defenderAbility,
                   currentHp: remainingHp,
@@ -4414,24 +4596,36 @@ async function executeStandardMove(act) {
               battleData.ohp = Math.max((battleData.ohp - damage), 0);
               battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
             }
-            if (ohkoFailed) {
-              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
-            } else {
-              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
-              msgLocal += getInfiltratorBypassMessage(battleData, battleData.oid, move.category, attackerAbility, p.name, moveName);
-              if (pinchPowerMult > 1) {
-                msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+c(formatAbilityLabel(attackerAbility))+'</b> boosted its '+c(move.type)+'-type move!';
-              }
-              msgLocal += staminaMessage;
-              if (technicianInfo.active) {
-                msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Technician</b> activated!';
-              }
-              msgLocal += weakArmorMessage;
-              msgLocal += shieldMessage;
-              msgLocal += sturdyMessage;
-              if (hitCount > 1) {
-                msgLocal += '\n-> It hit <b>'+hitCount+'</b> times!';
-              }
+              if (ohkoFailed) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+              } else {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+                msgLocal += unawareMessage;
+                if (levitateBlockedMove) {
+                  levitateMessage = '\n-> <b>'+c(op.name)+'</b>\'s <b>Levitate</b> activated!';
+                }
+                msgLocal += getInfiltratorBypassMessage(battleData, battleData.oid, move.category, attackerAbility, p.name, moveName);
+                if (pinchPowerMult > 1) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+c(formatAbilityLabel(attackerAbility))+'</b> boosted its '+c(move.type)+'-type move!';
+                }
+                msgLocal += staminaMessage;
+                if (technicianInfo.active) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Technician</b> activated!';
+                }
+                if (stabInfo.adaptabilityActive && damage > 0) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Adaptability</b> activated!';
+                }
+                if (supremeOverlordInfo.active && damage > 0) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Supreme Overlord</b> activated!';
+                }
+                msgLocal += weakArmorMessage;
+                msgLocal += shieldMessage;
+                msgLocal += multiscaleMessage;
+                msgLocal += sturdyMessage;
+                msgLocal += levitateMessage;
+                if (hitCount > 1) {
+                  msgLocal += '\n-> It hit <b>'+hitCount+'</b> times!';
+                }
             }
             if (!ohkoFailed && critHits > 0 && damage > 0) {
               msgLocal += '\n-> <b>A critical hit!</b>';
@@ -4542,7 +4736,7 @@ async function executeStandardMove(act) {
         
         // Status condition inflictions
         const statusEffect = getMoveStatusEffect(move);
-        if (statusEffect && battleData.ohp > 0) {
+        if (statusEffect && battleData.ohp > 0 && !blockedByGoodAsGold) {
             const existingStatus = getBattleStatus(battleData, battleData.o);
             const defenderTypes = pokes[op.name]?.types || [];
             if (!existingStatus && !isStatusImmune(statusEffect.status, defenderTypes) && Math.random() < statusEffect.chance) {
@@ -4860,6 +5054,7 @@ msg += await applyEntryHazardsOnSwitch({
   sideId: battleData.cid,
   pass: pass,
   pokemonName: p12.name,
+  abilityName: p12.ability,
   maxHp: stats22.hp
 })
 const speed12 = getSpeedWithStatus(stats12.speed, battleData, p22.pass)

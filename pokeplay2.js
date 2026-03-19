@@ -1,8 +1,8 @@
 ﻿let msgsent = []
 const appr = [1072659486,6265981509]
-const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //main bot
+//const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //main bot
 //const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //backup bot
-//const botToken = '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' // test bot
+const botToken = '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' // test bot
 const { Telegraf } = require('telegraf')
 const bot = new Telegraf(botToken)
 if (process.env.QUIET_LOGS === '1') {
@@ -1127,36 +1127,12 @@ await next();
 
 async function editOverdueMessages() {
     const messageData = await loadMessageData();
-for(const id in messageData.moves){
-const time = messageData.moves[id].td
-const queryTime = new Date(time)
-const options = {
-  timeZone: 'Asia/Kolkata',
-  month: 'numeric',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  hour12: true,
-};
-const currentTime = new Date().toLocaleString('en-US', options)
-const timeDifference = new Date(currentTime) - queryTime;
-if(timeDifference > 900000){
-try{
-  if(!id || id === 'undefined' || !messageData.moves[id] || !messageData.moves[id].chat){
-    delete messageData.moves[id]
-  }else{
-    await bot.telegram.editMessageText(messageData.moves[id].chat,id, null,'Unfortunately, Timeout For *15 Min* Has Over & *'+c(messageData.moves[id].poke)+'* Did Not Learnt *'+c(messageData.moves[id].move)+'*',{parse_mode:'markdown'})
-  }
-}catch(error){
-  const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
-  if(!d.includes('message to edit not found')){
-    console.error('Error editing message:', error)
-  }
-}
-delete messageData.moves[id]
-await saveMessageData(messageData)
-}
-}
+ for(const id in messageData.moves){
+   if(!id || id === 'undefined' || !messageData.moves[id] || !messageData.moves[id].chat){
+     delete messageData.moves[id]
+   }
+ }
+ await saveMessageData(messageData)
 for(const id in messageData.tutor){
 const time = messageData.tutor[id].tdy
 const queryTime = new Date(time)

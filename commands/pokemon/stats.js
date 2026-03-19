@@ -241,7 +241,6 @@ bot.action(/suger_/, async ctx => {
   }
 
   await ctx.answerCbQuery();
-  try { await ctx.deleteMessage(); } catch (err) {}
   const data = await getUserData(ctx.from.id);
   const name2 = name.replace(/ /g,'-');
   const p22 = data.pokes.filter((poke)=> poke.nickname ? poke.nickname.toLowerCase() == name.toLowerCase() : poke.name==name2.toLowerCase());
@@ -303,17 +302,31 @@ bot.action(/suger_/, async ctx => {
 
   const ore = [];
   let message = '';
-  const page = 1;
+  const page = parseInt(parts[statsIndex + 2]) || 1;
   const pageSize = 25;
   const startIdx = (page - 1) * pageSize;
-  const endIdx = Math.min(startIdx + pageSize, p22.length);
-  const pageItems = p22.slice(startIdx, endIdx);
-  for (const p of pageItems) {
-    const b = c(p.name)+' '+p.symbol;
-    ore.push({text:b,callback_data:'stats_'+p.pass+'_'+ctx.from.id+'_'+replyTo+''});
+  const endIdx = startIdx + pageSize;
+  const pokemon2 = await sort(ctx.from.id,p22)
+  const pokemon = pokemon2.slice(startIdx,endIdx)
+  message += await pokelist(pokemon.map(item => item.pass),ctx,startIdx)
+  let b = startIdx + 1
+  for(const p of pokemon){
+    ore.push({text:b,callback_data:'stats_'+p.pass+'_'+ctx.from.id+'_'+replyTo+''})
+    b++
   }
-  const rows = ore.map((i)=> [i]);
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},message+'\n\n_Check Stats Of Which Pokemon?_',{reply_to_message_id:replyTo,reply_markup:{inline_keyboard:rows}});
+  const rows = [];
+  for (let i = 0; i < ore.length; i += 5) {
+    rows.push(ore.slice(i, i + 5));
+  }
+  const rows2 = []
+  if(page > 1){
+    rows2.push({text:'<',callback_data:'suger_'+ctx.from.id+'_'+name2+'_stats_'+replyTo+'_'+(page-1)+''})
+  }
+  if((endIdx+1)<p22.length){
+    rows2.push({text:'>',callback_data:'suger_'+ctx.from.id+'_'+name2+'_stats_'+replyTo+'_'+(page+1)+''})
+  }
+  rows.push(rows2)
+  await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,message+'\n\n_Check Stats Of Which Pokemon?_',{parse_mode:'markdown',reply_markup:{inline_keyboard:rows}});
 });
 }
 

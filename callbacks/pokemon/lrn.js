@@ -10,17 +10,17 @@ if(!poke){
 ctx.answerCbQuery('You Not Have This Poke AnyMore')
 return
 }
-const queryTime = Number(time)
+let queryTime = Number(time)
 if(!Number.isFinite(queryTime)){
-ctx.answerCbQuery('Invalid request.')
-return
+  const parsed = new Date(time).getTime()
+  if(Number.isFinite(parsed)){
+    queryTime = parsed
+  }else{
+    queryTime = Date.now()
+  }
 }
 const timeDifference = Date.now() - queryTime;
 console.log(timeDifference)
-if(timeDifference > 900000){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Unfortunately, Timeout For *15 Min* Has Over & *'+c(poke.name)+'* Did Not Learnt *'+c(dmoves[mid].name)+'*',{parse_mode:'markdown'})
-return
-}
 let msg = '<b>Pokemon :</b> '+c(poke.name)+' (Lv. '+plevel(poke.name,poke.exp)+')\n\n'
 const moves = []
 for(const move2 of poke.moves){

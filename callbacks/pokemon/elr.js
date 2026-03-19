@@ -11,22 +11,9 @@ if(!poke){
 ctx.answerCbQuery('You Not Have This Poke AnyMore')
 return
 }
-const queryTime = new Date(time)
-const options = {
-  timeZone: 'Asia/Kolkata',
-  month: 'numeric',
-  day: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric',
-  hour12: true,
-};
-const currentTime = new Date().toLocaleString('en-US', options)
-const timeDifference = new Date(currentTime) - queryTime;
+const queryTime = Number(time)
+const timeDifference = Date.now() - (Number.isFinite(queryTime) ? queryTime : Date.now());
 console.log(timeDifference)
-if(timeDifference > 900000){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Unfortunately, Timeout For *15 Min* Has Over & *'+c(poke.name)+'* Did Not Learnt *'+c(dmoves[mid].name)+'*',{parse_mode:'markdown'})
-return
-}
 let msg = 'Are You Sure To Your <b>'+c(poke.name)+'</b> (<b>Lv.</b> '+plevel(poke.name,poke.exp)+')\n\n'
 msg += '<b>Forget The Move:</b>'
 const move = dmoves[String(move9)]

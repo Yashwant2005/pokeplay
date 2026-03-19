@@ -1,3 +1,5 @@
+const { getPinchAbilityInfo } = require('../../utils/battle_abilities');
+
 function register_013_bajkw(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action(/bajkw_/,async ctx => {
@@ -42,7 +44,12 @@ msg += '\n\n<b>Moves :</b>'
 const moves = []
 for(const move2 of p.moves){
 let move = dmoves[move2]
-msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
+const rawPower = Number(move && move.power)
+const pinchInfo = getPinchAbilityInfo({ abilityName: p.ability, moveType: move && move.type, currentHp: battleData.chp, maxHp: stats.hp })
+const shownPower = Number.isFinite(rawPower) && rawPower > 0 && pinchInfo.active
+  ? rawPower + ' (x' + pinchInfo.multiplier + ' ' + pinchInfo.abilityLabel + ')'
+  : move.power
+msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }
 msg += '\n\n<i>Choose Option In Your Bag:</i>'

@@ -1,4 +1,4 @@
-const { applyEntryAbility } = require('../../utils/battle_abilities');
+const { applyEntryAbility, getBattleMovePower, getPinchAbilityInfo } = require('../../utils/battle_abilities');
 
 function register_018_snd(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -51,6 +51,9 @@ const entryAbility = applyEntryAbility({
   abilityName: p.ability,
   selfStats: stats,
   opponentStats: wildStats,
+  opponentPass: battleData.opass,
+  opponentName: battleData.name,
+  opponentAbility: battleData.oability,
   c
 })
 await saveBattleData(bword, battleData);
@@ -68,7 +71,12 @@ msg += '\n\n<b>Moves :</b>'
 const moves = []
 for(const move2 of p.moves){
 let move = dmoves[move2]
-msg += '\n<b>'+c(move.name)+'</b>['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
+const rawPower = getBattleMovePower({ battleData, pass: p.pass, pokemonName: p.name, moveName: move && move.name, movePower: move && move.power })
+const pinchInfo = getPinchAbilityInfo({ abilityName: p.ability, moveType: move && move.type, currentHp: battleData.chp, maxHp: stats.hp })
+const shownPower = Number.isFinite(rawPower) && rawPower > 0 && pinchInfo.active
+  ? rawPower + ' (x' + pinchInfo.multiplier + ' ' + pinchInfo.abilityLabel + ')'
+  : move.power
+msg += '\n<b>'+c(move.name)+'</b>['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }
 msg += '\n\n<i>Choose Your Next Move:</i>'

@@ -21,7 +21,10 @@ let ivsText = ''
     ivsText += `Speed           ${ivs.speed.toString().padStart(2)} |  ${evs.speed}\n`;
     ivsText += '————————————————————————\n';
     ivsText += `Total           ${calculateTotal(ivs)} |  ${calculateTotal(evs)}\n`;
- await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'`'+ivsText+'`',{parse_mode:'markdownv2',reply_markup:{inline_keyboard:[[{text:'Info',callback_data:'info_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+pass+'_'+id+''},{text:'Stats',callback_data:'ste_'+pass+'_'+id+''}]]}})
+ await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'`'+ivsText+'`',{parse_mode:'markdownv2',reply_markup:{inline_keyboard:[
+[{text:'Info',callback_data:'info_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+pass+'_'+id+''},{text:'Stats',callback_data:'ste_'+pass+'_'+id+''}],
+[{text:'Evolve',callback_data:'evolve_'+pass+'_'+id+''},{text:'Held Items',callback_data:'heldpanel_'+pass+'_'+id+''},{text:'Release',callback_data:'release_'+pass+'_'+id+''}]
+]}})
 })
 }
 

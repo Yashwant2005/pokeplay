@@ -1,6 +1,6 @@
 ﻿let msgsent = []
 const appr = [1072659486,6265981509]
-const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' //main bot
+const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //main bot
 //const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //backup bot
 //const botToken = '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' // test bot
 const { Telegraf } = require('telegraf')
@@ -1028,6 +1028,7 @@ const exp = chart[g.growth_rate][level]
     id: poked.pokedex_number,
     nature:nat,
     ability:getRandomAbilityForPokemon(pokeName, pokes),
+    held_item:'none',
     exp:exp,
     pass:pass2,
     ivs: iv,
@@ -1070,6 +1071,8 @@ const groupCommands = [
 {command:'/trainer_card',description:'Customize Your Trainer Card'},
 {command: '/stats', description: 'Check Stats Of A Poke' },
 {command:'/assignability',description:'Assign Ability If Missing'},
+{command:'/assignitems',description:'Assign Held Item Field If Missing'},
+{command:'/battlestats',description:'Show Live Battle Stats Of A Pokemon'},
 {command:'/buy',description:'Buy Items From Poke Store'},
 {command:'/sell',description:'Sell Item To Poke Store'},
 {command:'/battlebox',description:'Open your Battle Box rewards'},
@@ -1194,45 +1197,73 @@ await saveMessageData(messageData)
             (userMessageData.timestamp && Date.now() - userMessageData.timestamp > 60000)
         )
         .map(async ([chatId, userMessageData]) => {
+        try {
             if (userMessageData.times) {
                 const { turn, oppo } = userMessageData;
-                const d1 = await getUserData(turn);
-                const d2 = await getUserData(oppo);
+            const d1 = await getUserData(turn);
+            const d2 = await getUserData(oppo);
+            const d1Name = d1 && d1.inv && d1.inv.name ? d1.inv.name : String(turn);
+            const d2Name = d2 && d2.inv && d2.inv.name ? d2.inv.name : String(oppo);
 
                 const elapsedTime = Date.now() - userMessageData.times;
 
                 if (elapsedTime > 130000) {
-                    let newMessage = `<a href="tg://user?id=${turn}"><b>${d1.inv.name}</b></a> has not moved and losses <b>25</b> PokeCoins ðŸ’·.`;
-                    newMessage += `\n<a href="tg://user?id=${oppo}"><b>${d2.inv.name}</b></a> <b>+25</b> PokeCoins ðŸ’·.`;
+              let newMessage = `<a href="tg://user?id=${turn}"><b>${d1Name}</b></a> has not moved and losses <b>25</b> PokeCoins ðŸ’·.`;
+              newMessage += `\n<a href="tg://user?id=${oppo}"><b>${d2Name}</b></a> <b>+25</b> PokeCoins ðŸ’·.`;
 
-                    if (d1.inv.pc > 25) {
-                        d1.inv.pc -= 25;
+              if (d1 && d1.inv && typeof d1.inv.pc === 'number' && d1.inv.pc > 25) {
+                d1.inv.pc -= 25;
                     }
 
-                    d2.inv.pc += 25;
+              if (d2 && d2.inv) {
+                if (typeof d2.inv.pc !== 'number') d2.inv.pc = 0;
+                d2.inv.pc += 25;
+              }
 
-                    await saveUserData2(turn, d1);
-                    await saveUserData2(oppo, d2);
+              if (d1 && d1.inv) {
+                await saveUserData2(turn, d1);
+              }
+              if (d2 && d2.inv) {
+                await saveUserData2(oppo, d2);
+              }
                     messageData.battle = messageData.battle.filter((chats) => chats !== parseInt(turn) && chats !== parseInt(oppo));
                     delete messageData[chatId];
 await saveMessageData(messageData);
-bot.telegram.editMessageText(userMessageData.chat, userMessageData.mid, null, newMessage, {
+                    try {
+                      await bot.telegram.editMessageText(userMessageData.chat, userMessageData.mid, null, newMessage, {
                         parse_mode: 'HTML'
-})
+                      })
+                    } catch (error) {
+                      const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
+                      if (!d.includes('chat not found') && !d.includes('message to edit not found')) {
+                        console.error('Error editing overdue battle message:', error)
+                      }
+                    }
                 }
             } else if (userMessageData.timestamp) {
                 const elapsedTime = Date.now() - userMessageData.timestamp;
 const dr = await getUserData(chatId)
-                if (elapsedTime > 60000 || !dr.extra.hunting) {
+              const isHunting = !!(dr && dr.extra && dr.extra.hunting);
+              if (elapsedTime > 60000 || !isHunting) {
                     const newMessage = '*Timeover.*';
                     messageData.battle = messageData.battle.filter((chats) => chats !== userMessageData.id);
                     delete messageData[chatId];
                 await saveMessageData(messageData);
-bot.telegram.editMessageText(chatId, userMessageData.mid, null, newMessage, {
-                        parse_mode: 'markdown'
-})
+                try {
+                  await bot.telegram.editMessageText(chatId, userMessageData.mid, null, newMessage, {
+                    parse_mode: 'markdown'
+                  })
+                } catch (error) {
+                  const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
+                  if (!d.includes('chat not found') && !d.includes('message to edit not found')) {
+                    console.error('Error editing overdue hunt message:', error)
+                  }
+                }
 }
             }
+          } catch (error) {
+            console.error('Error while processing overdue message cleanup entry:', error)
+          }
         });
 
 }

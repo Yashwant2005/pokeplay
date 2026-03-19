@@ -19,6 +19,12 @@ function registerStartFlowCallbacks(bot, deps) {
     c
   } = deps;
 
+const STARTER_ABILITY_BY_TYPE = {
+  fire: 'blaze',
+  grass: 'overgrow',
+  water: 'torrent'
+};
+
 bot.action(/staut_/,async ctx => {
 const data = await getUserData(ctx.from.id)
 if(data.pokes){
@@ -92,11 +98,15 @@ const pass2 = word(8)
 const nat = getRandomNature()
 const g = growth_rates[pokeName]
 const exp = chart[g.growth_rate]["5"]
+  const starterAbility = Array.isArray(poked.types)
+    ? poked.types.map((type) => STARTER_ABILITY_BY_TYPE[String(type || '').toLowerCase()]).find(Boolean)
+    : null;
   const da = {
     name:pokeName,
     id: poked.pokedex_number,
     nature:nat,
-    ability:getRandomAbilityForPokemon(pokeName, pokes),
+    ability:starterAbility || getRandomAbilityForPokemon(pokeName, pokes),
+    held_item:'none',
     exp:exp,
     pass:pass2,
     ivs: iv,

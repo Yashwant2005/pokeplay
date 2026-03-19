@@ -110,6 +110,7 @@ function registerAddCommand(bot, deps) {
           id: poked.pokedex_number,
           nature: customNature,
           ability: customAbility || getRandomAbilityForPokemon(pokeName, pokes),
+          held_item: 'none',
           exp: chart[growth.growth_rate][levelInt],
           pass: word(8),
           ivs: finalIvs,
@@ -154,6 +155,7 @@ function registerAddCommand(bot, deps) {
           id: poked.pokedex_number,
           nature: getRandomNature(),
           ability: getRandomAbilityForPokemon(pokeName, pokes),
+          held_item: 'none',
           exp: chart[g.growth_rate][level],
           pass: word(8),
           ivs: applyCaptureIvRules(iv, {

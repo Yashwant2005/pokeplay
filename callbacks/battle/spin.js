@@ -176,6 +176,7 @@ function registerSpinCallbacks(bot, deps) {
       id: pokeInfo.pokedex_number,
       nature: String(candidate.nature || getRandomNature()).toLowerCase(),
       ability: getRandomAbilityForPokemon(pokeName, pokes),
+      held_item: 'none',
       exp,
       pass: word(8),
       ivs: {

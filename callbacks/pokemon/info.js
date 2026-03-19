@@ -1,6 +1,13 @@
 function register_006_info(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
+  const titleCaseHeldItem = (value) => String(value || 'none')
+    .replace(/[_-]+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ') || 'None';
   bot.action(/info_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -23,6 +30,7 @@ b7 = p2.exp
 let msg = '➤ *'+c(p2.name)+' '+p2.symbol+'*'
 msg += '\n*Level:* '+currentLevel+' | *Nature:* '+c(p2.nature)+''
 msg += '\n*Ability:* '+c(titleCaseAbility(p2.ability || 'none'))+''
+msg += '\n*Held Item:* '+c(titleCaseHeldItem(p2.held_item || 'none'))+''
 msg += '\n*Types:* '+c(p.types.join(' / '))+''
 msg += '\n*EXP:* '+p2.exp.toLocaleString()+''
 msg += '\n*Need To Next Level:* '+n2.toLocaleString()+''
@@ -42,7 +50,8 @@ let ivsText = 'IVs/EVs'
     ivsText += `Total               ${calculateTotal(ivs)} |  ${calculateTotal(evs)}\n`;
 await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'markdown',
 reply_markup:{inline_keyboard:[[
-{text:'Stats',callback_data:'ste_'+p2.pass+'_'+ctx.from.id+''},{text:'IVs/EVs',callback_data:'pkisvs_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+p2.pass+'_'+ctx.from.id+''}]]}})
+{text:'Stats',callback_data:'ste_'+p2.pass+'_'+ctx.from.id+''},{text:'IVs/EVs',callback_data:'pkisvs_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+p2.pass+'_'+ctx.from.id+''}],
+[{text:'Evolve',callback_data:'evolve_'+p2.pass+'_'+ctx.from.id+''},{text:'Held Items',callback_data:'heldpanel_'+p2.pass+'_'+ctx.from.id+''},{text:'Release',callback_data:'release_'+p2.pass+'_'+ctx.from.id+''}]]}})
 })
 }
 

@@ -1,7 +1,18 @@
 ﻿const {
   applyAbsorbMoveAbility: applyAbilityAbsorbMove,
+  applyStageChanges,
+  applyShadowShieldReduction,
+  applyStaminaOnHit,
+  applySturdySurvival,
+  applyWeakArmorOnHit,
   applyEndTurnAbility: applyAbilityEndTurn,
   applyEntryAbility: applyAbilityEntry,
+  getAttackStatMultiplier,
+  getInfiltratorInfo,
+  getPinchAbilityInfo,
+  getPinchPowerMultiplier,
+  getTechnicianPowerInfo,
+  normalizeAbilityName,
   applyKoAbility: applyAbilityKo,
   applyOnDamageTakenAbilities: applyAbilityOnDamageTaken
 } = require('../../utils/battle_abilities');
@@ -94,6 +105,83 @@ function registerBattleCallbacks(bot, deps) {
       .replace(/[-_]+/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
+  }
+
+  function formatAbilityLabel(abilityName) {
+    return String(abilityName || 'none')
+      .split('-')
+      .map((part) => part ? part.charAt(0).toUpperCase() + part.slice(1) : part)
+      .join(' ');
+  }
+
+  function getDisplayedMovePower(move, abilityName, currentHp, maxHp) {
+    const rawPower = Number(move && move.power);
+    if (!Number.isFinite(rawPower) || rawPower <= 0) return move && move.power;
+    const technicianInfo = getTechnicianPowerInfo({
+      abilityName,
+      movePower: rawPower
+    });
+    const pinchInfo = getPinchAbilityInfo({
+      abilityName,
+      moveType: move && move.type,
+      currentHp,
+      maxHp
+    });
+    const totalMultiplier = technicianInfo.multiplier * pinchInfo.multiplier;
+    if (totalMultiplier === 1) return rawPower;
+    const labels = [];
+    if (technicianInfo.active) labels.push('x' + technicianInfo.multiplier + ' ' + technicianInfo.abilityLabel);
+    if (pinchInfo.active) labels.push('x' + pinchInfo.multiplier + ' ' + pinchInfo.abilityLabel);
+    return Math.max(1, Math.floor(rawPower * totalMultiplier)) + ' (' + labels.join(', ') + ')';
+  }
+
+  function ensureTurnAbilityState(battleData) {
+    if (!battleData.turnAbilityState || typeof battleData.turnAbilityState !== 'object') {
+      battleData.turnAbilityState = {};
+    }
+    if (!battleData.turnAbilityState.skipSpeedBoost || typeof battleData.turnAbilityState.skipSpeedBoost !== 'object') {
+      battleData.turnAbilityState.skipSpeedBoost = {};
+    }
+    if (!battleData.turnAbilityState.failedEscape || typeof battleData.turnAbilityState.failedEscape !== 'object') {
+      battleData.turnAbilityState.failedEscape = {};
+    }
+    return battleData.turnAbilityState;
+  }
+
+  function applyDefenderDamageWithSturdy(options) {
+    const {
+      battleData,
+      damage,
+      defenderAbility,
+      defenderName,
+      defenderMaxHp,
+      moveName
+    } = options;
+    const shieldResult = applyShadowShieldReduction({
+      abilityName: defenderAbility,
+      currentHp: battleData.ohp,
+      maxHp: defenderMaxHp,
+      incomingDamage: damage,
+      moveName,
+      pokemonName: defenderName,
+      c
+    });
+    const sturdyResult = applySturdySurvival({
+      abilityName: defenderAbility,
+      currentHp: battleData.ohp,
+      maxHp: defenderMaxHp,
+      incomingDamage: shieldResult.damage,
+      pokemonName: defenderName,
+      c
+    });
+    const actualDamage = Math.min(Math.max(0, sturdyResult.damage), battleData.ohp);
+    battleData.ohp = Math.max(battleData.ohp - actualDamage, 0);
+    battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] || 0) - actualDamage, 0);
+    return {
+      damage: actualDamage,
+      message: shieldResult.message + sturdyResult.message,
+      activated: shieldResult.activated || sturdyResult.activated
+    };
   }
 
   const NO_CONSECUTIVE_USE_MOVES = new Set([
@@ -418,12 +506,26 @@ function registerBattleCallbacks(bot, deps) {
     return '\n-> The opposing side\'s screens were shattered!';
   }
 
-  function getScreenDamageMultiplier(battleData, defenderSideId, moveCategory) {
+  function getScreenDamageMultiplier(battleData, defenderSideId, moveCategory, attackerAbility, moveName) {
     const side = ensureSideScreens(battleData, defenderSideId);
+    const infiltratorInfo = getInfiltratorInfo({ abilityName: attackerAbility, moveName });
+    if (infiltratorInfo.active && (side.auroraVeil > 0 || side.reflect > 0 || side.lightScreen > 0)) return 1;
     if (side.auroraVeil > 0) return 0.5;
     if (String(moveCategory || '').toLowerCase() === 'physical' && side.reflect > 0) return 0.5;
     if (String(moveCategory || '').toLowerCase() === 'special' && side.lightScreen > 0) return 0.5;
     return 1;
+  }
+
+  function getInfiltratorBypassMessage(battleData, defenderSideId, moveCategory, attackerAbility, attackerName, moveName) {
+    const side = ensureSideScreens(battleData, defenderSideId);
+    const infiltratorInfo = getInfiltratorInfo({ abilityName: attackerAbility, moveName });
+    if (!infiltratorInfo.active) return '';
+    const blockedByScreens =
+      side.auroraVeil > 0 ||
+      (String(moveCategory || '').toLowerCase() === 'physical' && side.reflect > 0) ||
+      (String(moveCategory || '').toLowerCase() === 'special' && side.lightScreen > 0);
+    if (!blockedByScreens) return '';
+    return '\n-> <b>' + c(attackerName) + '</b>\'s <b>Infiltrator</b> activated!';
   }
 
   function tickScreensForTurn(battleData) {
@@ -489,13 +591,17 @@ function registerBattleCallbacks(bot, deps) {
       msg += '\n\n<b>Moves :</b>';
       for (const move2 of p1.moves) {
         let move = dmoves[move2];
-        msg += '\n- <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')';
+        const shownPower = getDisplayedMovePower(move, p1.ability, battleData.chp, stats2.hp);
+        msg += '\n- <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')';
       }
     } else if (isGroup && p1UsedMoves.length > 0 && !hideTurn) {
       msg += '\n\n<b>Revealed Moves :</b>';
       for (const mid of p1UsedMoves) {
         const mv = dmoves[mid];
-        if (mv) msg += '\n- <b>'+c(mv.name)+'</b> ['+c(mv.type)+' '+emojis[mv.type]+'] <b>Power:</b> '+mv.power+' <b>Acc:</b> '+mv.accuracy+' ('+c(mv.category.charAt(0))+')';
+        if (mv) {
+          const shownPower = getDisplayedMovePower(mv, p1.ability, battleData.chp, stats2.hp);
+          msg += '\n- <b>'+c(mv.name)+'</b> ['+c(mv.type)+' '+emojis[mv.type]+'] <b>Power:</b> '+shownPower+' <b>Acc:</b> '+mv.accuracy+' ('+c(mv.category.charAt(0))+')';
+        }
       }
     }
 
@@ -1198,7 +1304,7 @@ function expandEffectStats(effect) {
   return [effect.stat];
 }
 
-function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName, defenderName, attackerPass, defenderPass, targetAlive }) {
+function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName, defenderName, attackerPass, defenderPass, attackerAbility, defenderAbility, targetAlive }) {
   const effects = MOVE_STAT_EFFECTS[moveName] || [];
   const resolvedMoveCategory = String(moveCategory || '').toLowerCase();
   if (!effects.length) return '';
@@ -1225,6 +1331,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
     const targetPass = effect.target === 'self' ? attackerPass : defenderPass;
     const targetName = effect.target === 'self' ? attackerName : defenderName;
+    const targetAbility = effect.target === 'self' ? attackerAbility : defenderAbility;
     const stages = ensurePokemonStatStages(battleData, targetPass);
 
     if (effect.randomStat) {
@@ -1232,13 +1339,15 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       const eligible = allStats.filter(s => (stages[s] || 0) < 6);
       if (eligible.length > 0) {
         const statKey = eligible[Math.floor(Math.random() * eligible.length)];
-        const prev = stages[statKey] || 0;
-        const next = clampStage(prev + effect.stages);
-        const delta = next - prev;
-        stages[statKey] = next;
-        if (delta !== 0) {
-          out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
-        }
+        out += applyStageChanges({
+          battleData,
+          pass: targetPass,
+          pokemonName: targetName,
+          abilityName: targetAbility,
+          changes: [{ stat: statKey, delta: effect.stages }],
+          c,
+          fromOpponent: effect.target === 'target'
+        }).message;
       }
       continue;
     }
@@ -1248,13 +1357,15 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       const pool = effect.randomFrom.filter(s => increasing ? (stages[s] || 0) < 6 : (stages[s] || 0) > -6);
       if (pool.length > 0) {
         const statKey = pool[Math.floor(Math.random() * pool.length)];
-        const prev = stages[statKey] || 0;
-        const next = clampStage(prev + effect.stages);
-        const delta = next - prev;
-        stages[statKey] = next;
-        if (delta !== 0) {
-          out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
-        }
+        out += applyStageChanges({
+          battleData,
+          pass: targetPass,
+          pokemonName: targetName,
+          abilityName: targetAbility,
+          changes: [{ stat: statKey, delta: effect.stages }],
+          c,
+          fromOpponent: effect.target === 'target'
+        }).message;
       }
       continue;
     }
@@ -1262,13 +1373,15 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
     const effectStats = effect.statByMoveCategory ? [effect.statByMoveCategory[resolvedMoveCategory]].filter(Boolean) : expandEffectStats(effect);
 
     for (const statKey of effectStats) {
-      const prev = stages[statKey] || 0;
-      const next = clampStage(prev + effect.stages);
-      const delta = next - prev;
-      stages[statKey] = next;
-      if (delta !== 0) {
-        out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
-      }
+      out += applyStageChanges({
+        battleData,
+        pass: targetPass,
+        pokemonName: targetName,
+        abilityName: targetAbility,
+        changes: [{ stat: statKey, delta: effect.stages }],
+        c,
+        fromOpponent: effect.target === 'target'
+      }).message;
     }
   }
   return out;
@@ -1352,6 +1465,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
     if (!battleData.turnHits) battleData.turnHits = {};
     battleData.turnHits = {}; // Reset at start of turn
+    battleData.turnAbilityState = { skipSpeedBoost: {}, failedEscape: {} };
 
     let turnLogs = "\n\n<b>Turn Summary:</b>";
 
@@ -1367,6 +1481,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       const opposingPokemon = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
       battleData.c = act.pass;
       battleData.chp = battleData.tem[act.pass];
+      ensureTurnAbilityState(battleData).skipSpeedBoost[String(act.pass)] = true;
       if (!battleData.lastMoveByPass || typeof battleData.lastMoveByPass !== 'object') {
         battleData.lastMoveByPass = {};
       }
@@ -1397,6 +1512,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
             abilityName: p12.ability,
             selfStats: switchedStats,
             opponentStats: opposingStats,
+            opponentPass: battleData.o,
+            opponentName: opposingPokemon.name,
+            opponentAbility: opposingPokemon.ability,
             c
           }).message;
         }
@@ -1441,6 +1559,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       if (move.category == 'special') {
         atk = applyStageToStat(stats1.special_attack, atkStages.special_attack);
         def2 = applyStageToStat(stats2.special_defense, defStages.special_defense);
+      } else {
+        atk = Math.max(1, Math.floor(atk * getAttackStatMultiplier(attackerAbility, move.category)));
       }
       if (move.category == 'physical' && getBattleStatus(battleData, battleData.c) === 'burn') {
         atk = Math.max(1, Math.floor(atk / 2));
@@ -1494,14 +1614,22 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               msgLocal += '\n-> <b>'+c(p.name)+'</b> unleashed its energy... but it failed!';
             } else {
               var damage = Math.min(bState.damage * 2, battleData.ohp);
-              battleData.ohp = Math.max((battleData.ohp - damage), 0);
-              battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+              const sturdyDamage = applyDefenderDamageWithSturdy({
+                battleData,
+                damage,
+                defenderAbility,
+                defenderName: op.name,
+                defenderMaxHp: stats2.hp,
+                moveName
+              });
+              damage = sturdyDamage.damage;
               battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
               if (battleData.bideState && battleData.bideState[battleData.o]) {
                 battleData.bideState[battleData.o].damage += damage;
                 battleData.bideState[battleData.o].lastAttacker = battleData.c;
               }
               msgLocal += '\n-> <b>'+c(p.name)+'</b> unleashed its energy! It dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+              msgLocal += sturdyDamage.message;
             }
             delete battleData.bideState[battleData.c];
           }
@@ -1519,14 +1647,22 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         } else {
           const multiplier = (moveName === 'metal burst' || moveName === 'comeuppance') ? 1.5 : 2;
           var damage = Math.min(Math.max(Math.floor(lastHit.damage * multiplier), 1), battleData.ohp);
-          battleData.ohp = Math.max((battleData.ohp - damage), 0);
-          battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+          const sturdyDamage = applyDefenderDamageWithSturdy({
+            battleData,
+            damage,
+            defenderAbility,
+            defenderName: op.name,
+            defenderMaxHp: stats2.hp,
+            moveName
+          });
+          damage = sturdyDamage.damage;
           battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
           if (battleData.bideState && battleData.bideState[battleData.o]) {
             battleData.bideState[battleData.o].damage += damage;
             battleData.bideState[battleData.o].lastAttacker = battleData.c;
           }
           msgLocal += '\n-> <b>'+c(p.name)+'</b> retaliated with <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+          msgLocal += sturdyDamage.message;
         }
       } else if (actState.canAct && !isChargeReleaseTurn && CHARGING_TURN_MOVES.has(moveName)) {
         setChargingStateForPass(battleData, battleData.c, act.id, moveName);
@@ -1543,6 +1679,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
             defenderName: op.name,
             attackerPass: battleData.c,
             defenderPass: battleData.o,
+            attackerAbility,
+            defenderAbility,
             targetAlive: battleData.ohp > 0
           });
         }
@@ -1598,6 +1736,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               defenderName: op.name,
               attackerPass: battleData.c,
               defenderPass: battleData.o,
+              attackerAbility,
+              defenderAbility,
               targetAlive: battleData.ohp > 0
             });
             msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, true);
@@ -1621,10 +1761,19 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 battleData.chp -= bdHalf;
                 battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || battleData.chp) - bdHalf);
                 const bdStages = ensurePokemonStatStages(battleData, battleData.c);
-                const bdPrev = bdStages.attack || 0;
-                bdStages.attack = 6;
-                const bdDelta = 6 - bdPrev;
-                if (bdDelta > 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Attack</b> '+getStageVerb(bdDelta)+'!';
+                const bdTarget = attackerAbility === 'contrary' ? -6 : 6;
+                const bdDelta = bdTarget - (bdStages.attack || 0);
+                if (bdDelta !== 0) {
+                  msgLocal += applyStageChanges({
+                    battleData,
+                    pass: battleData.c,
+                    pokemonName: p.name,
+                    abilityName: attackerAbility,
+                    changes: [{ stat: 'attack', delta: bdDelta }],
+                    c,
+                    fromOpponent: false
+                  }).message;
+                }
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its own HP to maximize Attack!';
               } else {
                 msgLocal += '\n-> But it failed!';
@@ -1636,12 +1785,15 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               if (battleData.chp > csThird) {
                 battleData.chp = Math.max(1, battleData.chp - csThird);
                 battleData.tem[battleData.c] = Math.max(1, (battleData.tem[battleData.c] || battleData.chp + csThird) - csThird);
-                const csStages = ensurePokemonStatStages(battleData, battleData.c);
-                for (const s of ['attack','defense','special_attack','special_defense','speed']) {
-                  const prev = csStages[s] || 0; const next = clampStage(prev + 1); const delta = next - prev;
-                  csStages[s] = next;
-                  if (delta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+getStatLabel(s)+'</b> '+getStageVerb(delta)+'!';
-                }
+                msgLocal += applyStageChanges({
+                  battleData,
+                  pass: battleData.c,
+                  pokemonName: p.name,
+                  abilityName: attackerAbility,
+                  changes: ['attack','defense','special_attack','special_defense','speed'].map((stat) => ({ stat, delta: 1 })),
+                  c,
+                  fromOpponent: false
+                }).message;
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its HP to power itself up!';
               } else {
                 msgLocal += '\n-> But it failed!';
@@ -1653,12 +1805,15 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               if (battleData.chp > faHalf) {
                 battleData.chp -= faHalf;
                 battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || battleData.chp) - faHalf);
-                const faStages = ensurePokemonStatStages(battleData, battleData.c);
-                for (const [s, d] of [['attack',2],['special_attack',2],['speed',2]]) {
-                  const prev = faStages[s] || 0; const next = clampStage(prev + d); const delta = next - prev;
-                  faStages[s] = next;
-                  if (delta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+getStatLabel(s)+'</b> '+getStageVerb(delta)+'!';
-                }
+                msgLocal += applyStageChanges({
+                  battleData,
+                  pass: battleData.c,
+                  pokemonName: p.name,
+                  abilityName: attackerAbility,
+                  changes: [{ stat: 'attack', delta: 2 }, { stat: 'special_attack', delta: 2 }, { stat: 'speed', delta: 2 }],
+                  c,
+                  fromOpponent: false
+                }).message;
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its HP to sharpen all its senses!';
               } else {
                 msgLocal += '\n-> But it failed!';
@@ -1691,7 +1846,18 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
             } else {
               const defenderHpBeforeHit = battleData.ohp;
-              var damage = Math.min(calc(atk, def2, level1, move.power, eff1), battleData.ohp);
+              const pinchPowerMult = getPinchPowerMultiplier({
+                abilityName: attackerAbility,
+                moveType: move.type,
+                currentHp: battleData.chp,
+                maxHp: stats1.hp
+              });
+              const technicianInfo = getTechnicianPowerInfo({
+                abilityName: attackerAbility,
+                movePower: move.power
+              });
+              const boostedPower = Math.max(1, Math.floor(Number(move.power || 0) * pinchPowerMult * technicianInfo.multiplier));
+              var damage = Math.min(calc(atk, def2, level1, boostedPower, eff1), battleData.ohp);
               let ohkoFailed = false;
               if (OHKO_MOVES.has(moveName)) {
                 const attackerTypes = (pokes[p.name]?.types || []).map((t) => String(t).toLowerCase());
@@ -1712,6 +1878,10 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               const isHighCritMove = HIGH_CRIT_RATIO_MOVES.has(moveName);
               let hitCount = (!ohkoFailed && damage > 0) ? getMultiHitCount(moveName) : 1;
               let critHits = 0;
+              let staminaMessage = '';
+              let weakArmorMessage = '';
+              let shieldMessage = '';
+              let sturdyMessage = '';
               if (!ohkoFailed && damage > 0 && !OHKO_MOVES.has(moveName)) {
                 let totalDamage = 0;
                 let landedHits = 0;
@@ -1725,26 +1895,99 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                     critHits += 1;
                     hitDamage = Math.max(1, Math.floor(hitDamage * CRIT_DAMAGE_MULTIPLIER));
                   } else {
-                    const screenMult = getScreenDamageMultiplier(battleData, battleData.oid, move.category);
+                    const screenMult = getScreenDamageMultiplier(battleData, battleData.oid, move.category, attackerAbility, moveName);
                     if (screenMult < 1) {
                       hitDamage = Math.max(1, Math.floor(hitDamage * screenMult));
                     }
                   }
 
+                  const shieldResult = applyShadowShieldReduction({
+                    abilityName: defenderAbility,
+                    currentHp: remainingHp,
+                    maxHp: stats2.hp,
+                    incomingDamage: hitDamage,
+                    moveName,
+                    pokemonName: op.name,
+                    c
+                  });
+                  hitDamage = shieldResult.damage;
+                  if (shieldResult.activated && !shieldMessage) {
+                    shieldMessage = shieldResult.message;
+                  }
+                  const sturdyResult = applySturdySurvival({
+                    abilityName: defenderAbility,
+                    currentHp: remainingHp,
+                    maxHp: stats2.hp,
+                    incomingDamage: hitDamage,
+                    pokemonName: op.name,
+                    c
+                  });
+                  hitDamage = sturdyResult.damage;
+                  if (sturdyResult.activated && !sturdyMessage) {
+                    sturdyMessage = sturdyResult.message;
+                  }
                   hitDamage = Math.min(hitDamage, remainingHp);
                   totalDamage += hitDamage;
                   landedHits += 1;
+                  staminaMessage += applyStaminaOnHit({
+                    battleData,
+                    pass: battleData.o,
+                    pokemonName: op.name,
+                    abilityName: defenderAbility,
+                    damageDealt: hitDamage,
+                    c
+                  }).message;
+                  weakArmorMessage += applyWeakArmorOnHit({
+                    battleData,
+                    pass: battleData.o,
+                    pokemonName: op.name,
+                    abilityName: defenderAbility,
+                    moveCategory: move.category,
+                    damageDealt: hitDamage,
+                    c
+                  }).message;
                 }
                 hitCount = landedHits;
                 damage = totalDamage;
               }
-
-              battleData.ohp = Math.max((battleData.ohp - damage), 0);
-              battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+              if (OHKO_MOVES.has(moveName) && damage > 0) {
+                const sturdyDamage = applyDefenderDamageWithSturdy({
+                  battleData,
+                  damage,
+                  defenderAbility,
+                  defenderName: op.name,
+                  defenderMaxHp: stats2.hp,
+                  moveName
+                });
+                damage = sturdyDamage.damage;
+                staminaMessage += applyStaminaOnHit({
+                  battleData,
+                  pass: battleData.o,
+                  pokemonName: op.name,
+                  abilityName: defenderAbility,
+                  damageDealt: damage,
+                  c
+                }).message;
+                sturdyMessage += sturdyDamage.message;
+              } else {
+                battleData.ohp = Math.max((battleData.ohp - damage), 0);
+                battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+              }
               if (ohkoFailed) {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
               } else {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+                msgLocal += getInfiltratorBypassMessage(battleData, battleData.oid, move.category, attackerAbility, p.name, moveName);
+                if (pinchPowerMult > 1) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+c(formatAbilityLabel(attackerAbility))+'</b> boosted its '+c(move.type)+'-type move!';
+                }
+                msgLocal += staminaMessage;
+                if (technicianInfo.active) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Technician</b> activated!';
+                }
+                msgLocal += weakArmorMessage;
+                msgLocal += shieldMessage;
+                msgLocal += sturdyMessage;
                 if (hitCount > 1) {
                   msgLocal += '\n-> It hit <b>'+hitCount+'</b> times!';
                 }
@@ -1811,15 +2054,20 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                   defenderName: op.name,
                   attackerPass: battleData.c,
                   defenderPass: battleData.o,
+                  attackerAbility,
+                  defenderAbility,
                   targetAlive: battleData.ohp > 0
                 });
                 if (moveName === 'fell stinger' && battleData.ohp <= 0) {
-                  const fsStages = ensurePokemonStatStages(battleData, battleData.c);
-                  const fsPrev = fsStages.attack || 0;
-                  const fsNext = clampStage(fsPrev + 3);
-                  const fsDelta = fsNext - fsPrev;
-                  fsStages.attack = fsNext;
-                  if (fsDelta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Attack</b> '+getStageVerb(fsDelta)+'!';
+                  msgLocal += applyStageChanges({
+                    battleData,
+                    pass: battleData.c,
+                    pokemonName: p.name,
+                    abilityName: attackerAbility,
+                    changes: [{ stat: 'attack', delta: 3 }],
+                    c,
+                    fromOpponent: false
+                  }).message;
                 }
               }
               msgLocal += applyAbilityOnDamageTaken({
@@ -1836,14 +2084,17 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 c
               }).message;
               if (battleData.ohp <= 0) {
-                msgLocal += applyAbilityKo({
-                  battleData,
-                  pass: battleData.c,
-                  pokemonName: p.name,
-                  abilityName: attackerAbility,
-                  stats: stats1,
-                  c
-                }).message;
+                const remainingDefenderMons = Object.keys(battleData.tem2 || {}).filter((pass) => battleData.tem2[pass] > 0);
+                if (remainingDefenderMons.length > 0 || normalizeAbilityName(attackerAbility) !== 'beast-boost') {
+                  msgLocal += applyAbilityKo({
+                    battleData,
+                    pass: battleData.c,
+                    pokemonName: p.name,
+                    abilityName: attackerAbility,
+                    stats: stats1,
+                    c
+                  }).message;
+                }
               }
             }
             }
@@ -3593,7 +3844,7 @@ function expandEffectStats(effect) {
   return [effect.stat];
 }
 
-function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName, defenderName, attackerPass, defenderPass, targetAlive }) {
+function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName, defenderName, attackerPass, defenderPass, attackerAbility, defenderAbility, targetAlive }) {
   const effects = MOVE_STAT_EFFECTS[moveName] || [];
   const resolvedMoveCategory = String(moveCategory || '').toLowerCase();
   if (!effects.length) return '';
@@ -3620,6 +3871,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
     const targetPass = effect.target === 'self' ? attackerPass : defenderPass;
     const targetName = effect.target === 'self' ? attackerName : defenderName;
+    const targetAbility = effect.target === 'self' ? attackerAbility : defenderAbility;
     const stages = ensurePokemonStatStages(battleData, targetPass);
 
     if (effect.randomStat) {
@@ -3627,13 +3879,15 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       const eligible = allStats.filter(s => (stages[s] || 0) < 6);
       if (eligible.length > 0) {
         const statKey = eligible[Math.floor(Math.random() * eligible.length)];
-        const prev = stages[statKey] || 0;
-        const next = clampStage(prev + effect.stages);
-        const delta = next - prev;
-        stages[statKey] = next;
-        if (delta !== 0) {
-          out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
-        }
+        out += applyStageChanges({
+          battleData,
+          pass: targetPass,
+          pokemonName: targetName,
+          abilityName: targetAbility,
+          changes: [{ stat: statKey, delta: effect.stages }],
+          c,
+          fromOpponent: effect.target === 'target'
+        }).message;
       }
       continue;
     }
@@ -3643,13 +3897,15 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       const pool = effect.randomFrom.filter(s => increasing ? (stages[s] || 0) < 6 : (stages[s] || 0) > -6);
       if (pool.length > 0) {
         const statKey = pool[Math.floor(Math.random() * pool.length)];
-        const prev = stages[statKey] || 0;
-        const next = clampStage(prev + effect.stages);
-        const delta = next - prev;
-        stages[statKey] = next;
-        if (delta !== 0) {
-          out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
-        }
+        out += applyStageChanges({
+          battleData,
+          pass: targetPass,
+          pokemonName: targetName,
+          abilityName: targetAbility,
+          changes: [{ stat: statKey, delta: effect.stages }],
+          c,
+          fromOpponent: effect.target === 'target'
+        }).message;
       }
       continue;
     }
@@ -3657,13 +3913,15 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
     const effectStats = effect.statByMoveCategory ? [effect.statByMoveCategory[resolvedMoveCategory]].filter(Boolean) : expandEffectStats(effect);
 
     for (const statKey of effectStats) {
-      const prev = stages[statKey] || 0;
-      const next = clampStage(prev + effect.stages);
-      const delta = next - prev;
-      stages[statKey] = next;
-      if (delta !== 0) {
-        out += '\n-> <b>' + c(targetName) + '</b>\'s <b>' + getStatLabel(statKey) + '</b> ' + getStageVerb(delta) + '!';
-      }
+      out += applyStageChanges({
+        battleData,
+        pass: targetPass,
+        pokemonName: targetName,
+        abilityName: targetAbility,
+        changes: [{ stat: statKey, delta: effect.stages }],
+        c,
+        fromOpponent: effect.target === 'target'
+      }).message;
     }
   }
   return out;
@@ -3716,6 +3974,7 @@ if (singleActionTurn) {
 
 if (!battleData.turnHits) battleData.turnHits = {};
 battleData.turnHits = {}; // Reset at start of turn
+battleData.turnAbilityState = { skipSpeedBoost: {}, failedEscape: {} };
 const isSingleMoveTurn = singleActionTurn || orderedActions.length < 2;
 
 let turnLogs = "\n\n<b>Turn Summary:</b>";
@@ -3737,6 +3996,8 @@ async function executeStandardMove(act) {
     let defender = await getUserData(battleData.oid);
     let p = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0];
     let op = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
+    const attackerAbility = p && p.ability ? p.ability : 'none';
+    const defenderAbility = op && op.ability ? op.ability : 'none';
     let base1 = pokestats[p.name];
     let base2 = pokestats[op.name];
     let level1 = plevel(p.name, p.exp);
@@ -3758,6 +4019,8 @@ async function executeStandardMove(act) {
     if (move.category == 'special') {
       atk = applyStageToStat(stats1.special_attack, atkStages.special_attack);
       def2 = applyStageToStat(stats2.special_defense, defStages.special_defense);
+    } else {
+      atk = Math.max(1, Math.floor(atk * getAttackStatMultiplier(attackerAbility, move.category)));
     }
     if (move.category == 'physical' && getBattleStatus(battleData, battleData.c) === 'burn') {
         atk = Math.max(1, Math.floor(atk / 2));
@@ -3806,14 +4069,22 @@ async function executeStandardMove(act) {
                     msgLocal += '\n-> <b>'+c(p.name)+'</b> unleashed its energy... but it failed!';
                 } else {
                     var damage = Math.min(bState.damage * 2, battleData.ohp);
-                    battleData.ohp = Math.max((battleData.ohp - damage), 0);
-                    battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+                    const sturdyDamage = applyDefenderDamageWithSturdy({
+                      battleData,
+                      damage,
+                      defenderAbility,
+                      defenderName: op.name,
+                      defenderMaxHp: stats2.hp,
+                      moveName
+                    });
+                    damage = sturdyDamage.damage;
                   battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
                   if (battleData.bideState && battleData.bideState[battleData.o]) {
                     battleData.bideState[battleData.o].damage += damage;
                     battleData.bideState[battleData.o].lastAttacker = battleData.c;
                   }
                     msgLocal += '\n-> <b>'+c(p.name)+'</b> unleashed its energy! It dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+                    msgLocal += sturdyDamage.message;
                 }
                 delete battleData.bideState[battleData.c];
             }
@@ -3833,6 +4104,8 @@ async function executeStandardMove(act) {
                 defenderName: op.name,
                 attackerPass: battleData.c,
                 defenderPass: battleData.o,
+                attackerAbility,
+                defenderAbility,
                 targetAlive: battleData.ohp > 0
               });
             }
@@ -3849,14 +4122,22 @@ async function executeStandardMove(act) {
             } else {
               const multiplier = (moveName === 'metal burst' || moveName === 'comeuppance') ? 1.5 : 2;
               var damage = Math.min(Math.max(Math.floor(lastHit.damage * multiplier), 1), battleData.ohp);
-              battleData.ohp = Math.max((battleData.ohp - damage), 0);
-              battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+              const sturdyDamage = applyDefenderDamageWithSturdy({
+                battleData,
+                damage,
+                defenderAbility,
+                defenderName: op.name,
+                defenderMaxHp: stats2.hp,
+                moveName
+              });
+              damage = sturdyDamage.damage;
               battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
               if (battleData.bideState && battleData.bideState[battleData.o]) {
                 battleData.bideState[battleData.o].damage += damage;
                 battleData.bideState[battleData.o].lastAttacker = battleData.c;
               }
               msgLocal += '\n-> <b>'+c(p.name)+'</b> retaliated with <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+              msgLocal += sturdyDamage.message;
             }
           } else {
         if (isSemiInvulnerableAvoidedMove(battleData, battleData.o, move.category, moveName)) {
@@ -3910,6 +4191,8 @@ async function executeStandardMove(act) {
               defenderName: op.name,
               attackerPass: battleData.c,
               defenderPass: battleData.o,
+              attackerAbility,
+              defenderAbility,
               targetAlive: battleData.ohp > 0
             });
             msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, true);
@@ -3933,10 +4216,19 @@ async function executeStandardMove(act) {
                 battleData.chp -= bdHalf;
                 battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || battleData.chp) - bdHalf);
                 const bdStages = ensurePokemonStatStages(battleData, battleData.c);
-                const bdPrev = bdStages.attack || 0;
-                bdStages.attack = 6;
-                const bdDelta = 6 - bdPrev;
-                if (bdDelta > 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Attack</b> '+getStageVerb(bdDelta)+'!';
+                const bdTarget = attackerAbility === 'contrary' ? -6 : 6;
+                const bdDelta = bdTarget - (bdStages.attack || 0);
+                if (bdDelta !== 0) {
+                  msgLocal += applyStageChanges({
+                    battleData,
+                    pass: battleData.c,
+                    pokemonName: p.name,
+                    abilityName: attackerAbility,
+                    changes: [{ stat: 'attack', delta: bdDelta }],
+                    c,
+                    fromOpponent: false
+                  }).message;
+                }
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its own HP to maximize Attack!';
               } else {
                 msgLocal += '\n-> But it failed!';
@@ -3948,12 +4240,15 @@ async function executeStandardMove(act) {
               if (battleData.chp > csThird) {
                 battleData.chp = Math.max(1, battleData.chp - csThird);
                 battleData.tem[battleData.c] = Math.max(1, (battleData.tem[battleData.c] || battleData.chp + csThird) - csThird);
-                const csStages = ensurePokemonStatStages(battleData, battleData.c);
-                for (const s of ['attack','defense','special_attack','special_defense','speed']) {
-                  const prev = csStages[s] || 0; const next = clampStage(prev + 1); const delta = next - prev;
-                  csStages[s] = next;
-                  if (delta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+getStatLabel(s)+'</b> '+getStageVerb(delta)+'!';
-                }
+                msgLocal += applyStageChanges({
+                  battleData,
+                  pass: battleData.c,
+                  pokemonName: p.name,
+                  abilityName: attackerAbility,
+                  changes: ['attack','defense','special_attack','special_defense','speed'].map((stat) => ({ stat, delta: 1 })),
+                  c,
+                  fromOpponent: false
+                }).message;
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its HP to power itself up!';
               } else {
                 msgLocal += '\n-> But it failed!';
@@ -3965,12 +4260,15 @@ async function executeStandardMove(act) {
               if (battleData.chp > faHalf) {
                 battleData.chp -= faHalf;
                 battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || battleData.chp) - faHalf);
-                const faStages = ensurePokemonStatStages(battleData, battleData.c);
-                for (const [s, d] of [['attack',2],['special_attack',2],['speed',2]]) {
-                  const prev = faStages[s] || 0; const next = clampStage(prev + d); const delta = next - prev;
-                  faStages[s] = next;
-                  if (delta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+getStatLabel(s)+'</b> '+getStageVerb(delta)+'!';
-                }
+                msgLocal += applyStageChanges({
+                  battleData,
+                  pass: battleData.c,
+                  pokemonName: p.name,
+                  abilityName: attackerAbility,
+                  changes: [{ stat: 'attack', delta: 2 }, { stat: 'special_attack', delta: 2 }, { stat: 'speed', delta: 2 }],
+                  c,
+                  fromOpponent: false
+                }).message;
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> cut its HP to sharpen all its senses!';
               } else {
                 msgLocal += '\n-> But it failed!';
@@ -3989,7 +4287,18 @@ async function executeStandardMove(act) {
               if (moveName === 'dream eater' && getBattleStatus(battleData, battleData.o) !== 'sleep') {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
               } else {
-            var damage = Math.min(calc(atk, def2, level1, move.power, eff1), battleData.ohp);
+            const pinchPowerMult = getPinchPowerMultiplier({
+              abilityName: attackerAbility,
+              moveType: move.type,
+              currentHp: battleData.chp,
+              maxHp: stats1.hp
+            });
+            const technicianInfo = getTechnicianPowerInfo({
+              abilityName: attackerAbility,
+              movePower: move.power
+            });
+            const boostedPower = Math.max(1, Math.floor(Number(move.power || 0) * pinchPowerMult * technicianInfo.multiplier));
+            var damage = Math.min(calc(atk, def2, level1, boostedPower, eff1), battleData.ohp);
             let ohkoFailed = false;
             if (OHKO_MOVES.has(moveName)) {
               const attackerTypes = (pokes[p.name]?.types || []).map((t) => String(t).toLowerCase());
@@ -4010,6 +4319,10 @@ async function executeStandardMove(act) {
             const isHighCritMove = HIGH_CRIT_RATIO_MOVES.has(moveName);
             let hitCount = (!ohkoFailed && damage > 0) ? getMultiHitCount(moveName) : 1;
             let critHits = 0;
+            let staminaMessage = '';
+            let weakArmorMessage = '';
+            let shieldMessage = '';
+            let sturdyMessage = '';
             if (!ohkoFailed && damage > 0 && !OHKO_MOVES.has(moveName)) {
               let totalDamage = 0;
               let landedHits = 0;
@@ -4023,26 +4336,99 @@ async function executeStandardMove(act) {
                   critHits += 1;
                   hitDamage = Math.max(1, Math.floor(hitDamage * CRIT_DAMAGE_MULTIPLIER));
                 } else {
-                  const screenMult = getScreenDamageMultiplier(battleData, battleData.oid, move.category);
+                  const screenMult = getScreenDamageMultiplier(battleData, battleData.oid, move.category, attackerAbility, moveName);
                   if (screenMult < 1) {
                     hitDamage = Math.max(1, Math.floor(hitDamage * screenMult));
                   }
                 }
 
+                const shieldResult = applyShadowShieldReduction({
+                  abilityName: defenderAbility,
+                  currentHp: remainingHp,
+                  maxHp: stats2.hp,
+                  incomingDamage: hitDamage,
+                  moveName,
+                  pokemonName: op.name,
+                  c
+                });
+                hitDamage = shieldResult.damage;
+                if (shieldResult.activated && !shieldMessage) {
+                  shieldMessage = shieldResult.message;
+                }
+                const sturdyResult = applySturdySurvival({
+                  abilityName: defenderAbility,
+                  currentHp: remainingHp,
+                  maxHp: stats2.hp,
+                  incomingDamage: hitDamage,
+                  pokemonName: op.name,
+                  c
+                });
+                hitDamage = sturdyResult.damage;
+                if (sturdyResult.activated && !sturdyMessage) {
+                  sturdyMessage = sturdyResult.message;
+                }
                 hitDamage = Math.min(hitDamage, remainingHp);
                 totalDamage += hitDamage;
                 landedHits += 1;
+                staminaMessage += applyStaminaOnHit({
+                  battleData,
+                  pass: battleData.o,
+                  pokemonName: op.name,
+                  abilityName: defenderAbility,
+                  damageDealt: hitDamage,
+                  c
+                }).message;
+                weakArmorMessage += applyWeakArmorOnHit({
+                  battleData,
+                  pass: battleData.o,
+                  pokemonName: op.name,
+                  abilityName: defenderAbility,
+                  moveCategory: move.category,
+                  damageDealt: hitDamage,
+                  c
+                }).message;
               }
               hitCount = landedHits;
               damage = totalDamage;
             }
-
-            battleData.ohp = Math.max((battleData.ohp - damage), 0);
-            battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+            if (OHKO_MOVES.has(moveName) && damage > 0) {
+              const sturdyDamage = applyDefenderDamageWithSturdy({
+                battleData,
+                damage,
+                defenderAbility,
+                defenderName: op.name,
+                defenderMaxHp: stats2.hp,
+                moveName
+              });
+              damage = sturdyDamage.damage;
+              staminaMessage += applyStaminaOnHit({
+                battleData,
+                pass: battleData.o,
+                pokemonName: op.name,
+                abilityName: defenderAbility,
+                damageDealt: damage,
+                c
+              }).message;
+              sturdyMessage += sturdyDamage.message;
+            } else {
+              battleData.ohp = Math.max((battleData.ohp - damage), 0);
+              battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
+            }
             if (ohkoFailed) {
               msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
             } else {
               msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+              msgLocal += getInfiltratorBypassMessage(battleData, battleData.oid, move.category, attackerAbility, p.name, moveName);
+              if (pinchPowerMult > 1) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+c(formatAbilityLabel(attackerAbility))+'</b> boosted its '+c(move.type)+'-type move!';
+              }
+              msgLocal += staminaMessage;
+              if (technicianInfo.active) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Technician</b> activated!';
+              }
+              msgLocal += weakArmorMessage;
+              msgLocal += shieldMessage;
+              msgLocal += sturdyMessage;
               if (hitCount > 1) {
                 msgLocal += '\n-> It hit <b>'+hitCount+'</b> times!';
               }
@@ -4101,23 +4487,54 @@ async function executeStandardMove(act) {
             else if (!ohkoFailed && eff1 == 4) msgLocal += '\n<b>* It\'s incredibly super effective!</b>';
 
             if (damage > 0) {
-              msgLocal += applyMoveStatEffects({
-                battleData,
-                moveName,
-                moveCategory: move.category,
-                attackerName: p.name,
-                defenderName: op.name,
-                attackerPass: battleData.c,
-                defenderPass: battleData.o,
-                targetAlive: battleData.ohp > 0
-              });
+                msgLocal += applyMoveStatEffects({
+                  battleData,
+                  moveName,
+                  moveCategory: move.category,
+                  attackerName: p.name,
+                  defenderName: op.name,
+                  attackerPass: battleData.c,
+                  defenderPass: battleData.o,
+                  attackerAbility,
+                  defenderAbility,
+                  targetAlive: battleData.ohp > 0
+                });
               if (moveName === 'fell stinger' && battleData.ohp <= 0) {
-                const fsStages = ensurePokemonStatStages(battleData, battleData.c);
-                const fsPrev = fsStages.attack || 0;
-                const fsNext = clampStage(fsPrev + 3);
-                const fsDelta = fsNext - fsPrev;
-                fsStages.attack = fsNext;
-                if (fsDelta !== 0) msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Attack</b> '+getStageVerb(fsDelta)+'!';
+                msgLocal += applyStageChanges({
+                  battleData,
+                  pass: battleData.c,
+                  pokemonName: p.name,
+                  abilityName: attackerAbility,
+                  changes: [{ stat: 'attack', delta: 3 }],
+                  c,
+                  fromOpponent: false
+                }).message;
+              }
+            }
+            msgLocal += applyAbilityOnDamageTaken({
+              battleData,
+              pass: battleData.o,
+              pokemonName: op.name,
+              abilityName: defenderAbility,
+              moveType: move.type,
+              moveCategory: move.category,
+              hpBefore: defenderHpBeforeHit,
+              hpAfter: battleData.ohp,
+              maxHp: stats2.hp,
+              damageDealt: damage,
+              c
+            }).message;
+            if (battleData.ohp <= 0) {
+              const remainingDefenderMons = Object.keys(battleData.tem2 || {}).filter((pass) => battleData.tem2[pass] > 0);
+              if (remainingDefenderMons.length > 0 || normalizeAbilityName(attackerAbility) !== 'beast-boost') {
+                msgLocal += applyAbilityKo({
+                  battleData,
+                  pass: battleData.c,
+                  pokemonName: p.name,
+                  abilityName: attackerAbility,
+                  stats: stats1,
+                  c
+                }).message;
               }
             }
             }

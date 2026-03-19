@@ -1,7 +1,9 @@
 {
   "mewtwo": [
     "pressure",
-    "unnerve"
+    "unnerve",
+    "moxie",
+    "infiltrator"
   ],
   "charizard": [
     "blaze",
@@ -59,7 +61,15 @@
   ],
   "slaking": [
     "truant",
-    "anger-shell"
+    "anger-shell",
+    "torrent",
+    "overgrow",
+    "shadow-shield",
+    "weak-armour",
+    "contrary",
+    "moxie",
+    "technician",
+    "stamina"
   ],
   "snorlax": [
     "immunity",
@@ -301,7 +311,11 @@
     "drought"
   ],
   "gastly": [
-    "levitate"
+    "levitate",
+    "sturdy",
+    "contrary",
+    "beast-boost",
+    "speed-boost"
   ],
   "squirtle": [
     "torrent",
@@ -2049,7 +2063,8 @@
     "super-luck"
   ],
   "buzzwole": [
-    "beast-boost"
+    "beast-boost",
+    "intimidate"
   ],
   "arceus": [
     "multitype"

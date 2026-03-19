@@ -23,6 +23,7 @@ function normalizeAbilityName(value) {
   return String(value || '')
     .toLowerCase()
     .replace(/[_\s]+/g, '-')
+    .replace(/armour/g, 'armor')
     .replace(/-+/g, '-')
     .trim();
 }
@@ -33,6 +34,13 @@ function normalizeMoveName(value) {
     .replace(/[_\s]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function titleCaseHyphenated(value) {
+  return String(value || '')
+    .split('-')
+    .map((part) => part ? part.charAt(0).toUpperCase() + part.slice(1) : part)
+    .join(' ');
 }
 
 function clampStage(stage) {
@@ -206,7 +214,7 @@ function getEntryBoostStat(abilityName) {
 }
 
 function applyEntryAbility(options) {
-  const { battleData, pass, pokemonName, abilityName, selfStats, opponentStats, c } = options;
+  const { battleData, pass, pokemonName, abilityName, selfStats, opponentStats, opponentPass, opponentName, opponentAbility, c } = options;
   const ability = normalizeAbilityName(abilityName);
   const state = ensureAbilityState(battleData);
   let message = '';
@@ -249,6 +257,23 @@ function applyEntryAbility(options) {
     });
     message += applied.message;
     deltas = deltas.concat(applied.deltas);
+  }
+
+  if (ability === 'intimidate' && opponentPass && opponentName) {
+    const applied = applyStageChanges({
+      battleData,
+      pass: opponentPass,
+      pokemonName: opponentName,
+      abilityName: opponentAbility,
+      changes: [{ stat: 'attack', delta: -1 }],
+      c,
+      fromOpponent: true
+    });
+    if (applied.deltas.some((entry) => entry && entry.delta !== 0)) {
+      message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Intimidate</b> activated!';
+      message += applied.message;
+      deltas = deltas.concat(applied.deltas);
+    }
   }
 
   return { message, deltas };
@@ -298,6 +323,176 @@ function applyAbsorbMoveAbility(options) {
   return { blocked: true, message: applied.message, deltas: applied.deltas };
 }
 
+function getPinchAbilityInfo(options) {
+  const { abilityName, moveType, currentHp, maxHp } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const type = String(moveType || '').toLowerCase();
+  const hpNow = Number(currentHp);
+  const hpMax = Number(maxHp);
+  const abilityTypeMap = {
+    blaze: 'fire',
+    overgrow: 'grass',
+    torrent: 'water'
+  };
+  const boostType = abilityTypeMap[ability];
+  if (!boostType) {
+    return { active: false, multiplier: 1, abilityName: ability, abilityLabel: titleCaseHyphenated(abilityName || 'none'), boostType: '' };
+  }
+  if (!Number.isFinite(hpNow) || !Number.isFinite(hpMax) || hpMax <= 0) {
+    return { active: false, multiplier: 1, abilityName: ability, abilityLabel: titleCaseHyphenated(abilityName || 'none'), boostType };
+  }
+  const hpConditionMet = hpNow * 3 <= hpMax;
+  const moveTypeMatches = !type || type === boostType;
+  const active = hpConditionMet && moveTypeMatches;
+  return {
+    active,
+    multiplier: active ? 1.5 : 1,
+    abilityName: ability,
+    abilityLabel: titleCaseHyphenated(abilityName || ability),
+    boostType
+  };
+}
+
+function getPinchPowerMultiplier(options) {
+  return getPinchAbilityInfo(options).multiplier;
+}
+
+function getTechnicianPowerInfo(options) {
+  const { abilityName, movePower } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const power = Number(movePower);
+  const active = ability === 'technician' && Number.isFinite(power) && power > 0 && power <= 60;
+  return {
+    active,
+    multiplier: active ? 1.5 : 1,
+    abilityName: ability,
+    abilityLabel: titleCaseHyphenated(abilityName || ability)
+  };
+}
+
+function getInfiltratorInfo(options) {
+  const { abilityName, moveName } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const normalizedMove = normalizeMoveName(moveName);
+  const blockedMoves = new Set(['transform', 'sky drop']);
+  const active = ability === 'infiltrator' && !blockedMoves.has(normalizedMove);
+  return {
+    active,
+    abilityName: ability,
+    abilityLabel: titleCaseHyphenated(abilityName || ability)
+  };
+}
+
+function getAttackStatMultiplier(abilityName, moveCategory) {
+  const ability = normalizeAbilityName(abilityName);
+  const category = String(moveCategory || '').toLowerCase();
+  if (category !== 'physical') return 1;
+  if (ability === 'huge-power' || ability === 'pure-power') return 2;
+  return 1;
+}
+
+const DIRECT_DAMAGE_MOVE_NAMES = new Set([
+  'dragon rage',
+  'endeavor',
+  'final gambit',
+  'nature s madness',
+  'nature\'s madness',
+  'night shade',
+  'ruination',
+  'seismic toss',
+  'sonic boom',
+  'super fang'
+]);
+
+function isDirectDamageMove(moveName) {
+  return DIRECT_DAMAGE_MOVE_NAMES.has(normalizeMoveName(moveName));
+}
+
+function applyShadowShieldReduction(options) {
+  const { abilityName, currentHp, maxHp, incomingDamage, moveName, pokemonName, c } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const hpNow = Number(currentHp);
+  const hpMax = Number(maxHp);
+  const damage = Math.max(0, Number(incomingDamage) || 0);
+  if (ability !== 'shadow-shield' || !Number.isFinite(hpNow) || !Number.isFinite(hpMax) || hpNow <= 0 || hpMax <= 0) {
+    return { damage, activated: false, message: '' };
+  }
+  if (hpNow !== hpMax || isDirectDamageMove(moveName)) {
+    return { damage, activated: false, message: '' };
+  }
+  const reducedDamage = Math.max(0, Math.floor(damage / 2));
+  return {
+    damage: reducedDamage,
+    activated: reducedDamage !== damage,
+    message: reducedDamage !== damage
+      ? '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Shadow Shield</b> weakened the attack!'
+      : ''
+  };
+}
+
+function applySturdySurvival(options) {
+  const { abilityName, currentHp, maxHp, incomingDamage, pokemonName, c } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const hpNow = Number(currentHp);
+  const hpMax = Number(maxHp);
+  const damage = Math.max(0, Number(incomingDamage) || 0);
+  if (ability !== 'sturdy' || !Number.isFinite(hpNow) || !Number.isFinite(hpMax) || hpNow <= 0 || hpMax <= 0) {
+    return { damage, activated: false, message: '' };
+  }
+  if (hpNow !== hpMax || damage < hpNow) {
+    return { damage, activated: false, message: '' };
+  }
+  const reducedDamage = Math.max(0, hpNow - 1);
+  return {
+    damage: reducedDamage,
+    activated: true,
+    message: '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Sturdy</b> let it hang on with <b>1 HP</b>!'
+  };
+}
+
+function applyWeakArmorOnHit(options) {
+  const { battleData, pass, pokemonName, abilityName, moveCategory, damageDealt, c } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const category = String(moveCategory || '').toLowerCase();
+  if (damageDealt <= 0 || ability !== 'weak-armor' || category !== 'physical') {
+    return { message: '', deltas: [] };
+  }
+  const applied = applyStageChanges({
+    battleData,
+    pass,
+    pokemonName,
+    abilityName,
+    changes: [{ stat: 'defense', delta: -1 }, { stat: 'speed', delta: 2 }],
+    c,
+    fromOpponent: false
+  });
+  if (applied.deltas.some((entry) => entry && entry.delta !== 0)) {
+    applied.message = '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Weak Armor</b> activated!' + applied.message;
+  }
+  return applied;
+}
+
+function applyStaminaOnHit(options) {
+  const { battleData, pass, pokemonName, abilityName, damageDealt, c } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  if (damageDealt <= 0 || ability !== 'stamina') {
+    return { message: '', deltas: [] };
+  }
+  const applied = applyStageChanges({
+    battleData,
+    pass,
+    pokemonName,
+    abilityName,
+    changes: [{ stat: 'defense', delta: 1 }],
+    c,
+    fromOpponent: false
+  });
+  if (applied.deltas.some((entry) => entry && entry.delta !== 0)) {
+    applied.message = '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Stamina</b> activated!' + applied.message;
+  }
+  return applied;
+}
+
 function applyOnDamageTakenAbilities(options) {
   const {
     battleData,
@@ -318,12 +513,9 @@ function applyOnDamageTakenAbilities(options) {
   let message = '';
   let deltas = [];
   const crossedHalf = Number(hpBefore) > Math.floor(Number(maxHp || 0) / 2) && Number(hpAfter) > 0 && Number(hpAfter) <= Math.floor(Number(maxHp || 0) / 2);
+  const pinchBefore = getPinchAbilityInfo({ abilityName, currentHp: hpBefore, maxHp });
+  const pinchAfter = getPinchAbilityInfo({ abilityName, currentHp: hpAfter, maxHp });
 
-  if (damageDealt > 0 && ability === 'stamina') {
-    const applied = applyStageChanges({ battleData, pass, pokemonName, abilityName, changes: [{ stat: 'defense', delta: 1 }], c, fromOpponent: false });
-    message += applied.message;
-    deltas = deltas.concat(applied.deltas);
-  }
   if (damageDealt > 0 && ability === 'steam-engine' && (type === 'fire' || type === 'water')) {
     const applied = applyStageChanges({ battleData, pass, pokemonName, abilityName, changes: [{ stat: 'speed', delta: 6 }], c, fromOpponent: false });
     message += applied.message;
@@ -336,19 +528,6 @@ function applyOnDamageTakenAbilities(options) {
   }
   if (damageDealt > 0 && ability === 'water-compaction' && type === 'water') {
     const applied = applyStageChanges({ battleData, pass, pokemonName, abilityName, changes: [{ stat: 'defense', delta: 2 }], c, fromOpponent: false });
-    message += applied.message;
-    deltas = deltas.concat(applied.deltas);
-  }
-  if (damageDealt > 0 && ability === 'weak-armor' && category === 'physical') {
-    const applied = applyStageChanges({
-      battleData,
-      pass,
-      pokemonName,
-      abilityName,
-      changes: [{ stat: 'defense', delta: -1 }, { stat: 'speed', delta: 2 }],
-      c,
-      fromOpponent: false
-    });
     message += applied.message;
     deltas = deltas.concat(applied.deltas);
   }
@@ -386,6 +565,9 @@ function applyOnDamageTakenAbilities(options) {
     message += applied.message;
     deltas = deltas.concat(applied.deltas);
   }
+  if (!pinchBefore.active && pinchAfter.active) {
+    message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + pinchAfter.abilityLabel + '</b> activated! Its ' + c(pinchAfter.boostType) + '-type moves are now stronger.';
+  }
 
   return { message, deltas };
 }
@@ -414,6 +596,20 @@ function applyKoAbility(options) {
   const direct = getKoAbilityChanges(ability, stats);
   if (direct.length > 0) {
     const applied = applyStageChanges({ battleData, pass, pokemonName, abilityName, changes: direct, c, fromOpponent: false });
+    if (applied.deltas.some((entry) => entry && entry.delta !== 0)) {
+      const namedKoAbilities = new Set([
+        'beast-boost',
+        'moxie',
+        'chilling-neigh',
+        'grim-neigh',
+        'as-one-glastrier',
+        'as-one-spectrier',
+        'soul-heart'
+      ]);
+      if (namedKoAbilities.has(ability)) {
+        applied.message = '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + titleCaseHyphenated(abilityName) + '</b> activated!' + applied.message;
+      }
+    }
     message += applied.message;
     deltas = deltas.concat(applied.deltas);
   }
@@ -442,7 +638,19 @@ function applyEndTurnAbility(options) {
   if (!ability) return { message: '', deltas: [] };
 
   if (ability === 'speed-boost') {
-    return applyStageChanges({ battleData, pass, pokemonName, abilityName, changes: [{ stat: 'speed', delta: 1 }], c, fromOpponent: false });
+    const state = battleData && battleData.turnAbilityState && typeof battleData.turnAbilityState === 'object'
+      ? battleData.turnAbilityState
+      : {};
+    const skipMap = state.skipSpeedBoost && typeof state.skipSpeedBoost === 'object' ? state.skipSpeedBoost : {};
+    const failedEscapeMap = state.failedEscape && typeof state.failedEscape === 'object' ? state.failedEscape : {};
+    if (skipMap[String(pass)] || failedEscapeMap[String(pass)]) {
+      return { message: '', deltas: [] };
+    }
+    const applied = applyStageChanges({ battleData, pass, pokemonName, abilityName, changes: [{ stat: 'speed', delta: 1 }], c, fromOpponent: false });
+    if (applied.deltas.some((entry) => entry && entry.delta !== 0)) {
+      applied.message = '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Speed Boost</b> activated!' + applied.message;
+    }
+    return applied;
   }
 
   if (ability === 'moody') {
@@ -481,17 +689,27 @@ module.exports = {
   applyEntryAbility,
   applyKoAbility,
   applyOnDamageTakenAbilities,
+  applyShadowShieldReduction,
   applyOpportunistCopy,
+  applyStaminaOnHit,
+  applyWeakArmorOnHit,
   applyStageChanges,
   applyStageToStat,
   clampStage,
   ensureAbilityState,
   ensureBattleStatStages,
   ensurePokemonStatStages,
+  applySturdySurvival,
+  getAttackStatMultiplier,
+  getPinchAbilityInfo,
+  getPinchPowerMultiplier,
+  getInfiltratorInfo,
+  getTechnicianPowerInfo,
   getHighestStatKey,
   getStageMultiplier,
   getStageVerb,
   getStatLabel,
+  isDirectDamageMove,
   isWindMove,
   normalizeAbilityName,
   normalizeMoveName

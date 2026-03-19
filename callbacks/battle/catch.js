@@ -176,6 +176,9 @@ const playerEntry = applyEntryAbility({
   abilityName: p.ability,
   selfStats: stats,
   opponentStats: stats2,
+  opponentPass: battleData.opass,
+  opponentName: name,
+  opponentAbility: battleData.oability,
   c
 })
 const wildEntry = applyEntryAbility({
@@ -185,6 +188,9 @@ const wildEntry = applyEntryAbility({
   abilityName: battleData.oability,
   selfStats: stats2,
   opponentStats: stats,
+  opponentPass: p.pass,
+  opponentName: p.name,
+  opponentAbility: p.ability,
   c
 })
 msg += playerEntry.message + wildEntry.message

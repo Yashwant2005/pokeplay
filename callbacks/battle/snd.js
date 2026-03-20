@@ -1,4 +1,4 @@
-const { applyEntryAbility, getBattleMovePower, getPinchAbilityInfo } = require('../../utils/battle_abilities');
+const { applyEntryAbility, getBattleMovePower, getDisplayedWeatherState, getPinchAbilityInfo, getWeatherDisplayName, setBattleWeatherNegationState } = require('../../utils/battle_abilities');
 
 function register_018_snd(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -49,6 +49,7 @@ const entryAbility = applyEntryAbility({
   pass: p.pass,
   pokemonName: p.name,
   abilityName: p.ability,
+  heldItem: p.held_item,
   selfStats: stats,
   opponentStats: wildStats,
   opponentPass: battleData.opass,
@@ -56,12 +57,30 @@ const entryAbility = applyEntryAbility({
   opponentAbility: battleData.oability,
   c
 })
+const weatherNegation = setBattleWeatherNegationState({
+  battleData,
+  activeAbilities: [p.ability, battleData.oability],
+  sourcePokemonName: p.name,
+  sourceAbilityName: p.ability,
+  c
+})
 await saveBattleData(bword, battleData);
 let msg = '<i> Sent '+p.name+' For Battle</i>'
 msg += entryAbility.message
+msg += weatherNegation.message
 msg += '\n\n<b>wild</b> '+c(battleData.name)+' ['+c(op.types.join(' / '))+']'
 msg += '\n<b>Level :</b> '+battleData.level+' | <b>HP :</b> '+battleData.ochp+'/'+battleData.ohp+''
 msg += '\n<code>'+Bar(battleData.ohp,battleData.ochp)+'</code>'
+const weatherState = getDisplayedWeatherState(battleData)
+if(weatherState.weather){
+msg += '\n<b>Weather :</b> '+getWeatherDisplayName(weatherState.weather)
+if((battleData.weatherTurns || 0) > 0){
+msg += ' ('+battleData.weatherTurns+' turns left)'
+}
+if(weatherState.negated){
+msg += ' <i>(effects negated)</i>'
+}
+}
 msg += '\n\n<b>Turn :</b> <code>'+uname+'</code>'
 const p2 = pokes[p.name]
 msg += '\n<b>'+c(p.name)+'</b> ['+c(p2.types.join(' / '))+']'

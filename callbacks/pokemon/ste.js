@@ -56,10 +56,19 @@ statsText += `\`Sp. Attack       ${stats.special_attack.toString().padStart(2)}\
 statsText += `\`Sp. Defense      ${stats.special_defense.toString().padStart(2)}\` *${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].increased === 'special_defense' ? '(+)' : ''}${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].decreased === 'special_defense' ? '(-)' : ''}*\n`;
 statsText += `\`Speed            ${stats.speed.toString().padStart(2)}\` *${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].increased === 'speed' ? '(+)' : ''}${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].decreased === 'speed' ? '(-)' : ''}*\n`;
 
- await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,''+statsText+'',{parse_mode:'markdown',reply_markup:{inline_keyboard:[
+const keyboardArray = [
 [{text:'Info',callback_data:'info_'+pass+'_'+id+''},{text:'IVs/EVs',callback_data:'pkisvs_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+pass+'_'+id+''}],
 [{text:'Evolve',callback_data:'evolve_'+pass+'_'+id+''},{text:'Held Items',callback_data:'heldpanel_'+pass+'_'+id+''},{text:'Release',callback_data:'release_'+pass+'_'+id+''}]
-]}})
+]
+
+const abilityNorm = String(p2.ability || '').toLowerCase().replace(/[-_\s]/g, '')
+const hasAuraBreak = abilityNorm === 'aurabreak'
+const alreadyChanged = !!(p2.powerConstructChanged)
+if(hasAuraBreak && !alreadyChanged){
+  keyboardArray.push([{text:'Power Construct',callback_data:'zygpc_'+pass+'_'+id+''}])
+}
+
+ await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,''+statsText+'',{parse_mode:'markdown',reply_markup:{inline_keyboard:keyboardArray}})
 })
 }
 

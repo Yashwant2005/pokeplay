@@ -23,6 +23,7 @@ function parseNameAndAmount(tokens) {
 
 function registerAddItemCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { HELD_ITEM_POOL, normalizeHeldItemShopName } = require('../../utils/held_item_shop');
 
   const MINT_POOL = [
     'adamant mint',
@@ -59,35 +60,6 @@ function registerAddItemCommand(bot, deps) {
     'master'
   ];
 
-  const HELD_ITEM_POOL = [
-    'air-balloon',
-    'assault-vest',
-    'big-root',
-    'clear-amulet',
-    'rocky-helmet',
-    'tatsugiri-lunchbox',
-    'choice-band',
-    'choice-scarf',
-    'choice-specs',
-    'eviolite',
-    'focus-sash',
-    'life-orb',
-    'light-ball',
-    'blunder-policy',
-    'leftovers',
-    'weakness-policy',
-    'white-herb',
-    'power-herb'
-  ];
-
-  function normalizeHeldItemName(value) {
-    return String(value || '')
-      .trim()
-      .toLowerCase()
-      .replace(/[_\s]+/g, '-')
-      .replace(/-+/g, '-');
-  }
-
   bot.command('additem', async (ctx) => {
     if (!admins.includes(ctx.from.id)) return;
 
@@ -101,7 +73,7 @@ function registerAddItemCommand(bot, deps) {
     const item = toKey(args[0]);
 
     if (!item) {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:*\n/additem pc 1000\n/additem lp 500\n/additem ht 20\n/additem battlebox 5\n/additem daycarecandy 3\n/additem tm 44 2\n/additem tm any 3\n/additem stone charizardite-x 1\n/additem stone any 2\n/additem mint jolly mint 2\n/additem mint any 5\n/additem ball master 1\n/additem ball any 3\n/additem held light-ball 1\n/additem held eviolite 1\n/additem held white-herb 1\n/additem held power-herb 1\n/additem held big-root 1\n/additem held clear-amulet 1\n/additem held rocky-helmet 1\n/additem held tatsugiri-lunchbox 1\n/additem held air-balloon 1\n/additem held focus-sash 1\n/additem held life-orb 1\n/additem held leftovers 1\n/additem held weakness-policy 1\n/additem held blunder-policy 1\n/additem held assault-vest 1\n/additem held choice-band 1\n/additem held choice-specs 1\n/additem held choice-scarf 1\n/additem bottlecap 2\n/additem goldbottlecap 1');
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:*\n/additem pc 1000\n/additem lp 500\n/additem ht 20\n/additem battlebox 5\n/additem daycarecandy 3\n/additem tm 44 2\n/additem tm any 3\n/additem stone charizardite-x 1\n/additem stone any 2\n/additem mint jolly mint 2\n/additem mint any 5\n/additem ball master 1\n/additem ball any 3\n/additem held light-ball 1\n/additem held eviolite 1\n/additem held power-herb 1\n/additem held big-root 1\n/additem held clear-amulet 1\n/additem held rocky-helmet 1\n/additem held tatsugiri-lunchbox 1\n/additem held air-balloon 1\n/additem held focus-sash 1\n/additem held life-orb 1\n/additem held leftovers 1\n/additem held heat-rock 1\n/additem held damp-rock 1\n/additem held weakness-policy 1\n/additem held blunder-policy 1\n/additem held assault-vest 1\n/additem held choice-band 1\n/additem held choice-specs 1\n/additem held choice-scarf 1\n/additem held booster-energy 1\n/additem abilitycapsule 1\n/additem abilitypatch 1\n/additem bottlecap 2\n/additem goldbottlecap 1');
       return;
     }
 
@@ -113,6 +85,8 @@ function registerAddItemCommand(bot, deps) {
     if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {};
     if (!data.extra.itembox.mints || typeof data.extra.itembox.mints !== 'object') data.extra.itembox.mints = {};
     if (!data.extra.itembox.heldItems || typeof data.extra.itembox.heldItems !== 'object') data.extra.itembox.heldItems = {};
+    if (!Number.isFinite(data.extra.itembox.abilityCapsules)) data.extra.itembox.abilityCapsules = 0;
+    if (!Number.isFinite(data.extra.itembox.abilityPatches)) data.extra.itembox.abilityPatches = 0;
     if (!Array.isArray(data.inv.stones)) data.inv.stones = [];
     if (!data.tms || typeof data.tms !== 'object') data.tms = {};
 
@@ -210,7 +184,7 @@ function registerAddItemCommand(bot, deps) {
       result = 'Added *' + amount + '* Nature Mint item(s).';
     } else if (['held', 'helditem', 'held-item', 'held_item', 'helditems', 'held-items', 'held_items'].includes(item)) {
       const parsed = parseNameAndAmount(args.slice(1));
-      const heldRaw = normalizeHeldItemName(parsed.name);
+      const heldRaw = normalizeHeldItemShopName(parsed.name);
       const amount = parsed.amount;
       if (!heldRaw) {
         await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:* /additem held <item_name|any> [amount]');
@@ -235,6 +209,14 @@ function registerAddItemCommand(bot, deps) {
       if (!Number.isFinite(data.extra.itembox.bottleCaps)) data.extra.itembox.bottleCaps = 0;
       data.extra.itembox.bottleCaps += amount;
       result = 'Added *' + amount + '* Bottle Cap(s).';
+    } else if (['abilitycapsule', 'ability-capsule', 'ability_capsule', 'capsule'].includes(item)) {
+      const amount = parsePositiveInt(args[1], 1);
+      data.extra.itembox.abilityCapsules += amount;
+      result = 'Added *' + amount + '* Ability Capsule(s).';
+    } else if (['abilitypatch', 'ability-patch', 'ability_patch', 'patch'].includes(item)) {
+      const amount = parsePositiveInt(args[1], 1);
+      data.extra.itembox.abilityPatches += amount;
+      result = 'Added *' + amount + '* Ability Patch(es).';
     } else if (['goldbottlecap', 'gold-bottle-cap', 'gbcap'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.extra.itembox.goldBottleCaps)) data.extra.itembox.goldBottleCaps = 0;
@@ -263,7 +245,7 @@ function registerAddItemCommand(bot, deps) {
       }
       result = 'Added *' + amount + '* PokÃ©ball(s).';
     } else {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Unknown item type.*\nTry: pc, lp, ht, battlebox, daycarecandy, vp, tm, stone, mint, held, ball, bottlecap, goldbottlecap');
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Unknown item type.*\nTry: pc, lp, ht, battlebox, daycarecandy, vp, tm, stone, mint, held, ball, abilitycapsule, abilitypatch, bottlecap, goldbottlecap');
       return;
     }
 

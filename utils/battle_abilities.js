@@ -1,3 +1,5 @@
+const { getArceusPlateType } = require('./held_item_shop');
+
 const STAT_KEYS = ['attack', 'defense', 'special_attack', 'special_defense', 'speed', 'accuracy', 'evasion'];
 const MAIN_BATTLE_STATS = ['attack', 'defense', 'special_attack', 'special_defense', 'speed'];
 const WIND_MOVE_NAMES = new Set([
@@ -146,10 +148,414 @@ function getBattleWeatherName(battleData) {
     .trim();
 }
 
+function isWeatherNegatingAbility(abilityName) {
+  const ability = normalizeAbilityName(abilityName);
+  return ability === 'air-lock' || ability === 'cloud-nine';
+}
+
+function hasWeatherNegationActive(abilities) {
+  return Array.isArray(abilities) && abilities.some((ability) => isWeatherNegatingAbility(ability));
+}
+
+function setBattleWeatherNegationState(options) {
+  const { battleData, activeAbilities, sourcePokemonName, sourceAbilityName, c } = options || {};
+  if (!battleData) return { active: false, message: '' };
+  let rawWeather = normalizeWeatherName(getBattleWeatherName(battleData));
+  const previous = !!battleData.weatherNegated;
+  const active = Array.isArray(activeAbilities) && activeAbilities.some((ability) => isWeatherNegatingAbility(ability));
+  battleData.weatherNegated = active;
+  let message = '';
+  const abilities = Array.isArray(activeAbilities) ? activeAbilities.map((ability) => normalizeAbilityName(ability)) : [];
+  const primalAbilityByWeather = {
+    'extreme-sun': 'desolate-land',
+    'heavy-rain': 'primordial-sea',
+    'strong-winds': 'delta-stream'
+  };
+  if (primalAbilityByWeather[rawWeather] && !abilities.includes(primalAbilityByWeather[rawWeather])) {
+    battleData.weather = '';
+    battleData.weatherTurns = 0;
+    battleData.weatherByPass = '';
+    message += '\n-> The <b>' + getWeatherDisplayName(rawWeather) + '</b> faded.';
+    rawWeather = '';
+  }
+  if (!previous && active && rawWeather && isWeatherNegatingAbility(sourceAbilityName)) {
+    message += '\n-> <b>' + c(sourcePokemonName) + '</b>\'s <b>' + titleCaseHyphenated(sourceAbilityName) + '</b> activated!';
+    message += '\n-> The effects of weather disappeared.';
+  }
+  return { active, message };
+}
+
+function getEffectiveWeatherName(battleData) {
+  if (battleData && battleData.weatherNegated) return '';
+  return normalizeWeatherName(getBattleWeatherName(battleData));
+}
+
+function getDisplayedWeatherState(battleData) {
+  const weather = normalizeWeatherName(getBattleWeatherName(battleData));
+  return {
+    weather,
+    negated: !!(battleData && battleData.weatherNegated && weather)
+  };
+}
+
+function normalizeWeatherName(value) {
+  const weather = String(value || '')
+    .toLowerCase()
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!weather) return '';
+  if (weather === 'sun' || weather === 'sunny' || weather === 'harsh sunlight' || weather === 'sunlight') return 'sun';
+  if (weather === 'extremely harsh sunlight') return 'extreme-sun';
+  if (weather === 'rain' || weather === 'rainy') return 'rain';
+  if (weather === 'heavy rain') return 'heavy-rain';
+  if (weather === 'hail') return 'snow';
+  if (weather === 'snow') return 'snow';
+  if (weather === 'sandstorm') return 'sandstorm';
+  if (weather === 'fog') return 'fog';
+  if (weather === 'strong winds') return 'strong-winds';
+  if (weather === 'shadow sky' || weather === 'shadowy aura') return 'shadow-sky';
+  return weather.replace(/\s+/g, '-');
+}
+
+function getWeatherDisplayName(weatherName) {
+  const weather = normalizeWeatherName(weatherName);
+  if (weather === 'extreme-sun') return 'Extremely Harsh Sunlight';
+  if (weather === 'heavy-rain') return 'Heavy Rain';
+  if (weather === 'strong-winds') return 'Strong Winds';
+  if (weather === 'sun') return 'Harsh Sunlight';
+  if (weather === 'rain') return 'Rain';
+  if (weather === 'sandstorm') return 'Sandstorm';
+  if (weather === 'snow') return 'Snowstorm';
+  if (weather === 'fog') return 'Fog';
+  if (weather === 'shadow-sky') return 'Shadow Sky';
+  return titleCaseHyphenated(weather);
+}
+
+function getWeatherDurationFromItem(moveName, heldItem) {
+  const move = normalizeMoveName(moveName);
+  const item = normalizeHeldItemName(heldItem);
+  if ((move === 'sunny day' || move === 'max flare') && item === 'heat-rock') return 8;
+  if ((move === 'rain dance' || move === 'max geyser') && item === 'damp-rock') return 8;
+  if ((move === 'sandstorm' || move === 'max rockfall') && item === 'smooth-rock') return 8;
+  if ((move === 'hail' || move === 'max hailstorm' || move === 'snowscape' || move === 'chilly reception') && item === 'icy-rock') return 8;
+  return 5;
+}
+
+function getWeatherCreatedByMove(moveName) {
+  const move = normalizeMoveName(moveName);
+  if (move === 'sunny day' || move === 'max flare') return 'sun';
+  if (move === 'rain dance' || move === 'max geyser') return 'rain';
+  if (move === 'sandstorm' || move === 'max rockfall') return 'sandstorm';
+  if (move === 'hail' || move === 'max hailstorm') return 'snow';
+  if (move === 'snowscape' || move === 'chilly reception') return 'snow';
+  if (move === 'shadow sky') return 'shadow-sky';
+  if (move === 'defog') return 'clear';
+  return '';
+}
+
+function applyWeatherByMove(options) {
+  const { battleData, moveName, pass, pokemonName, heldItem, c, didHit } = options || {};
+  if (!battleData) return { changed: false, message: '' };
+  const move = normalizeMoveName(moveName);
+  if (!move) return { changed: false, message: '' };
+  if (['max flare', 'max geyser', 'max hailstorm', 'max rockfall'].includes(move) && !didHit) {
+    return { changed: false, message: '' };
+  }
+
+  const createdWeather = getWeatherCreatedByMove(move);
+  const currentWeather = normalizeWeatherName(getBattleWeatherName(battleData));
+  const lockedWeather = new Set(['extreme-sun', 'heavy-rain', 'strong-winds']);
+  const standardWeatherMoves = new Set(['sunny day', 'rain dance', 'sandstorm', 'hail', 'snowscape']);
+  if (lockedWeather.has(currentWeather) && standardWeatherMoves.has(move)) {
+    return {
+      changed: false,
+      message: '\n-> But the current weather is too powerful to be changed!'
+    };
+  }
+  if (createdWeather === 'clear') {
+    if (currentWeather === 'fog') {
+      battleData.weather = '';
+      battleData.weatherTurns = 0;
+      battleData.weatherByPass = '';
+      return {
+        changed: true,
+        message: '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Defog</b> blew away the fog!'
+      };
+    }
+    return { changed: false, message: '' };
+  }
+  if (!createdWeather) return { changed: false, message: '' };
+  if (createdWeather === currentWeather) {
+    return {
+      changed: false,
+      message: '\n-> But <b>' + getWeatherDisplayName(createdWeather) + '</b> is already active!'
+    };
+  }
+
+  const duration = getWeatherDurationFromItem(move, heldItem);
+  battleData.weather = createdWeather;
+  battleData.weatherTurns = duration;
+  battleData.weatherByPass = String(pass || '');
+  return {
+    changed: true,
+    message: '\n-> <b>' + c(pokemonName) + '</b> changed the weather to <b>' + getWeatherDisplayName(createdWeather) + '</b> for <b>' + duration + '</b> turns!'
+  };
+}
+
+function getWeatherMovePowerMultiplier(options) {
+  const { battleData, moveName, moveType } = options || {};
+  const weather = getEffectiveWeatherName(battleData);
+  const move = normalizeMoveName(moveName);
+  const type = String(moveType || '').toLowerCase();
+  if (move === 'weather ball' && weather && weather !== 'strong-winds') {
+    return 2;
+  }
+  if (weather === 'sun' || weather === 'extreme-sun') {
+    if (type === 'fire') return 1.5;
+    if (type === 'water') return 0.5;
+  }
+  if (weather === 'rain' || weather === 'heavy-rain') {
+    if (type === 'water') return 1.5;
+    if (type === 'fire') return 0.5;
+  }
+  if (['rain', 'sandstorm', 'snow', 'fog', 'shadow-sky'].includes(weather) && (move === 'solar beam' || move === 'solar blade')) {
+    return 0.5;
+  }
+  return 1;
+}
+
+function getWeatherAccuracyInfo(options) {
+  const { battleData, moveName, baseAccuracy } = options || {};
+  const weather = getEffectiveWeatherName(battleData);
+  const move = normalizeMoveName(moveName);
+  const base = Number(baseAccuracy);
+  if (!Number.isFinite(base)) {
+    return { skipAccuracyCheck: false, accuracy: baseAccuracy };
+  }
+  if (weather === 'snow' && move === 'blizzard') {
+    return { skipAccuracyCheck: true, accuracy: 100 };
+  }
+  if (weather === 'rain' && ['thunder', 'hurricane', 'bleakwind storm', 'wildbolt storm', 'sandsear storm'].includes(move)) {
+    return { skipAccuracyCheck: true, accuracy: 100 };
+  }
+  if (weather === 'sun' && (move === 'thunder' || move === 'hurricane')) {
+    return { skipAccuracyCheck: false, accuracy: 50 };
+  }
+  if (weather === 'fog') {
+    return { skipAccuracyCheck: false, accuracy: Math.max(1, Math.floor(base * 0.6)) };
+  }
+  return { skipAccuracyCheck: false, accuracy: base };
+}
+
+function getWeatherAccuracyMultiplierForTarget(options) {
+  const { battleData, abilityName } = options || {};
+  const weather = getEffectiveWeatherName(battleData);
+  const ability = normalizeAbilityName(abilityName);
+  if (weather === 'snow' && ability === 'snow-cloak') {
+    return 0.8;
+  }
+  return 1;
+}
+
+function getWeatherRecoveryRatio(options) {
+  const { battleData, moveName } = options || {};
+  const weather = getEffectiveWeatherName(battleData);
+  const move = normalizeMoveName(moveName);
+  if (move === 'shore up') {
+    return weather === 'sandstorm' ? (2 / 3) : 0.5;
+  }
+  if (move === 'synthesis' || move === 'morning sun' || move === 'moonlight') {
+    if (weather === 'strong-winds') return 0.5;
+    if (weather === 'sun' || weather === 'extreme-sun') return 2 / 3;
+    if (weather) return 0.25;
+    return 0.5;
+  }
+  return 0;
+}
+
+function suppressesWeatherByPrimalLock(weatherName) {
+  return ['extreme-sun', 'heavy-rain', 'strong-winds'].includes(normalizeWeatherName(weatherName));
+}
+
+function getWeatherSuppressedMoveMessage(options) {
+  const { battleData, moveType, moveCategory, pokemonName, moveName, c } = options || {};
+  const weather = getEffectiveWeatherName(battleData);
+  const type = String(moveType || '').toLowerCase();
+  const category = String(moveCategory || '').toLowerCase();
+  if (category === 'status') return '';
+  if (weather === 'extreme-sun' && type === 'water') {
+    return '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + c(moveName) + '</b> evaporated in the <b>Extremely Harsh Sunlight</b>!';
+  }
+  if (weather === 'heavy-rain' && type === 'fire') {
+    return '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + c(moveName) + '</b> was doused by the <b>Heavy Rain</b>!';
+  }
+  return '';
+}
+
+function getStrongWindsEffectiveness(options) {
+  const { battleData, moveType, pokemonTypes, effectiveness } = options || {};
+  const weather = getEffectiveWeatherName(battleData);
+  const types = (pokemonTypes || []).map((type) => String(type || '').toLowerCase());
+  const type = String(moveType || '').toLowerCase();
+  const effValue = Number(effectiveness);
+  
+  // No adjustment if not Strong Winds or target isn't Flying type
+  if (weather !== 'strong-winds' || !types.includes('flying') || !Number.isFinite(effValue)) {
+    return effValue;
+  }
+  
+  const inverseBattle = !!(battleData && battleData.set && battleData.set.inverseBattle);
+  const flyingWeaknessTypes = inverseBattle
+    ? ['bug', 'fighting', 'grass', 'ground']
+    : ['electric', 'ice', 'rock'];
+  
+  // Move must be super-effective against Flying to be affected by Delta Stream
+  if (!flyingWeaknessTypes.includes(type)) {
+    return effValue;
+  }
+  
+  // Delta Stream blocks super-effective moves against Flying
+  // This means:
+  // - If move is 2x against Flying but countered by other type (e.g., 0.5x Dragon), result is 0.5 * 2 = 1
+  // - After blocking Flying: should be 0.5 (just the Dragon resistance)
+  // - If move is 4x (super-effective on both Flying and something), becomes 2x (just other type)
+  
+  // When combined effectiveness is 1 but move IS super-effective against Flying,
+  // it means there's a resistance to the other type that cancels the Flying advantage
+  if (effValue === 1) {
+    return 0.5;  // Show as "not very effective" (blocked Flying advantage, showing other type's resistance)
+  }
+  
+  // If already super-effective overall (2x or 4x), reduce by factor of 2
+  if (effValue === 2) return 0.5;   // Was 2x with Flying advantage
+  if (effValue === 4) return 1;     // Was 4x (super on both types)
+  if (effValue === 0.25) return 0.125;  // Rare edge case: 4x resistance blocked to show 2x resistance
+  
+  return effValue;
+}
+
+function getGrowthStageChange(battleData) {
+  return getEffectiveWeatherName(battleData) === 'sun' ? 2 : 1;
+}
+
+function canUseAuroraVeilWeather(battleData) {
+  const weather = getEffectiveWeatherName(battleData);
+  return weather === 'snow';
+}
+
+function getWeatherDefenseMultiplier(options) {
+  const { battleData, moveCategory, pokemonTypes } = options || {};
+  const weather = getEffectiveWeatherName(battleData);
+  const types = (pokemonTypes || []).map((type) => String(type || '').toLowerCase());
+  if (weather === 'sandstorm' && moveCategory === 'special' && types.includes('rock')) {
+    return 1.5;
+  }
+  if (weather === 'snow' && moveCategory === 'physical' && types.includes('ice')) {
+    return 1.5;
+  }
+  return 1;
+}
+
+function isWeatherDamageImmune(options) {
+  const { weatherName, pokemonTypes, abilityName, heldItem, pokemonName } = options || {};
+  const weather = normalizeWeatherName(weatherName);
+  const ability = normalizeAbilityName(abilityName);
+  const item = normalizeHeldItemName(heldItem);
+  const types = (pokemonTypes || []).map((type) => String(type || '').toLowerCase());
+  if (item === 'safety-goggles') return true;
+  if (ability === 'magic-guard' || ability === 'overcoat') return true;
+  if (weather === 'sandstorm') {
+    if (types.includes('rock') || types.includes('ground') || types.includes('steel')) return true;
+    if (ability === 'sand-veil' || ability === 'sand-rush' || ability === 'sand-force') return true;
+  }
+  if (weather === 'snow') {
+    if (types.includes('ice')) return true;
+    if (ability === 'snow-cloak' || ability === 'ice-body' || ability === 'slush-rush') return true;
+  }
+  if (weather === 'shadow-sky' && getBaseSpeciesName(pokemonName) === 'shadow') return true;
+  return false;
+}
+
+function applyWeatherEndTurn(options) {
+  const { battleData, pass, pokemonName, pokemonTypes, abilityName, heldItem, maxHp, c } = options || {};
+  if (!battleData || !pass || !maxHp) return { message: '', damage: 0 };
+  const weather = getEffectiveWeatherName(battleData);
+  const ability = normalizeAbilityName(abilityName);
+  if (weather === 'snow' && ability === 'ice-body') {
+    const isCurrentSide = String(pass) === String(battleData && battleData.c);
+    const hpKey = isCurrentSide ? 'chp' : 'ohp';
+    const teamKey = isCurrentSide ? 'tem' : 'tem2';
+    const currentHp = Math.max(0, Number(battleData[hpKey]) || 0);
+    const maxHealth = Math.max(1, Number(maxHp) || 1);
+    if (currentHp <= 0 || currentHp >= maxHealth) return { message: '', damage: 0 };
+    const healed = Math.min(Math.max(1, Math.floor(maxHealth / 16)), maxHealth - currentHp);
+    battleData[hpKey] = currentHp + healed;
+    if (!battleData[teamKey] || typeof battleData[teamKey] !== 'object') battleData[teamKey] = {};
+    battleData[teamKey][pass] = battleData[hpKey];
+    return {
+      message: '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Ice Body</b> restored <code>' + healed + '</code> HP in the <b>Snowstorm</b>!',
+      damage: 0
+    };
+  }
+  if (!['sandstorm', 'shadow-sky'].includes(weather)) return { message: '', damage: 0 };
+
+  const isCurrentSide = String(pass) === String(battleData && battleData.c);
+  const hpKey = isCurrentSide ? 'chp' : 'ohp';
+  const teamKey = isCurrentSide ? 'tem' : 'tem2';
+  const currentHp = Math.max(0, Number(battleData[hpKey]) || 0);
+  if (currentHp <= 0) return { message: '', damage: 0 };
+
+  const types = getEffectivePokemonTypes({
+    pokemonName,
+    pokemonTypes,
+    heldItem: getBattleHeldItemName({ battleData, pass, heldItem }),
+    abilityName
+  });
+  if (isWeatherDamageImmune({
+    weatherName: weather,
+    pokemonTypes: types,
+    abilityName,
+    heldItem: getBattleHeldItemName({ battleData, pass, heldItem }),
+    pokemonName
+  })) {
+    return { message: '', damage: 0 };
+  }
+
+  const taken = Math.min(Math.max(1, Math.floor(Number(maxHp) / 16)), currentHp);
+  battleData[hpKey] = Math.max(0, currentHp - taken);
+  if (!battleData[teamKey] || typeof battleData[teamKey] !== 'object') battleData[teamKey] = {};
+  battleData[teamKey][pass] = battleData[hpKey];
+  return {
+    message: '\n-> <b>' + c(pokemonName) + '</b> was buffeted by <b>' + getWeatherDisplayName(weather) + '</b> and lost <code>' + taken + '</code> HP!',
+    damage: taken
+  };
+}
+
+function advanceBattleWeather(battleData, c) {
+  if (!battleData) return { message: '' };
+  const weather = getEffectiveWeatherName(battleData);
+  const turns = Number(battleData.weatherTurns) || 0;
+  if (!weather || turns <= 0) return { message: '' };
+  battleData.weatherTurns = Math.max(0, turns - 1);
+  if (battleData.weatherTurns > 0) {
+    return { message: '' };
+  }
+  battleData.weather = '';
+  battleData.weatherByPass = '';
+  return {
+    message: '\n-> The <b>' + getWeatherDisplayName(weather) + '</b> faded.'
+  };
+}
+
+function getBaseSpeciesName(pokemonName) {
+  return String(pokemonName || '').toLowerCase().split('-')[0];
+}
+
 function canSkipChargeByWeather(options) {
   const { battleData, moveName } = options || {};
   const move = normalizeMoveName(moveName);
-  const weather = getBattleWeatherName(battleData);
+  const weather = getEffectiveWeatherName(battleData);
   if ((move === 'solar beam' || move === 'solar blade') && (weather === 'sun' || weather === 'sunny' || weather === 'harsh sunlight')) {
     return true;
   }
@@ -418,6 +824,60 @@ function applyEntryAbility(options) {
     }
   }
 
+  const currentWeather = normalizeWeatherName(getBattleWeatherName(battleData));
+  if (suppressesWeatherByPrimalLock(currentWeather) && ['drought', 'drizzle', 'sand-stream', 'snow-warning'].includes(ability)) {
+    message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + titleCaseHyphenated(abilityName) + '</b> failed because the current weather is too strong!';
+    return { message, deltas };
+  }
+
+  if (ability === 'drought') {
+    const duration = item === 'heat-rock' ? 8 : 5;
+    battleData.weather = 'sun';
+    battleData.weatherTurns = duration;
+    battleData.weatherByPass = String(pass || '');
+    message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Drought</b> intensified the sun for <b>' + duration + '</b> turns!';
+  }
+
+  if (ability === 'drizzle') {
+    const duration = item === 'damp-rock' ? 8 : 5;
+    battleData.weather = 'rain';
+    battleData.weatherTurns = duration;
+    battleData.weatherByPass = String(pass || '');
+    message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Drizzle</b> made it rain for <b>' + duration + '</b> turns!';
+  }
+
+  if (ability === 'desolate-land') {
+    if (currentWeather === 'extreme-sun') return { message, deltas };
+    battleData.weather = 'extreme-sun';
+    battleData.weatherTurns = 0;
+    battleData.weatherByPass = String(pass || '');
+    message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Desolate Land</b> created <b>Extremely Harsh Sunlight</b>!';
+  }
+
+  if (ability === 'primordial-sea') {
+    if (currentWeather === 'heavy-rain') return { message, deltas };
+    battleData.weather = 'heavy-rain';
+    battleData.weatherTurns = 0;
+    battleData.weatherByPass = String(pass || '');
+    message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Primordial Sea</b> summoned <b>Heavy Rain</b>!';
+  }
+
+  if (ability === 'delta-stream') {
+    if (currentWeather === 'strong-winds') return { message, deltas };
+    battleData.weather = 'strong-winds';
+    battleData.weatherTurns = 0;
+    battleData.weatherByPass = String(pass || '');
+    message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Delta Stream</b> whipped up <b>Strong Winds</b>!';
+  }
+
+  if (ability === 'snow-warning') {
+    const duration = item === 'icy-rock' ? 8 : 5;
+    battleData.weather = 'snow';
+    battleData.weatherTurns = duration;
+    battleData.weatherByPass = String(pass || '');
+    message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Snow Warning</b> whipped up a <b>Snowstorm</b> for <b>' + duration + '</b> turns!';
+  }
+
   if (item === 'tatsugiri-lunchbox' && baseSpecies === 'dondozo') {
     const applied = applyStageChanges({
       battleData,
@@ -654,6 +1114,111 @@ function normalizeHeldItemName(value) {
     .replace(/-+/g, '-');
 }
 
+function hasMultitypeFormEffect(options) {
+  const { pokemonName, abilityName, heldItem, isTerastallized } = options || {};
+  if (isTerastallized) return false;
+  if (getBaseSpeciesName(pokemonName) !== 'arceus') return false;
+  if (normalizeAbilityName(abilityName) !== 'multitype') return false;
+  return !!getArceusPlateType(normalizeHeldItemName(heldItem));
+}
+
+function isPowerConstructAbility(abilityName) {
+  return normalizeAbilityName(abilityName) === 'power-construct';
+}
+
+function getPowerConstructFormChange(options) {
+  const { pokemonName, abilityName, currentHp, maxHp } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  const normalizedName = String(pokemonName || '').toLowerCase();
+  const hpNow = Number(currentHp);
+  const hpMax = Number(maxHp);
+  const eligibleForms = new Set([
+    'zygarde',
+    'zygarde-10',
+    'zygarde-10-power-construct',
+    'zygarde-50',
+    'zygarde-50-power-construct'
+  ]);
+  if (ability !== 'power-construct' || !eligibleForms.has(normalizedName)) {
+    return { triggered: false, newPokemonName: normalizedName };
+  }
+  if (!Number.isFinite(hpNow) || !Number.isFinite(hpMax) || hpNow <= 0 || hpMax <= 0 || hpNow * 2 >= hpMax) {
+    return { triggered: false, newPokemonName: normalizedName };
+  }
+  return {
+    triggered: normalizedName !== 'zygarde-complete',
+    newPokemonName: 'zygarde-complete'
+  };
+}
+
+function getArceusPlateFormName(options) {
+  const { pokemonName, abilityName, heldItem, isTerastallized } = options || {};
+  const baseSpecies = getBaseSpeciesName(pokemonName);
+  if (baseSpecies !== 'arceus') return String(pokemonName || '').toLowerCase();
+  if (!hasMultitypeFormEffect({ pokemonName, abilityName, heldItem, isTerastallized })) {
+    return 'arceus';
+  }
+  return 'arceus-' + getArceusPlateType(normalizeHeldItemName(heldItem));
+}
+
+function getEffectivePokemonDisplayName(options) {
+  const { pokemonName, abilityName, heldItem, isTerastallized } = options || {};
+  const formName = getArceusPlateFormName({ pokemonName, abilityName, heldItem, isTerastallized });
+  return formName || String(pokemonName || '').toLowerCase();
+}
+
+function isImmutableAbility(abilityName) {
+  const normalized = normalizeAbilityName(abilityName);
+  return normalized === 'multitype' || normalized === 'power-construct';
+}
+
+function blocksAbilityChangeInteraction(options) {
+  const { sourceAbilityName, targetAbilityName } = options || {};
+  return isImmutableAbility(sourceAbilityName) || isImmutableAbility(targetAbilityName);
+}
+
+function canRemoveHeldItemByEffect(options) {
+  const { pokemonName, abilityName, heldItem, effectName } = options || {};
+  const effect = normalizeMoveName(effectName).replace(/\s+/g, '-');
+  const blockedEffects = new Set(['thief', 'covet', 'trick', 'switcheroo', 'knock-off']);
+  if (blockedEffects.has(effect) && hasMultitypeFormEffect({ pokemonName, abilityName, heldItem })) {
+    return false;
+  }
+  return true;
+}
+
+function getEffectivePokemonTypes(options) {
+  const { pokemonName, pokemonTypes, heldItem, abilityName, isTerastallized } = options || {};
+  const ownTypes = Array.isArray(pokemonTypes)
+    ? pokemonTypes.map((entry) => String(entry || '').toLowerCase()).filter(Boolean)
+    : [];
+  const baseSpecies = getBaseSpeciesName(pokemonName);
+  const plateType = getArceusPlateType(normalizeHeldItemName(heldItem));
+  if (baseSpecies === 'arceus' && plateType && hasMultitypeFormEffect({ pokemonName, abilityName, heldItem, isTerastallized })) {
+    return [plateType];
+  }
+  return ownTypes;
+}
+
+function getEffectiveMoveType(options) {
+  const { pokemonName, heldItem, abilityName, isTerastallized, moveName, moveType, battleData } = options || {};
+  const normalizedMove = normalizeMoveName(moveName);
+  const baseSpecies = getBaseSpeciesName(pokemonName);
+  const rawType = String(moveType || '').toLowerCase();
+  const weather = normalizeWeatherName(getBattleWeatherName(battleData));
+  const plateType = getArceusPlateType(normalizeHeldItemName(heldItem));
+  if (normalizedMove === 'judgment' && baseSpecies === 'arceus' && plateType && hasMultitypeFormEffect({ pokemonName, abilityName, heldItem, isTerastallized })) {
+    return plateType;
+  }
+  if (normalizedMove === 'weather ball') {
+    if (weather === 'sun') return 'fire';
+    if (weather === 'rain') return 'water';
+    if (weather === 'sandstorm') return 'rock';
+    if (weather === 'hail' || weather === 'snow') return 'ice';
+  }
+  return rawType;
+}
+
 function canPokemonStillEvolve(pokemonName, evolutionChains) {
   const current = String(pokemonName || '').toLowerCase();
   const chains = evolutionChains && Array.isArray(evolutionChains.evolution_chains)
@@ -668,6 +1233,7 @@ function getHeldItemStatMultipliers(options) {
   const baseSpecies = current.split('-')[0];
   const item = normalizeHeldItemName(heldItem);
   const canEvolve = canPokemonStillEvolve(current, evolutionChains);
+  const plateType = getArceusPlateType(item);
   return {
     attack: item === 'choice-band' ? 1.5 : (baseSpecies === 'pikachu' && item === 'light-ball' ? 2 : 1),
     special_attack: item === 'choice-specs' ? 1.5 : (baseSpecies === 'pikachu' && item === 'light-ball' ? 2 : 1),
@@ -685,6 +1251,9 @@ function getHeldItemStatMultipliers(options) {
     choiceSpecsActive: item === 'choice-specs',
     choiceScarfActive: item === 'choice-scarf',
     choiceItemActive: item === 'choice-band' || item === 'choice-specs' || item === 'choice-scarf',
+    plateType,
+    plateBoostMultiplier: plateType ? 1.2 : 1,
+    arceusPlateActive: baseSpecies === 'arceus' && !!plateType,
     heldItem: item
   };
 }
@@ -781,14 +1350,24 @@ function moveMakesContact(moveName, moveCategory) {
 }
 
 function getBattleMovePower(options) {
-  const { battleData, pass, pokemonName, moveName, movePower } = options || {};
+  const { battleData, pass, pokemonName, moveName, moveType, movePower, heldItem } = options || {};
   const rawPower = Number(movePower);
   if (!Number.isFinite(rawPower) || rawPower <= 0) return rawPower;
   const normalizedMove = normalizeMoveName(moveName);
   const baseSpecies = String(pokemonName || '').toLowerCase().split('-')[0];
   const state = ensureAbilityState(battleData);
+  const item = getBattleHeldItemName({ battleData, pass, heldItem });
+  const effectiveMoveType = getEffectiveMoveType({ pokemonName, heldItem: item, moveName, moveType, battleData });
+  const plateType = getArceusPlateType(item);
   if (normalizedMove === 'order up' && baseSpecies === 'dondozo' && state.tatsugiriLunchboxTurn && state.tatsugiriLunchboxTurn[String(pass)]) {
     return 160;
+  }
+  const effectiveWeather = getEffectiveWeatherName(battleData);
+  if (normalizedMove === 'weather ball' && effectiveWeather && effectiveWeather !== 'strong-winds') {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if (plateType && effectiveMoveType === plateType) {
+    return Math.max(1, Math.floor(rawPower * 1.2));
   }
   return rawPower;
 }
@@ -1256,11 +1835,14 @@ function applyBlunderPolicy(options) {
 
 module.exports = {
   STAT_KEYS,
+  advanceBattleWeather,
   applyAbsorbMoveAbility,
   applyEndTurnAbility,
   applyEntryAbility,
   applyKoAbility,
   applyOnDamageTakenAbilities,
+  applyWeatherByMove,
+  applyWeatherEndTurn,
   applyBlunderPolicy,
   applyMultiscaleReduction,
   applyFocusSashSurvival,
@@ -1271,6 +1853,7 @@ module.exports = {
   applyWeakArmorOnHit,
   applyStageChanges,
   applyStageToStat,
+  canUseAuroraVeilWeather,
   clampStage,
   ensureAbilityState,
   ensureBattleStatStages,
@@ -1283,6 +1866,14 @@ module.exports = {
   getAttackStatMultiplier,
   getBattleHeldItemName,
   getBattleMovePower,
+  getBattleWeatherName,
+  getDisplayedWeatherState,
+  getEffectiveWeatherName,
+  getGrowthStageChange,
+  getEffectivePokemonDisplayName,
+  getEffectiveMoveType,
+  getEffectivePokemonTypes,
+  getPowerConstructFormChange,
   getPowerHerbInfo,
   getGoodAsGoldInfo,
   getAirBalloonInfo,
@@ -1294,6 +1885,17 @@ module.exports = {
   getStabInfo,
   getSupremeOverlordInfo,
   getTechnicianPowerInfo,
+  getWeatherAccuracyInfo,
+  getWeatherAccuracyMultiplierForTarget,
+  getWeatherDefenseMultiplier,
+  getWeatherDisplayName,
+  getWeatherMovePowerMultiplier,
+  getWeatherRecoveryRatio,
+  getWeatherSuppressedMoveMessage,
+  hasWeatherNegationActive,
+  isWeatherNegatingAbility,
+  setBattleWeatherNegationState,
+  getStrongWindsEffectiveness,
   getUnawareBattleModifiers,
   getUnawareInfo,
   getHighestStatKey,
@@ -1301,7 +1903,11 @@ module.exports = {
   getStageVerb,
   getStatLabel,
   isDirectDamageMove,
+  isImmutableAbility,
+  isPowerConstructAbility,
   isWindMove,
+  blocksAbilityChangeInteraction,
+  canRemoveHeldItemByEffect,
   moveMakesContact,
   normalizeAbilityName,
   normalizeHeldItemName,

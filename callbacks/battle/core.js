@@ -10,10 +10,21 @@
   applyWhiteHerbIfNeeded,
   applyEndTurnAbility: applyAbilityEndTurn,
   applyEntryAbility: applyAbilityEntry,
+  applyWeatherByMove,
+  applyWeatherEndTurn,
+  advanceBattleWeather,
   consumeBattleHeldItem,
+  canUseAuroraVeilWeather,
   getAttackStatMultiplier,
   getBattleHeldItemName,
   getBattleMovePower,
+  getBattleWeatherName,
+  getDisplayedWeatherState,
+  getEffectiveWeatherName,
+  getEffectivePokemonDisplayName,
+  getEffectiveMoveType,
+  getEffectivePokemonTypes,
+  getPowerConstructFormChange,
   getAirBalloonInfo,
   getGoodAsGoldInfo,
   getHeldItemStatMultipliers,
@@ -26,6 +37,16 @@
   getSupremeOverlordInfo,
   getTechnicianPowerInfo,
   getUnawareBattleModifiers,
+  getWeatherAccuracyInfo,
+  getWeatherAccuracyMultiplierForTarget,
+  getWeatherDefenseMultiplier,
+  getWeatherDisplayName,
+  getWeatherMovePowerMultiplier,
+  getWeatherRecoveryRatio,
+  getWeatherSuppressedMoveMessage,
+  setBattleWeatherNegationState,
+  getStrongWindsEffectiveness,
+  getGrowthStageChange,
   isDirectDamageMove,
   normalizeAbilityName,
   applyBlunderPolicy,
@@ -158,30 +179,96 @@ function registerBattleCallbacks(bot, deps) {
   }
 
   function getDisplayedMovePower(move, abilityName, currentHp, maxHp, battleDataArg, pass, pokemonName) {
+    const effectiveMoveType = getEffectiveMoveType({
+      battleData: battleDataArg,
+      pokemonName,
+      heldItem: getBattleHeldItemName({ battleData: battleDataArg, pass }),
+      moveName: move && move.name,
+      moveType: move && move.type
+    });
     const rawPower = getBattleMovePower({
       battleData: battleDataArg,
       pass,
       pokemonName,
       moveName: move && move.name,
+      moveType: effectiveMoveType,
       movePower: move && move.power
     });
-    if (!Number.isFinite(rawPower) || rawPower <= 0) return move && move.power;
+    const weatherAdjustedPower = Number.isFinite(rawPower) && rawPower > 0
+      ? Math.max(1, Math.floor(rawPower * getWeatherMovePowerMultiplier({ battleData: battleDataArg, moveName: move && move.name, moveType: effectiveMoveType })))
+      : rawPower;
+    if (!Number.isFinite(weatherAdjustedPower) || weatherAdjustedPower <= 0) return move && move.power;
     const technicianInfo = getTechnicianPowerInfo({
       abilityName,
-      movePower: rawPower
+      movePower: weatherAdjustedPower
     });
     const pinchInfo = getPinchAbilityInfo({
       abilityName,
-      moveType: move && move.type,
+      moveType: effectiveMoveType,
       currentHp,
       maxHp
     });
     const totalMultiplier = technicianInfo.multiplier * pinchInfo.multiplier;
-    if (totalMultiplier === 1) return rawPower;
+    if (totalMultiplier === 1) return weatherAdjustedPower;
     const labels = [];
     if (technicianInfo.active) labels.push('x' + technicianInfo.multiplier + ' ' + technicianInfo.abilityLabel);
     if (pinchInfo.active) labels.push('x' + pinchInfo.multiplier + ' ' + pinchInfo.abilityLabel);
-    return Math.max(1, Math.floor(rawPower * totalMultiplier)) + ' (' + labels.join(', ') + ')';
+    return Math.max(1, Math.floor(weatherAdjustedPower * totalMultiplier)) + ' (' + labels.join(', ') + ')';
+  }
+
+  async function applyPowerConstructEndTurn(options) {
+    const {
+      battleData,
+      pass,
+      pokemon,
+      ownerData,
+      maxHp,
+      currentHpKey,
+      teamKey
+    } = options || {};
+    if (!battleData || !pass || !pokemon) return '';
+
+    const change = getPowerConstructFormChange({
+      pokemonName: pokemon.name,
+      abilityName: pokemon.ability,
+      currentHp: battleData[currentHpKey],
+      maxHp
+    });
+    if (!change.triggered || !pokestats[change.newPokemonName]) return '';
+
+    const currentHp = Math.max(0, Number(battleData[currentHpKey]) || 0);
+    const lostHp = Math.max(0, Number(maxHp || 0) - currentHp);
+    if (!battleData.powerConstructOriginal || typeof battleData.powerConstructOriginal !== 'object') {
+      battleData.powerConstructOriginal = {};
+    }
+    if (!battleData.powerConstructOriginal[String(pass)]) {
+      battleData.powerConstructOriginal[String(pass)] = pokemon.name;
+    }
+
+    pokemon.name = change.newPokemonName;
+    const level = plevel(pokemon.name, pokemon.exp);
+    const newStats = await Stats(pokestats[pokemon.name], pokemon.ivs, pokemon.evs, c(pokemon.nature), level);
+    const newMaxHp = Math.max(1, Number(newStats.hp) || 1);
+    const newCurrentHp = Math.max(1, Math.min(newMaxHp, newMaxHp - lostHp));
+    battleData[currentHpKey] = newCurrentHp;
+    if (!battleData[teamKey] || typeof battleData[teamKey] !== 'object') battleData[teamKey] = {};
+    battleData[teamKey][pass] = newCurrentHp;
+    if (ownerData) {
+      const idx = (ownerData.pokes || []).findIndex((entry) => String(entry.pass) === String(pass));
+      if (idx >= 0) ownerData.pokes[idx].name = pokemon.name;
+    }
+
+    return '\n-> <b>' + c(change.newPokemonName) + '</b>\'s <b>Power Construct</b> activated!\n-> It transformed into <b>Zygarde Complete</b>!';
+  }
+
+  function revertPowerConstructFormsOnBattleEnd(battleData, userData) {
+    if (!battleData || !battleData.powerConstructOriginal || !userData || !Array.isArray(userData.pokes)) return;
+    for (const [pass, originalName] of Object.entries(battleData.powerConstructOriginal)) {
+      const poke = userData.pokes.find((entry) => String(entry.pass) === String(pass));
+      if (poke) {
+        poke.name = originalName;
+      }
+    }
   }
 
   function ensureTurnAbilityState(battleData) {
@@ -538,9 +625,12 @@ function registerBattleCallbacks(bot, deps) {
       side.lightScreen = 5;
       return '\n-> Light Screen went up on the user\'s side!';
     }
-    if (moveName === 'aurora veil' || (moveName === 'g max resonance' && didHit)) {
+    if ((moveName === 'aurora veil' || (moveName === 'g max resonance' && didHit)) && canUseAuroraVeilWeather(battleData)) {
       side.auroraVeil = 5;
       return '\n-> Aurora Veil went up on the user\'s side!';
+    }
+    if (moveName === 'aurora veil' || moveName === 'g max resonance') {
+      return '\n-> But Aurora Veil can only be set during hail or snow!';
     }
     return '';
   }
@@ -614,8 +704,12 @@ function registerBattleCallbacks(bot, deps) {
 
   // Helper: build PvP battle message + keyboard with Showdown-style hidden moves
   const buildPvpMsg = (prefix, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroup) => {
-    const pp = pokes[p1.name];
-    const pp2 = pokes[p2.name];
+    const p1HeldItem = getBattleHeldItemName({ battleData, pass: p1.pass, heldItem: p1.held_item });
+    const p2HeldItem = getBattleHeldItemName({ battleData, pass: p2.pass, heldItem: p2.held_item });
+    const p1Types = getEffectivePokemonTypes({ pokemonName: p1.name, pokemonTypes: pokes[p1.name]?.types || [], heldItem: p1HeldItem, abilityName: p1.ability });
+    const p2Types = getEffectivePokemonTypes({ pokemonName: p2.name, pokemonTypes: pokes[p2.name]?.types || [], heldItem: p2HeldItem, abilityName: p2.ability });
+    const p1DisplayName = getEffectivePokemonDisplayName({ pokemonName: p1.name, abilityName: p1.ability, heldItem: p1HeldItem });
+    const p2DisplayName = getEffectivePokemonDisplayName({ pokemonName: p2.name, abilityName: p2.ability, heldItem: p2HeldItem });
     const hideTurn = battleData.switchLock && String(battleData.switchLock) === String(battleData.cid);
     const hideOpp = battleData.switchLock && String(battleData.switchLock) === String(battleData.oid);
     let msg = prefix || '';
@@ -625,7 +719,7 @@ function registerBattleCallbacks(bot, deps) {
       msg += '\n<b>Level :</b> ?? | <b>HP :</b> ??/??';
       msg += '\n<code>??????????</code>';
     } else {
-      msg += '\n<b>'+c(p2.name)+'</b> ['+c(pp2.types.join(' / '))+']'+getStatusTag(battleData, battleData.o);
+      msg += '\n<b>'+c(p2DisplayName)+'</b> ['+c(p2Types.join(' / '))+']'+getStatusTag(battleData, battleData.o);
       msg += '\n<b>Level :</b> '+plevel(p2.name,p2.exp)+' | <b>HP :</b> '+battleData.ohp+'/'+stats1.hp+'';
       msg += '\n<code>'+Bar(stats1.hp,battleData.ohp)+'</code>';
     }
@@ -635,9 +729,19 @@ function registerBattleCallbacks(bot, deps) {
       msg += '\n<b>Level :</b> ?? | <b>HP :</b> ??/??';
       msg += '\n<code>??????????</code>';
     } else {
-      msg += '\n<b>'+c(p1.name)+'</b> ['+c(pp.types.join(' / '))+']'+getStatusTag(battleData, battleData.c);
+      msg += '\n<b>'+c(p1DisplayName)+'</b> ['+c(p1Types.join(' / '))+']'+getStatusTag(battleData, battleData.c);
       msg += '\n<b>Level :</b> '+plevel(p1.name,p1.exp)+' | <b>HP :</b> '+battleData.chp+'/'+stats2.hp+'';
       msg += '\n<code>'+Bar(stats2.hp,battleData.chp)+'</code>';
+    }
+    const weatherState = getDisplayedWeatherState(battleData);
+    if (weatherState.weather) {
+      msg += '\n<b>Weather :</b> '+getWeatherDisplayName(weatherState.weather);
+      if ((battleData.weatherTurns || 0) > 0) {
+        msg += ' ('+battleData.weatherTurns+' turns left)';
+      }
+      if (weatherState.negated) {
+        msg += ' <i>(effects negated)</i>';
+      }
     }
 
     // Revealed moves (moves already used - visible to everyone)
@@ -649,7 +753,8 @@ function registerBattleCallbacks(bot, deps) {
       for (const move2 of p1.moves) {
         let move = dmoves[move2];
         const shownPower = getDisplayedMovePower(move, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name);
-        msg += '\n- <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')';
+        const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: move.name, moveType: move.type }) || move.type;
+        msg += '\n- <b>'+c(move.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')';
       }
     } else if (isGroup && p1UsedMoves.length > 0 && !hideTurn) {
       msg += '\n\n<b>Revealed Moves :</b>';
@@ -662,7 +767,7 @@ function registerBattleCallbacks(bot, deps) {
       }
     }
 
-    let img = pp.front_default_image;
+    let img = (pokes[p1.name] && pokes[p1.name].front_default_image) || '';
     const imSh = shiny.filter((poke)=>poke.name==p1.name)[0];
     if (events[p1.name] && p1.symbol == '🪅') img = events[p1.name];
     if (imSh && p1.symbol=='✨') img = imSh.shiny_url;
@@ -971,7 +1076,11 @@ function applyEntryHazardRemovalByMove(moveName, battleData, selfSideId, opposin
 }
 
   function isGroundedForEntryHazards(battleData, pass, pokemonName, abilityName, heldItem) {
-    const types = (pokes[pokemonName]?.types || []).map((t) => String(t).toLowerCase());
+    const types = getEffectivePokemonTypes({
+      pokemonName,
+      pokemonTypes: pokes[pokemonName]?.types || [],
+      heldItem: getBattleHeldItemName({ battleData, pass, heldItem })
+    });
     const levitateInfo = getLevitateInfo({ abilityName });
     const airBalloonInfo = getAirBalloonInfo({ battleData, pass, heldItem });
     return !types.includes('flying') && !levitateInfo.active && !airBalloonInfo.active;
@@ -981,7 +1090,11 @@ async function applyEntryHazardsOnSwitch({ battleData, sideId, pass, pokemonName
   const side = ensureSideEntryHazards(battleData, sideId);
   let out = '';
   let currentHp = Math.max(0, battleData.chp);
-  const types = pokes[pokemonName]?.types || [];
+  const types = getEffectivePokemonTypes({
+    pokemonName,
+    pokemonTypes: pokes[pokemonName]?.types || [],
+    heldItem: getBattleHeldItemName({ battleData, pass })
+  });
   const type1 = types[0] ? c(types[0]) : null;
   const type2 = types[1] ? c(types[1]) : null;
   const grounded = isGroundedForEntryHazards(battleData, pass, pokemonName, abilityName, getBattleHeldItemName({ battleData, pass }));
@@ -1336,7 +1449,7 @@ function applyStageToStat(baseValue, stage) {
   return Math.max(1, Math.floor(baseValue * getStageMultiplier(stage)));
 }
 
-function getEffectiveSpeed(baseSpeed, battleData, pass) {
+function getEffectiveSpeed(baseSpeed, battleData, pass, abilityName) {
   const statusAdjusted = getSpeedWithStatus(baseSpeed, battleData, pass);
   const stages = ensurePokemonStatStages(battleData, pass);
   let speed = applyStageToStat(statusAdjusted, stages.speed);
@@ -1344,12 +1457,15 @@ function getEffectiveSpeed(baseSpeed, battleData, pass) {
     heldItem: getBattleHeldItemName({ battleData, pass })
   });
   speed = Math.max(1, Math.floor(speed * (heldItemInfo.speed || 1)));
+  if (getEffectiveWeatherName(battleData) === 'snow' && normalizeAbilityName(abilityName) === 'slush-rush') {
+    speed = Math.max(1, Math.floor(speed * 2));
+  }
   return speed;
 }
 
-function getModifiedAccuracy(baseAccuracy, attackerAccuracyStage, defenderEvasionStage) {
+function getModifiedAccuracy(baseAccuracy, attackerAccuracyStage, defenderEvasionStage, battleData, defenderAbility) {
   const netStage = (attackerAccuracyStage || 0) - (defenderEvasionStage || 0);
-  const acc = Math.floor(baseAccuracy * getStageMultiplier(netStage));
+  const acc = Math.floor(baseAccuracy * getStageMultiplier(netStage) * getWeatherAccuracyMultiplierForTarget({ battleData, abilityName: defenderAbility }));
   return Math.max(1, Math.min(100, acc));
 }
 
@@ -1542,8 +1658,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         const stA = await Stats(pokestats[pkA.name], pkA.ivs, pkA.evs, c(pkA.nature), plevel(pkA.name, pkA.exp));
         const stB = await Stats(pokestats[pkB.name], pkB.ivs, pkB.evs, c(pkB.nature), plevel(pkB.name, pkB.exp));
 
-        speedA = getEffectiveSpeed(stA.speed, battleData, action1.c);
-        speedB = getEffectiveSpeed(stB.speed, battleData, action2.c);
+        speedA = getEffectiveSpeed(stA.speed, battleData, action1.c, pkA && pkA.ability);
+        speedB = getEffectiveSpeed(stB.speed, battleData, action2.c, pkB && pkB.ability);
       }
     }
 
@@ -1633,6 +1749,13 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
             partyHpMap: battleData.tem,
             c
           }).message;
+          turnLogs += setBattleWeatherNegationState({
+            battleData,
+            activeAbilities: [p12.ability, opposingPokemon.ability],
+            sourcePokemonName: p12.name,
+            sourceAbilityName: p12.ability,
+            c
+          }).message;
         }
       }
     }
@@ -1667,14 +1790,19 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       let stats1 = await Stats(base1, p.ivs, p.evs, c(p.nature), level1);
       let stats2 = await Stats(base2, op.ivs, op.evs, c(op.nature), level2);
 
+      const attackerHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item });
+      const defenderHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item });
+      const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
+      const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name].types || [], heldItem: defenderHeldItemName });
+
       // Check type effectiveness
-      const type3 = pokes[op.name].types[0];
-      const type4 = pokes[op.name].types[1] ? c(pokes[op.name].types[1]) : null;
+      const type3 = defenderTypes[0];
+      const type4 = defenderTypes[1] ? c(defenderTypes[1]) : null;
       let eff1 = 1;
-      if (battleData.set.type_effects && move.type && type3) { eff1 = await eff(c(move.type), c(type3), type4); }
+      if (battleData.set.type_effects) { eff1 = await eff(c(move.type), c(type3), type4); }
       const defenderLevitateInfo = getLevitateInfo({ abilityName: defenderAbility });
       const defenderAirBalloonInfo = getAirBalloonInfo({ battleData, pass: battleData.o, heldItem: op.held_item });
-      const groundBlockedMove = (defenderLevitateInfo.active || defenderAirBalloonInfo.active) && String(move.type || '').toLowerCase() === 'ground';
+      const groundBlockedMove = (defenderLevitateInfo.active || defenderAirBalloonInfo.active) && String(effectiveMoveType || '').toLowerCase() === 'ground';
       if (groundBlockedMove) eff1 = 0;
 
       const atkStages = ensurePokemonStatStages(battleData, battleData.c);
@@ -1722,6 +1850,11 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.attack));
         def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
       }
+      def2 = Math.max(1, Math.floor(def2 * getWeatherDefenseMultiplier({
+        battleData,
+        moveCategory: move.category,
+        pokemonTypes: getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName, abilityName: defenderAbility })
+      })));
       atk = Math.max(1, Math.floor(atk * supremeOverlordInfo.multiplier));
       if (move.category == 'physical' && getBattleStatus(battleData, battleData.c) === 'burn') {
         atk = Math.max(1, Math.floor(atk / 2));
@@ -1877,9 +2010,10 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           const opSemi = getSemiInvulnerableStateForPass(battleData, battleData.o);
           msgLocal += getSemiInvulnerableAvoidMessage(op.name, opSemi ? opSemi.moveName : '');
         } else {
-        const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus;
+        const weatherAccuracy = getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy: move.accuracy });
+        const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus || weatherAccuracy.skipAccuracyCheck;
         const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
-        const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), unawareModifiers.accuracyStage, unawareModifiers.evasionStage) : 100;
+        const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(weatherAccuracy.accuracy), unawareModifiers.accuracyStage, unawareModifiers.evasionStage, battleData, defenderAbility) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
           msgLocal += unawareMessage;
           msgLocal += '\n-> <b>'+c(p.name)+'</b> <b>'+c(move.name)+'</b> has missed.';
@@ -1915,7 +2049,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
             if (!battleData.leechSeed || typeof battleData.leechSeed !== 'object') {
               battleData.leechSeed = {};
             }
-            const defenderTypes = (pokes[op.name]?.types || []).map((t) => String(t).toLowerCase());
+            const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName }).map((t) => String(t).toLowerCase());
             if (defenderTypes.includes('grass')) {
               msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
             } else if (battleData.leechSeed[battleData.o]) {
@@ -2028,12 +2162,48 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               }
               }
 
+              if (moveName === 'growth') {
+                const growthDelta = getGrowthStageChange(battleData);
+                msgLocal += applyStageChanges({
+                  battleData,
+                  pass: battleData.c,
+                  pokemonName: p.name,
+                  abilityName: attackerAbility,
+                  changes: [{ stat: 'attack', delta: growthDelta }, { stat: 'special_attack', delta: growthDelta }],
+                  c,
+                  fromOpponent: false
+                }).message;
+              }
+
+              if (moveName === 'synthesis' || moveName === 'morning sun' || moveName === 'moonlight' || moveName === 'shore up') {
+                const recoveryRatio = getWeatherRecoveryRatio({ battleData, moveName });
+                if (recoveryRatio > 0) {
+                  const healAmount = Math.max(1, Math.floor(stats1.hp * recoveryRatio * (attackerHeldItemInfo.recoveryMultiplier || 1)));
+                  const hpBefore = battleData.chp;
+                  battleData.chp = Math.min(stats1.hp, battleData.chp + healAmount);
+                  const healed = Math.max(0, battleData.chp - hpBefore);
+                  battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || hpBefore) + healed));
+                  if (healed > 0) {
+                    msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
+                  }
+                }
+              }
+
               if (moveName === 'minimize') {
                 setPokemonMinimized(battleData, battleData.c, true);
               }
 
               msgLocal += applyScreenSetupByMove(moveName, battleData, battleData.cid, true);
               msgLocal += applyScreenRemovalByMove(moveName, battleData, battleData.oid, true);
+              msgLocal += applyWeatherByMove({
+                battleData,
+                moveName,
+                pass: battleData.c,
+                pokemonName: p.name,
+                heldItem: p.held_item,
+                c,
+                didHit: true
+              }).message;
 
               msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
             }
@@ -2043,7 +2213,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               pass: battleData.o,
               pokemonName: op.name,
               abilityName: defenderAbility,
-              moveType: move.type,
+              moveType: effectiveMoveType,
               moveName: move.name,
               c
             });
@@ -2051,13 +2221,23 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               msgLocal += '\n-> <b>'+c(op.name)+'</b> nullified <b>'+c(move.name)+'</b>.';
               msgLocal += absorbedByAbility.message;
             } else {
+            const weatherSuppressedMessage = getWeatherSuppressedMoveMessage({
+              battleData,
+              moveType: effectiveMoveType,
+              moveCategory: move.category,
+              pokemonName: p.name,
+              moveName: move.name,
+              c
+            });
             if (moveName === 'dream eater' && getBattleStatus(battleData, battleData.o) !== 'sleep') {
               msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+            } else if (weatherSuppressedMessage) {
+              msgLocal += weatherSuppressedMessage;
             } else {
               const defenderHpBeforeHit = battleData.ohp;
               const pinchPowerMult = getPinchPowerMultiplier({
                 abilityName: attackerAbility,
-                moveType: move.type,
+                moveType: effectiveMoveType,
                 currentHp: battleData.chp,
                 maxHp: stats1.hp
               });
@@ -2070,12 +2250,13 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 pass: battleData.c,
                 pokemonName: p.name,
                 moveName,
+                moveType: effectiveMoveType,
                 movePower: move.power
-              }) * pinchPowerMult * technicianInfo.multiplier));
+              }) * getWeatherMovePowerMultiplier({ battleData, moveName, moveType: effectiveMoveType }) * pinchPowerMult * technicianInfo.multiplier));
               const stabInfo = getStabInfo({
                 abilityName: attackerAbility,
-                moveType: move.type,
-                pokemonTypes: pokes[p.name]?.types || []
+                moveType: effectiveMoveType,
+                pokemonTypes: getEffectivePokemonTypes({ pokemonName: p.name, pokemonTypes: pokes[p.name]?.types || [], heldItem: attackerHeldItemName })
               });
               var damage = Math.min(Math.max(0, Math.floor(calc(atk, def2, level1, boostedPower, eff1) * stabInfo.multiplier)), battleData.ohp);
               const lifeOrbBoostActive = attackerHeldItemInfo.lifeOrbActive && !isDirectDamageMove(moveName);
@@ -2084,8 +2265,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               }
               let ohkoFailed = false;
               if (OHKO_MOVES.has(moveName)) {
-                const attackerTypes = (pokes[p.name]?.types || []).map((t) => String(t).toLowerCase());
-                const defenderTypes = (pokes[op.name]?.types || []).map((t) => String(t).toLowerCase());
+                const attackerTypes = getEffectivePokemonTypes({ pokemonName: p.name, pokemonTypes: pokes[p.name]?.types || [], heldItem: attackerHeldItemName }).map((t) => String(t).toLowerCase());
+                const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName }).map((t) => String(t).toLowerCase());
                 const sheerColdBlocked = moveName === 'sheer cold' && defenderTypes.includes('ice') && !attackerTypes.includes('ice');
                 const ohkoChance = getOhkoHitChance(level1, level2);
                 if (level1 < level2 || sheerColdBlocked || Math.random() * 100 >= ohkoChance) {
@@ -2260,7 +2441,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 }
                 msgLocal += getInfiltratorBypassMessage(battleData, battleData.oid, move.category, attackerAbility, p.name, moveName);
                 if (pinchPowerMult > 1) {
-                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+c(formatAbilityLabel(attackerAbility))+'</b> boosted its '+c(move.type)+'-type move!';
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+c(formatAbilityLabel(attackerAbility))+'</b> boosted its '+c(effectiveMoveType)+'-type move!';
                 }
                 msgLocal += staminaMessage;
                 if (technicianInfo.active) {
@@ -2394,7 +2575,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 attackerAbility,
                 moveName,
                 typeEffectiveness: eff1,
-                moveType: move.type,
+                moveType: effectiveMoveType,
                 moveCategory: move.category,
                 attackerMaxHp: stats1.hp,
                 hpBefore: defenderHpBeforeHit,
@@ -2424,7 +2605,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           const statusEffect = getMoveStatusEffect(move);
           if (statusEffect && battleData.ohp > 0 && !blockedByGoodAsGold) {
             const existingStatus = getBattleStatus(battleData, battleData.o);
-            const defenderTypes = pokes[op.name]?.types || [];
+            const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName });
             if (!existingStatus && !isStatusImmune(statusEffect.status, defenderTypes) && Math.random() < statusEffect.chance) {
               setBattleStatus(battleData, battleData.o, statusEffect.status);
               msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.';
@@ -2543,6 +2724,25 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           maxHp: endTurnCurrentStats ? endTurnCurrentStats.hp : 0,
           c
         }).message;
+        turnLogs += await applyPowerConstructEndTurn({
+          battleData,
+          pass: battleData.c,
+          pokemon: endTurnCurrent,
+          ownerData: endTurnAttacker,
+          maxHp: endTurnCurrentStats ? endTurnCurrentStats.hp : 0,
+          currentHpKey: 'chp',
+          teamKey: 'tem'
+        });
+        turnLogs += applyWeatherEndTurn({
+          battleData,
+          pass: battleData.c,
+          pokemonName: endTurnCurrent.name,
+          pokemonTypes: pokes[endTurnCurrent.name]?.types || [],
+          abilityName: endTurnCurrent.ability,
+          heldItem: endTurnCurrent.held_item,
+          maxHp: endTurnCurrentStats ? endTurnCurrentStats.hp : 0,
+          c
+        }).message;
       }
       if (endTurnOther) {
         turnLogs += applyAbilityEndTurn({
@@ -2554,7 +2754,29 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           maxHp: endTurnOtherStats ? endTurnOtherStats.hp : 0,
           c
         }).message;
+        turnLogs += await applyPowerConstructEndTurn({
+          battleData,
+          pass: battleData.o,
+          pokemon: endTurnOther,
+          ownerData: endTurnDefender,
+          maxHp: endTurnOtherStats ? endTurnOtherStats.hp : 0,
+          currentHpKey: 'ohp',
+          teamKey: 'tem2'
+        });
+        turnLogs += applyWeatherEndTurn({
+          battleData,
+          pass: battleData.o,
+          pokemonName: endTurnOther.name,
+          pokemonTypes: pokes[endTurnOther.name]?.types || [],
+          abilityName: endTurnOther.ability,
+          heldItem: endTurnOther.held_item,
+          maxHp: endTurnOtherStats ? endTurnOtherStats.hp : 0,
+          c
+        }).message;
       }
+      turnLogs += advanceBattleWeather(battleData, c).message;
+      await saveUserData2(battleData.cid, endTurnAttacker);
+      await saveUserData2(battleData.oid, endTurnDefender);
     }
 
     tickScreensForTurn(battleData);
@@ -2566,6 +2788,10 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
     const defender = await getUserData(battleData.oid)
     const p1 = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
     const p2 = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0]
+    setBattleWeatherNegationState({
+      battleData,
+      activeAbilities: [p1 && p1.ability, p2 && p2.ability]
+    });
     const pp = pokes[p1.name]
     const pp2 = pokes[p2.name]
     const base1 = pokestats[p2.name]
@@ -2623,6 +2849,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
             delete defender.extra.temp_battle[bword]
           }
         }
+        revertPowerConstructFormsOnBattleEnd(battleData, attacker)
+        revertPowerConstructFormsOnBattleEnd(battleData, defender)
         await saveUserData2(battleData.cid,attacker)
         await saveUserData2(battleData.oid,defender)
         const messageData = await loadMessageData();
@@ -3481,8 +3709,8 @@ const base2 = pokestats[user2poke.name]
   ensureBattleStatus(battleData)
   const p1Lead = Object.keys(spe)[0]
   const p2Lead = Object.keys(spe2)[0]
-  const speed1 = getEffectiveSpeed(spe[p1Lead], battleData, p1Lead)
-  const speed2 = getEffectiveSpeed(spe2[p2Lead], battleData, p2Lead)
+  const speed1 = getEffectiveSpeed(spe[p1Lead], battleData, p1Lead, user1poke && user1poke.ability)
+  const speed2 = getEffectiveSpeed(spe2[p2Lead], battleData, p2Lead, user2poke && user2poke.ability)
   const result = speed1 > speed2 ? p1Lead : p2Lead;
 if(result in tem){
 battleData.c = Object.keys(tem)[0]
@@ -3557,6 +3785,10 @@ initPrefix += applyAbilityEntry({
   opponentAbility: p.ability,
   partyHpMap: battleData.tem2,
   c
+}).message;
+initPrefix += setBattleWeatherNegationState({
+  battleData,
+  activeAbilities: [p.ability, p2.ability]
 }).message;
 const isGroupInit = ctx.chat.type !== 'private';
 const pvpInit = buildPvpMsg(initPrefix, battleData, attacker, defender, p, p2, initStats1, initStats2, bword, isGroupInit);
@@ -4226,7 +4458,7 @@ function applyStageToStat(baseValue, stage) {
   return Math.max(1, Math.floor(baseValue * getStageMultiplier(stage)));
 }
 
-function getEffectiveSpeed(baseSpeed, battleData, pass) {
+function getEffectiveSpeed(baseSpeed, battleData, pass, abilityName) {
   const statusAdjusted = getSpeedWithStatus(baseSpeed, battleData, pass);
   const stages = ensurePokemonStatStages(battleData, pass);
   let speed = applyStageToStat(statusAdjusted, stages.speed);
@@ -4234,12 +4466,15 @@ function getEffectiveSpeed(baseSpeed, battleData, pass) {
     heldItem: getBattleHeldItemName({ battleData, pass })
   });
   speed = Math.max(1, Math.floor(speed * (heldItemInfo.speed || 1)));
+  if (getEffectiveWeatherName(battleData) === 'snow' && normalizeAbilityName(abilityName) === 'slush-rush') {
+    speed = Math.max(1, Math.floor(speed * 2));
+  }
   return speed;
 }
 
-function getModifiedAccuracy(baseAccuracy, attackerAccuracyStage, defenderEvasionStage) {
+function getModifiedAccuracy(baseAccuracy, attackerAccuracyStage, defenderEvasionStage, battleData, defenderAbility) {
   const netStage = (attackerAccuracyStage || 0) - (defenderEvasionStage || 0);
-  const acc = Math.floor(baseAccuracy * getStageMultiplier(netStage));
+  const acc = Math.floor(baseAccuracy * getStageMultiplier(netStage) * getWeatherAccuracyMultiplierForTarget({ battleData, abilityName: defenderAbility }));
   return Math.max(1, Math.min(100, acc));
 }
 
@@ -4463,14 +4698,20 @@ async function executeStandardMove(act) {
     let stats1 = await Stats(base1, p.ivs, p.evs, c(p.nature), level1);
     let stats2 = await Stats(base2, op.ivs, op.evs, c(op.nature), level2);
     
+    const attackerHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item });
+    const defenderHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item });
+    const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
+    const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name].types || [], heldItem: defenderHeldItemName });
+
     // Check type effectiveness
-    const type3 = pokes[op.name].types[0];
-    const type4 = pokes[op.name].types[1] ? c(pokes[op.name].types[1]) : null;
+    const type3 = defenderTypes[0];
+    const type4 = defenderTypes[1] ? c(defenderTypes[1]) : null;
     let eff1 = 1;
-    if (battleData.set.type_effects) { eff1 = await eff(c(move.type), c(type3), type4); }
+    if (battleData.set.type_effects) { eff1 = await eff(c(effectiveMoveType), c(type3), type4); }
+    eff1 = getStrongWindsEffectiveness({ battleData, moveType: effectiveMoveType, pokemonTypes: defenderTypes, effectiveness: eff1 });
     const defenderLevitateInfo = getLevitateInfo({ abilityName: defenderAbility });
     const defenderAirBalloonInfo = getAirBalloonInfo({ battleData, pass: battleData.o, heldItem: op.held_item });
-    const groundBlockedMove = (defenderLevitateInfo.active || defenderAirBalloonInfo.active) && String(move.type || '').toLowerCase() === 'ground';
+    const groundBlockedMove = (defenderLevitateInfo.active || defenderAirBalloonInfo.active) && String(effectiveMoveType || '').toLowerCase() === 'ground';
     if (groundBlockedMove) eff1 = 0;
     
     const atkStages = ensurePokemonStatStages(battleData, battleData.c);
@@ -4518,6 +4759,11 @@ async function executeStandardMove(act) {
       atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.attack));
       def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
     }
+    def2 = Math.max(1, Math.floor(def2 * getWeatherDefenseMultiplier({
+      battleData,
+      moveCategory: move.category,
+      pokemonTypes: getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName, abilityName: defenderAbility })
+    })));
     atk = Math.max(1, Math.floor(atk * supremeOverlordInfo.multiplier));
     if (move.category == 'physical' && getBattleStatus(battleData, battleData.c) === 'burn') {
         atk = Math.max(1, Math.floor(atk / 2));
@@ -4668,9 +4914,10 @@ async function executeStandardMove(act) {
           const opSemi = getSemiInvulnerableStateForPass(battleData, battleData.o);
           msgLocal += getSemiInvulnerableAvoidMessage(op.name, opSemi ? opSemi.moveName : '');
         } else {
-        const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus;
+        const weatherAccuracy = getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy: move.accuracy });
+        const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus || weatherAccuracy.skipAccuracyCheck;
         const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
-        const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(move.accuracy), unawareModifiers.accuracyStage, unawareModifiers.evasionStage) : 100;
+        const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(weatherAccuracy.accuracy), unawareModifiers.accuracyStage, unawareModifiers.evasionStage, battleData, defenderAbility) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
         msgLocal += unawareMessage;
         msgLocal += '\n-> <b>'+c(p.name)+'</b> <b>'+c(move.name)+'</b> has missed.';
@@ -4706,7 +4953,7 @@ async function executeStandardMove(act) {
               if (!battleData.leechSeed || typeof battleData.leechSeed !== 'object') {
                 battleData.leechSeed = {};
               }
-              const defenderTypes = (pokes[op.name]?.types || []).map((t) => String(t).toLowerCase());
+              const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName }).map((t) => String(t).toLowerCase());
               if (defenderTypes.includes('grass')) {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
               } else if (battleData.leechSeed[battleData.o]) {
@@ -4819,22 +5066,68 @@ async function executeStandardMove(act) {
               }
             }
 
+            if (moveName === 'growth') {
+              const growthDelta = getGrowthStageChange(battleData);
+              msgLocal += applyStageChanges({
+                battleData,
+                pass: battleData.c,
+                pokemonName: p.name,
+                abilityName: attackerAbility,
+                changes: [{ stat: 'attack', delta: growthDelta }, { stat: 'special_attack', delta: growthDelta }],
+                c,
+                fromOpponent: false
+              }).message;
+            }
+
+            if (moveName === 'synthesis' || moveName === 'morning sun' || moveName === 'moonlight' || moveName === 'shore up') {
+              const recoveryRatio = getWeatherRecoveryRatio({ battleData, moveName });
+              if (recoveryRatio > 0) {
+                const healAmount = Math.max(1, Math.floor(stats1.hp * recoveryRatio * (attackerHeldItemInfo.recoveryMultiplier || 1)));
+                const hpBefore = battleData.chp;
+                battleData.chp = Math.min(stats1.hp, battleData.chp + healAmount);
+                const healed = Math.max(0, battleData.chp - hpBefore);
+                battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || hpBefore) + healed));
+                if (healed > 0) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
+                }
+              }
+            }
+
             if (moveName === 'minimize') {
               setPokemonMinimized(battleData, battleData.c, true);
             }
 
             msgLocal += applyScreenSetupByMove(moveName, battleData, battleData.cid, true);
             msgLocal += applyScreenRemovalByMove(moveName, battleData, battleData.oid, true);
+            msgLocal += applyWeatherByMove({
+              battleData,
+              moveName,
+              pass: battleData.c,
+              pokemonName: p.name,
+              heldItem: p.held_item,
+              c,
+              didHit: true
+            }).message;
 
             msgLocal += applySelfFaintAfterMove(moveName, move.name, battleData, battleData.c, p.name);
             }
         } else {
+              const weatherSuppressedMessage = getWeatherSuppressedMoveMessage({
+                battleData,
+                moveType: effectiveMoveType,
+                moveCategory: move.category,
+                pokemonName: p.name,
+                moveName: move.name,
+                c
+              });
               if (moveName === 'dream eater' && getBattleStatus(battleData, battleData.o) !== 'sleep') {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+              } else if (weatherSuppressedMessage) {
+                msgLocal += weatherSuppressedMessage;
               } else {
             const pinchPowerMult = getPinchPowerMultiplier({
               abilityName: attackerAbility,
-              moveType: move.type,
+              moveType: effectiveMoveType,
               currentHp: battleData.chp,
               maxHp: stats1.hp
             });
@@ -4847,12 +5140,13 @@ async function executeStandardMove(act) {
               pass: battleData.c,
               pokemonName: p.name,
               moveName,
+              moveType: effectiveMoveType,
               movePower: move.power
-            }) * pinchPowerMult * technicianInfo.multiplier));
+            }) * getWeatherMovePowerMultiplier({ battleData, moveName, moveType: effectiveMoveType }) * pinchPowerMult * technicianInfo.multiplier));
             const stabInfo = getStabInfo({
               abilityName: attackerAbility,
-              moveType: move.type,
-              pokemonTypes: pokes[p.name]?.types || []
+              moveType: effectiveMoveType,
+              pokemonTypes: getEffectivePokemonTypes({ pokemonName: p.name, pokemonTypes: pokes[p.name]?.types || [], heldItem: attackerHeldItemName })
             });
             var damage = Math.min(Math.max(0, Math.floor(calc(atk, def2, level1, boostedPower, eff1) * stabInfo.multiplier)), battleData.ohp);
             const lifeOrbBoostActive = attackerHeldItemInfo.lifeOrbActive && !isDirectDamageMove(moveName);
@@ -4861,8 +5155,8 @@ async function executeStandardMove(act) {
             }
             let ohkoFailed = false;
             if (OHKO_MOVES.has(moveName)) {
-              const attackerTypes = (pokes[p.name]?.types || []).map((t) => String(t).toLowerCase());
-              const defenderTypes = (pokes[op.name]?.types || []).map((t) => String(t).toLowerCase());
+              const attackerTypes = getEffectivePokemonTypes({ pokemonName: p.name, pokemonTypes: pokes[p.name]?.types || [], heldItem: attackerHeldItemName }).map((t) => String(t).toLowerCase());
+              const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName }).map((t) => String(t).toLowerCase());
               const sheerColdBlocked = moveName === 'sheer cold' && defenderTypes.includes('ice') && !attackerTypes.includes('ice');
               const ohkoChance = getOhkoHitChance(level1, level2);
               if (level1 < level2 || sheerColdBlocked || Math.random() * 100 >= ohkoChance) {
@@ -5037,7 +5331,7 @@ async function executeStandardMove(act) {
                 }
                 msgLocal += getInfiltratorBypassMessage(battleData, battleData.oid, move.category, attackerAbility, p.name, moveName);
                 if (pinchPowerMult > 1) {
-                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+c(formatAbilityLabel(attackerAbility))+'</b> boosted its '+c(move.type)+'-type move!';
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>'+c(formatAbilityLabel(attackerAbility))+'</b> boosted its '+c(effectiveMoveType)+'-type move!';
                 }
                 msgLocal += staminaMessage;
                 if (technicianInfo.active) {
@@ -5171,7 +5465,7 @@ async function executeStandardMove(act) {
               attackerAbility,
               moveName,
               typeEffectiveness: eff1,
-              moveType: move.type,
+              moveType: effectiveMoveType,
               moveCategory: move.category,
               attackerMaxHp: stats1.hp,
               hpBefore: defenderHpBeforeHit,
@@ -5200,7 +5494,7 @@ async function executeStandardMove(act) {
         const statusEffect = getMoveStatusEffect(move);
         if (statusEffect && battleData.ohp > 0 && !blockedByGoodAsGold) {
             const existingStatus = getBattleStatus(battleData, battleData.o);
-            const defenderTypes = pokes[op.name]?.types || [];
+            const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName });
             if (!existingStatus && !isStatusImmune(statusEffect.status, defenderTypes) && Math.random() < statusEffect.chance) {
                 setBattleStatus(battleData, battleData.o, statusEffect.status);
                 msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.';
@@ -5330,6 +5624,8 @@ defender.inv.win += 1
   delete defender.extra.temp_battle[bword]
   }
   }
+  revertPowerConstructFormsOnBattleEnd(battleData, attacker)
+  revertPowerConstructFormsOnBattleEnd(battleData, defender)
   await saveUserData2(battleData.cid,attacker)
   await saveUserData2(battleData.oid,defender)
 const messageData = await loadMessageData();
@@ -5529,8 +5825,8 @@ msg += await applyEntryHazardsOnSwitch({
   abilityName: p12.ability,
   maxHp: stats22.hp
 })
-const speed12 = getEffectiveSpeed(stats12.speed, battleData, p22.pass)
-const speed22 = getEffectiveSpeed(stats22.speed, battleData, p12.pass)
+const speed12 = getEffectiveSpeed(stats12.speed, battleData, p22.pass, p22 && p22.ability)
+const speed22 = getEffectiveSpeed(stats22.speed, battleData, p12.pass, p12 && p12.ability)
 const result = speed12 > speed22 ? p22.pass : p12.pass
 if(result in battleData.tem2){
 const cc = battleData.c
@@ -5690,8 +5986,8 @@ msg += applyAbilityEntry({
   partyHpMap: battleData.tem,
   c
 }).message
-const speed12 = getEffectiveSpeed(stats12.speed, battleData, p22.pass)
-const speed22 = getEffectiveSpeed(stats22.speed, battleData, p12.pass)
+const speed12 = getEffectiveSpeed(stats12.speed, battleData, p22.pass, p22 && p22.ability)
+const speed22 = getEffectiveSpeed(stats22.speed, battleData, p12.pass, p12 && p12.ability)
 const result = speed12 > speed22 ? p22.pass : p12.pass
 if(prop == 'fainted'){
 if(result in battleData.tem2){

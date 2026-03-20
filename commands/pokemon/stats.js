@@ -170,13 +170,25 @@ bot.command('stats',async ctx => {
   
   return}
   
-  await sendMessage(ctx,ctx.chat.id,img,{caption:msg,parse_mode:'markdown',reply_to_message_id:ctx.message.message_id,
-  
-  reply_markup:{inline_keyboard:[
+  const keyboardArray = [
   [
   {text:'Stats',callback_data:'ste_'+p2.pass+'_'+ctx.from.id+''},{text:'IVs/EVs',callback_data:'pkisvs_'+p2.pass+'_'+ctx.from.id+''},{text:'Moveset',callback_data:'moves_'+p2.pass+'_'+ctx.from.id+''}],
   [{text:'Evolve',callback_data:'evolve_'+p2.pass+'_'+ctx.from.id+''},{text:'Held Items',callback_data:'heldpanel_'+p2.pass+'_'+ctx.from.id+''},{text:'Release',callback_data:'release_'+p2.pass+'_'+ctx.from.id+''}]
-  ]}})
+  ]
+  
+  // Check if Zygarde with Aura Break and not yet changed
+  const isZygarde = String(p2.name || '').toLowerCase().replace(/[-_]/g, '').includes('zygarde')
+  const abilityNorm = String(p2.ability || '').toLowerCase().replace(/[-_\s]/g, '')
+  const hasAuraBreak = abilityNorm === 'aurabreak'
+  const alreadyChanged = !!(p2.powerConstructChanged)
+  
+  if(isZygarde && hasAuraBreak && !alreadyChanged) {
+    keyboardArray.push([{text:'🔧 Power Construct',callback_data:'zygpc_'+p2.pass+'_'+ctx.from.id+''}])
+  }
+  
+  await sendMessage(ctx,ctx.chat.id,img,{caption:msg,parse_mode:'markdown',reply_to_message_id:ctx.message.message_id,
+  
+  reply_markup:{inline_keyboard:keyboardArray}})
   
   }else if(p22.length > 1){
   

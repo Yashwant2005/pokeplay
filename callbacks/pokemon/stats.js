@@ -57,13 +57,67 @@ try{
 await ctx.deleteMessage()
 }catch(error){
 }
-await sendMessage(ctx,ctx.chat.id,img,{caption:msg,parse_mode:'markdown',reply_to_message_id:mid,
-reply_markup:{inline_keyboard:[
+
+const keyboardArray = [
 [{text:'Stats',callback_data:'ste_'+p2.pass+'_'+ctx.from.id+''},{text:'IVs/EVs',callback_data:'pkisvs_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+p2.pass+'_'+ctx.from.id+''}],
 [{text:'Evolve',callback_data:'evolve_'+p2.pass+'_'+ctx.from.id+''},{text:'Held Items',callback_data:'heldpanel_'+p2.pass+'_'+ctx.from.id+''},{text:'Release',callback_data:'release_'+p2.pass+'_'+ctx.from.id+''}]
-]}})
+]
+
+// Check if Zygarde with Aura Break
+const abilityNorm = String(p2.ability || '').toLowerCase().replace(/[-_\s]/g, '')
+const hasAuraBreak = abilityNorm === 'aurabreak'
+const alreadyChanged = !!(p2.powerConstructChanged)
+
+if(hasAuraBreak && !alreadyChanged) {
+  keyboardArray.push([{text:'🔧 Power Construct',callback_data:'zygpc_'+p2.pass+'_'+ctx.from.id+''}])
+}
+
+await sendMessage(ctx,ctx.chat.id,img,{caption:msg,parse_mode:'markdown',reply_to_message_id:mid,
+reply_markup:{inline_keyboard:keyboardArray}})
 })
 }
+
+  // Zygarde Power Construct ability change
+  bot.action(/zygpc_/,async ctx => {
+    const pass = ctx.callbackQuery.data.split('_')[1]
+    const id = ctx.callbackQuery.data.split('_')[2]
+    if(id!=ctx.from.id){
+      return
+    }
+    const data = await getUserData(ctx.from.id)
+    const p2 = data.pokes.filter((poke)=> poke.pass == pass)[0]
+    if(!p2){
+      ctx.answerCbQuery('Poke Not Found')
+      return
+    }
+    
+    const abilityNorm = String(p2.ability || '').toLowerCase().replace(/[-_\s]/g, '')
+    const hasAuraBreak = abilityNorm === 'aurabreak'
+    const alreadyChanged = !!(p2.powerConstructChanged)
+    
+    if(!hasAuraBreak) {
+      ctx.answerCbQuery('This Pokemon cannot use Power Construct')
+      return
+    }
+    
+    if(alreadyChanged) {
+      ctx.answerCbQuery('Ability already changed! Can only be done once.')
+      return
+    }
+    
+    // Change ability to Power Construct
+    p2.ability = 'power-construct'
+    p2.powerConstructChanged = true
+    
+    await saveUserData2(ctx.from.id, data)
+    ctx.answerCbQuery('✨ Ability changed to Power Construct!')
+    
+    try {
+      await ctx.deleteMessage()
+    } catch(error) {}
+    
+    await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'✨ *'+c(p2.name)+'* ability changed to *Power Construct*!\n\nThis can only be done once.',{reply_markup:{inline_keyboard:[[{text:'Back',callback_data:'stats_'+p2.pass+'_'+ctx.from.id+''}]]}})
+  })
 
 module.exports = register_004_stats;
 

@@ -6,6 +6,11 @@ function registerBuyCommand(bot, deps) {
     hasPurchasedSlotThisWeek,
     markPurchasedSlotThisWeek,
   } = require('../../utils/weekly_tm_shop');
+  const {
+    getHeldItemPrice,
+    normalizeHeldItemShopName,
+    titleCaseHeldItem
+  } = require('../../utils/held_item_shop');
   bot.command('buy',check,check2,async ctx => {
   
   const messageData = await loadMessageData();
@@ -20,7 +25,11 @@ function registerBuyCommand(bot, deps) {
   
   
   
-  const item2 = ctx.message.text.split(' ')[1]
+  const buyTokens = String(ctx.message.text || '').trim().split(/\s+/).slice(1)
+  const item2 = buyTokens[0]
+  const amountToken = buyTokens[buyTokens.length - 1]
+  const trailingAmount = /^\d+$/.test(amountToken) ? Math.max(Math.floor(Number(amountToken)), 1) : null
+  const normalizedTailName = normalizeHeldItemShopName((trailingAmount ? buyTokens.slice(0, -1) : buyTokens).join(' '))
   
   if(!item2){
   
@@ -223,6 +232,109 @@ function registerBuyCommand(bot, deps) {
   
   return
   
+  }
+
+  if(['zygardecapsule','zygarde-capsule','zygarde_capsule','zgcapsule'].includes(item2.toLowerCase())){
+  const amount = Math.max(Math.floor(ctx.message.text.split(' ')[2]),0)
+  if(!amount){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Usage:* /buy zygardecapsule <amount>',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  if(isNaN(amount)){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Invalid amount*',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  const pay = amount*10000
+  if(pay>data.inv.pc){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*You not have enough PokeCoinsðŸ’·*',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+  if(!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
+  if(!Number.isFinite(data.extra.itembox.zygardeCapsules)) data.extra.itembox.zygardeCapsules = 0
+  data.inv.pc -= pay
+  data.extra.itembox.zygardeCapsules += amount
+  await saveUserData2(ctx.from.id,data)
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Bought *'+amount+'* Zygarde Capsule for *'+pay+'* PokeCoins ðŸ’·',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,-1003069884900,'#buy\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) bought <code>'+amount+' Zygarde Capsule</code>',{parse_mode:'HTML'})
+  return
+  }
+
+  if(['abilitycapsule','ability-capsule','ability_capsule','capsule'].includes(item2.toLowerCase())){
+  const amount = Math.max(Math.floor(ctx.message.text.split(' ')[2]),0)
+  if(!amount){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Usage:* /buy abilitycapsule <amount>',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  if(isNaN(amount)){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Invalid amount*',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  const pay = amount*25000
+  if(pay>data.inv.pc){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*You not have enough PokeCoinsðŸ’·*',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+  if(!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
+  if(!Number.isFinite(data.extra.itembox.abilityCapsules)) data.extra.itembox.abilityCapsules = 0
+  data.inv.pc -= pay
+  data.extra.itembox.abilityCapsules += amount
+  await saveUserData2(ctx.from.id,data)
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Bought *'+amount+'* Ability Capsule for *'+pay+'* PokeCoins ðŸ’·',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,-1003069884900,'#buy\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) bought <code>'+amount+' Ability Capsule</code>',{parse_mode:'HTML'})
+  return
+  }
+
+  if(['abilitypatch','ability-patch','ability_patch','patch'].includes(item2.toLowerCase())){
+  const amount = Math.max(Math.floor(ctx.message.text.split(' ')[2]),0)
+  if(!amount){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Usage:* /buy abilitypatch <amount>',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  if(isNaN(amount)){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Invalid amount*',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  const pay = amount*50000
+  if(pay>data.inv.pc){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*You not have enough PokeCoinsðŸ’·*',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+  if(!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
+  if(!Number.isFinite(data.extra.itembox.abilityPatches)) data.extra.itembox.abilityPatches = 0
+  data.inv.pc -= pay
+  data.extra.itembox.abilityPatches += amount
+  await saveUserData2(ctx.from.id,data)
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Bought *'+amount+'* Ability Patch for *'+pay+'* PokeCoins ðŸ’·',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,-1003069884900,'#buy\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) bought <code>'+amount+' Ability Patch</code>',{parse_mode:'HTML'})
+  return
+  }
+
+  const heldLpPrice = getHeldItemPrice(normalizedTailName, 'lp')
+  if(heldLpPrice){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Held items are LP only.*\nOpen */pokestore* and go to the *Held* section to buy *'+c(titleCaseHeldItem(normalizedTailName))+'* for *'+heldLpPrice+' League Points*.',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+
+  const heldPcPrice = getHeldItemPrice(normalizedTailName, 'pc')
+  if(heldPcPrice){
+  const amount = trailingAmount || 1
+  const pay = amount * heldPcPrice
+  if(pay>data.inv.pc){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*You not have enough PokeCoinsðŸ’·*',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+  if(!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
+  if(!data.extra.itembox.heldItems || typeof data.extra.itembox.heldItems !== 'object') data.extra.itembox.heldItems = {}
+  data.inv.pc -= pay
+  data.extra.itembox.heldItems[normalizedTailName] = Number(data.extra.itembox.heldItems[normalizedTailName] || 0) + amount
+  await saveUserData2(ctx.from.id,data)
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Bought *'+amount+'* '+c(titleCaseHeldItem(normalizedTailName))+' for *'+pay+'* PokeCoins ðŸ’·',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,-1003069884900,'#buy\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) bought <code>'+amount+' '+c(titleCaseHeldItem(normalizedTailName))+'</code>',{parse_mode:'HTML'})
+  return
   }
   
   const Store2 = {

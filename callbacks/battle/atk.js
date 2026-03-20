@@ -1254,14 +1254,23 @@ msg += '\n<b>Level :</b> '+clevel+' | <b>HP :</b> '+battleData.chp+'/'+stats.hp+
 msg += '\n<code>'+Bar(stats.hp,battleData.chp)+'</code>'
 msg += '\n\n<b>Moves :</b>'
 const moves = []
-for(const move2 of p.moves){
-let move = dmoves[move2]
-const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name)
-msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
-moves.push(''+move2+'')
-}
+  for(const move2 of p.moves){
+  let move = dmoves[move2]
+  if(!move || !move.name || !move.type || !move.category){
+    continue;
+  }
+  const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name)
+  msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
+  moves.push(''+move2+'')
+  }
 msg += '\n\n<i>Choose Your Next Move:</i>'
-const buttons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'atk_'+word+'_'+bword+'' }));
+  const buttons = moves.map((word) => {
+    const moveInfo = dmoves[word];
+    if(!moveInfo || !moveInfo.name){
+      return null;
+    }
+    return { text: c(moveInfo.name), callback_data: 'atk_'+word+'_'+bword+'' };
+  }).filter(Boolean);
 while(buttons.length < 4){
 buttons.push({text:'  ',callback_data:'empty'})
 }

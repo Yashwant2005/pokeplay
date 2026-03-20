@@ -161,9 +161,12 @@ function register_011_catch(bot, deps) {
     const heldItems = {};
     for (const teamPass of data.teams[data.inv.team]) {
       const pk = data.pokes.filter((poke) => poke.pass == teamPass);
-      if (pk) {
+      if (pk && pk[0]) {
         const partyBase = pokestats[pk[0].name];
         const partyLevel = plevel(pk[0].name, pk[0].exp);
+        if(!partyBase){
+          continue;
+        }
         const partyStats = await Stats(partyBase, pk[0].ivs, pk[0].evs, c(pk[0].nature), partyLevel);
         la[pk[0].pass] = partyLevel;
         tem[pk[0].pass] = partyStats.hp;

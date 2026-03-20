@@ -225,9 +225,13 @@ function registerHuntCommand(bot, deps) {
   
   }
   
+  const regionList = (rdata && rdata[region]) ? rdata[region] : null;
   if(data.extra.evhunt && data.extra.evhunt > 0){
-  
-  var list = rdata[region].filter(pokemon => {
+
+  if(!regionList || !Array.isArray(regionList) || regionList.length < 1){
+    return
+  }
+  var list = regionList.filter(pokemon => {
   
     const pokemonData = pokes[pokemon];
   
@@ -237,18 +241,24 @@ function registerHuntCommand(bot, deps) {
   
   }else if(data.balls.safari && data.balls.safari > 0){
   
-  var list = safari[data.extra.saf.toLowerCase()]
+  var list = safari[data.extra.saf.toLowerCase()] || []
   
   }else{
   
-  var list = Object.keys(spawn).filter(pk=>ar.includes(spawn[pk].toLowerCase()) && list2.includes(pk))
+  var list = Object.keys(spawn).filter(pk=>spawn[pk] && ar.includes(spawn[pk].toLowerCase()) && list2.includes(pk))
   
   }
   
+  if(!list || list.length < 1){
+    return
+  }
   const name5 = list[Math.floor(Math.random()*list.length)]
   
   const nut = ['gmax','mega','origin','primal','crowned','eternamax']
   
+  if(!forms[name5] || !Array.isArray(forms[name5]) || forms[name5].length < 1){
+    return
+  }
   if(data.extra.evhunt && data.extra.evhunt > 0){
   
   var fr = forms[name5].filter(pokemon => {
@@ -265,7 +275,7 @@ function registerHuntCommand(bot, deps) {
   
   }else{
   
-  var fr = forms[name5].filter(pk=> !nut.some((pk2)=> pk.identifier.includes(pk2)) && ar.includes(spawn[pk.identifier].toLowerCase()))
+  var fr = forms[name5].filter(pk=> !nut.some((pk2)=> pk.identifier.includes(pk2)) && spawn[pk.identifier] && ar.includes(spawn[pk.identifier].toLowerCase()))
   
   }
   

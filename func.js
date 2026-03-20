@@ -508,7 +508,10 @@ const typeChart = {
 }
     let effectiveness = 1;
 
-    if (defenderType1 in typeChart[attackerType]) {
+    if (!attackerType || !typeChart[attackerType]) {
+        return effectiveness;
+    }
+    if (defenderType1 && defenderType1 in typeChart[attackerType]) {
         effectiveness *= typeChart[attackerType][defenderType1];
     }
 

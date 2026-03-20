@@ -146,10 +146,20 @@ function registerStartCommand(bot, deps) {
         if (!userData2.inv.stones) userData2.inv.stones = [];
         userData2.inv.stones.push(stone);
         const ar = ["legendary", "legendry"];
-        const list = Object.keys(spawn).filter((pk) => ar.includes(spawn[pk].toLowerCase()) && forms[pk]);
+        const list = Object.keys(spawn).filter((pk) => spawn[pk] && ar.includes(spawn[pk].toLowerCase()) && forms[pk]);
+        if(!list || list.length < 1){
+          await sendMessage(ctx, id, msg, { parse_mode: "HTML" });
+          await saveUserData2(id, userData2);
+          return;
+        }
         const name5 = list[Math.floor(Math.random() * list.length)];
         const nut = ["gmax", "mega", "origin", "primal"];
-        const fr = forms[name5].filter((pk) => !nut.some((pk2) => pk.identifier.includes(pk2)) && ar.includes(spawn[pk.identifier].toLowerCase()));
+        const fr = (forms[name5] || []).filter((pk) => !nut.some((pk2) => pk.identifier.includes(pk2)) && spawn[pk.identifier] && ar.includes(spawn[pk.identifier].toLowerCase()));
+        if(!fr || fr.length < 1){
+          await sendMessage(ctx, id, msg, { parse_mode: "HTML" });
+          await saveUserData2(id, userData2);
+          return;
+        }
         const nam = fr[Math.floor(Math.random() * fr.length)].identifier;
         const ul = lvls[nam];
         const m = Math.max(ul.split("-")[0] * 1, 5);
@@ -181,8 +191,6 @@ function registerStartCommand(bot, deps) {
       await sendMessage(ctx, -1003069884900, "#refer\n\n<b>" + he.encode(ctx.from.first_name) + "</b> (<code>" + ctx.from.id + "</code>) has reached level 20 and <b>" + userData2.inv.name + "</b> (<code>" + id + "</code>) received :-.\n\n" + msg, { parse_mode: "html" });
       await sendMessage(ctx, id, msg, { parse_mode: "HTML" });
       await saveUserData2(id, userData2);
-            let nam = fr[Math.floor(Math.random() * fr.length)].identifier;
-            nam = toBaseIdentifier(nam, forms);
       return;
     }
 

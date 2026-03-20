@@ -1654,8 +1654,14 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       const attackerAbility = p && p.ability ? p.ability : 'none';
       const defenderAbility = op && op.ability ? op.ability : 'none';
 
+      if(!move || !move.type || !p || !op || !pokes[p.name] || !pokes[op.name]){
+        return;
+      }
       let base1 = pokestats[p.name];
       let base2 = pokestats[op.name];
+      if(!base1 || !base2){
+        return;
+      }
       let level1 = plevel(p.name, p.exp);
       let level2 = plevel(op.name, op.exp);
       let stats1 = await Stats(base1, p.ivs, p.evs, c(p.nature), level1);
@@ -1665,7 +1671,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       const type3 = pokes[op.name].types[0];
       const type4 = pokes[op.name].types[1] ? c(pokes[op.name].types[1]) : null;
       let eff1 = 1;
-      if (battleData.set.type_effects) { eff1 = await eff(c(move.type), c(type3), type4); }
+      if (battleData.set.type_effects && move.type && type3) { eff1 = await eff(c(move.type), c(type3), type4); }
       const defenderLevitateInfo = getLevitateInfo({ abilityName: defenderAbility });
       const defenderAirBalloonInfo = getAirBalloonInfo({ battleData, pass: battleData.o, heldItem: op.held_item });
       const groundBlockedMove = (defenderLevitateInfo.active || defenderAirBalloonInfo.active) && String(move.type || '').toLowerCase() === 'ground';

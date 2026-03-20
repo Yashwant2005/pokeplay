@@ -1400,17 +1400,28 @@ var m = await bot.telegram.editMessageText(chatId,id,null,msg,options)
 var m = await bot.telegram.editMessageCaption(chatId,id,null,msg,options)
 }
 return m.message_id
-}catch(error){
-const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
-if(d.includes('message is not modified')){
-return null
-}
-if(d.includes('canceled by new editmessagemedia request')){
-return null
-}
-console.error('Error sending message:', error)
-return null
-}
+  }catch(error){
+  const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
+  if(d.includes('message is not modified')){
+  return null
+  }
+  if(d.includes('canceled by new editmessagemedia request')){
+  return null
+  }
+  if(d.includes('message to edit not found')){
+  return null
+  }
+  if(per=='caption' && d.includes('there is no caption in the message to edit')){
+    try{
+      var m2 = await bot.telegram.editMessageText(chatId,id,null,msg,options)
+      return m2.message_id
+    }catch(e2){
+      return null
+    }
+  }
+  console.error('Error sending message:', error)
+  return null
+  }
 }
 async function sendMessage(ctx, chatId, parameters1, msg, parameters2) {
     let options = {};

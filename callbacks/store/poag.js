@@ -137,9 +137,27 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,me
 return
 }
 if(item=='items'){
-const key = [[{text:'Key Items',callback_data:'poag_transformational_'+ctx.from.id+''},{text:'Evo Items',callback_data:'poag_evolution_'+ctx.from.id+''}],[{text:'Special Items',callback_data:'poag_special_'+ctx.from.id+''},{text:'Enhance Items',callback_data:'poag_enhance_'+ctx.from.id+''}]]
+const key = [[{text:'Key Items',callback_data:'poag_transformational_'+ctx.from.id+''},{text:'Evo Items',callback_data:'poag_evolution_'+ctx.from.id+''}],[{text:'Special Items',callback_data:'poag_special_'+ctx.from.id+''},{text:'Enhance Items',callback_data:'poag_enhance_'+ctx.from.id+''}],[{text:'Held Items',callback_data:'poag_held_'+ctx.from.id+''}]]
 key.push(rows)
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Which category of *Items* you wanna check?',{parse_mode:'markdown',reply_markup:{inline_keyboard:key}})
+return
+}
+if(item=='held'){
+if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+if(!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
+if(!data.extra.itembox.heldItems || typeof data.extra.itembox.heldItems !== 'object') data.extra.itembox.heldItems = {}
+const heldItems = data.extra.itembox.heldItems
+const heldKeys = Object.keys(heldItems).filter((key) => Number(heldItems[key]) > 0)
+const bt = [{text:'Back',callback_data:'poag_items_'+ctx.from.id+''}]
+if(heldKeys.length < 1){
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You do not have any *Held Items* in your bag yet.',{parse_mode:'markdown',reply_markup:{inline_keyboard:[bt]}})
+return
+}
+let msg = '*Held Items*\n\n'
+for(const key of heldKeys.sort()){
+msg += '• *'+c(key.replace(/-/g,' '))+'* x'+heldItems[key]+'\n'
+}
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'markdown',reply_markup:{inline_keyboard:[bt]}})
 return
 }
 if(item=='enhance'){

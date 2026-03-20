@@ -10,7 +10,7 @@ ctx.answerCbQuery()
 return
 }
 if(!poke){
-ctx.answerCbQuery('Poke not found')
+ctx.answerCbQuery('Poke not found', { show_alert: true })
 return
 }
 const p2 = poke
@@ -29,13 +29,13 @@ var name = name3;
   }
 const evo = chains.evolution_chains.filter((chain)=>chain.current_pokemon==name)[0]
 if(!evo){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'*'+c(p2.name)+'* does not evolve further',{parse_mode:'markdown'})
+await ctx.answerCbQuery(c(p2.name)+' does not evolve further.', { show_alert: true })
 return
 }
 if(evo && evo.evolution_level && evo.evolution_method == 'level-up' && evo.evolution_level <= currentLevel){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Are You Sure To Evolve Your *'+c(p2.name)+'* (*Lv.* '+currentLevel+')',{reply_markup:{inline_keyboard:[[{text:'Evolve',callback_data:'evy_'+p2.name+'_'+p2.pass+'_'+ctx.from.id+''},{text:'Cancel',callback_data:'delete_'+ctx.from.id+''}]]},parse_mode:'markdown'})
+await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Are You Sure To Evolve Your *'+c(p2.name)+'* (*Lv.* '+currentLevel+')',{reply_markup:{inline_keyboard:[[{text:'Evolve',callback_data:'evy_'+p2.name+'_'+p2.pass+'_'+ctx.from.id+''},{text:'Cancel',callback_data:'delete_'+ctx.from.id+''}]]},parse_mode:'markdown'})
 }else{
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Your *'+c(p2.name)+'* Does Not Match With Requirements To *Evolve*',{parse_mode:'markdown'})
+await ctx.answerCbQuery(c(p2.name)+' does not meet the evolution requirements.', { show_alert: true })
 }
 })
 }

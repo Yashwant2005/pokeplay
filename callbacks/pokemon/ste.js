@@ -1,6 +1,13 @@
 function register_007_ste(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
+  const titleCaseHeldItem = (value) => String(value || 'none')
+    .replace(/[_-]+/g, ' ')
+    .trim()
+    .split(' ')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ') || 'None';
   bot.action(/ste_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -39,6 +46,7 @@ const natureEffects = {
   };
 let statsText = '';
 statsText += '*Ability:* '+c(titleCaseAbility(p2.ability || 'none'))+'\n\n';
+statsText += '*Held Item:* '+c(titleCaseHeldItem(p2.held_item || 'none'))+'\n\n';
 statsText += '\n`Stats          Points`\n';
 statsText += '`———————————————————————`\n';
 statsText += `\`HP               ${stats.hp.toString().padStart(2)}\`\n`;
@@ -48,7 +56,10 @@ statsText += `\`Sp. Attack       ${stats.special_attack.toString().padStart(2)}\
 statsText += `\`Sp. Defense      ${stats.special_defense.toString().padStart(2)}\` *${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].increased === 'special_defense' ? '(+)' : ''}${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].decreased === 'special_defense' ? '(-)' : ''}*\n`;
 statsText += `\`Speed            ${stats.speed.toString().padStart(2)}\` *${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].increased === 'speed' ? '(+)' : ''}${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].decreased === 'speed' ? '(-)' : ''}*\n`;
 
- await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,''+statsText+'',{parse_mode:'markdown',reply_markup:{inline_keyboard:[[{text:'Info',callback_data:'info_'+pass+'_'+id+''},{text:'IVs/EVs',callback_data:'pkisvs_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+pass+'_'+id+''}]]}})
+ await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,''+statsText+'',{parse_mode:'markdown',reply_markup:{inline_keyboard:[
+[{text:'Info',callback_data:'info_'+pass+'_'+id+''},{text:'IVs/EVs',callback_data:'pkisvs_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+pass+'_'+id+''}],
+[{text:'Evolve',callback_data:'evolve_'+pass+'_'+id+''},{text:'Held Items',callback_data:'heldpanel_'+pass+'_'+id+''},{text:'Release',callback_data:'release_'+pass+'_'+id+''}]
+]}})
 })
 }
 

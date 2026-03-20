@@ -12,7 +12,7 @@ return
 }
 const poke = data.pokes.filter((poke)=> poke.pass == pass)[0]
 if(!poke){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Poke not found')
+await ctx.answerCbQuery('Poke not found', {show_alert:true})
 return
 }
 let name2 = poke.name
@@ -29,11 +29,11 @@ var name = name3;
 const evo2 = chains.evolution_chains.filter((chain)=>chain.current_pokemon==name && chain.evolution_method == 'level-up')
 const evo = evo2[Math.floor(Math.random()*evo2.length)]
 if(!evo){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'*'+c(name)+'* does not evolve futher or not via level up',{parse_mode:'markdown'})
+await ctx.answerCbQuery(c(name)+' does not evolve further or not via level up.', {show_alert:true})
 return
 }
 if(poke.symbol == '🪅'){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'*Event* Pokemons cant be evolved',{parse_mode:'markdown'})
+await ctx.answerCbQuery('Event Pokemons cant be evolved.', {show_alert:true})
 return
 }
 
@@ -100,7 +100,7 @@ if(!data.pokeseen.includes(nam)){
 data.pokeseen.push(nam)
 }
 await saveUserData2(ctx.from.id,data)
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'*'+c(name)+'* Is Evolving.......',{parse_mode:'markdown'})
+await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'*'+c(name)+'* Is Evolving.......',{parse_mode:'markdown'})
 setTimeout(async()=> {
 ctx.deleteMessage(ctx.callbackQuery.message.message_id)
 //ctx.deleteMessage(m.message.id)
@@ -139,7 +139,7 @@ await saveUserData2(ctx.from.id,data)
 await sendMessage(ctx,ctx.chat.id,img,{caption:'*'+c(name)+'* Has Been Evolved Into *'+c(nam)+'*',parse_mode:'markdown'})
 },3500)
 }else{
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Your *'+c(name)+'* Does Not Match With Requirements To *Evolve*',{parse_mode:'markdown'})
+await ctx.answerCbQuery(c(name)+' does not meet the evolution requirements.', {show_alert:true})
 }
 })
 }

@@ -1060,8 +1060,9 @@ console.log(error,ctx.from.id)
 const groupCommands = [
     { command: '/start', description: 'Start The Bot' },
     { command: '/hunt', description: 'hunt A Poke' },
-{command:'/spin',description:'Magic spin event pokemon'},
     {command:'/events',description:'View active and upcoming events'},
+{command:'/ivlock',description:'Lock one IV stat during IV boost event'},
+{command:'/claimplate',description:'Claim one Arceus Plate once'},
     {command:'/daily',description:'Claim commemorative daily rewards'},
 {command:'/claim_safari_pass',description:'Claim your daily safari event pass'},
 {command:'/challenge',description:'Battle With Other Players'},
@@ -1471,6 +1472,9 @@ var m = await bot.telegram.sendMessage(chatId, msg, options)
 return m.message_id
 }catch(error){
 const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
+if(d.includes('chat not found')){
+  return null
+}
 if(d.includes('message to be replied not found') && options && options.reply_to_message_id){
   try{
     const retryOptions = { ...options }

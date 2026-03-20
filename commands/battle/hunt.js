@@ -1,6 +1,9 @@
 function registerHuntCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   const { toBaseIdentifier } = require('../../utils/base_form_pokemon');
+  function isBlockedWildArceusForm(identifier) {
+    return /^arceus-(bug|dark|dragon|electric|fighting|fire|flying|ghost|grass|ground|ice|poison|psychic|rock|steel|water|fairy)$/.test(String(identifier || '').toLowerCase());
+  }
   commands.set('hunt', async (ctx) => {
   
   const data = await getUserData(ctx.from.id)
@@ -255,17 +258,17 @@ function registerHuntCommand(bot, deps) {
   
     const pokemonData = pokes[pokemon.identifier];
   
-    return pokemonData && pokemonData.ev_yield.some(([stat, value]) => stat ===  data.extra.evh && value > 1 && !nut.some((pk2)=> pokemon.identifier.includes(pk2)));
+    return pokemonData && !isBlockedWildArceusForm(pokemon.identifier) && pokemonData.ev_yield.some(([stat, value]) => stat ===  data.extra.evh && value > 1 && !nut.some((pk2)=> pokemon.identifier.includes(pk2)));
   
   });
   
   }else if(data.balls.safari && data.balls.safari > 0){
   
-  var fr = forms[name5].filter(pk=> !nut.some((pk2)=> pk.identifier.includes(pk2)))
+  var fr = forms[name5].filter(pk=> !nut.some((pk2)=> pk.identifier.includes(pk2)) && !isBlockedWildArceusForm(pk.identifier))
   
   }else{
   
-  var fr = forms[name5].filter(pk=> !nut.some((pk2)=> pk.identifier.includes(pk2)) && ar.includes(spawn[pk.identifier].toLowerCase()))
+  var fr = forms[name5].filter(pk=> !nut.some((pk2)=> pk.identifier.includes(pk2)) && !isBlockedWildArceusForm(pk.identifier) && ar.includes(spawn[pk.identifier].toLowerCase()))
   
   }
   

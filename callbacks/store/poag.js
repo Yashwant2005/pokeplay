@@ -1,5 +1,6 @@
 function register_037_poag(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { getHeldItemDescription } = require('../../utils/held_item_shop');
   bot.action(/poag_/,async ctx => {
 const id = ctx.callbackQuery.data.split('_')[2]
 if(ctx.from.id!=id){
@@ -169,6 +170,8 @@ if(!Number.isFinite(data.extra.itembox.goldBottleCaps)) data.extra.itembox.goldB
 
 const mintKeys = Object.keys(data.extra.itembox.mints).filter((k) => Number(data.extra.itembox.mints[k]) > 0)
 const totalMints = mintKeys.reduce((sum, key) => sum + Number(data.extra.itembox.mints[key] || 0), 0)
+if(!Number.isFinite(data.extra.itembox.abilityCapsules)) data.extra.itembox.abilityCapsules = 0
+if(!Number.isFinite(data.extra.itembox.abilityPatches)) data.extra.itembox.abilityPatches = 0
 
 let msg = '*Enhancement Items*\n\n'
 msg += '• *Nature Mints:* '+totalMints+'\n'

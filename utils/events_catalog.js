@@ -1,18 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
+const {
+  loadIvBoostConfig,
+  getIvBoostStatus,
+  formatIvBoostWindow
+} = require('./iv_boost_campaign');
 
-const SPIN_CONFIG_PATH = path.join(process.cwd(), 'data', 'spin_event.json');
 const SAFARI_CONFIG_PATH = path.join(process.cwd(), 'data', 'safari_event.json');
-
-function getDefaultSpinConfig() {
-  return {
-    enabled: true,
-    dailySpins: 10,
-    startAtUtc: '2026-03-15T07:00:00Z',
-    endAtUtc: '2026-03-31T07:00:00Z'
-  };
-}
 
 function getDefaultSafariConfig() {
   return {
@@ -77,25 +72,23 @@ function formatWindow(cfg) {
 }
 
 function getEventsCatalog() {
-  const spinConfig = loadJsonConfig(SPIN_CONFIG_PATH, getDefaultSpinConfig());
   const safariConfig = loadJsonConfig(SAFARI_CONFIG_PATH, getDefaultSafariConfig());
+  const ivBoostConfig = loadIvBoostConfig();
 
-  const spinStatus = getAvailability(spinConfig);
   const safariStatus = getAvailability(safariConfig);
+  const ivBoostStatus = getIvBoostStatus(ivBoostConfig);
 
   return [
     {
-      id: 'spin',
-      title: 'Pokeplay Commemorative Spin',
-      shortLabel: 'Spin',
-      status: spinStatus,
-      duration: formatWindow(spinConfig),
+      id: 'ivboost',
+      title: 'IVs Boost Campaign Event',
+      shortLabel: 'IV Boost',
+      status: ivBoostStatus,
+      duration: formatIvBoostWindow(ivBoostConfig),
       details: [
-        'Choose a Pokemon name to receive a level 1 commemorative Pokemon.',
-        'Preview includes nature and IVs before confirm.',
-        'Daily spins: ' + spinConfig.dailySpins,
-        'Daily reset: 00:00 UTC',
-        'Command: /spin'
+        'Wild hunt IVs are boosted during the campaign window.',
+        'Players can lock only one IV stat at a time for the next ' + ivBoostConfig.lockHunts + ' hunts.',
+        'Use /ivlock to set or clear your current IV lock.'
       ]
     },
     {

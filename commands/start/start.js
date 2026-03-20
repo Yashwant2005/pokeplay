@@ -1,5 +1,8 @@
 function registerStartCommand(bot, deps) {
   const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
+  function isBlockedWildArceusForm(identifier) {
+    return /^arceus-(bug|dark|dragon|electric|fighting|fire|flying|ghost|grass|ground|ice|poison|psychic|rock|steel|water|fairy)$/.test(String(identifier || '').toLowerCase());
+  }
   const {
     getUserData,
     commands,
@@ -149,7 +152,7 @@ function registerStartCommand(bot, deps) {
         const list = Object.keys(spawn).filter((pk) => ar.includes(spawn[pk].toLowerCase()) && forms[pk]);
         const name5 = list[Math.floor(Math.random() * list.length)];
         const nut = ["gmax", "mega", "origin", "primal"];
-        const fr = forms[name5].filter((pk) => !nut.some((pk2) => pk.identifier.includes(pk2)) && ar.includes(spawn[pk.identifier].toLowerCase()));
+        const fr = forms[name5].filter((pk) => !nut.some((pk2) => pk.identifier.includes(pk2)) && !isBlockedWildArceusForm(pk.identifier) && ar.includes(spawn[pk.identifier].toLowerCase()));
         const nam = fr[Math.floor(Math.random() * fr.length)].identifier;
         const ul = lvls[nam];
         const m = Math.max(ul.split("-")[0] * 1, 5);

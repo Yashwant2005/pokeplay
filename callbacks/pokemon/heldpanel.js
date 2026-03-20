@@ -1,5 +1,6 @@
 function registerHeldPanelCallbacks(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { getHeldItemDescription } = require('../../utils/held_item_shop');
 
   function normalizeHeldItemName(value) {
     return String(value || '')
@@ -55,6 +56,9 @@ function registerHeldPanelCallbacks(bot, deps) {
     let msg = '*Held Item Manager*\n';
     msg += '*Pokemon:* ' + c(poke.nickname || poke.name) + '\n';
     msg += '*Current Held Item:* ' + c(titleCaseHeldItem(currentItem || 'none'));
+    if (currentItem && currentItem !== 'none') {
+      msg += '\n*Current Effect:* ' + c(getHeldItemDescription(currentItem));
+    }
 
     const entries = Object.entries(ensureHeldItemBox(data))
       .filter(([, amount]) => Number(amount) > 0)
@@ -69,6 +73,7 @@ function registerHeldPanelCallbacks(bot, deps) {
         const free = Math.max(0, Number(amount) - equippedElsewhere);
         msg += '\n- ' + c(titleCaseHeldItem(itemName)) + ': *' + amount + '*';
         msg += ' | Free: *' + free + '*';
+        msg += '\n  ' + c(getHeldItemDescription(itemName));
       }
     }
 

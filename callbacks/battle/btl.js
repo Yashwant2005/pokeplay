@@ -1,4 +1,4 @@
-const { getPinchAbilityInfo } = require('../../utils/battle_abilities');
+const { getBattleHeldItemName, getEffectiveMoveType, getPinchAbilityInfo } = require('../../utils/battle_abilities');
 
 function register_016_btl(bot, deps) {
   Object.assign(globalThis, deps, { bot });

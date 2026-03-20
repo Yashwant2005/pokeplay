@@ -1,8 +1,19 @@
 const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
-const { applyEntryAbility, getAirBalloonInfo } = require('../../utils/battle_abilities');
+const { applyEntryAbility, getAirBalloonInfo, getDisplayedWeatherState, getWeatherDisplayName, setBattleWeatherNegationState } = require('../../utils/battle_abilities');
+const { applyIvBoostEventToEncounter, IV_STAT_LABELS } = require('../../utils/iv_boost_campaign');
+const { ARCEUS_PLATES } = require('../../utils/held_item_shop');
 
 function register_011_catch(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const getWildHeldItem = (pokemonName) => {
+    const key = String(pokemonName || '').toLowerCase();
+    if (key === 'arceus' && Math.random() < 0.2) {
+      const plate = ARCEUS_PLATES[Math.floor(Math.random() * ARCEUS_PLATES.length)];
+      return plate ? plate.item : 'none';
+    }
+    if (key === 'pikachu' && Math.random() < 0.05) return 'light-ball';
+    return 'none';
+  };
   bot.action(/catch_/, async ctx => {
     const now = Date.now();
     const chatKey = ctx.chat && ctx.chat.id;
@@ -47,7 +58,17 @@ function register_011_catch(bot, deps) {
     if (spawn[name].toLowerCase() == 'legendry' || spawn[name].toLowerCase() == 'legendary') {
       k = 15;
     }
-    const iv = await generateRandomIVs(spawn[name].toLowerCase());
+    let iv = await generateRandomIVs(spawn[name].toLowerCase());
+    const ivEventResult = applyIvBoostEventToEncounter(iv, {
+      rarity: spawn[name],
+      userData: data
+    });
+    iv = ivEventResult.ivs;
+    data.extra.ivEventLastEncounter = {
+      name,
+      ivs: { ...iv },
+      atUtc: new Date().toISOString()
+    };
 
     const ev = {
       hp: 0,
@@ -96,6 +117,14 @@ function register_011_catch(bot, deps) {
     msg += '\n<b>Level :</b> ' + clevel + ' | <b>HP :</b> ' + hp + '/' + hp + '';
     msg += '\n<code>' + Bar(hp, hp) + '</code>';
     msg += '\n\n<b>Moves :</b>';
+    if (ivEventResult.lockApplied) {
+      msg += '\n\n<i>IV Lock Active:</i> ' + IV_STAT_LABELS[ivEventResult.lockApplied.stat] + ' stays at ' + ivEventResult.lockApplied.value + ' IV';
+      if (ivEventResult.lockRemaining > 0) {
+        msg += ' (' + ivEventResult.lockRemaining + ' hunts left)';
+      } else {
+        msg += ' (final locked hunt)';
+      }
+    }
     const moves = [];
     const bword = word(10);
     let battleData = {};
@@ -140,6 +169,7 @@ function register_011_catch(bot, deps) {
     battleData.cpass = cp;
     battleData.level = level;
     battleData.name = name;
+    battleData.oheld_item = getWildHeldItem(name);
     battleData.oability = getRandomAbilityForPokemon(name, pokes);
     battleData.omoves = omoves;
     battleData.ded = [];
@@ -209,6 +239,20 @@ function register_011_catch(bot, deps) {
       msg += '\n-> <b>' + c(name) + '</b>\'s <b>Air Balloon</b> is floating it above the ground!';
     }
     msg += playerEntry.message + wildEntry.message;
+    msg += setBattleWeatherNegationState({
+      battleData,
+      activeAbilities: [p.ability, battleData.oability]
+    }).message;
+    const weatherState = getDisplayedWeatherState(battleData);
+    if (weatherState.weather) {
+      msg += '\n-> <b>Weather:</b> ' + getWeatherDisplayName(weatherState.weather);
+      if ((battleData.weatherTurns || 0) > 0) {
+        msg += ' (' + battleData.weatherTurns + ' turns left)';
+      }
+      if (weatherState.negated) {
+        msg += ' <i>(effects negated)</i>';
+      }
+    }
     await saveBattleData(bword, battleData);
     ctx.session.name = '';
     let mg;

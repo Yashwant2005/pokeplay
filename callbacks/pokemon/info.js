@@ -48,10 +48,21 @@ let ivsText = 'IVs/EVs'
     ivsText += `Speed                ${ivs.speed.toString().padStart(2)} |  ${evs.speed}\n`;
     ivsText += '—————————————————————————————\n';
     ivsText += `Total               ${calculateTotal(ivs)} |  ${calculateTotal(evs)}\n`;
+
+const keyboardArray = [
+[{text:'Stats',callback_data:'ste_'+p2.pass+'_'+ctx.from.id+''},{text:'IVs/EVs',callback_data:'pkisvs_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+p2.pass+'_'+ctx.from.id+''}],
+[{text:'Evolve',callback_data:'evolve_'+p2.pass+'_'+ctx.from.id+''},{text:'Held Items',callback_data:'heldpanel_'+p2.pass+'_'+ctx.from.id+''},{text:'Release',callback_data:'release_'+p2.pass+'_'+ctx.from.id+''}]
+]
+
+const abilityNorm = String(p2.ability || '').toLowerCase().replace(/[-_\s]/g, '')
+const hasAuraBreak = abilityNorm === 'aurabreak'
+const alreadyChanged = !!(p2.powerConstructChanged)
+if(hasAuraBreak && !alreadyChanged){
+  keyboardArray.push([{text:'Power Construct',callback_data:'zygpc_'+p2.pass+'_'+ctx.from.id+''}])
+}
+
 await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'markdown',
-reply_markup:{inline_keyboard:[[
-{text:'Stats',callback_data:'ste_'+p2.pass+'_'+ctx.from.id+''},{text:'IVs/EVs',callback_data:'pkisvs_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+p2.pass+'_'+ctx.from.id+''}],
-[{text:'Evolve',callback_data:'evolve_'+p2.pass+'_'+ctx.from.id+''},{text:'Held Items',callback_data:'heldpanel_'+p2.pass+'_'+ctx.from.id+''},{text:'Release',callback_data:'release_'+p2.pass+'_'+ctx.from.id+''}]]}})
+reply_markup:{inline_keyboard:keyboardArray}})
 })
 }
 

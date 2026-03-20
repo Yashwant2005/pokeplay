@@ -1,4 +1,4 @@
-const { getBattleMovePower, getPinchAbilityInfo } = require('../../utils/battle_abilities');
+const { getBattleMovePower, getDisplayedWeatherState, getPinchAbilityInfo, getWeatherDisplayName } = require('../../utils/battle_abilities');
 
 function register_017_pokemon(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -51,6 +51,16 @@ const uname = he.encode(ctx.from.first_name)
 let msg = '\n\n<b>wild</b> '+c(battleData.name)+' ['+c(op.types.join(' / '))+']'
 msg += '\n<b>Level :</b> '+battleData.level+' | <b>HP :</b> '+battleData.ochp+'/'+battleData.ohp+''
 msg += '\n<code>'+Bar(battleData.ohp,battleData.ochp)+'</code>'
+const weatherState = getDisplayedWeatherState(battleData)
+if(weatherState.weather){
+msg += '\n<b>Weather :</b> '+getWeatherDisplayName(weatherState.weather)
+if((battleData.weatherTurns || 0) > 0){
+msg += ' ('+battleData.weatherTurns+' turns left)'
+}
+if(weatherState.negated){
+msg += ' <i>(effects negated)</i>'
+}
+}
 msg += '\n\n<b>Turn :</b> <code>'+uname+'</code>'
 const p2 = pokes[p.name]
 msg += '\n<b>'+c(p.name)+'</b> ['+c(p2.types.join(' / '))+']'

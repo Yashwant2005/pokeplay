@@ -37,24 +37,24 @@ row2.push({text:'<',callback_data:'add_'+team+'_'+(page-1)+''})
 row2.push({text:'>',callback_data:'add_'+team+'_'+(page+1)+''})
 inlineKeyboard.push(row2)
 }
-if(totalPages > 10){
-const row = []
-row.push({text:'(-5) <<',callback_data:'add_'+team+'_'+(page-5)+'_'+ctx.from.id+''})
-row.push({text:'>> (+5)',callback_data:'add_'+team+'_'+(page+5)+'_'+ctx.from.id+''})
-inlineKeyboard.push(row)
-}
-if(totalPages > 40){
-const row = []
-row.push({text:'(-10) <<<',callback_data:'add_'+team+'_'+(page-10)+'_'+ctx.from.id+''})
-row.push({text:'>>> (+10)',callback_data:'add_'+team+'_'+(page+10)+'_'+ctx.from.id+''})
-inlineKeyboard.push(row)
-}
-if(totalPages > 100){
-const row = []
-row.push({text:'(-25) <<<<',callback_data:'add_'+team+'_'+(page-25)+'_'+ctx.from.id+''})
-row.push({text:'>>>> (+25)',callback_data:'add_'+team+'_'+(page+25)+'_'+ctx.from.id+''})
-inlineKeyboard.push(row)
-}
+  if(totalPages > 10){
+  const row = []
+  row.push({text:'(-5) <<',callback_data:'add_'+team+'_'+(page-5)+'_'+ctx.from.id+''})
+  row.push({text:'>> (+5)',callback_data:'add_'+team+'_'+(page+5)+'_'+ctx.from.id+''})
+  inlineKeyboard.push(row)
+  }
+  if(totalPages > 20){
+  const row = []
+  row.push({text:'(-10) <<<',callback_data:'add_'+team+'_'+(page-10)+'_'+ctx.from.id+''})
+  row.push({text:'>>> (+10)',callback_data:'add_'+team+'_'+(page+10)+'_'+ctx.from.id+''})
+  inlineKeyboard.push(row)
+  }
+  if(totalPages > 40){
+  const row = []
+  row.push({text:'(-20) <<<<',callback_data:'add_'+team+'_'+(page-20)+'_'+ctx.from.id+''})
+  row.push({text:'>>>> (+20)',callback_data:'add_'+team+'_'+(page+20)+'_'+ctx.from.id+''})
+  inlineKeyboard.push(row)
+  }
 
 
 inlineKeyboard.push([{text:'⬅️ Back',callback_data:'set_'+team+''}])

@@ -13,19 +13,27 @@ if(ctx.from.id==id1){
 ctx.answerCbQuery('Wait, other player is choosing poke to trade')
 return
 }
-if(ctx.from.id==id2){
-const data1 = await getUserData(id1)
-const data2 = await getUserData(id2)
-const poke = data1.pokes.filter((p)=>p.pass==pass1)[0]
-const poke2 = data2.pokes.filter((p)=>p.pass==pass2)[0]
+  if(ctx.from.id==id2){
+  const data1 = await getUserData(id1)
+  const data2 = await getUserData(id2)
+  const poke = data1.pokes.filter((p)=>p.pass==pass1)[0]
+  const poke2 = data2.pokes.filter((p)=>p.pass==pass2)[0]
 if(!poke2){
 ctx.answerCbQuery('You does not have this poke anymore')
 return
 }
-if(!poke){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<a href="tg://user?id='+id1+'"><b>'+data1.inv.name+'</b></a> does not have that poke anymore',{parse_mode:'html'})
-return
-}
+  if(!poke){
+  await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<a href="tg://user?id='+id1+'"><b>'+data1.inv.name+'</b></a> does not have that poke anymore',{parse_mode:'html'})
+  return
+  }
+  const hasHeldItem = (p) => {
+    const item = p && p.held_item ? String(p.held_item).trim().toLowerCase() : 'none';
+    return item && item !== 'none';
+  };
+  if(hasHeldItem(poke) || hasHeldItem(poke2)){
+    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>Trade blocked:</b> remove held items from both pokes before trading.',{parse_mode:'html'})
+    return
+  }
 let msg = '<a href="tg://user?id='+id1+'"><b>'+data1.inv.name+'</b></a> wants to trade:\n'
 msg += '<b>'+c(poke.name)+'</b> - '+c(poke.nature)+' | <b>Lv.</b> '+plevel(poke.name,poke.exp)+'\n'
 const ivs = poke.ivs

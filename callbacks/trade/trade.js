@@ -11,16 +11,25 @@ if(ctx.from.id==id1){
 ctx.answerCbQuery('You have already accepted')
 return
 }
-if(ctx.from.id==id2){
-const userData = await getUserData(id2)
-let pokes = await sort(id2,userData.pokes);
-if(userData.inv.sort){
-pokes = await sort(userData.pokes,userData.inv.sort)
-}
+  if(ctx.from.id==id2){
+  const hasHeldItem = (poke) => {
+    const item = poke && poke.held_item ? String(poke.held_item).trim().toLowerCase() : 'none';
+    return item && item !== 'none';
+  };
+  const userData = await getUserData(id2)
+  let pokes = await sort(id2,userData.pokes);
+  if(userData.inv.sort){
+  pokes = await sort(userData.pokes,userData.inv.sort)
+  }
+  pokes = pokes.filter((p) => !hasHeldItem(p));
+  if(pokes.length < 1){
+    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You do not have any tradable pokemon. Remove held items first.',{parse_mode:'html'});
+    return;
+  }
   const buttonsPerRow = 5;
   let page = parseInt(ctx.callbackQuery.data.split('_')[3]) || 1
   const itemsPerPage = 20;
-const totalPages = Math.ceil(userData.pokes.length / itemsPerPage);
+const totalPages = Math.ceil(pokes.length / itemsPerPage);
 if(page<1 || page > totalPages){
 return
 }
@@ -47,24 +56,24 @@ row2.push({text:'<',callback_data:'trade_'+id1+'_'+id2+'_'+(page-1)+''})
 row2.push({text:'>',callback_data:'trade_'+id1+'_'+id2+'_'+(page+1)+''})
 inlineKeyboard.push(row2)
 }
-if(totalPages > 10){
-const row = []
-row.push({text:'(-5) <<',callback_data:'trade_'+id1+'_'+id2+'_'+(page-5)+'_'+ctx.from.id+''})
-row.push({text:'>> (+5)',callback_data:'trade_'+id1+'_'+id2+'_'+(page+5)+'_'+ctx.from.id+''})
-inlineKeyboard.push(row)
-}
-if(totalPages > 40){
-const row = []
-row.push({text:'(-10) <<<',callback_data:'trade_'+id1+'_'+id2+'_'+(page-10)+'_'+ctx.from.id+''})
-row.push({text:'>>> (+10)',callback_data:'trade_'+id1+'_'+id2+'_'+(page+10)+'_'+ctx.from.id+''})
-inlineKeyboard.push(row)
-}
-if(totalPages > 100){
-const row = []
-row.push({text:'(-25) <<<<',callback_data:'trade_'+id1+'_'+id2+'_'+(page-25)+'_'+ctx.from.id+''})
-row.push({text:'>>>> (+25)',callback_data:'trade_'+id1+'_'+id2+'_'+(page+25)+'_'+ctx.from.id+''})
-inlineKeyboard.push(row)
-}
+ if(totalPages > 10){
+ const row = []
+ row.push({text:'(-5) <<',callback_data:'trade_'+id1+'_'+id2+'_'+(page-5)+'_'+ctx.from.id+''})
+ row.push({text:'>> (+5)',callback_data:'trade_'+id1+'_'+id2+'_'+(page+5)+'_'+ctx.from.id+''})
+ inlineKeyboard.push(row)
+ }
+ if(totalPages > 20){
+ const row = []
+ row.push({text:'(-10) <<<',callback_data:'trade_'+id1+'_'+id2+'_'+(page-10)+'_'+ctx.from.id+''})
+ row.push({text:'>>> (+10)',callback_data:'trade_'+id1+'_'+id2+'_'+(page+10)+'_'+ctx.from.id+''})
+ inlineKeyboard.push(row)
+ }
+ if(totalPages > 40){
+ const row = []
+ row.push({text:'(-20) <<<<',callback_data:'trade_'+id1+'_'+id2+'_'+(page-20)+'_'+ctx.from.id+''})
+ row.push({text:'>>>> (+20)',callback_data:'trade_'+id1+'_'+id2+'_'+(page+20)+'_'+ctx.from.id+''})
+ inlineKeyboard.push(row)
+ }
 const data = await getUserData(id1)
 const pk = pokes.slice(startIndex,endIndex)
   let messageText = '<a href = "tg://user?id='+id2+'"><b>'+userData.inv.name+'</b></a>\'s Pokemon List (Page: <b>'+page+'</b>)\n';

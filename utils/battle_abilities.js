@@ -1200,6 +1200,11 @@ function getEffectivePokemonTypes(options) {
   return ownTypes;
 }
 
+function getEffectiveMoveName(options) {
+  const { moveName } = options || {};
+  return moveName;
+}
+
 function getEffectiveMoveType(options) {
   const { pokemonName, heldItem, abilityName, isTerastallized, moveName, moveType, battleData } = options || {};
   const normalizedMove = normalizeMoveName(moveName);
@@ -1302,8 +1307,6 @@ function isDirectDamageMove(moveName) {
 const NON_CONTACT_PHYSICAL_MOVE_NAMES = new Set([
   'accelerock',
   'beat up',
-  'behemoth blade',
-  'behemoth bash',
   'bolt beak',
   'bonemerang',
   'bone rush',
@@ -1866,6 +1869,7 @@ module.exports = {
   getAttackStatMultiplier,
   getBattleHeldItemName,
   getBattleMovePower,
+  getEffectiveMoveName,
   getBattleWeatherName,
   getDisplayedWeatherState,
   getEffectiveWeatherName,

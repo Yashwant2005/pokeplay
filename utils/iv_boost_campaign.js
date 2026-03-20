@@ -35,8 +35,8 @@ function getDefaultIvBoostConfig() {
     enabled: true,
     startAtUtc: '2026-03-20T00:00:00Z',
     endAtUtc: '2026-03-22T07:00:00Z',
-    regularMinPerStat: 6,
-    legendaryMinPerStat: 8,
+    regularMinPerStat: 16,
+    legendaryMinPerStat: 16,
     regularMinTotal: 100,
     legendaryMinTotal: 130,
     lockHunts: 40,
@@ -258,10 +258,16 @@ function setIvLock(userData, statInput) {
       daily: dailyUsage
     };
   }
-  const minValue = Math.max(clampIvValue(config.lockMinValue), 1);
+  const eventMinValue = Math.max(
+    clampIvValue(config.regularMinPerStat),
+    clampIvValue(config.legendaryMinPerStat)
+  );
+  const minValue = Math.max(clampIvValue(config.lockMinValue), eventMinValue, 1);
   const snapshotPick = getLastKnownLockValue(userData, stat);
   const fetchedValue = snapshotPick.value;
-  const value = fetchedValue !== null ? fetchedValue : (Math.floor(Math.random() * (31 - minValue + 1)) + minValue);
+  const value = fetchedValue !== null
+    ? Math.max(minValue, clampIvValue(fetchedValue))
+    : (Math.floor(Math.random() * (31 - minValue + 1)) + minValue);
   userData.extra.ivLock = {
     stat,
     value,
@@ -296,13 +302,15 @@ function applyIvBoostEventToEncounter(ivs, options = {}) {
   const userData = options.userData;
   const lock = getCurrentIvLock(userData);
   if (status === 'active' && lock) {
-    out[lock.stat] = lock.value;
-    lockApplied = { ...lock };
+    const minLockValue = clampIvValue(legendaryLike ? config.legendaryMinPerStat : config.regularMinPerStat);
+    const appliedLockValue = Math.max(minLockValue, clampIvValue(lock.value));
+    out[lock.stat] = appliedLockValue;
+    lockApplied = { ...lock, value: appliedLockValue };
     lockRemaining = Math.max(0, lock.remainingHunts - 1);
     if (lockRemaining > 0) {
       userData.extra.ivLock.remainingHunts = lockRemaining;
       userData.extra.ivLock.stat = lock.stat;
-      userData.extra.ivLock.value = lock.value;
+      userData.extra.ivLock.value = appliedLockValue;
     } else {
       clearIvLock(userData);
     }

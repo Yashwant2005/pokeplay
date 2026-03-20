@@ -275,7 +275,7 @@ function reloadStaticData() {
 }
 
 setInterval(reloadStaticData, 60 * 60 * 1000);
-const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs,applyCaptureIvRules} = require('./func.js')
+const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, resetUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs,applyCaptureIvRules} = require('./func.js')
 const regions = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Paldea']
 const region = {
 "Kanto":1,
@@ -474,6 +474,7 @@ const moduleDeps = buildModuleDeps({
   check2,
   check2q,
   getUserData,
+  resetUserData,
   saveUserData2,
   saveUserData22,
   sendMessage,

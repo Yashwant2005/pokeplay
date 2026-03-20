@@ -582,6 +582,27 @@ function saveBattleData(bword, data) {
   BATTLE_LAST_ACCESS.set(key, Date.now());
 }
 
+function resetUserData(userId) {
+  const key = String(userId);
+  try {
+    USER_CACHE.delete(key);
+    USER_DIRTY.delete(key);
+    USER_LAST_ACCESS.delete(key);
+    USER_CACHE_MTIME.delete(key);
+    USER_LAST_FILE_CHECK.delete(key);
+
+    const filePath = './data/db/' + key + '.json';
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+    // confirm removal
+    return !fs.existsSync(filePath);
+  } catch (error) {
+    console.error('Error resetting user data for', key, error.message || error);
+    return false;
+  }
+}
+
 function flushUserCache() {
   if (USER_DIRTY.size < 1) return;
   for (const key of Array.from(USER_DIRTY)) {
@@ -1068,5 +1089,5 @@ function applyCaptureIvRules(ivs, options = {}) {
   return withMinimumIvs(ivs, minPerStat);
 }
 
-module.exports = { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel,saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs,applyCaptureIvRules}
+module.exports = { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel,saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs,applyCaptureIvRules,resetUserData}
 

@@ -1,0 +1,6063 @@
+{
+  "9ha0LSBZICHz": {
+    "id": "9ha0LSBZICHz",
+    "status": "approved",
+    "createdAt": "2026-03-11T05:54:47.765Z",
+    "userId": 6265981509,
+    "userTag": "@FLIRTER_KUN",
+    "pokemonName": "yveltal",
+    "nature": "careful",
+    "ivs": {
+      "hp": 30,
+      "attack": 31,
+      "defense": 31,
+      "special_attack": 15,
+      "special_defense": 24,
+      "speed": 25
+    },
+    "shiny": false,
+    "fingerprint": "yveltal|careful|hp:30|atk:31|def:31|spa:15|spd:24|spe:25",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-11T05:55:02.516Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "yveltal"
+    ]
+  },
+  "02xwdy9YOCvO": {
+    "id": "02xwdy9YOCvO",
+    "status": "approved",
+    "createdAt": "2026-03-16T08:56:17.114Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "magearna",
+    "nature": "quiet",
+    "ivs": {
+      "hp": 22,
+      "attack": 26,
+      "defense": 22,
+      "special_attack": 24,
+      "special_defense": 22,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "magearna|quiet|hp:22|atk:26|def:22|spa:24|spd:22|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T09:00:48.871Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "magearna"
+    ]
+  },
+  "PwR3EwkF7tQY": {
+    "id": "PwR3EwkF7tQY",
+    "status": "approved",
+    "createdAt": "2026-03-16T09:36:19.688Z",
+    "userId": 7533381966,
+    "userTag": "@JustACasulWuwaPlayer",
+    "pokemonName": "chesnaught",
+    "nature": "impish",
+    "ivs": {
+      "hp": 24,
+      "attack": 29,
+      "defense": 20,
+      "special_attack": 22,
+      "special_defense": 30,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "chesnaught|impish|hp:24|atk:29|def:20|spa:22|spd:30|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T10:24:22.413Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "chesnaught"
+    ]
+  },
+  "usy4LhAhzyU7": {
+    "id": "usy4LhAhzyU7",
+    "status": "approved",
+    "createdAt": "2026-03-16T09:53:31.357Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "mewtwo",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 14,
+      "attack": 28,
+      "defense": 25,
+      "special_attack": 21,
+      "special_defense": 10,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "mewtwo|jolly|hp:14|atk:28|def:25|spa:21|spd:10|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T10:24:27.344Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "mewtwo"
+    ]
+  },
+  "r3gayDR2IvYl": {
+    "id": "r3gayDR2IvYl",
+    "status": "approved",
+    "createdAt": "2026-03-16T10:52:48.296Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "zacian-crowned",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 28,
+      "attack": 30,
+      "defense": 16,
+      "special_attack": 26,
+      "special_defense": 16,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "zacian-crowned|hasty|hp:28|atk:30|def:16|spa:26|spd:16|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T11:58:36.877Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "zacian-crowned"
+    ]
+  },
+  "Wqf5QLdEysOw": {
+    "id": "Wqf5QLdEysOw",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:02:35.302Z",
+    "userId": 5716292610,
+    "userTag": "@monarch_sama",
+    "sourceBotId": 572621020,
+    "stones": [
+      "altarianite",
+      "manectite",
+      "alakazite",
+      "salamencite",
+      "steelixite",
+      "scizorite",
+      "gardevoirite",
+      "latiasite",
+      "gardevoirite",
+      "lopunnite",
+      "absolite",
+      "galladite",
+      "heracronite",
+      "blazikenite",
+      "mawilite",
+      "blastoisinite",
+      "venusaurite",
+      "abomasite",
+      "aerodactylite",
+      "charizardite-y",
+      "latiasite",
+      "sharpedonite",
+      "ampharosite",
+      "garchompite",
+      "glalitite",
+      "gardevoirite",
+      "houndoominite",
+      "medichamite",
+      "aggronite",
+      "blastoisinite",
+      "blue-orb",
+      "pidgeotite",
+      "slowbronite",
+      "houndoominite",
+      "red-orb",
+      "heracronite",
+      "altarianite",
+      "red-orb",
+      "absolite",
+      "sceptilite",
+      "aggronite",
+      "garchompite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 5716292610,
+    "forwardMessageId": 2753,
+    "proofPhotoId": "AgACAgUAAxkBAAIKw2m3_2uueg0nktLaSYndSrraROj7AAIrDmsbhrXBVXTj-H6XFIY0AQADAgADeQADOgQ",
+    "reviewedAt": "2026-03-16T13:03:02.962Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "altarianite",
+      "manectite",
+      "alakazite",
+      "salamencite",
+      "steelixite",
+      "scizorite",
+      "gardevoirite",
+      "latiasite",
+      "gardevoirite",
+      "lopunnite",
+      "absolite",
+      "galladite",
+      "heracronite",
+      "blazikenite",
+      "mawilite",
+      "blastoisinite",
+      "venusaurite",
+      "abomasite",
+      "aerodactylite",
+      "charizardite-y",
+      "latiasite",
+      "sharpedonite",
+      "ampharosite",
+      "garchompite",
+      "glalitite",
+      "gardevoirite",
+      "houndoominite",
+      "medichamite",
+      "aggronite",
+      "blastoisinite",
+      "blue-orb",
+      "pidgeotite",
+      "slowbronite",
+      "houndoominite",
+      "red-orb",
+      "heracronite",
+      "altarianite",
+      "red-orb",
+      "absolite",
+      "sceptilite",
+      "aggronite",
+      "garchompite"
+    ]
+  },
+  "hVyiO7pWLj22": {
+    "id": "hVyiO7pWLj22",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:10:53.408Z",
+    "userId": 1167536889,
+    "userTag": "@CYBER_15",
+    "sourceBotId": 572621020,
+    "stones": [
+      "latiasite",
+      "alakazite",
+      "houndoominite",
+      "salamencite",
+      "garchompite",
+      "mewtwonite-x",
+      "beedrillite",
+      "diancite",
+      "abomasite",
+      "absolite",
+      "venusaurite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 1167536889,
+    "forwardMessageId": 2764,
+    "proofPhotoId": "AgACAgEAAxkBAAIKzmm4AV2WZljavARkzYzgjg_suI5kAAJ1C2sbfv7ARVjF4AABIhVrZQEAAwIAA3kAAzoE",
+    "reviewedAt": "2026-03-16T13:25:55.233Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "latiasite",
+      "alakazite",
+      "houndoominite",
+      "salamencite",
+      "garchompite",
+      "mewtwonite-x",
+      "beedrillite",
+      "diancite",
+      "abomasite",
+      "absolite",
+      "venusaurite"
+    ]
+  },
+  "USCRehdAoKpQ": {
+    "id": "USCRehdAoKpQ",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:13:09.226Z",
+    "userId": 8483107299,
+    "userTag": "@Fcknsxy",
+    "pokemonName": "gardevoir",
+    "nature": "timid",
+    "ivs": {
+      "hp": 26,
+      "attack": 13,
+      "defense": 31,
+      "special_attack": 28,
+      "special_defense": 13,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "gardevoir|timid|hp:26|atk:13|def:31|spa:28|spd:13|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:25:58.478Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gardevoir"
+    ]
+  },
+  "SPmvhm0AL8h3": {
+    "id": "SPmvhm0AL8h3",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:31:53.515Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "cascoon",
+    "nature": "docile",
+    "ivs": {
+      "hp": 16,
+      "attack": 28,
+      "defense": 24,
+      "special_attack": 24,
+      "special_defense": 13,
+      "speed": 17
+    },
+    "shiny": false,
+    "fingerprint": "cascoon|docile|hp:16|atk:28|def:24|spa:24|spd:13|spe:17",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:00:31.598Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "cascoon"
+    ]
+  },
+  "0fKMnFa1kTGk": {
+    "id": "0fKMnFa1kTGk",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:33:43.703Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "raichu",
+    "nature": "impish",
+    "ivs": {
+      "hp": 7,
+      "attack": 12,
+      "defense": 31,
+      "special_attack": 18,
+      "special_defense": 15,
+      "speed": 22
+    },
+    "shiny": false,
+    "fingerprint": "raichu|impish|hp:7|atk:12|def:31|spa:18|spd:15|spe:22",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:00:33.688Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "raichu"
+    ]
+  },
+  "VCicXiOjJ4Pt": {
+    "id": "VCicXiOjJ4Pt",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:34:28.078Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "raichu",
+    "nature": "gentle",
+    "ivs": {
+      "hp": 5,
+      "attack": 31,
+      "defense": 20,
+      "special_attack": 26,
+      "special_defense": 0,
+      "speed": 7
+    },
+    "shiny": false,
+    "fingerprint": "raichu|gentle|hp:5|atk:31|def:20|spa:26|spd:0|spe:7",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:00:35.752Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "raichu"
+    ]
+  },
+  "wyCO8ihN8q2g": {
+    "id": "wyCO8ihN8q2g",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:34:53.500Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "raichu",
+    "nature": "hardy",
+    "ivs": {
+      "hp": 18,
+      "attack": 3,
+      "defense": 7,
+      "special_attack": 0,
+      "special_defense": 21,
+      "speed": 2
+    },
+    "shiny": false,
+    "fingerprint": "raichu|hardy|hp:18|atk:3|def:7|spa:0|spd:21|spe:2",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:00:37.596Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "raichu"
+    ]
+  },
+  "9VsyuFljohZ1": {
+    "id": "9VsyuFljohZ1",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:35:19.712Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "tyranitar",
+    "nature": "quiet",
+    "ivs": {
+      "hp": 31,
+      "attack": 8,
+      "defense": 29,
+      "special_attack": 29,
+      "special_defense": 5,
+      "speed": 6
+    },
+    "shiny": false,
+    "fingerprint": "tyranitar|quiet|hp:31|atk:8|def:29|spa:29|spd:5|spe:6",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:00:39.494Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "tyranitar"
+    ]
+  },
+  "UC5rzDdtqLVc": {
+    "id": "UC5rzDdtqLVc",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:35:36.409Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "raichu",
+    "nature": "quirky",
+    "ivs": {
+      "hp": 1,
+      "attack": 24,
+      "defense": 27,
+      "special_attack": 9,
+      "special_defense": 23,
+      "speed": 9
+    },
+    "shiny": false,
+    "fingerprint": "raichu|quirky|hp:1|atk:24|def:27|spa:9|spd:23|spe:9",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:00:42.741Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "raichu"
+    ]
+  },
+  "3FSDvzJIqfyb": {
+    "id": "3FSDvzJIqfyb",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:36:14.287Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "raichu",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 7,
+      "attack": 22,
+      "defense": 9,
+      "special_attack": 19,
+      "special_defense": 0,
+      "speed": 15
+    },
+    "shiny": false,
+    "fingerprint": "raichu|hasty|hp:7|atk:22|def:9|spa:19|spd:0|spe:15",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:00:44.667Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "raichu"
+    ]
+  },
+  "ezErHm1i3C2H": {
+    "id": "ezErHm1i3C2H",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:36:46.775Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "raichu",
+    "nature": "impish",
+    "ivs": {
+      "hp": 19,
+      "attack": 2,
+      "defense": 29,
+      "special_attack": 8,
+      "special_defense": 7,
+      "speed": 6
+    },
+    "shiny": false,
+    "fingerprint": "raichu|impish|hp:19|atk:2|def:29|spa:8|spd:7|spe:6",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:00:46.604Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "raichu"
+    ]
+  },
+  "f7ZUu9VdjGw6": {
+    "id": "f7ZUu9VdjGw6",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:39:34.564Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "golem",
+    "nature": "lonely",
+    "ivs": {
+      "hp": 27,
+      "attack": 10,
+      "defense": 29,
+      "special_attack": 24,
+      "special_defense": 16,
+      "speed": 9
+    },
+    "shiny": false,
+    "fingerprint": "golem|lonely|hp:27|atk:10|def:29|spa:24|spd:16|spe:9",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:00:48.372Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "golem"
+    ]
+  },
+  "8vTRs0hg4Wh0": {
+    "id": "8vTRs0hg4Wh0",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:40:20.624Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "golem",
+    "nature": "mild",
+    "ivs": {
+      "hp": 17,
+      "attack": 18,
+      "defense": 4,
+      "special_attack": 1,
+      "special_defense": 26,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "golem|mild|hp:17|atk:18|def:4|spa:1|spd:26|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:00:50.264Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "golem"
+    ]
+  },
+  "7sAI3iIlBgfR": {
+    "id": "7sAI3iIlBgfR",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:40:42.781Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "golem",
+    "nature": "calm",
+    "ivs": {
+      "hp": 14,
+      "attack": 24,
+      "defense": 0,
+      "special_attack": 24,
+      "special_defense": 12,
+      "speed": 4
+    },
+    "shiny": false,
+    "fingerprint": "golem|calm|hp:14|atk:24|def:0|spa:24|spd:12|spe:4",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:47:11.314Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "golem"
+    ]
+  },
+  "hQBt6meRgITa": {
+    "id": "hQBt6meRgITa",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:41:04.964Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "golem",
+    "nature": "lax",
+    "ivs": {
+      "hp": 20,
+      "attack": 15,
+      "defense": 17,
+      "special_attack": 28,
+      "special_defense": 9,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "golem|lax|hp:20|atk:15|def:17|spa:28|spd:9|spe:27",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:47:15.304Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "golem"
+    ]
+  },
+  "jYG3QFQzvBGK": {
+    "id": "jYG3QFQzvBGK",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:42:10.287Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "golem",
+    "nature": "hardy",
+    "ivs": {
+      "hp": 5,
+      "attack": 31,
+      "defense": 27,
+      "special_attack": 12,
+      "special_defense": 1,
+      "speed": 2
+    },
+    "shiny": false,
+    "fingerprint": "golem|hardy|hp:5|atk:31|def:27|spa:12|spd:1|spe:2",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:47:18.153Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "golem"
+    ]
+  },
+  "vGCoApTNt6bX": {
+    "id": "vGCoApTNt6bX",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:42:40.724Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "golem",
+    "nature": "careful",
+    "ivs": {
+      "hp": 10,
+      "attack": 11,
+      "defense": 11,
+      "special_attack": 24,
+      "special_defense": 24,
+      "speed": 13
+    },
+    "shiny": false,
+    "fingerprint": "golem|careful|hp:10|atk:11|def:11|spa:24|spd:24|spe:13",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:47:23.328Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "golem"
+    ]
+  },
+  "MreJhP0Hau66": {
+    "id": "MreJhP0Hau66",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:44:14.124Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "gallade",
+    "nature": "relaxed",
+    "ivs": {
+      "hp": 26,
+      "attack": 29,
+      "defense": 0,
+      "special_attack": 8,
+      "special_defense": 21,
+      "speed": 19
+    },
+    "shiny": false,
+    "fingerprint": "gallade|relaxed|hp:26|atk:29|def:0|spa:8|spd:21|spe:19",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:47:25.210Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gallade"
+    ]
+  },
+  "t9QBCYUgoqBC": {
+    "id": "t9QBCYUgoqBC",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:44:35.604Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "gallade",
+    "nature": "relaxed",
+    "ivs": {
+      "hp": 14,
+      "attack": 8,
+      "defense": 10,
+      "special_attack": 3,
+      "special_defense": 23,
+      "speed": 21
+    },
+    "shiny": false,
+    "fingerprint": "gallade|relaxed|hp:14|atk:8|def:10|spa:3|spd:23|spe:21",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:47:27.650Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gallade"
+    ]
+  },
+  "EajEsklYXz1j": {
+    "id": "EajEsklYXz1j",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:45:05.225Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "gallade",
+    "nature": "relaxed",
+    "ivs": {
+      "hp": 5,
+      "attack": 7,
+      "defense": 7,
+      "special_attack": 8,
+      "special_defense": 7,
+      "speed": 18
+    },
+    "shiny": false,
+    "fingerprint": "gallade|relaxed|hp:5|atk:7|def:7|spa:8|spd:7|spe:18",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:47:29.973Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gallade"
+    ]
+  },
+  "KfKDxNq5O843": {
+    "id": "KfKDxNq5O843",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:45:46.416Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "gallade",
+    "nature": "mild",
+    "ivs": {
+      "hp": 27,
+      "attack": 6,
+      "defense": 6,
+      "special_attack": 19,
+      "special_defense": 14,
+      "speed": 15
+    },
+    "shiny": false,
+    "fingerprint": "gallade|mild|hp:27|atk:6|def:6|spa:19|spd:14|spe:15",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:47:32.823Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gallade"
+    ]
+  },
+  "KWWJ0axSnWBG": {
+    "id": "KWWJ0axSnWBG",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:46:13.660Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "gallade",
+    "nature": "timid",
+    "ivs": {
+      "hp": 27,
+      "attack": 2,
+      "defense": 26,
+      "special_attack": 24,
+      "special_defense": 4,
+      "speed": 12
+    },
+    "shiny": false,
+    "fingerprint": "gallade|timid|hp:27|atk:2|def:26|spa:24|spd:4|spe:12",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:47:34.555Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gallade"
+    ]
+  },
+  "l5Qu7dEsj6JM": {
+    "id": "l5Qu7dEsj6JM",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:46:41.225Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "gallade",
+    "nature": "bashful",
+    "ivs": {
+      "hp": 26,
+      "attack": 31,
+      "defense": 7,
+      "special_attack": 20,
+      "special_defense": 7,
+      "speed": 22
+    },
+    "shiny": false,
+    "fingerprint": "gallade|bashful|hp:26|atk:31|def:7|spa:20|spd:7|spe:22",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:47:37.111Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gallade"
+    ]
+  },
+  "m63za2tTUfqY": {
+    "id": "m63za2tTUfqY",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:48:40.079Z",
+    "userId": 8483107299,
+    "userTag": "@Fcknsxy",
+    "pokemonName": "gastly",
+    "nature": "modest",
+    "ivs": {
+      "hp": 14,
+      "attack": 25,
+      "defense": 29,
+      "special_attack": 27,
+      "special_defense": 23,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "gastly|modest|hp:14|atk:25|def:29|spa:27|spd:23|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:49:19.810Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gastly"
+    ]
+  },
+  "BopqQHdq7vZj": {
+    "id": "BopqQHdq7vZj",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:55:22.975Z",
+    "userId": 2110889690,
+    "userTag": "@Kakkarot2402",
+    "pokemonName": "kyurem-white",
+    "nature": "mild",
+    "ivs": {
+      "hp": 27,
+      "attack": 30,
+      "defense": 30,
+      "special_attack": 22,
+      "special_defense": 18,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "kyurem-white|mild|hp:27|atk:30|def:30|spa:22|spd:18|spe:28",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:57:51.164Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "kyurem-white"
+    ]
+  },
+  "XPBIiPUjCUq0": {
+    "id": "XPBIiPUjCUq0",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:56:06.136Z",
+    "userId": 2110889690,
+    "userTag": "@Kakkarot2402",
+    "pokemonName": "lairon",
+    "nature": "docile",
+    "ivs": {
+      "hp": 10,
+      "attack": 13,
+      "defense": 27,
+      "special_attack": 4,
+      "special_defense": 23,
+      "speed": 10
+    },
+    "shiny": false,
+    "fingerprint": "lairon|docile|hp:10|atk:13|def:27|spa:4|spd:23|spe:10",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T13:57:53.250Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "lairon"
+    ]
+  },
+  "vCFTF1SdLSp9": {
+    "id": "vCFTF1SdLSp9",
+    "status": "approved",
+    "createdAt": "2026-03-16T13:57:32.379Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "golem",
+    "nature": "mild",
+    "ivs": {
+      "hp": 17,
+      "attack": 18,
+      "defense": 4,
+      "special_attack": 1,
+      "special_defense": 26,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "golem|mild|hp:17|atk:18|def:4|spa:1|spd:26|spe:29",
+    "duplicateOf": [
+      "8vTRs0hg4Wh0"
+    ],
+    "reviewedAt": "2026-03-16T13:57:56.424Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "golem"
+    ]
+  },
+  "w8bUAPaOPMlR": {
+    "id": "w8bUAPaOPMlR",
+    "status": "rejected",
+    "createdAt": "2026-03-16T13:57:57.956Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "golem",
+    "nature": "hardy",
+    "ivs": {
+      "hp": 5,
+      "attack": 31,
+      "defense": 27,
+      "special_attack": 12,
+      "special_defense": 1,
+      "speed": 2
+    },
+    "shiny": false,
+    "fingerprint": "golem|hardy|hp:5|atk:31|def:27|spa:12|spd:1|spe:2",
+    "duplicateOf": [
+      "jYG3QFQzvBGK"
+    ],
+    "reviewedAt": "2026-03-16T13:58:02.221Z",
+    "reviewedBy": 6265981509
+  },
+  "tpOngnBqMoDj": {
+    "id": "tpOngnBqMoDj",
+    "status": "rejected",
+    "createdAt": "2026-03-16T13:58:40.174Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "cascoon",
+    "nature": "docile",
+    "ivs": {
+      "hp": 16,
+      "attack": 28,
+      "defense": 24,
+      "special_attack": 24,
+      "special_defense": 13,
+      "speed": 17
+    },
+    "shiny": false,
+    "fingerprint": "cascoon|docile|hp:16|atk:28|def:24|spa:24|spd:13|spe:17",
+    "duplicateOf": [
+      "SPmvhm0AL8h3"
+    ],
+    "reviewedAt": "2026-03-16T13:59:43.149Z",
+    "reviewedBy": 6265981509
+  },
+  "1HHSfw85x7HS": {
+    "id": "1HHSfw85x7HS",
+    "status": "approved",
+    "createdAt": "2026-03-16T14:01:22.678Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "foongus",
+    "nature": "relaxed",
+    "ivs": {
+      "hp": 17,
+      "attack": 25,
+      "defense": 31,
+      "special_attack": 19,
+      "special_defense": 17,
+      "speed": 24
+    },
+    "shiny": false,
+    "fingerprint": "foongus|relaxed|hp:17|atk:25|def:31|spa:19|spd:17|spe:24",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:01:30.303Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "foongus"
+    ]
+  },
+  "GnMCtITzL2DP": {
+    "id": "GnMCtITzL2DP",
+    "status": "approved",
+    "createdAt": "2026-03-16T14:02:44.431Z",
+    "userId": 5848489095,
+    "userTag": "@Lordshiva_1245",
+    "pokemonName": "xerneas",
+    "nature": "impish",
+    "ivs": {
+      "hp": 31,
+      "attack": 28,
+      "defense": 31,
+      "special_attack": 26,
+      "special_defense": 31,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "xerneas|impish|hp:31|atk:28|def:31|spa:26|spd:31|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:09:43.537Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "xerneas"
+    ]
+  },
+  "ixXqL5Zb0GVM": {
+    "id": "ixXqL5Zb0GVM",
+    "status": "approved",
+    "createdAt": "2026-03-16T14:02:50.909Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "growlithe",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 25,
+      "attack": 28,
+      "defense": 16,
+      "special_attack": 18,
+      "special_defense": 25,
+      "speed": 19
+    },
+    "shiny": false,
+    "fingerprint": "growlithe|adamant|hp:25|atk:28|def:16|spa:18|spd:25|spe:19",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:09:51.211Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "growlithe"
+    ]
+  },
+  "UAptn9WsrJgp": {
+    "id": "UAptn9WsrJgp",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-16T14:14:49.614Z",
+    "userId": 5935984615,
+    "userTag": null,
+    "sourceBotId": 572621020,
+    "stones": [
+      "slowbronite",
+      "galladite",
+      "latiosite",
+      "salamencite",
+      "salamencite",
+      "pidgeotite",
+      "tyranitarite",
+      "venusaurite",
+      "swampertite",
+      "ampharosite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 5935984615,
+    "forwardMessageId": 3039,
+    "proofPhotoId": "AgACAgUAAxkBAAIL4mm4EFkRt-NpGfLIVnKEtfHBA9UPAAIdDmsboZPBVYYtyfONWWFCAQADAgADeQADOgQ",
+    "reviewedAt": "2026-03-16T14:19:49.147Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "slowbronite",
+      "galladite",
+      "latiosite",
+      "salamencite",
+      "salamencite",
+      "pidgeotite",
+      "tyranitarite",
+      "venusaurite",
+      "swampertite",
+      "ampharosite"
+    ]
+  },
+  "7EVRaYPtEU1b": {
+    "id": "7EVRaYPtEU1b",
+    "status": "approved",
+    "createdAt": "2026-03-16T14:16:26.926Z",
+    "userId": 5935984615,
+    "userTag": null,
+    "pokemonName": "xerneas",
+    "nature": "careful",
+    "ivs": {
+      "hp": 29,
+      "attack": 27,
+      "defense": 31,
+      "special_attack": 19,
+      "special_defense": 31,
+      "speed": 16
+    },
+    "shiny": false,
+    "fingerprint": "xerneas|careful|hp:29|atk:27|def:31|spa:19|spd:31|spe:16",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T14:19:51.541Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "xerneas"
+    ]
+  },
+  "HDyD7mUzUPMR": {
+    "id": "HDyD7mUzUPMR",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-16T14:47:30.719Z",
+    "userId": 5191938297,
+    "userTag": "@shennRX",
+    "sourceBotId": 572621020,
+    "stones": [
+      "pinsirite",
+      "rusted-sword",
+      "scizorite",
+      "rusted-shield",
+      "venusaurite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 5191938297,
+    "forwardMessageId": 3061,
+    "proofPhotoId": "AgACAgUAAxkBAAIL92m4GAIs4YKx_VxRtjDO1gYuH5VrAAIrEGsbisXBVV4tLPb-ijdxAQADAgADeQADOgQ",
+    "reviewedAt": "2026-03-16T14:52:13.808Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "pinsirite",
+      "rusted-sword",
+      "scizorite",
+      "rusted-shield",
+      "venusaurite"
+    ]
+  },
+  "3uh8ezRdS2ys": {
+    "id": "3uh8ezRdS2ys",
+    "status": "approved",
+    "createdAt": "2026-03-16T16:32:32.337Z",
+    "userId": 5848489095,
+    "userTag": "@Lordshiva_1245",
+    "pokemonName": "zamazenta",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 28,
+      "attack": 31,
+      "defense": 15,
+      "special_attack": 14,
+      "special_defense": 31,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "zamazenta|adamant|hp:28|atk:31|def:15|spa:14|spd:31|spe:27",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T16:32:38.547Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "zamazenta"
+    ]
+  },
+  "6OlkAARIl3ou": {
+    "id": "6OlkAARIl3ou",
+    "status": "approved",
+    "createdAt": "2026-03-16T16:33:26.310Z",
+    "userId": 5848489095,
+    "userTag": "@Lordshiva_1245",
+    "pokemonName": "zamazenta",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 17,
+      "attack": 18,
+      "defense": 20,
+      "special_attack": 10,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "zamazenta|hasty|hp:17|atk:18|def:20|spa:10|spd:31|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T16:33:38.428Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "zamazenta"
+    ]
+  },
+  "IURIPrOKOicJ": {
+    "id": "IURIPrOKOicJ",
+    "status": "approved",
+    "createdAt": "2026-03-16T16:33:45.466Z",
+    "userId": 5848489095,
+    "userTag": "@Lordshiva_1245",
+    "pokemonName": "blastoise",
+    "nature": "modest",
+    "ivs": {
+      "hp": 31,
+      "attack": 26,
+      "defense": 31,
+      "special_attack": 31,
+      "special_defense": 18,
+      "speed": 24
+    },
+    "shiny": false,
+    "fingerprint": "blastoise|modest|hp:31|atk:26|def:31|spa:31|spd:18|spe:24",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T16:33:53.011Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "blastoise"
+    ]
+  },
+  "YJMViI1spLI3": {
+    "id": "YJMViI1spLI3",
+    "status": "approved",
+    "createdAt": "2026-03-16T16:48:34.849Z",
+    "userId": 5848489095,
+    "userTag": "@Lordshiva_1245",
+    "pokemonName": "solgaleo",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 23,
+      "attack": 30,
+      "defense": 20,
+      "special_attack": 26,
+      "special_defense": 30,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "solgaleo|adamant|hp:23|atk:30|def:20|spa:26|spd:30|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T17:07:09.877Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "solgaleo"
+    ]
+  },
+  "VkmuOgs9SfFq": {
+    "id": "VkmuOgs9SfFq",
+    "status": "approved",
+    "createdAt": "2026-03-16T17:46:22.535Z",
+    "userId": 6890098674,
+    "userTag": "@Justt_Spectator",
+    "pokemonName": "tyranitar",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 29,
+      "attack": 30,
+      "defense": 31,
+      "special_attack": 21,
+      "special_defense": 29,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "tyranitar|jolly|hp:29|atk:30|def:31|spa:21|spd:29|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T18:28:33.517Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "tyranitar"
+    ]
+  },
+  "LpAOM9jouVi9": {
+    "id": "LpAOM9jouVi9",
+    "status": "approved",
+    "createdAt": "2026-03-16T17:57:04.751Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "rayquaza",
+    "nature": "naive",
+    "ivs": {
+      "hp": 29,
+      "attack": 27,
+      "defense": 21,
+      "special_attack": 29,
+      "special_defense": 16,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "rayquaza|naive|hp:29|atk:27|def:21|spa:29|spd:16|spe:27",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-16T18:28:22.201Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "rayquaza"
+    ]
+  },
+  "TKy7F9FlXUh1": {
+    "id": "TKy7F9FlXUh1",
+    "status": "approved",
+    "createdAt": "2026-03-17T06:30:01.588Z",
+    "userId": 5935984615,
+    "userTag": null,
+    "pokemonName": "regigigas",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 17,
+      "attack": 30,
+      "defense": 14,
+      "special_attack": 29,
+      "special_defense": 28,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "regigigas|jolly|hp:17|atk:30|def:14|spa:29|spd:28|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T06:30:13.763Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "regigigas"
+    ]
+  },
+  "zxiXNEGXsXhV": {
+    "id": "zxiXNEGXsXhV",
+    "status": "pending",
+    "createdAt": "2026-03-17T06:48:18.227Z",
+    "userId": 8483107299,
+    "userTag": "@Fcknsxy",
+    "pokemonName": "zekrom",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 19,
+      "attack": 30,
+      "defense": 24,
+      "special_attack": 22,
+      "special_defense": 25,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "zekrom|adamant|hp:19|atk:30|def:24|spa:22|spd:25|spe:23",
+    "duplicateOf": []
+  },
+  "ReKOYt3ws62N": {
+    "id": "ReKOYt3ws62N",
+    "status": "pending",
+    "createdAt": "2026-03-17T06:48:52.400Z",
+    "userId": 5935984615,
+    "userTag": null,
+    "pokemonName": "spectrier",
+    "nature": "naive",
+    "ivs": {
+      "hp": 11,
+      "attack": 13,
+      "defense": 17,
+      "special_attack": 29,
+      "special_defense": 29,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "spectrier|naive|hp:11|atk:13|def:17|spa:29|spd:29|spe:31",
+    "duplicateOf": []
+  },
+  "MpJ8uIRQhUH4": {
+    "id": "MpJ8uIRQhUH4",
+    "status": "approved",
+    "createdAt": "2026-03-17T06:57:59.233Z",
+    "userId": 7124084086,
+    "userTag": "@tatsuguri",
+    "pokemonName": "scizor",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 26,
+      "attack": 29,
+      "defense": 28,
+      "special_attack": 15,
+      "special_defense": 19,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "scizor|adamant|hp:26|atk:29|def:28|spa:15|spd:19|spe:23",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T06:59:39.395Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "scizor"
+    ]
+  },
+  "w6WShXUnsuAM": {
+    "id": "w6WShXUnsuAM",
+    "status": "approved",
+    "createdAt": "2026-03-17T06:59:56.427Z",
+    "userId": 5935984615,
+    "userTag": null,
+    "pokemonName": "arceus",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 26,
+      "attack": 28,
+      "defense": 24,
+      "special_attack": 15,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "arceus|hasty|hp:26|atk:28|def:24|spa:15|spd:31|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T07:01:04.312Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "arceus"
+    ]
+  },
+  "lTvsg9P0uwsh": {
+    "id": "lTvsg9P0uwsh",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-17T07:31:59.829Z",
+    "userId": 5475662843,
+    "userTag": "@Bachira018",
+    "sourceBotId": 572621020,
+    "stones": [
+      "metagrossite",
+      "alakazite",
+      "altarianite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 5475662843,
+    "forwardMessageId": 3241,
+    "proofPhotoId": "AgACAgUAAxkBAAIMrWm5A28WWEvhrOYsFFZkt0xGPFSwAALrEGsbJfHIVboNRlxcECaiAQADAgADeQADOgQ",
+    "reviewedAt": "2026-03-17T08:28:54.946Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "metagrossite",
+      "alakazite",
+      "altarianite"
+    ]
+  },
+  "IGCievlVlKLf": {
+    "id": "IGCievlVlKLf",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-17T07:33:13.221Z",
+    "userId": 5925112646,
+    "userTag": "@Prime_kun",
+    "sourceBotId": 572621020,
+    "stones": [
+      "medichamite",
+      "swampertite",
+      "galladite",
+      "galladite",
+      "sceptilite",
+      "galladite",
+      "gardevoirite",
+      "diancite",
+      "galladite",
+      "gardevoirite",
+      "swampertite",
+      "sceptilite",
+      "alakazite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 5925112646,
+    "forwardMessageId": 3254,
+    "proofPhotoId": "AgACAgUAAxkBAAIMu2m5A7iOJB_Nr_psDJaYjPzDnnTXAAI0Dmsbhz7JVc-F361bpa1EAQADAgADeQADOgQ",
+    "reviewedAt": "2026-03-17T08:28:58.313Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "medichamite",
+      "swampertite",
+      "galladite",
+      "galladite",
+      "sceptilite",
+      "galladite",
+      "gardevoirite",
+      "diancite",
+      "galladite",
+      "gardevoirite",
+      "swampertite",
+      "sceptilite",
+      "alakazite"
+    ]
+  },
+  "YaUq4bKclYLV": {
+    "id": "YaUq4bKclYLV",
+    "status": "approved",
+    "createdAt": "2026-03-17T07:37:45.132Z",
+    "userId": 1378509448,
+    "userTag": "@lordlocky007",
+    "pokemonName": "mewtwo",
+    "nature": "naive",
+    "ivs": {
+      "hp": 24,
+      "attack": 19,
+      "defense": 31,
+      "special_attack": 19,
+      "special_defense": 24,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "mewtwo|naive|hp:24|atk:19|def:31|spa:19|spd:24|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T08:29:06.252Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "mewtwo"
+    ]
+  },
+  "6MlfpvVJ29wh": {
+    "id": "6MlfpvVJ29wh",
+    "status": "approved",
+    "createdAt": "2026-03-17T07:45:17.333Z",
+    "userId": 1378509448,
+    "userTag": "@lordlocky007",
+    "pokemonName": "rayquaza",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 28,
+      "attack": 20,
+      "defense": 24,
+      "special_attack": 27,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "rayquaza|hasty|hp:28|atk:20|def:24|spa:27|spd:31|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T08:29:10.099Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "rayquaza"
+    ]
+  },
+  "WBCFyATf4562": {
+    "id": "WBCFyATf4562",
+    "status": "approved",
+    "createdAt": "2026-03-17T07:46:40.603Z",
+    "userId": 5475662843,
+    "userTag": "@Bachira018",
+    "pokemonName": "alakazam",
+    "nature": "timid",
+    "ivs": {
+      "hp": 20,
+      "attack": 26,
+      "defense": 20,
+      "special_attack": 31,
+      "special_defense": 17,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "alakazam|timid|hp:20|atk:26|def:20|spa:31|spd:17|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T08:29:13.421Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "alakazam"
+    ]
+  },
+  "Ab1lhOJtoIlW": {
+    "id": "Ab1lhOJtoIlW",
+    "status": "approved",
+    "createdAt": "2026-03-17T07:49:02.416Z",
+    "userId": 5475662843,
+    "userTag": "@Bachira018",
+    "pokemonName": "conkeldurr",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 24,
+      "attack": 31,
+      "defense": 30,
+      "special_attack": 26,
+      "special_defense": 22,
+      "speed": 26
+    },
+    "shiny": false,
+    "fingerprint": "conkeldurr|adamant|hp:24|atk:31|def:30|spa:26|spd:22|spe:26",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T08:29:17.557Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "conkeldurr"
+    ]
+  },
+  "7vL57yDKnVQD": {
+    "id": "7vL57yDKnVQD",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-17T07:51:00.599Z",
+    "userId": 1378509448,
+    "userTag": "@lordlocky007",
+    "sourceBotId": 572621020,
+    "stones": [
+      "manectite",
+      "sharpedonite",
+      "lucarionite",
+      "jade-orb",
+      "alakazite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 1378509448,
+    "forwardMessageId": 3291,
+    "proofPhotoId": "AgACAgUAAxkBAAIM3Wm5B-SDqWgLQi8l1EkVqXvxlJJ1AAJjDmsbbdfJVYbKHZa_gotSAQADAgADeQADOgQ",
+    "reviewedAt": "2026-03-17T08:29:21.377Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "manectite",
+      "sharpedonite",
+      "lucarionite",
+      "jade-orb",
+      "alakazite"
+    ]
+  },
+  "5H7O3d2xlkLN": {
+    "id": "5H7O3d2xlkLN",
+    "status": "pending",
+    "createdAt": "2026-03-17T08:14:33.915Z",
+    "userId": 5935984615,
+    "userTag": null,
+    "pokemonName": "arceus",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 26,
+      "attack": 28,
+      "defense": 24,
+      "special_attack": 15,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "arceus|hasty|hp:26|atk:28|def:24|spa:15|spd:31|spe:31",
+    "duplicateOf": [
+      "w6WShXUnsuAM"
+    ]
+  },
+  "S8pbGD9dyzYU": {
+    "id": "S8pbGD9dyzYU",
+    "status": "approved",
+    "createdAt": "2026-03-17T08:15:06.950Z",
+    "userId": 5935984615,
+    "userTag": null,
+    "pokemonName": "yveltal",
+    "nature": "impish",
+    "ivs": {
+      "hp": 21,
+      "attack": 28,
+      "defense": 31,
+      "special_attack": 18,
+      "special_defense": 23,
+      "speed": 21
+    },
+    "shiny": false,
+    "fingerprint": "yveltal|impish|hp:21|atk:28|def:31|spa:18|spd:23|spe:21",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T08:29:28.326Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "yveltal"
+    ]
+  },
+  "alAB61XnEChz": {
+    "id": "alAB61XnEChz",
+    "status": "approved",
+    "createdAt": "2026-03-17T08:33:50.474Z",
+    "userId": 5935984615,
+    "userTag": null,
+    "pokemonName": "arceus-ghost",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 26,
+      "attack": 28,
+      "defense": 24,
+      "special_attack": 15,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "arceus-ghost|hasty|hp:26|atk:28|def:24|spa:15|spd:31|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T08:35:26.448Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "arceus-ghost"
+    ]
+  },
+  "4K3omBA3JnCY": {
+    "id": "4K3omBA3JnCY",
+    "status": "approved",
+    "createdAt": "2026-03-17T08:42:15.633Z",
+    "userId": 1378509448,
+    "userTag": "@lordlocky007",
+    "pokemonName": "kyurem",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 24,
+      "attack": 26,
+      "defense": 21,
+      "special_attack": 10,
+      "special_defense": 16,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "kyurem|adamant|hp:24|atk:26|def:21|spa:10|spd:16|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T08:51:19.918Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "kyurem"
+    ]
+  },
+  "5c5UKbZZBb9y": {
+    "id": "5c5UKbZZBb9y",
+    "status": "approved",
+    "createdAt": "2026-03-17T08:42:49.463Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "eevee",
+    "nature": "modest",
+    "ivs": {
+      "hp": 22,
+      "attack": 17,
+      "defense": 25,
+      "special_attack": 29,
+      "special_defense": 21,
+      "speed": 26
+    },
+    "shiny": false,
+    "fingerprint": "eevee|modest|hp:22|atk:17|def:25|spa:29|spd:21|spe:26",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T08:51:23.821Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "eevee"
+    ]
+  },
+  "YnHFQoujZivE": {
+    "id": "YnHFQoujZivE",
+    "status": "approved",
+    "createdAt": "2026-03-17T08:50:43.941Z",
+    "userId": 5475662843,
+    "userTag": "@Bachira018",
+    "pokemonName": "lucario",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 12,
+      "attack": 29,
+      "defense": 23,
+      "special_attack": 1,
+      "special_defense": 16,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "lucario|jolly|hp:12|atk:29|def:23|spa:1|spd:16|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T08:51:28.370Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "lucario"
+    ]
+  },
+  "asNu7jX8Flwb": {
+    "id": "asNu7jX8Flwb",
+    "status": "pending",
+    "createdAt": "2026-03-17T08:51:22.233Z",
+    "userId": 1378509448,
+    "userTag": "@lordlocky007",
+    "pokemonName": "arceus",
+    "nature": "modest",
+    "ivs": {
+      "hp": 19,
+      "attack": 24,
+      "defense": 27,
+      "special_attack": 20,
+      "special_defense": 29,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "arceus|modest|hp:19|atk:24|def:27|spa:20|spd:29|spe:29",
+    "duplicateOf": []
+  },
+  "tHQpd5HbUtyb": {
+    "id": "tHQpd5HbUtyb",
+    "status": "approved",
+    "createdAt": "2026-03-17T08:51:32.274Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "blastoise",
+    "nature": "modest",
+    "ivs": {
+      "hp": 27,
+      "attack": 4,
+      "defense": 31,
+      "special_attack": 18,
+      "special_defense": 26,
+      "speed": 25
+    },
+    "shiny": false,
+    "fingerprint": "blastoise|modest|hp:27|atk:4|def:31|spa:18|spd:26|spe:25",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T08:51:37.142Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "blastoise"
+    ]
+  },
+  "TklGwju4LckH": {
+    "id": "TklGwju4LckH",
+    "status": "approved",
+    "createdAt": "2026-03-17T08:51:58.703Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "blastoise",
+    "nature": "timid",
+    "ivs": {
+      "hp": 18,
+      "attack": 29,
+      "defense": 20,
+      "special_attack": 30,
+      "special_defense": 20,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "blastoise|timid|hp:18|atk:29|def:20|spa:30|spd:20|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T08:52:03.711Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "blastoise"
+    ]
+  },
+  "B6QdhxG4ZmCd": {
+    "id": "B6QdhxG4ZmCd",
+    "status": "approved",
+    "createdAt": "2026-03-17T09:00:31.827Z",
+    "userId": 5925112646,
+    "userTag": "@Prime_kun",
+    "pokemonName": "alakazam",
+    "nature": "timid",
+    "ivs": {
+      "hp": 19,
+      "attack": 8,
+      "defense": 23,
+      "special_attack": 31,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "alakazam|timid|hp:19|atk:8|def:23|spa:31|spd:31|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T09:04:47.492Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "alakazam"
+    ]
+  },
+  "lmSakx7skrPs": {
+    "id": "lmSakx7skrPs",
+    "status": "pending",
+    "createdAt": "2026-03-17T09:01:05.611Z",
+    "userId": 1378509448,
+    "userTag": "@lordlocky007",
+    "pokemonName": "arceus",
+    "nature": "timid",
+    "ivs": {
+      "hp": 17,
+      "attack": 24,
+      "defense": 24,
+      "special_attack": 10,
+      "special_defense": 17,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "arceus|timid|hp:17|atk:24|def:24|spa:10|spd:17|spe:29",
+    "duplicateOf": []
+  },
+  "PVk4ihB4N2QL": {
+    "id": "PVk4ihB4N2QL",
+    "status": "pending",
+    "createdAt": "2026-03-17T09:07:46.237Z",
+    "userId": 5475662843,
+    "userTag": "@Bachira018",
+    "pokemonName": "eternatus",
+    "nature": "timid",
+    "ivs": {
+      "hp": 13,
+      "attack": 31,
+      "defense": 20,
+      "special_attack": 30,
+      "special_defense": 18,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "eternatus|timid|hp:13|atk:31|def:20|spa:30|spd:18|spe:31",
+    "duplicateOf": []
+  },
+  "tGLiFRhzaiCb": {
+    "id": "tGLiFRhzaiCb",
+    "status": "failed",
+    "createdAt": "2026-03-17T09:10:45.644Z",
+    "userId": 5858459838,
+    "userTag": "@Lost_znx",
+    "pokemonName": "electrike",
+    "nature": "timid",
+    "ivs": {
+      "hp": 19,
+      "attack": 11,
+      "defense": 15,
+      "special_attack": 31,
+      "special_defense": 21,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "electrike|timid|hp:19|atk:11|def:15|spa:31|spd:21|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T09:18:20.552Z",
+    "reviewedBy": 6265981509,
+    "error": "User has no main-bot profile yet. Ask user to /start in main bot first."
+  },
+  "1XhaXZ4Q5Gsg": {
+    "id": "1XhaXZ4Q5Gsg",
+    "status": "pending",
+    "createdAt": "2026-03-17T09:11:07.655Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "aerodactyl",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 30,
+      "attack": 29,
+      "defense": 31,
+      "special_attack": 27,
+      "special_defense": 23,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "aerodactyl|adamant|hp:30|atk:29|def:31|spa:27|spd:23|spe:30",
+    "duplicateOf": []
+  },
+  "tP4OkY43gB9f": {
+    "id": "tP4OkY43gB9f",
+    "status": "pending",
+    "createdAt": "2026-03-17T09:11:37.716Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "aerodactyl",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 19,
+      "attack": 28,
+      "defense": 27,
+      "special_attack": 20,
+      "special_defense": 11,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "aerodactyl|jolly|hp:19|atk:28|def:27|spa:20|spd:11|spe:31",
+    "duplicateOf": []
+  },
+  "c4cLXZ8j8vWo": {
+    "id": "c4cLXZ8j8vWo",
+    "status": "pending",
+    "createdAt": "2026-03-17T09:12:01.097Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "aerodactyl",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 30,
+      "attack": 16,
+      "defense": 30,
+      "special_attack": 5,
+      "special_defense": 26,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "aerodactyl|jolly|hp:30|atk:16|def:30|spa:5|spd:26|spe:31",
+    "duplicateOf": []
+  },
+  "3MY8abWeSCo4": {
+    "id": "3MY8abWeSCo4",
+    "status": "pending",
+    "createdAt": "2026-03-17T09:12:26.306Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "rayquaza",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 28,
+      "attack": 20,
+      "defense": 24,
+      "special_attack": 27,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "rayquaza|jolly|hp:28|atk:20|def:24|spa:27|spd:31|spe:31",
+    "duplicateOf": []
+  },
+  "1WmYXqqaboJa": {
+    "id": "1WmYXqqaboJa",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-17T09:14:57.997Z",
+    "userId": 5242138546,
+    "userTag": "@Znx_himself",
+    "sourceBotId": 572621020,
+    "stones": [
+      "galladite",
+      "absolite",
+      "blue-orb",
+      "scizorite",
+      "garchompite",
+      "beedrillite",
+      "alakazite",
+      "kangaskhanite",
+      "glalitite",
+      "aggronite",
+      "red-orb",
+      "ampharosite",
+      "rusted-shield",
+      "glalitite",
+      "ampharosite",
+      "absolite",
+      "lopunnite",
+      "glalitite",
+      "heracronite",
+      "aggronite",
+      "mewtwonite-y",
+      "glalitite",
+      "gengarite",
+      "beedrillite",
+      "scizorite",
+      "glalitite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 5242138546,
+    "forwardMessageId": 3452,
+    "proofPhotoId": "AgACAgUAAxkBAAINfmm5G5GGPZ_2B9vkUiOKxaSeVN93AAJeDmsb7b3IVflF1osRDOCsAQADAgADeQADOgQ",
+    "reviewedAt": "2026-03-17T09:18:56.539Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "galladite",
+      "absolite",
+      "blue-orb",
+      "scizorite",
+      "garchompite",
+      "beedrillite",
+      "alakazite",
+      "kangaskhanite",
+      "glalitite",
+      "aggronite",
+      "red-orb",
+      "ampharosite",
+      "rusted-shield",
+      "glalitite",
+      "ampharosite",
+      "absolite",
+      "lopunnite",
+      "glalitite",
+      "heracronite",
+      "aggronite",
+      "mewtwonite-y",
+      "glalitite",
+      "gengarite",
+      "beedrillite",
+      "scizorite",
+      "glalitite"
+    ]
+  },
+  "UnwtBxENospd": {
+    "id": "UnwtBxENospd",
+    "status": "approved",
+    "createdAt": "2026-03-17T09:34:38.010Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "arceus",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 26,
+      "attack": 31,
+      "defense": 14,
+      "special_attack": 30,
+      "special_defense": 28,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "arceus|adamant|hp:26|atk:31|def:14|spa:30|spd:28|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T09:50:46.609Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "arceus"
+    ]
+  },
+  "0c7XbEaE3CvT": {
+    "id": "0c7XbEaE3CvT",
+    "status": "approved",
+    "createdAt": "2026-03-17T09:37:55.272Z",
+    "userId": 5242138546,
+    "userTag": "@Znx_himself",
+    "pokemonName": "regigigas",
+    "nature": "naive",
+    "ivs": {
+      "hp": 16,
+      "attack": 23,
+      "defense": 18,
+      "special_attack": 25,
+      "special_defense": 26,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "regigigas|naive|hp:16|atk:23|def:18|spa:25|spd:26|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T09:50:43.721Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "regigigas"
+    ]
+  },
+  "rBX2jMmrSWvZ": {
+    "id": "rBX2jMmrSWvZ",
+    "status": "approved",
+    "createdAt": "2026-03-17T09:43:14.835Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "gallade",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 22,
+      "attack": 27,
+      "defense": 29,
+      "special_attack": 31,
+      "special_defense": 21,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "gallade|jolly|hp:22|atk:27|def:29|spa:31|spd:21|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T09:50:40.971Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gallade"
+    ]
+  },
+  "gHN7c1P8qa3e": {
+    "id": "gHN7c1P8qa3e",
+    "status": "approved",
+    "createdAt": "2026-03-17T09:43:55.606Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "gallade",
+    "nature": "careful",
+    "ivs": {
+      "hp": 31,
+      "attack": 31,
+      "defense": 10,
+      "special_attack": 7,
+      "special_defense": 23,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "gallade|careful|hp:31|atk:31|def:10|spa:7|spd:23|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T09:50:38.469Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gallade"
+    ]
+  },
+  "dZqt0D4TGxHx": {
+    "id": "dZqt0D4TGxHx",
+    "status": "approved",
+    "createdAt": "2026-03-17T09:44:36.346Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "arceus-rock",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 30,
+      "attack": 20,
+      "defense": 24,
+      "special_attack": 16,
+      "special_defense": 28,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "arceus-rock|adamant|hp:30|atk:20|def:24|spa:16|spd:28|spe:28",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T09:50:33.251Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "arceus-rock"
+    ]
+  },
+  "1cdCLyZdAUib": {
+    "id": "1cdCLyZdAUib",
+    "status": "approved",
+    "createdAt": "2026-03-17T09:52:36.348Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "arceus-dark",
+    "nature": "modest",
+    "ivs": {
+      "hp": 24,
+      "attack": 24,
+      "defense": 21,
+      "special_attack": 31,
+      "special_defense": 27,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "arceus-dark|modest|hp:24|atk:24|def:21|spa:31|spd:27|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T09:54:21.452Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "arceus-dark"
+    ]
+  },
+  "EwzmgZmgMOnU": {
+    "id": "EwzmgZmgMOnU",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:06:50.281Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "arceus-electric",
+    "nature": "bold",
+    "ivs": {
+      "hp": 23,
+      "attack": 22,
+      "defense": 31,
+      "special_attack": 20,
+      "special_defense": 13,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "arceus-electric|bold|hp:23|atk:22|def:31|spa:20|spd:13|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T10:26:32.879Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "arceus-electric"
+    ]
+  },
+  "ShCOxpjcNbxq": {
+    "id": "ShCOxpjcNbxq",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:07:51.556Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "gallade",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 23,
+      "attack": 27,
+      "defense": 24,
+      "special_attack": 4,
+      "special_defense": 30,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "gallade|adamant|hp:23|atk:27|def:24|spa:4|spd:30|spe:28",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T10:26:35.668Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gallade"
+    ]
+  },
+  "wR2abMsDCZsD": {
+    "id": "wR2abMsDCZsD",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:08:45.638Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "gallade",
+    "nature": "impish",
+    "ivs": {
+      "hp": 28,
+      "attack": 25,
+      "defense": 30,
+      "special_attack": 11,
+      "special_defense": 12,
+      "speed": 24
+    },
+    "shiny": false,
+    "fingerprint": "gallade|impish|hp:28|atk:25|def:30|spa:11|spd:12|spe:24",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T10:26:37.784Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gallade"
+    ]
+  },
+  "m3OkCmEIcRSz": {
+    "id": "m3OkCmEIcRSz",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:15:34.049Z",
+    "userId": 5925112646,
+    "userTag": "@Prime_kun",
+    "pokemonName": "deoxys-attack",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 19,
+      "attack": 28,
+      "defense": 29,
+      "special_attack": 27,
+      "special_defense": 24,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "deoxys-attack|hasty|hp:19|atk:28|def:29|spa:27|spd:24|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T10:35:03.982Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "deoxys-attack"
+    ]
+  },
+  "GZhUjia7vHmJ": {
+    "id": "GZhUjia7vHmJ",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:17:18.257Z",
+    "userId": 5925112646,
+    "userTag": "@Prime_kun",
+    "pokemonName": "solgaleo",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 31,
+      "attack": 31,
+      "defense": 14,
+      "special_attack": 19,
+      "special_defense": 17,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "solgaleo|adamant|hp:31|atk:31|def:14|spa:19|spd:17|spe:28",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T10:35:02.146Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "solgaleo"
+    ]
+  },
+  "rX6BpBVo4iJg": {
+    "id": "rX6BpBVo4iJg",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:20:44.720Z",
+    "userId": 1378509448,
+    "userTag": "@lordlocky007",
+    "pokemonName": "kyurem-black",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 24,
+      "attack": 26,
+      "defense": 21,
+      "special_attack": 10,
+      "special_defense": 16,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "kyurem-black|adamant|hp:24|atk:26|def:21|spa:10|spd:16|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T10:26:59.469Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "kyurem-black"
+    ]
+  },
+  "arwpQGgRNzVS": {
+    "id": "arwpQGgRNzVS",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:21:28.297Z",
+    "userId": 1378509448,
+    "userTag": "@lordlocky007",
+    "pokemonName": "arceus-poison",
+    "nature": "modest",
+    "ivs": {
+      "hp": 19,
+      "attack": 24,
+      "defense": 27,
+      "special_attack": 20,
+      "special_defense": 29,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "arceus-poison|modest|hp:19|atk:24|def:27|spa:20|spd:29|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T10:27:03.374Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "arceus-poison"
+    ]
+  },
+  "9Fgc7kKPGlr8": {
+    "id": "9Fgc7kKPGlr8",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:21:59.489Z",
+    "userId": 1378509448,
+    "userTag": "@lordlocky007",
+    "pokemonName": "arceus-ghost",
+    "nature": "timid",
+    "ivs": {
+      "hp": 17,
+      "attack": 24,
+      "defense": 24,
+      "special_attack": 10,
+      "special_defense": 17,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "arceus-ghost|timid|hp:17|atk:24|def:24|spa:10|spd:17|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T10:27:05.599Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "arceus-ghost"
+    ]
+  },
+  "yUCIzU7PSnWg": {
+    "id": "yUCIzU7PSnWg",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:34:47.532Z",
+    "userId": 626925825,
+    "userTag": "@Baibhav948",
+    "pokemonName": "kyogre",
+    "nature": "bold",
+    "ivs": {
+      "hp": 21,
+      "attack": 31,
+      "defense": 29,
+      "special_attack": 28,
+      "special_defense": 28,
+      "speed": 21
+    },
+    "shiny": false,
+    "fingerprint": "kyogre|bold|hp:21|atk:31|def:29|spa:28|spd:28|spe:21",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T10:34:56.951Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "kyogre"
+    ]
+  },
+  "9RCLSvoEWPhE": {
+    "id": "9RCLSvoEWPhE",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:39:16.813Z",
+    "userId": 626925825,
+    "userTag": "@Baibhav948",
+    "pokemonName": "mewtwo",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 28,
+      "attack": 29,
+      "defense": 12,
+      "special_attack": 19,
+      "special_defense": 22,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "mewtwo|jolly|hp:28|atk:29|def:12|spa:19|spd:22|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T11:15:25.491Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "mewtwo"
+    ]
+  },
+  "oi7m23e26Oer": {
+    "id": "oi7m23e26Oer",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:43:25.550Z",
+    "userId": 626925825,
+    "userTag": "@Baibhav948",
+    "pokemonName": "slaking",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 30,
+      "attack": 3,
+      "defense": 10,
+      "special_attack": 13,
+      "special_defense": 29,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "slaking|jolly|hp:30|atk:3|def:10|spa:13|spd:29|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T11:15:32.215Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "slaking"
+    ]
+  },
+  "F3NIbF0aOZfk": {
+    "id": "F3NIbF0aOZfk",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:48:03.163Z",
+    "userId": 5242138546,
+    "userTag": "@Znx_himself",
+    "pokemonName": "regigigas",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 18,
+      "attack": 31,
+      "defense": 25,
+      "special_attack": 16,
+      "special_defense": 10,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "regigigas|jolly|hp:18|atk:31|def:25|spa:16|spd:10|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T11:15:36.801Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "regigigas"
+    ]
+  },
+  "sS2B9iwJ18QG": {
+    "id": "sS2B9iwJ18QG",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:48:48.947Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "alakazam",
+    "nature": "timid",
+    "ivs": {
+      "hp": 31,
+      "attack": 19,
+      "defense": 20,
+      "special_attack": 28,
+      "special_defense": 29,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "alakazam|timid|hp:31|atk:19|def:20|spa:28|spd:29|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T11:15:39.496Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "alakazam"
+    ]
+  },
+  "GWoI8VutlXte": {
+    "id": "GWoI8VutlXte",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:49:19.685Z",
+    "userId": 7074080974,
+    "userTag": "@Sinesd",
+    "pokemonName": "alakazam",
+    "nature": "modest",
+    "ivs": {
+      "hp": 29,
+      "attack": 20,
+      "defense": 26,
+      "special_attack": 25,
+      "special_defense": 31,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "alakazam|modest|hp:29|atk:20|def:26|spa:25|spd:31|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T11:15:41.388Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "alakazam"
+    ]
+  },
+  "xuHbmsWbNRhd": {
+    "id": "xuHbmsWbNRhd",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:49:30.706Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "aerodactyl",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 22,
+      "attack": 31,
+      "defense": 18,
+      "special_attack": 18,
+      "special_defense": 21,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "aerodactyl|jolly|hp:22|atk:31|def:18|spa:18|spd:21|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T11:15:43.720Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "aerodactyl"
+    ]
+  },
+  "BEbl3qdnfcVi": {
+    "id": "BEbl3qdnfcVi",
+    "status": "approved",
+    "createdAt": "2026-03-17T10:50:43.562Z",
+    "userId": 626925825,
+    "userTag": "@Baibhav948",
+    "pokemonName": "lopunny",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 10,
+      "attack": 9,
+      "defense": 20,
+      "special_attack": 24,
+      "special_defense": 29,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "lopunny|jolly|hp:10|atk:9|def:20|spa:24|spd:29|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-17T11:15:46.109Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "lopunny"
+    ]
+  },
+  "PxReiQa5LvQn": {
+    "id": "PxReiQa5LvQn",
+    "type": "stones",
+    "status": "rejected",
+    "createdAt": "2026-03-17T11:48:03.194Z",
+    "userId": 1470441905,
+    "userTag": "@Koji_kunn",
+    "sourceBotId": 572621020,
+    "stones": [
+      "gardevoirite",
+      "charizardite-y",
+      "jade-orb",
+      "salamencite",
+      "lucarionite",
+      "pinsirite",
+      "mawilite",
+      "sceptilite",
+      "audinite",
+      "glalitite",
+      "diancite",
+      "manectite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 1470441905,
+    "forwardMessageId": 3673,
+    "proofPhotoId": "AgACAgUAAxkBAAIOW2m5P3JgtaStMO_m2zXVTr8bBF3PAAJQD2sbqfzIVeOrsheZ-CNFAQADAgADeQADOgQ",
+    "reviewedAt": "2026-03-17T11:53:57.155Z",
+    "reviewedBy": 6265981509
+  },
+  "KLdjG2m6PQag": {
+    "id": "KLdjG2m6PQag",
+    "status": "pending",
+    "createdAt": "2026-03-17T12:23:26.806Z",
+    "userId": 1378509448,
+    "userTag": "@lordlocky007",
+    "pokemonName": "arceus-steel",
+    "nature": "naive",
+    "ivs": {
+      "hp": 20,
+      "attack": 24,
+      "defense": 16,
+      "special_attack": 20,
+      "special_defense": 30,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "arceus-steel|naive|hp:20|atk:24|def:16|spa:20|spd:30|spe:31",
+    "duplicateOf": []
+  },
+  "ZIN5Jcrl97hE": {
+    "id": "ZIN5Jcrl97hE",
+    "status": "approved",
+    "createdAt": "2026-03-18T11:58:06.546Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "dragapult",
+    "nature": "bashful",
+    "ivs": {
+      "hp": 18,
+      "attack": 28,
+      "defense": 14,
+      "special_attack": 26,
+      "special_defense": 15,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "dragapult|bashful|hp:18|atk:28|def:14|spa:26|spd:15|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T11:59:12.814Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "dragapult"
+    ]
+  },
+  "65HN7OfjoQj6": {
+    "id": "65HN7OfjoQj6",
+    "status": "approved",
+    "createdAt": "2026-03-18T12:43:21.812Z",
+    "userId": 1470441905,
+    "userTag": "@Koji_kunn",
+    "pokemonName": "dreepy",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 26,
+      "attack": 21,
+      "defense": 5,
+      "special_attack": 1,
+      "special_defense": 31,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "dreepy|hasty|hp:26|atk:21|def:5|spa:1|spd:31|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T13:56:31.417Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "dreepy"
+    ]
+  },
+  "EoN9Xpt0VTpO": {
+    "id": "EoN9Xpt0VTpO",
+    "status": "approved",
+    "createdAt": "2026-03-18T12:56:25.913Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "calyrex-ice",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 28,
+      "attack": 30,
+      "defense": 29,
+      "special_attack": 28,
+      "special_defense": 16,
+      "speed": 16
+    },
+    "shiny": false,
+    "fingerprint": "calyrex-ice|adamant|hp:28|atk:30|def:29|spa:28|spd:16|spe:16",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T13:56:28.742Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "calyrex-ice"
+    ]
+  },
+  "eK1CeCU1nep0": {
+    "id": "eK1CeCU1nep0",
+    "status": "approved",
+    "createdAt": "2026-03-18T12:57:18.897Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "urshifu-single-strike",
+    "nature": "careful",
+    "ivs": {
+      "hp": 25,
+      "attack": 29,
+      "defense": 27,
+      "special_attack": 28,
+      "special_defense": 16,
+      "speed": 24
+    },
+    "shiny": false,
+    "fingerprint": "urshifu-single-strike|careful|hp:25|atk:29|def:27|spa:28|spd:16|spe:24",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T13:56:26.434Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "urshifu-single-strike"
+    ]
+  },
+  "iseXyALoImvt": {
+    "id": "iseXyALoImvt",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-18T13:03:48.168Z",
+    "userId": 1001484109,
+    "userTag": "@Mega_Evolutions",
+    "sourceBotId": 572621020,
+    "stones": [
+      "absolite",
+      "glalitite",
+      "banettite",
+      "swampertite",
+      "altarianite",
+      "aggronite",
+      "jade-orb",
+      "blue-orb",
+      "alakazite",
+      "sharpedonite",
+      "mawilite",
+      "lopunnite",
+      "latiosite",
+      "galladite",
+      "salamencite",
+      "lucarionite",
+      "mewtwonite-y",
+      "pinsirite",
+      "metagrossite",
+      "slowbronite",
+      "sablenite",
+      "red-orb",
+      "sceptilite",
+      "charizardite-y"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 1001484109,
+    "forwardMessageId": 4191,
+    "proofPhotoId": "AgACAgUAAxkBAAIQYWm6orN_EJXUPk_gBmr8P2TPsU-wAAJ4DmsbRPbYVTF6Nziy1Pv7AQADAgADdwADOgQ",
+    "reviewedAt": "2026-03-18T13:56:18.612Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "absolite",
+      "glalitite",
+      "banettite",
+      "swampertite",
+      "altarianite",
+      "aggronite",
+      "jade-orb",
+      "blue-orb",
+      "alakazite",
+      "sharpedonite",
+      "mawilite",
+      "lopunnite",
+      "latiosite",
+      "galladite",
+      "salamencite",
+      "lucarionite",
+      "mewtwonite-y",
+      "pinsirite",
+      "metagrossite",
+      "slowbronite",
+      "sablenite",
+      "red-orb",
+      "sceptilite",
+      "charizardite-y"
+    ]
+  },
+  "ViUI2e4iKyFo": {
+    "id": "ViUI2e4iKyFo",
+    "status": "approved",
+    "createdAt": "2026-03-18T14:13:16.105Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "kyogre",
+    "nature": "bold",
+    "ivs": {
+      "hp": 19,
+      "attack": 31,
+      "defense": 31,
+      "special_attack": 31,
+      "special_defense": 15,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "kyogre|bold|hp:19|atk:31|def:31|spa:31|spd:15|spe:23",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T14:13:31.391Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "kyogre"
+    ]
+  },
+  "rPhluSnOQdQz": {
+    "id": "rPhluSnOQdQz",
+    "status": "pending",
+    "createdAt": "2026-03-18T14:18:24.014Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "rayquaza",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 28,
+      "attack": 20,
+      "defense": 24,
+      "special_attack": 27,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "rayquaza|jolly|hp:28|atk:20|def:24|spa:27|spd:31|spe:31",
+    "duplicateOf": [
+      "3MY8abWeSCo4"
+    ]
+  },
+  "5AoaEh4WG2oK": {
+    "id": "5AoaEh4WG2oK",
+    "status": "approved",
+    "createdAt": "2026-03-18T15:58:32.653Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "dragapult",
+    "nature": "bashful",
+    "ivs": {
+      "hp": 18,
+      "attack": 28,
+      "defense": 14,
+      "special_attack": 26,
+      "special_defense": 15,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "dragapult|bashful|hp:18|atk:28|def:14|spa:26|spd:15|spe:31",
+    "duplicateOf": [
+      "ZIN5Jcrl97hE"
+    ],
+    "reviewedAt": "2026-03-18T16:02:53.881Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "dragapult"
+    ]
+  },
+  "rUzFOpLf9H4D": {
+    "id": "rUzFOpLf9H4D",
+    "status": "approved",
+    "createdAt": "2026-03-18T15:58:49.828Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "magearna",
+    "nature": "quiet",
+    "ivs": {
+      "hp": 22,
+      "attack": 26,
+      "defense": 22,
+      "special_attack": 24,
+      "special_defense": 22,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "magearna|quiet|hp:22|atk:26|def:22|spa:24|spd:22|spe:30",
+    "duplicateOf": [
+      "02xwdy9YOCvO"
+    ],
+    "reviewedAt": "2026-03-18T16:02:56.669Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "magearna"
+    ]
+  },
+  "1vRmLK96vgrF": {
+    "id": "1vRmLK96vgrF",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:01:34.080Z",
+    "userId": 1981055701,
+    "userTag": "@Blue_Limitless",
+    "pokemonName": "gardevoir",
+    "nature": "calm",
+    "ivs": {
+      "hp": 27,
+      "attack": 18,
+      "defense": 13,
+      "special_attack": 27,
+      "special_defense": 30,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "gardevoir|calm|hp:27|atk:18|def:13|spa:27|spd:30|spe:27",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:03:21.735Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gardevoir"
+    ]
+  },
+  "XLiSeQqDCucO": {
+    "id": "XLiSeQqDCucO",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:03:23.467Z",
+    "userId": 1981055701,
+    "userTag": "@Blue_Limitless",
+    "pokemonName": "gengar",
+    "nature": "timid",
+    "ivs": {
+      "hp": 24,
+      "attack": 2,
+      "defense": 24,
+      "special_attack": 27,
+      "special_defense": 20,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "gengar|timid|hp:24|atk:2|def:24|spa:27|spd:20|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:03:42.729Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gengar"
+    ]
+  },
+  "5XMNh6FX89j9": {
+    "id": "5XMNh6FX89j9",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:07:35.079Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "necrozma",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 15,
+      "attack": 24,
+      "defense": 15,
+      "special_attack": 25,
+      "special_defense": 16,
+      "speed": 10
+    },
+    "shiny": false,
+    "fingerprint": "necrozma|jolly|hp:15|atk:24|def:15|spa:25|spd:16|spe:10",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:29:59.111Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "necrozma"
+    ]
+  },
+  "69fhFdxMirTW": {
+    "id": "69fhFdxMirTW",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:13:53.684Z",
+    "userId": 6969086416,
+    "userTag": "@Peace_og_1",
+    "pokemonName": "eternatus",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 25,
+      "attack": 11,
+      "defense": 22,
+      "special_attack": 24,
+      "special_defense": 12,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "eternatus|hasty|hp:25|atk:11|def:22|spa:24|spd:12|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:30:08.155Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "eternatus"
+    ]
+  },
+  "SwZVLgkAd1qk": {
+    "id": "SwZVLgkAd1qk",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:17:12.053Z",
+    "userId": 1981055701,
+    "userTag": "@Blue_Limitless",
+    "pokemonName": "lampent",
+    "nature": "timid",
+    "ivs": {
+      "hp": 29,
+      "attack": 25,
+      "defense": 28,
+      "special_attack": 25,
+      "special_defense": 29,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "lampent|timid|hp:29|atk:25|def:28|spa:25|spd:29|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:30:19.006Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "lampent"
+    ]
+  },
+  "9zNHY2zJEK2O": {
+    "id": "9zNHY2zJEK2O",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:43:02.226Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "charmander",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 23,
+      "attack": 21,
+      "defense": 16,
+      "special_attack": 7,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "charmander|jolly|hp:23|atk:21|def:16|spa:7|spd:31|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:51:56.947Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "charmander"
+    ]
+  },
+  "3TpcmiYWK3CZ": {
+    "id": "3TpcmiYWK3CZ",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:44:07.114Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "charmander",
+    "nature": "timid",
+    "ivs": {
+      "hp": 30,
+      "attack": 13,
+      "defense": 22,
+      "special_attack": 29,
+      "special_defense": 21,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "charmander|timid|hp:30|atk:13|def:22|spa:29|spd:21|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:51:54.192Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "charmander"
+    ]
+  },
+  "vNqVBPrvy5aB": {
+    "id": "vNqVBPrvy5aB",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:50:08.266Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "tapu-koko",
+    "nature": "lonely",
+    "ivs": {
+      "hp": 20,
+      "attack": 21,
+      "defense": 25,
+      "special_attack": 11,
+      "special_defense": 25,
+      "speed": 16
+    },
+    "shiny": false,
+    "fingerprint": "tapu-koko|lonely|hp:20|atk:21|def:25|spa:11|spd:25|spe:16",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:51:51.656Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "tapu-koko"
+    ]
+  },
+  "8zjbMceTB98x": {
+    "id": "8zjbMceTB98x",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:50:22.188Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "treecko",
+    "nature": "timid",
+    "ivs": {
+      "hp": 29,
+      "attack": 26,
+      "defense": 21,
+      "special_attack": 16,
+      "special_defense": 18,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "treecko|timid|hp:29|atk:26|def:21|spa:16|spd:18|spe:27",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:51:49.292Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "treecko"
+    ]
+  },
+  "0wSfITNpkt04": {
+    "id": "0wSfITNpkt04",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:52:08.125Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "hoopa-unbound",
+    "nature": "relaxed",
+    "ivs": {
+      "hp": 28,
+      "attack": 25,
+      "defense": 23,
+      "special_attack": 21,
+      "special_defense": 18,
+      "speed": 18
+    },
+    "shiny": false,
+    "fingerprint": "hoopa-unbound|relaxed|hp:28|atk:25|def:23|spa:21|spd:18|spe:18",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:56:39.276Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "hoopa-unbound"
+    ]
+  },
+  "xUyFeyuB9GfH": {
+    "id": "xUyFeyuB9GfH",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:52:55.503Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "pheromosa",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 2,
+      "attack": 28,
+      "defense": 24,
+      "special_attack": 1,
+      "special_defense": 18,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "pheromosa|jolly|hp:2|atk:28|def:24|spa:1|spd:18|spe:23",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:56:42.310Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "pheromosa"
+    ]
+  },
+  "icYrEuSvbqdU": {
+    "id": "icYrEuSvbqdU",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:53:26.217Z",
+    "userId": 8393905391,
+    "userTag": "@We_still_dont_trust_you",
+    "pokemonName": "larvitar",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 29,
+      "attack": 22,
+      "defense": 21,
+      "special_attack": 23,
+      "special_defense": 27,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "larvitar|adamant|hp:29|atk:22|def:21|spa:23|spd:27|spe:28",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T16:56:43.990Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "larvitar"
+    ]
+  },
+  "zQX3ZnNreVrr": {
+    "id": "zQX3ZnNreVrr",
+    "status": "approved",
+    "createdAt": "2026-03-18T16:58:11.871Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "raticate-alola",
+    "nature": "careful",
+    "ivs": {
+      "hp": 27,
+      "attack": 11,
+      "defense": 19,
+      "special_attack": 9,
+      "special_defense": 12,
+      "speed": 21
+    },
+    "shiny": false,
+    "fingerprint": "raticate-alola|careful|hp:27|atk:11|def:19|spa:9|spd:12|spe:21",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:00:02.950Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "raticate-alola"
+    ]
+  },
+  "8FSTjotUv9uq": {
+    "id": "8FSTjotUv9uq",
+    "status": "approved",
+    "createdAt": "2026-03-18T17:01:17.206Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "minior-red-meteor",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 5,
+      "attack": 27,
+      "defense": 16,
+      "special_attack": 24,
+      "special_defense": 13,
+      "speed": 13
+    },
+    "shiny": false,
+    "fingerprint": "minior-red-meteor|hasty|hp:5|atk:27|def:16|spa:24|spd:13|spe:13",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:02:03.837Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "minior-red-meteor"
+    ]
+  },
+  "3eNWU6DkMU4f": {
+    "id": "3eNWU6DkMU4f",
+    "status": "approved",
+    "createdAt": "2026-03-18T17:03:47.096Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "grimer-alola",
+    "nature": "impish",
+    "ivs": {
+      "hp": 12,
+      "attack": 30,
+      "defense": 18,
+      "special_attack": 5,
+      "special_defense": 27,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "grimer-alola|impish|hp:12|atk:30|def:18|spa:5|spd:27|spe:23",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:05:12.948Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "grimer-alola"
+    ]
+  },
+  "G2lDb7yy8tiu": {
+    "id": "G2lDb7yy8tiu",
+    "status": "approved",
+    "createdAt": "2026-03-18T17:05:44.870Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "butterfree",
+    "nature": "quiet",
+    "ivs": {
+      "hp": 8,
+      "attack": 7,
+      "defense": 25,
+      "special_attack": 5,
+      "special_defense": 10,
+      "speed": 24
+    },
+    "shiny": false,
+    "fingerprint": "butterfree|quiet|hp:8|atk:7|def:25|spa:5|spd:10|spe:24",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:06:22.620Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "butterfree"
+    ]
+  },
+  "N49RyeQze7h0": {
+    "id": "N49RyeQze7h0",
+    "status": "approved",
+    "createdAt": "2026-03-18T17:07:32.884Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "masquerain",
+    "nature": "serious",
+    "ivs": {
+      "hp": 20,
+      "attack": 8,
+      "defense": 21,
+      "special_attack": 31,
+      "special_defense": 13,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "masquerain|serious|hp:20|atk:8|def:21|spa:31|spd:13|spe:23",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:19:06.345Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "masquerain"
+    ]
+  },
+  "h2aomcZKGUxs": {
+    "id": "h2aomcZKGUxs",
+    "status": "approved",
+    "createdAt": "2026-03-18T17:20:24.780Z",
+    "userId": 5228554516,
+    "userTag": "@Fullmetal_alchemist_65",
+    "pokemonName": "baxcalibur",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 25,
+      "attack": 17,
+      "defense": 28,
+      "special_attack": 26,
+      "special_defense": 18,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "baxcalibur|jolly|hp:25|atk:17|def:28|spa:26|spd:18|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:20:29.534Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "baxcalibur"
+    ]
+  },
+  "zq4snyNtUZPt": {
+    "id": "zq4snyNtUZPt",
+    "status": "approved",
+    "createdAt": "2026-03-18T17:20:52.159Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "smoochum",
+    "nature": "bold",
+    "ivs": {
+      "hp": 16,
+      "attack": 27,
+      "defense": 10,
+      "special_attack": 17,
+      "special_defense": 27,
+      "speed": 7
+    },
+    "shiny": false,
+    "fingerprint": "smoochum|bold|hp:16|atk:27|def:10|spa:17|spd:27|spe:7",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:24:26.597Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "smoochum"
+    ]
+  },
+  "9dc6C27PCbb0": {
+    "id": "9dc6C27PCbb0",
+    "status": "approved",
+    "createdAt": "2026-03-18T17:25:17.502Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "snorlax",
+    "nature": "mild",
+    "ivs": {
+      "hp": 28,
+      "attack": 15,
+      "defense": 12,
+      "special_attack": 15,
+      "special_defense": 10,
+      "speed": 0
+    },
+    "shiny": false,
+    "fingerprint": "snorlax|mild|hp:28|atk:15|def:12|spa:15|spd:10|spe:0",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:25:35.703Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "snorlax"
+    ]
+  },
+  "QpEQ8PKn5UCK": {
+    "id": "QpEQ8PKn5UCK",
+    "status": "approved",
+    "createdAt": "2026-03-18T17:26:04.178Z",
+    "userId": 5228554516,
+    "userTag": "@Fullmetal_alchemist_65",
+    "pokemonName": "rayquaza",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 20,
+      "attack": 28,
+      "defense": 16,
+      "special_attack": 20,
+      "special_defense": 26,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "rayquaza|adamant|hp:20|atk:28|def:16|spa:20|spd:26|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:26:54.604Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "rayquaza"
+    ]
+  },
+  "Hq3Q6i8rEqAt": {
+    "id": "Hq3Q6i8rEqAt",
+    "status": "approved",
+    "createdAt": "2026-03-18T17:26:38.106Z",
+    "userId": 5228554516,
+    "userTag": "@Fullmetal_alchemist_65",
+    "pokemonName": "kyogre",
+    "nature": "calm",
+    "ivs": {
+      "hp": 28,
+      "attack": 15,
+      "defense": 17,
+      "special_attack": 29,
+      "special_defense": 26,
+      "speed": 13
+    },
+    "shiny": false,
+    "fingerprint": "kyogre|calm|hp:28|atk:15|def:17|spa:29|spd:26|spe:13",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:26:51.092Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "kyogre"
+    ]
+  },
+  "TKNLzTeMt2U8": {
+    "id": "TKNLzTeMt2U8",
+    "status": "approved",
+    "createdAt": "2026-03-18T17:26:46.540Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "eevee",
+    "nature": "hardy",
+    "ivs": {
+      "hp": 9,
+      "attack": 20,
+      "defense": 29,
+      "special_attack": 16,
+      "special_defense": 22,
+      "speed": 22
+    },
+    "shiny": false,
+    "fingerprint": "eevee|hardy|hp:9|atk:20|def:29|spa:16|spd:22|spe:22",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:26:48.995Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "eevee"
+    ]
+  },
+  "EBwUEuxU4dJL": {
+    "id": "EBwUEuxU4dJL",
+    "status": "pending",
+    "createdAt": "2026-03-18T17:27:21.747Z",
+    "userId": 2067983229,
+    "userTag": "@Rigogliosamente",
+    "pokemonName": "espeon",
+    "nature": "quirky",
+    "ivs": {
+      "hp": 28,
+      "attack": 10,
+      "defense": 25,
+      "special_attack": 31,
+      "special_defense": 15,
+      "speed": 7
+    },
+    "shiny": false,
+    "fingerprint": "espeon|quirky|hp:28|atk:10|def:25|spa:31|spd:15|spe:7",
+    "duplicateOf": []
+  },
+  "6X4Q62Hwqdcv": {
+    "id": "6X4Q62Hwqdcv",
+    "status": "approved",
+    "createdAt": "2026-03-18T17:29:40.070Z",
+    "userId": 5228554516,
+    "userTag": "@Fullmetal_alchemist_65",
+    "pokemonName": "aerodactyl",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 24,
+      "attack": 20,
+      "defense": 28,
+      "special_attack": 21,
+      "special_defense": 16,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "aerodactyl|adamant|hp:24|atk:20|def:28|spa:21|spd:16|spe:27",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T17:32:02.797Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "aerodactyl"
+    ]
+  },
+  "EDI4pK2p2wGG": {
+    "id": "EDI4pK2p2wGG",
+    "status": "approved",
+    "createdAt": "2026-03-18T18:05:59.189Z",
+    "userId": 5228554516,
+    "userTag": "@Fullmetal_alchemist_65",
+    "pokemonName": "flutter-mane",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 28,
+      "attack": 21,
+      "defense": 17,
+      "special_attack": 20,
+      "special_defense": 21,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "flutter-mane|hasty|hp:28|atk:21|def:17|spa:20|spd:21|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T18:26:13.713Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "flutter-mane"
+    ]
+  },
+  "YtLAK5cB07es": {
+    "id": "YtLAK5cB07es",
+    "status": "approved",
+    "createdAt": "2026-03-18T18:07:45.578Z",
+    "userId": 5228554516,
+    "userTag": "@Fullmetal_alchemist_65",
+    "pokemonName": "great-tusk",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 28,
+      "attack": 29,
+      "defense": 15,
+      "special_attack": 25,
+      "special_defense": 27,
+      "speed": 11
+    },
+    "shiny": false,
+    "fingerprint": "great-tusk|adamant|hp:28|atk:29|def:15|spa:25|spd:27|spe:11",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T18:26:11.061Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "great-tusk"
+    ]
+  },
+  "P23yrfvs37V8": {
+    "id": "P23yrfvs37V8",
+    "status": "approved",
+    "createdAt": "2026-03-18T18:09:56.589Z",
+    "userId": 5228554516,
+    "userTag": "@Fullmetal_alchemist_65",
+    "pokemonName": "pheromosa",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 21,
+      "attack": 15,
+      "defense": 13,
+      "special_attack": 22,
+      "special_defense": 24,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "pheromosa|jolly|hp:21|atk:15|def:13|spa:22|spd:24|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T18:26:05.645Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "pheromosa"
+    ]
+  },
+  "pcvJjpJgH40j": {
+    "id": "pcvJjpJgH40j",
+    "status": "approved",
+    "createdAt": "2026-03-18T18:27:34.278Z",
+    "userId": 5228554516,
+    "userTag": "@Fullmetal_alchemist_65",
+    "pokemonName": "flutter-mane",
+    "nature": "modest",
+    "ivs": {
+      "hp": 31,
+      "attack": 31,
+      "defense": 29,
+      "special_attack": 18,
+      "special_defense": 31,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "flutter-mane|modest|hp:31|atk:31|def:29|spa:18|spd:31|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-18T18:43:19.785Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "flutter-mane"
+    ]
+  },
+  "bd7A4pQ5LgQF": {
+    "id": "bd7A4pQ5LgQF",
+    "status": "approved",
+    "createdAt": "2026-03-18T19:43:47.958Z",
+    "userId": 1253339353,
+    "userTag": "@prajawal_chaudhary",
+    "pokemonName": "arceus",
+    "nature": "naive",
+    "ivs": {
+      "hp": 20,
+      "attack": 31,
+      "defense": 16,
+      "special_attack": 16,
+      "special_defense": 31,
+      "speed": 24
+    },
+    "shiny": false,
+    "fingerprint": "arceus|naive|hp:20|atk:31|def:16|spa:16|spd:31|spe:24",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T03:13:52.886Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "arceus"
+    ]
+  },
+  "jdOH6rFGMgjX": {
+    "id": "jdOH6rFGMgjX",
+    "status": "approved",
+    "createdAt": "2026-03-18T20:16:16.544Z",
+    "userId": 2110889690,
+    "userTag": "@Kakkarot2402",
+    "pokemonName": "quaxly",
+    "nature": "naughty",
+    "ivs": {
+      "hp": 15,
+      "attack": 30,
+      "defense": 20,
+      "special_attack": 18,
+      "special_defense": 27,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "quaxly|naughty|hp:15|atk:30|def:20|spa:18|spd:27|spe:23",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T03:13:50.443Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "quaxly"
+    ]
+  },
+  "qskO4U4xTS8W": {
+    "id": "qskO4U4xTS8W",
+    "status": "approved",
+    "createdAt": "2026-03-19T02:40:08.514Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "groudon",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 31,
+      "attack": 29,
+      "defense": 23,
+      "special_attack": 17,
+      "special_defense": 31,
+      "speed": 16
+    },
+    "shiny": false,
+    "fingerprint": "groudon|adamant|hp:31|atk:29|def:23|spa:17|spd:31|spe:16",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T03:13:46.973Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "groudon"
+    ]
+  },
+  "x5Dr0fcXAujT": {
+    "id": "x5Dr0fcXAujT",
+    "status": "approved",
+    "createdAt": "2026-03-19T02:46:11.973Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "mewtwo",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 13,
+      "attack": 26,
+      "defense": 15,
+      "special_attack": 27,
+      "special_defense": 25,
+      "speed": 20
+    },
+    "shiny": false,
+    "fingerprint": "mewtwo|adamant|hp:13|atk:26|def:15|spa:27|spd:25|spe:20",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T03:13:44.133Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "mewtwo"
+    ]
+  },
+  "CfhrfrG8rI9e": {
+    "id": "CfhrfrG8rI9e",
+    "status": "approved",
+    "createdAt": "2026-03-19T03:47:27.045Z",
+    "userId": 5228554516,
+    "userTag": "@Fullmetal_alchemist_65",
+    "pokemonName": "flabebe",
+    "nature": "modest",
+    "ivs": {
+      "hp": 22,
+      "attack": 15,
+      "defense": 31,
+      "special_attack": 16,
+      "special_defense": 27,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "flabebe|modest|hp:22|atk:15|def:31|spa:16|spd:27|spe:28",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T03:47:33.355Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "flabebe"
+    ]
+  },
+  "O4ZS5vzgIBLP": {
+    "id": "O4ZS5vzgIBLP",
+    "status": "approved",
+    "createdAt": "2026-03-19T04:22:31.853Z",
+    "userId": 1222434823,
+    "userTag": "@MumSnatcher",
+    "pokemonName": "ceruledge",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 15,
+      "attack": 18,
+      "defense": 30,
+      "special_attack": 27,
+      "special_defense": 18,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "ceruledge|jolly|hp:15|atk:18|def:30|spa:27|spd:18|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T08:31:48.602Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "ceruledge"
+    ]
+  },
+  "0jYWRgMrThVC": {
+    "id": "0jYWRgMrThVC",
+    "status": "approved",
+    "createdAt": "2026-03-19T04:23:14.241Z",
+    "userId": 1222434823,
+    "userTag": "@MumSnatcher",
+    "pokemonName": "gholdengo",
+    "nature": "bold",
+    "ivs": {
+      "hp": 26,
+      "attack": 18,
+      "defense": 29,
+      "special_attack": 19,
+      "special_defense": 31,
+      "speed": 24
+    },
+    "shiny": false,
+    "fingerprint": "gholdengo|bold|hp:26|atk:18|def:29|spa:19|spd:31|spe:24",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T08:31:50.802Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gholdengo"
+    ]
+  },
+  "1Hg0vk0qBmie": {
+    "id": "1Hg0vk0qBmie",
+    "status": "rejected",
+    "createdAt": "2026-03-19T04:23:16.116Z",
+    "userId": 7634238026,
+    "userTag": "@Whoami544",
+    "pokemonName": "baxcalibur",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 21,
+      "attack": 17,
+      "defense": 24,
+      "special_attack": 20,
+      "special_defense": 13,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "baxcalibur|jolly|hp:21|atk:17|def:24|spa:20|spd:13|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T08:31:58.441Z",
+    "reviewedBy": 6265981509
+  },
+  "b7nrKC41ht41": {
+    "id": "b7nrKC41ht41",
+    "status": "approved",
+    "createdAt": "2026-03-19T04:43:10.613Z",
+    "userId": 7634238026,
+    "userTag": "@Whoami544",
+    "pokemonName": "zacian-crowned",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 29,
+      "attack": 10,
+      "defense": 25,
+      "special_attack": 12,
+      "special_defense": 18,
+      "speed": 24
+    },
+    "shiny": false,
+    "fingerprint": "zacian-crowned|jolly|hp:29|atk:10|def:25|spa:12|spd:18|spe:24",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T04:49:42.933Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "zacian-crowned"
+    ]
+  },
+  "D3XyZimodzPg": {
+    "id": "D3XyZimodzPg",
+    "status": "failed",
+    "createdAt": "2026-03-19T04:47:17.522Z",
+    "userId": 8143356068,
+    "userTag": null,
+    "pokemonName": "zeraora",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 15,
+      "attack": 28,
+      "defense": 30,
+      "special_attack": 17,
+      "special_defense": 29,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "zeraora|adamant|hp:15|atk:28|def:30|spa:17|spd:29|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T04:49:46.065Z",
+    "reviewedBy": 6265981509,
+    "error": "User has no main-bot profile yet. Ask user to /start in main bot first."
+  },
+  "sHhdAoI3kb6J": {
+    "id": "sHhdAoI3kb6J",
+    "status": "failed",
+    "createdAt": "2026-03-19T04:47:40.626Z",
+    "userId": 8413943773,
+    "userTag": null,
+    "pokemonName": "blastoise",
+    "nature": "calm",
+    "ivs": {
+      "hp": 16,
+      "attack": 27,
+      "defense": 15,
+      "special_attack": 30,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "blastoise|calm|hp:16|atk:27|def:15|spa:30|spd:31|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T04:49:52.632Z",
+    "reviewedBy": 6265981509,
+    "error": "User has no main-bot profile yet. Ask user to /start in main bot first."
+  },
+  "FgXKxnnabX58": {
+    "id": "FgXKxnnabX58",
+    "status": "approved",
+    "createdAt": "2026-03-19T04:54:26.514Z",
+    "userId": 8143356068,
+    "userTag": null,
+    "pokemonName": "darmanitan-galar-zen",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 29,
+      "attack": 31,
+      "defense": 30,
+      "special_attack": 31,
+      "special_defense": 29,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "darmanitan-galar-zen|jolly|hp:29|atk:31|def:30|spa:31|spd:29|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T04:57:24.327Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "darmanitan-galar-zen"
+    ]
+  },
+  "tzDTV1hSEIIu": {
+    "id": "tzDTV1hSEIIu",
+    "status": "approved",
+    "createdAt": "2026-03-19T04:59:12.342Z",
+    "userId": 7634238026,
+    "userTag": "@Whoami544",
+    "pokemonName": "solgaleo",
+    "nature": "bashful",
+    "ivs": {
+      "hp": 31,
+      "attack": 31,
+      "defense": 29,
+      "special_attack": 10,
+      "special_defense": 30,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "solgaleo|bashful|hp:31|atk:31|def:29|spa:10|spd:30|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T05:11:15.439Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "solgaleo"
+    ]
+  },
+  "V50PoKoLGEAQ": {
+    "id": "V50PoKoLGEAQ",
+    "status": "approved",
+    "createdAt": "2026-03-19T05:02:18.777Z",
+    "userId": 8143356068,
+    "userTag": null,
+    "pokemonName": "zacian-crowned",
+    "nature": "quiet",
+    "ivs": {
+      "hp": 29,
+      "attack": 31,
+      "defense": 26,
+      "special_attack": 28,
+      "special_defense": 28,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "zacian-crowned|quiet|hp:29|atk:31|def:26|spa:28|spd:28|spe:27",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T05:11:09.223Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "zacian-crowned"
+    ]
+  },
+  "HqdZACKEvvMp": {
+    "id": "HqdZACKEvvMp",
+    "status": "rejected",
+    "createdAt": "2026-03-19T05:22:24.074Z",
+    "userId": 5716292610,
+    "userTag": "@monarch_sama",
+    "pokemonName": "mewtwo",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 19,
+      "attack": 17,
+      "defense": 18,
+      "special_attack": 31,
+      "special_defense": 31,
+      "speed": 26
+    },
+    "shiny": false,
+    "fingerprint": "mewtwo|hasty|hp:19|atk:17|def:18|spa:31|spd:31|spe:26",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:04:00.093Z",
+    "reviewedBy": 6265981509
+  },
+  "2WiEIrTVdSyr": {
+    "id": "2WiEIrTVdSyr",
+    "status": "approved",
+    "createdAt": "2026-03-19T06:05:21.640Z",
+    "userId": 1253339353,
+    "userTag": "@prajawal_chaudhary",
+    "pokemonName": "kyogre",
+    "nature": "bashful",
+    "ivs": {
+      "hp": 27,
+      "attack": 14,
+      "defense": 22,
+      "special_attack": 21,
+      "special_defense": 29,
+      "speed": 26
+    },
+    "shiny": false,
+    "fingerprint": "kyogre|bashful|hp:27|atk:14|def:22|spa:21|spd:29|spe:26",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T07:11:55.920Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "kyogre"
+    ]
+  },
+  "r8MyM1RSk78k": {
+    "id": "r8MyM1RSk78k",
+    "status": "approved",
+    "createdAt": "2026-03-19T06:39:52.627Z",
+    "userId": 8143356068,
+    "userTag": null,
+    "pokemonName": "darmanitan-galar-zen",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 29,
+      "attack": 31,
+      "defense": 30,
+      "special_attack": 31,
+      "special_defense": 29,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "darmanitan-galar-zen|jolly|hp:29|atk:31|def:30|spa:31|spd:29|spe:31",
+    "duplicateOf": [
+      "FgXKxnnabX58"
+    ],
+    "reviewedAt": "2026-03-19T07:12:05.809Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "darmanitan-galar-zen"
+    ]
+  },
+  "G6SyicYwJ6Eh": {
+    "id": "G6SyicYwJ6Eh",
+    "status": "approved",
+    "createdAt": "2026-03-19T06:41:03.739Z",
+    "userId": 2110889690,
+    "userTag": "@Kakkarot2402",
+    "pokemonName": "scorbunny",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 19,
+      "attack": 21,
+      "defense": 26,
+      "special_attack": 16,
+      "special_defense": 23,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "scorbunny|jolly|hp:19|atk:21|def:26|spa:16|spd:23|spe:28",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T07:12:07.950Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "scorbunny"
+    ]
+  },
+  "1EzuqZFfPXek": {
+    "id": "1EzuqZFfPXek",
+    "status": "rejected",
+    "createdAt": "2026-03-19T07:23:56.228Z",
+    "userId": 8483107299,
+    "userTag": "@Fcknsxy",
+    "pokemonName": "zekrom",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 19,
+      "attack": 30,
+      "defense": 24,
+      "special_attack": 22,
+      "special_defense": 25,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "zekrom|adamant|hp:19|atk:30|def:24|spa:22|spd:25|spe:23",
+    "duplicateOf": [
+      "zxiXNEGXsXhV"
+    ],
+    "reviewedAt": "2026-03-20T06:03:55.081Z",
+    "reviewedBy": 6265981509
+  },
+  "rtFklEH3OtIr": {
+    "id": "rtFklEH3OtIr",
+    "status": "approved",
+    "createdAt": "2026-03-19T08:45:39.329Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "darumaka",
+    "nature": "rash",
+    "ivs": {
+      "hp": 16,
+      "attack": 27,
+      "defense": 20,
+      "special_attack": 23,
+      "special_defense": 19,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "darumaka|rash|hp:16|atk:27|def:20|spa:23|spd:19|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T08:45:45.657Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "darumaka"
+    ]
+  },
+  "bHCPdHe2tomb": {
+    "id": "bHCPdHe2tomb",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-19T09:19:41.587Z",
+    "userId": 5051928702,
+    "userTag": "@Ozamu_dazai",
+    "sourceBotId": 572621020,
+    "stones": [
+      "mewtwonite-y",
+      "pinsirite",
+      "slowbronite",
+      "alakazite",
+      "manectite",
+      "swampertite",
+      "metagrossite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 5051928702,
+    "forwardMessageId": 4749,
+    "proofPhotoId": "AgACAgUAAxkBAAIQMWm6Roi154GLAW1TS1O3vBXm8JtiAAJuDmsb0Q3QVd4eCM-LzZnRAQADAgADdwADOgQ",
+    "reviewedAt": "2026-03-19T09:19:44.939Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "mewtwonite-y",
+      "pinsirite",
+      "slowbronite",
+      "alakazite",
+      "manectite",
+      "swampertite",
+      "metagrossite"
+    ]
+  },
+  "wEm6pkSiCJD2": {
+    "id": "wEm6pkSiCJD2",
+    "status": "approved",
+    "createdAt": "2026-03-19T09:47:18.435Z",
+    "userId": 5051928702,
+    "userTag": "@Ozamu_dazai",
+    "pokemonName": "mewtwo",
+    "nature": "naive",
+    "ivs": {
+      "hp": 14,
+      "attack": 30,
+      "defense": 11,
+      "special_attack": 28,
+      "special_defense": 30,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "mewtwo|naive|hp:14|atk:30|def:11|spa:28|spd:30|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:03:47.903Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "mewtwo"
+    ]
+  },
+  "rbbW7MdJLP3W": {
+    "id": "rbbW7MdJLP3W",
+    "status": "approved",
+    "createdAt": "2026-03-19T09:48:07.420Z",
+    "userId": 5051928702,
+    "userTag": "@Ozamu_dazai",
+    "pokemonName": "mewtwo",
+    "nature": "timid",
+    "ivs": {
+      "hp": 10,
+      "attack": 16,
+      "defense": 13,
+      "special_attack": 15,
+      "special_defense": 28,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "mewtwo|timid|hp:10|atk:16|def:13|spa:15|spd:28|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:03:44.897Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "mewtwo"
+    ]
+  },
+  "7Chledo6sSn2": {
+    "id": "7Chledo6sSn2",
+    "status": "approved",
+    "createdAt": "2026-03-19T09:54:43.271Z",
+    "userId": 5051928702,
+    "userTag": "@Ozamu_dazai",
+    "pokemonName": "dialga",
+    "nature": "relaxed",
+    "ivs": {
+      "hp": 29,
+      "attack": 25,
+      "defense": 22,
+      "special_attack": 12,
+      "special_defense": 31,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "dialga|relaxed|hp:29|atk:25|def:22|spa:12|spd:31|spe:28",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T09:55:12.329Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "dialga"
+    ]
+  },
+  "SpS9OMssgvqo": {
+    "id": "SpS9OMssgvqo",
+    "status": "pending",
+    "createdAt": "2026-03-19T09:58:02.636Z",
+    "userId": 5051928702,
+    "userTag": "@Ozamu_dazai",
+    "pokemonName": "mewtwo",
+    "nature": "naive",
+    "ivs": {
+      "hp": 14,
+      "attack": 30,
+      "defense": 11,
+      "special_attack": 28,
+      "special_defense": 30,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "mewtwo|naive|hp:14|atk:30|def:11|spa:28|spd:30|spe:31",
+    "duplicateOf": [
+      "wEm6pkSiCJD2"
+    ]
+  },
+  "rin2zvRH6c6m": {
+    "id": "rin2zvRH6c6m",
+    "status": "approved",
+    "createdAt": "2026-03-19T09:59:18.261Z",
+    "userId": 5051928702,
+    "userTag": "@Ozamu_dazai",
+    "pokemonName": "gallade",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 25,
+      "attack": 20,
+      "defense": 13,
+      "special_attack": 22,
+      "special_defense": 25,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "gallade|jolly|hp:25|atk:20|def:13|spa:22|spd:25|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T10:00:27.761Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "gallade"
+    ]
+  },
+  "AX7e8YC5etpT": {
+    "id": "AX7e8YC5etpT",
+    "status": "approved",
+    "createdAt": "2026-03-19T10:32:52.736Z",
+    "userId": 5051928702,
+    "userTag": "@Ozamu_dazai",
+    "pokemonName": "greninja",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 19,
+      "attack": 6,
+      "defense": 18,
+      "special_attack": 16,
+      "special_defense": 26,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "greninja|hasty|hp:19|atk:6|def:18|spa:16|spd:26|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:03:38.006Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "greninja"
+    ]
+  },
+  "skMO3ubeQ7iP": {
+    "id": "skMO3ubeQ7iP",
+    "status": "approved",
+    "createdAt": "2026-03-19T11:04:27.135Z",
+    "userId": 7932011996,
+    "userTag": "@adityahun",
+    "pokemonName": "regigigas",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 16,
+      "attack": 26,
+      "defense": 29,
+      "special_attack": 30,
+      "special_defense": 20,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "regigigas|jolly|hp:16|atk:26|def:29|spa:30|spd:20|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:03:33.204Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "regigigas"
+    ]
+  },
+  "FkOkNi6T3god": {
+    "id": "FkOkNi6T3god",
+    "status": "approved",
+    "createdAt": "2026-03-19T11:16:23.074Z",
+    "userId": 2110889690,
+    "userTag": "@Kakkarot2402",
+    "pokemonName": "duraludon",
+    "nature": "timid",
+    "ivs": {
+      "hp": 15,
+      "attack": 21,
+      "defense": 27,
+      "special_attack": 29,
+      "special_defense": 19,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "duraludon|timid|hp:15|atk:21|def:27|spa:29|spd:19|spe:28",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T11:18:37.748Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "duraludon"
+    ]
+  },
+  "5CdFDBcjE7Vn": {
+    "id": "5CdFDBcjE7Vn",
+    "status": "approved",
+    "createdAt": "2026-03-19T11:20:46.050Z",
+    "userId": 2110889690,
+    "userTag": "@Kakkarot2402",
+    "pokemonName": "squirtle",
+    "nature": "naive",
+    "ivs": {
+      "hp": 16,
+      "attack": 20,
+      "defense": 20,
+      "special_attack": 25,
+      "special_defense": 31,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "squirtle|naive|hp:16|atk:20|def:20|spa:25|spd:31|spe:27",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T11:22:07.389Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "squirtle"
+    ]
+  },
+  "fV53apBzdHLt": {
+    "id": "fV53apBzdHLt",
+    "status": "approved",
+    "createdAt": "2026-03-19T13:06:14.969Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "kyurem-black",
+    "nature": "hardy",
+    "ivs": {
+      "hp": 30,
+      "attack": 17,
+      "defense": 31,
+      "special_attack": 10,
+      "special_defense": 18,
+      "speed": 19
+    },
+    "shiny": false,
+    "fingerprint": "kyurem-black|hardy|hp:30|atk:17|def:31|spa:10|spd:18|spe:19",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:03:22.871Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "kyurem-black"
+    ]
+  },
+  "SbN8ie8xZDeR": {
+    "id": "SbN8ie8xZDeR",
+    "status": "rejected",
+    "createdAt": "2026-03-19T13:10:34.981Z",
+    "userId": 5433721548,
+    "userTag": "@Catalyst_01",
+    "pokemonName": "diancie",
+    "nature": "bold",
+    "ivs": {
+      "hp": 31,
+      "attack": 31,
+      "defense": 31,
+      "special_attack": 31,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "diancie|bold|hp:31|atk:31|def:31|spa:31|spd:31|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T13:14:25.758Z",
+    "reviewedBy": 6265981509
+  },
+  "RJhhlIhGHMwl": {
+    "id": "RJhhlIhGHMwl",
+    "status": "approved",
+    "createdAt": "2026-03-19T13:12:39.665Z",
+    "userId": 5433721548,
+    "userTag": "@Catalyst_01",
+    "pokemonName": "gallade",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 27,
+      "attack": 29,
+      "defense": 31,
+      "special_attack": 31,
+      "special_defense": 31,
+      "speed": 26
+    },
+    "shiny": false,
+    "fingerprint": "gallade|adamant|hp:27|atk:29|def:31|spa:31|spd:31|spe:26",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T13:20:41.137Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "gallade"
+    ]
+  },
+  "Kv8UIcNxSlHW": {
+    "id": "Kv8UIcNxSlHW",
+    "status": "pending",
+    "createdAt": "2026-03-19T13:26:37.362Z",
+    "userId": 5433721548,
+    "userTag": "@Catalyst_01",
+    "pokemonName": "aggron",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 29,
+      "attack": 31,
+      "defense": 26,
+      "special_attack": 30,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "aggron|jolly|hp:29|atk:31|def:26|spa:30|spd:31|spe:31",
+    "duplicateOf": []
+  },
+  "4PqGJNhWG4fb": {
+    "id": "4PqGJNhWG4fb",
+    "status": "approved",
+    "createdAt": "2026-03-19T13:44:07.821Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "darumaka-galar",
+    "nature": "rash",
+    "ivs": {
+      "hp": 16,
+      "attack": 27,
+      "defense": 20,
+      "special_attack": 23,
+      "special_defense": 19,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "darumaka-galar|rash|hp:16|atk:27|def:20|spa:23|spd:19|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:03:10.271Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "darumaka-galar"
+    ]
+  },
+  "GuhxEv73qQvW": {
+    "id": "GuhxEv73qQvW",
+    "status": "rejected",
+    "createdAt": "2026-03-19T13:55:42.956Z",
+    "userId": 5433721548,
+    "userTag": "@Catalyst_01",
+    "pokemonName": "giratina-origin",
+    "nature": "careful",
+    "ivs": {
+      "hp": 26,
+      "attack": 31,
+      "defense": 31,
+      "special_attack": 31,
+      "special_defense": 28,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "giratina-origin|careful|hp:26|atk:31|def:31|spa:31|spd:28|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:03:04.540Z",
+    "reviewedBy": 6265981509
+  },
+  "fvf2XF12y7He": {
+    "id": "fvf2XF12y7He",
+    "status": "approved",
+    "createdAt": "2026-03-19T14:21:45.004Z",
+    "userId": 2110889690,
+    "userTag": "@Kakkarot2402",
+    "pokemonName": "ralts",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 12,
+      "attack": 12,
+      "defense": 30,
+      "special_attack": 26,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "ralts|jolly|hp:12|atk:12|def:30|spa:26|spd:31|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T15:42:17.069Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "ralts"
+    ]
+  },
+  "s7bQhICUb3Jf": {
+    "id": "s7bQhICUb3Jf",
+    "status": "approved",
+    "createdAt": "2026-03-19T16:16:52.820Z",
+    "userId": 5402792413,
+    "userTag": "@Lazy_hitman",
+    "pokemonName": "metagross",
+    "nature": "impish",
+    "ivs": {
+      "hp": 31,
+      "attack": 23,
+      "defense": 29,
+      "special_attack": 28,
+      "special_defense": 26,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "metagross|impish|hp:31|atk:23|def:29|spa:28|spd:26|spe:23",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:02:55.395Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "metagross"
+    ]
+  },
+  "UNUkSM3xcwE7": {
+    "id": "UNUkSM3xcwE7",
+    "status": "approved",
+    "createdAt": "2026-03-19T16:28:28.561Z",
+    "userId": 626925825,
+    "userTag": "@Baibhav948",
+    "pokemonName": "blastoise",
+    "nature": "modest",
+    "ivs": {
+      "hp": 13,
+      "attack": 0,
+      "defense": 24,
+      "special_attack": 30,
+      "special_defense": 28,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "blastoise|modest|hp:13|atk:0|def:24|spa:30|spd:28|spe:27",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:02:49.201Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "blastoise"
+    ]
+  },
+  "woRHHMp7q3CB": {
+    "id": "woRHHMp7q3CB",
+    "status": "approved",
+    "createdAt": "2026-03-19T16:33:43.254Z",
+    "userId": 626925825,
+    "userTag": "@Baibhav948",
+    "pokemonName": "golurk",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 21,
+      "attack": 30,
+      "defense": 25,
+      "special_attack": 29,
+      "special_defense": 31,
+      "speed": 19
+    },
+    "shiny": false,
+    "fingerprint": "golurk|adamant|hp:21|atk:30|def:25|spa:29|spd:31|spe:19",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T16:33:52.733Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "golurk"
+    ]
+  },
+  "6zbbbIody8Qh": {
+    "id": "6zbbbIody8Qh",
+    "status": "approved",
+    "createdAt": "2026-03-19T17:10:34.512Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "calyrex-shadow",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 13,
+      "attack": 11,
+      "defense": 19,
+      "special_attack": 21,
+      "special_defense": 26,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "calyrex-shadow|jolly|hp:13|atk:11|def:19|spa:21|spd:26|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T17:11:58.542Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "calyrex-shadow"
+    ]
+  },
+  "A8SEYySGUa4U": {
+    "id": "A8SEYySGUa4U",
+    "status": "rejected",
+    "createdAt": "2026-03-19T17:34:06.561Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "darumaka",
+    "nature": "rash",
+    "ivs": {
+      "hp": 16,
+      "attack": 27,
+      "defense": 20,
+      "special_attack": 23,
+      "special_defense": 19,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "darumaka|rash|hp:16|atk:27|def:20|spa:23|spd:19|spe:31",
+    "duplicateOf": [
+      "rtFklEH3OtIr"
+    ],
+    "reviewedAt": "2026-03-20T06:02:43.726Z",
+    "reviewedBy": 6265981509
+  },
+  "w2zD5pL6s4ps": {
+    "id": "w2zD5pL6s4ps",
+    "status": "approved",
+    "createdAt": "2026-03-19T18:24:30.904Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "quaxly",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 20,
+      "attack": 20,
+      "defense": 17,
+      "special_attack": 22,
+      "special_defense": 31,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "quaxly|jolly|hp:20|atk:20|def:17|spa:22|spd:31|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T18:26:47.377Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "quaxly"
+    ]
+  },
+  "PMQIhTIik7cf": {
+    "id": "PMQIhTIik7cf",
+    "status": "approved",
+    "createdAt": "2026-03-19T18:25:34.650Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "dondozo",
+    "nature": "naughty",
+    "ivs": {
+      "hp": 16,
+      "attack": 29,
+      "defense": 22,
+      "special_attack": 27,
+      "special_defense": 29,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "dondozo|naughty|hp:16|atk:29|def:22|spa:27|spd:29|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T18:27:28.899Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "dondozo"
+    ]
+  },
+  "2Mi524skwhkE": {
+    "id": "2Mi524skwhkE",
+    "status": "approved",
+    "createdAt": "2026-03-19T18:39:53.398Z",
+    "userId": 1335302812,
+    "userTag": "@City_Needs_Me",
+    "pokemonName": "armarouge",
+    "nature": "timid",
+    "ivs": {
+      "hp": 27,
+      "attack": 17,
+      "defense": 18,
+      "special_attack": 20,
+      "special_defense": 23,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "armarouge|timid|hp:27|atk:17|def:18|spa:20|spd:23|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-19T18:41:20.054Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "armarouge"
+    ]
+  },
+  "YMKuSY0aS9fU": {
+    "id": "YMKuSY0aS9fU",
+    "status": "approved",
+    "createdAt": "2026-03-19T20:35:01.746Z",
+    "userId": 2110889690,
+    "userTag": "@Kakkarot2402",
+    "pokemonName": "sandile",
+    "nature": "naive",
+    "ivs": {
+      "hp": 15,
+      "attack": 25,
+      "defense": 15,
+      "special_attack": 28,
+      "special_defense": 26,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "sandile|naive|hp:15|atk:25|def:15|spa:28|spd:26|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T01:36:54.799Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "sandile"
+    ]
+  },
+  "WrTJPR0soQHi": {
+    "id": "WrTJPR0soQHi",
+    "status": "approved",
+    "createdAt": "2026-03-20T01:36:19.975Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "kyurem-black",
+    "nature": "hardy",
+    "ivs": {
+      "hp": 30,
+      "attack": 17,
+      "defense": 31,
+      "special_attack": 10,
+      "special_defense": 18,
+      "speed": 19
+    },
+    "shiny": false,
+    "fingerprint": "kyurem-black|hardy|hp:30|atk:17|def:31|spa:10|spd:18|spe:19",
+    "duplicateOf": [
+      "fV53apBzdHLt"
+    ],
+    "reviewedAt": "2026-03-20T01:37:05.326Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "kyurem-black"
+    ]
+  },
+  "DKP1eOqK1ZOQ": {
+    "id": "DKP1eOqK1ZOQ",
+    "status": "approved",
+    "createdAt": "2026-03-20T01:37:58.011Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "darumaka-galar",
+    "nature": "rash",
+    "ivs": {
+      "hp": 16,
+      "attack": 27,
+      "defense": 20,
+      "special_attack": 23,
+      "special_defense": 19,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "darumaka-galar|rash|hp:16|atk:27|def:20|spa:23|spd:19|spe:31",
+    "duplicateOf": [
+      "4PqGJNhWG4fb"
+    ],
+    "reviewedAt": "2026-03-20T03:55:11.702Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "darumaka-galar"
+    ]
+  },
+  "UFMGDFJ5YoX2": {
+    "id": "UFMGDFJ5YoX2",
+    "status": "approved",
+    "createdAt": "2026-03-20T02:43:03.454Z",
+    "userId": 626925825,
+    "userTag": "@Baibhav948",
+    "pokemonName": "blissey",
+    "nature": "modest",
+    "ivs": {
+      "hp": 28,
+      "attack": 29,
+      "defense": 20,
+      "special_attack": 31,
+      "special_defense": 29,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "blissey|modest|hp:28|atk:29|def:20|spa:31|spd:29|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T03:55:07.520Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "blissey"
+    ]
+  },
+  "WcCavTplu9Z5": {
+    "id": "WcCavTplu9Z5",
+    "status": "approved",
+    "createdAt": "2026-03-20T02:46:33.498Z",
+    "userId": 626925825,
+    "userTag": "@Baibhav948",
+    "pokemonName": "beedrill",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 9,
+      "attack": 26,
+      "defense": 10,
+      "special_attack": 2,
+      "special_defense": 12,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "beedrill|jolly|hp:9|atk:26|def:10|spa:2|spd:12|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T03:55:01.225Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "beedrill"
+    ]
+  },
+  "UdobkxDIu65S": {
+    "id": "UdobkxDIu65S",
+    "type": "stones",
+    "status": "approved",
+    "createdAt": "2026-03-20T03:16:11.924Z",
+    "userId": 6958812767,
+    "userTag": "@Dreamz_eater",
+    "sourceBotId": 572621020,
+    "stones": [
+      "charizardite-y",
+      "scizorite",
+      "metagrossite",
+      "salamencite",
+      "diancite",
+      "galladite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 6958812767,
+    "forwardMessageId": 5081,
+    "proofPhotoId": "AgACAgUAAxkBAAIT22m8u_vmRKmSIC2NJ1A7yGu2LQ6wAAIlEWsbguPhVWoUbkLPsHdDAQADAgADeQADOgQ",
+    "reviewedAt": "2026-03-20T03:54:53.203Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "charizardite-y",
+      "scizorite",
+      "metagrossite",
+      "salamencite",
+      "diancite",
+      "galladite"
+    ]
+  },
+  "RXnaTPJvJUzd": {
+    "id": "RXnaTPJvJUzd",
+    "status": "pending",
+    "createdAt": "2026-03-20T03:57:46.566Z",
+    "userId": 626925825,
+    "userTag": "@Baibhav948",
+    "pokemonName": "blastoise",
+    "nature": "modest",
+    "ivs": {
+      "hp": 13,
+      "attack": 0,
+      "defense": 24,
+      "special_attack": 30,
+      "special_defense": 28,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "blastoise|modest|hp:13|atk:0|def:24|spa:30|spd:28|spe:27",
+    "duplicateOf": [
+      "UNUkSM3xcwE7"
+    ]
+  },
+  "T4cRmtuRdScZ": {
+    "id": "T4cRmtuRdScZ",
+    "status": "rejected",
+    "createdAt": "2026-03-20T04:40:37.274Z",
+    "userId": 6958812767,
+    "userTag": "@Dreamz_eater",
+    "pokemonName": "arceus",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 20,
+      "attack": 24,
+      "defense": 31,
+      "special_attack": 22,
+      "special_defense": 17,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "arceus|adamant|hp:20|atk:24|def:31|spa:22|spd:17|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T04:41:14.347Z",
+    "reviewedBy": 8551864967
+  },
+  "4tTLjmhyjOGf": {
+    "id": "4tTLjmhyjOGf",
+    "status": "approved",
+    "createdAt": "2026-03-20T04:42:53.608Z",
+    "userId": 6958812767,
+    "userTag": "@Dreamz_eater",
+    "pokemonName": "ho-oh",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 20,
+      "attack": 24,
+      "defense": 31,
+      "special_attack": 22,
+      "special_defense": 17,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "ho-oh|adamant|hp:20|atk:24|def:31|spa:22|spd:17|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:01:46.288Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "ho-oh"
+    ]
+  },
+  "Kunczviyqndv": {
+    "id": "Kunczviyqndv",
+    "status": "approved",
+    "createdAt": "2026-03-20T04:55:29.428Z",
+    "userId": 7835630020,
+    "userTag": "@Arisen_Ray",
+    "pokemonName": "deoxys-attack",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 23,
+      "attack": 31,
+      "defense": 26,
+      "special_attack": 14,
+      "special_defense": 13,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "deoxys-attack|adamant|hp:23|atk:31|def:26|spa:14|spd:13|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:01:43.393Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "deoxys-attack"
+    ]
+  },
+  "iuyOhniDfnYr": {
+    "id": "iuyOhniDfnYr",
+    "status": "approved",
+    "createdAt": "2026-03-20T04:57:06.697Z",
+    "userId": 6958812767,
+    "userTag": "@Dreamz_eater",
+    "pokemonName": "charizard",
+    "nature": "timid",
+    "ivs": {
+      "hp": 30,
+      "attack": 15,
+      "defense": 26,
+      "special_attack": 29,
+      "special_defense": 15,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "charizard|timid|hp:30|atk:15|def:26|spa:29|spd:15|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:01:41.202Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "charizard"
+    ]
+  },
+  "A8SCQqei7QFm": {
+    "id": "A8SCQqei7QFm",
+    "status": "approved",
+    "createdAt": "2026-03-20T05:03:41.023Z",
+    "userId": 7835630020,
+    "userTag": "@Arisen_Ray",
+    "pokemonName": "porygon-z",
+    "nature": "modest",
+    "ivs": {
+      "hp": 30,
+      "attack": 18,
+      "defense": 30,
+      "special_attack": 28,
+      "special_defense": 24,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "porygon-z|modest|hp:30|atk:18|def:30|spa:28|spd:24|spe:28",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:01:39.007Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "porygon-z"
+    ]
+  },
+  "zff55OzRaFhJ": {
+    "id": "zff55OzRaFhJ",
+    "status": "approved",
+    "createdAt": "2026-03-20T05:05:07.963Z",
+    "userId": 7835630020,
+    "userTag": "@Arisen_Ray",
+    "pokemonName": "snorlax",
+    "nature": "impish",
+    "ivs": {
+      "hp": 26,
+      "attack": 28,
+      "defense": 31,
+      "special_attack": 28,
+      "special_defense": 31,
+      "speed": 12
+    },
+    "shiny": false,
+    "fingerprint": "snorlax|impish|hp:26|atk:28|def:31|spa:28|spd:31|spe:12",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:01:36.246Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "snorlax"
+    ]
+  },
+  "w7B6Sp7jXLHa": {
+    "id": "w7B6Sp7jXLHa",
+    "status": "approved",
+    "createdAt": "2026-03-20T05:09:05.337Z",
+    "userId": 7835630020,
+    "userTag": "@Arisen_Ray",
+    "pokemonName": "florges",
+    "nature": "calm",
+    "ivs": {
+      "hp": 31,
+      "attack": 28,
+      "defense": 31,
+      "special_attack": 23,
+      "special_defense": 31,
+      "speed": 24
+    },
+    "shiny": false,
+    "fingerprint": "florges|calm|hp:31|atk:28|def:31|spa:23|spd:31|spe:24",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T05:28:07.344Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "florges"
+    ]
+  },
+  "d2uclFPgBQ7Y": {
+    "id": "d2uclFPgBQ7Y",
+    "status": "approved",
+    "createdAt": "2026-03-20T05:13:03.532Z",
+    "userId": 7835630020,
+    "userTag": "@Arisen_Ray",
+    "pokemonName": "metagross",
+    "nature": "careful",
+    "ivs": {
+      "hp": 30,
+      "attack": 29,
+      "defense": 28,
+      "special_attack": 30,
+      "special_defense": 31,
+      "speed": 26
+    },
+    "shiny": false,
+    "fingerprint": "metagross|careful|hp:30|atk:29|def:28|spa:30|spd:31|spe:26",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T06:01:28.558Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "metagross"
+    ]
+  },
+  "a7fHhNhnAAN6": {
+    "id": "a7fHhNhnAAN6",
+    "status": "approved",
+    "createdAt": "2026-03-20T05:15:42.966Z",
+    "userId": 7835630020,
+    "userTag": "@Arisen_Ray",
+    "pokemonName": "hawlucha",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 24,
+      "attack": 28,
+      "defense": 11,
+      "special_attack": 3,
+      "special_defense": 25,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "hawlucha|jolly|hp:24|atk:28|def:11|spa:3|spd:25|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T05:27:41.412Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "hawlucha"
+    ]
+  },
+  "7YKl0ObgmuG5": {
+    "id": "7YKl0ObgmuG5",
+    "status": "approved",
+    "createdAt": "2026-03-20T05:22:35.176Z",
+    "userId": 7835630020,
+    "userTag": "@Arisen_Ray",
+    "pokemonName": "mewtwo",
+    "nature": "timid",
+    "ivs": {
+      "hp": 31,
+      "attack": 26,
+      "defense": 19,
+      "special_attack": 31,
+      "special_defense": 20,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "mewtwo|timid|hp:31|atk:26|def:19|spa:31|spd:20|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T05:27:39.070Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "mewtwo"
+    ]
+  },
+  "EfQvSmz7lL1u": {
+    "id": "EfQvSmz7lL1u",
+    "status": "pending",
+    "createdAt": "2026-03-20T06:53:42.559Z",
+    "userId": 7932011996,
+    "userTag": "@adityahun",
+    "pokemonName": "spectrier",
+    "nature": "timid",
+    "ivs": {
+      "hp": 11,
+      "attack": 13,
+      "defense": 17,
+      "special_attack": 29,
+      "special_defense": 29,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "spectrier|timid|hp:11|atk:13|def:17|spa:29|spd:29|spe:31",
+    "duplicateOf": []
+  },
+  "NrC5NqtcAOTQ": {
+    "id": "NrC5NqtcAOTQ",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:01:28.022Z",
+    "userId": 7351488344,
+    "userTag": "@zoro_luffy7",
+    "pokemonName": "dragapult",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 28,
+      "attack": 6,
+      "defense": 16,
+      "special_attack": 11,
+      "special_defense": 21,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "dragapult|jolly|hp:28|atk:6|def:16|spa:11|spd:21|spe:31",
+    "duplicateOf": []
+  },
+  "HYKsU8bEWp39": {
+    "id": "HYKsU8bEWp39",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:07:27.245Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "bulbasaur",
+    "nature": "quirky",
+    "ivs": {
+      "hp": 31,
+      "attack": 21,
+      "defense": 26,
+      "special_attack": 29,
+      "special_defense": 16,
+      "speed": 15
+    },
+    "shiny": false,
+    "fingerprint": "bulbasaur|quirky|hp:31|atk:21|def:26|spa:29|spd:16|spe:15",
+    "duplicateOf": []
+  },
+  "VTEPuGi1PG3p": {
+    "id": "VTEPuGi1PG3p",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:07:39.917Z",
+    "userId": 7351488344,
+    "userTag": "@zoro_luffy7",
+    "pokemonName": "iron-bundle",
+    "nature": "naive",
+    "ivs": {
+      "hp": 28,
+      "attack": 11,
+      "defense": 19,
+      "special_attack": 3,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "iron-bundle|naive|hp:28|atk:11|def:19|spa:3|spd:31|spe:31",
+    "duplicateOf": []
+  },
+  "YDjNx7pkzWN8": {
+    "id": "YDjNx7pkzWN8",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:09:32.049Z",
+    "userId": 7351488344,
+    "userTag": "@zoro_luffy7",
+    "pokemonName": "iron-bundle",
+    "nature": "timid",
+    "ivs": {
+      "hp": 15,
+      "attack": 29,
+      "defense": 20,
+      "special_attack": 28,
+      "special_defense": 17,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "iron-bundle|timid|hp:15|atk:29|def:20|spa:28|spd:17|spe:27",
+    "duplicateOf": []
+  },
+  "ZBqz3JNXvmDl": {
+    "id": "ZBqz3JNXvmDl",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:11:36.645Z",
+    "userId": 7351488344,
+    "userTag": "@zoro_luffy7",
+    "pokemonName": "ursaluna-bloodmoon",
+    "nature": "quiet",
+    "ivs": {
+      "hp": 10,
+      "attack": 11,
+      "defense": 26,
+      "special_attack": 30,
+      "special_defense": 30,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "ursaluna-bloodmoon|quiet|hp:10|atk:11|def:26|spa:30|spd:30|spe:27",
+    "duplicateOf": []
+  },
+  "YoAbQjWkYifK": {
+    "id": "YoAbQjWkYifK",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:12:02.111Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "pinsir",
+    "nature": "bashful",
+    "ivs": {
+      "hp": 22,
+      "attack": 30,
+      "defense": 21,
+      "special_attack": 31,
+      "special_defense": 20,
+      "speed": 16
+    },
+    "shiny": false,
+    "fingerprint": "pinsir|bashful|hp:22|atk:30|def:21|spa:31|spd:20|spe:16",
+    "duplicateOf": []
+  },
+  "EIx5lz4JVwyO": {
+    "id": "EIx5lz4JVwyO",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:12:03.996Z",
+    "userId": 7932011996,
+    "userTag": "@adityahun",
+    "pokemonName": "zacian",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 16,
+      "attack": 25,
+      "defense": 20,
+      "special_attack": 16,
+      "special_defense": 20,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "zacian|jolly|hp:16|atk:25|def:20|spa:16|spd:20|spe:31",
+    "duplicateOf": []
+  },
+  "FZXHsqjSl9SJ": {
+    "id": "FZXHsqjSl9SJ",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:12:25.246Z",
+    "userId": 7932011996,
+    "userTag": "@adityahun",
+    "pokemonName": "zamazenta",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 23,
+      "attack": 19,
+      "defense": 28,
+      "special_attack": 20,
+      "special_defense": 21,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "zamazenta|jolly|hp:23|atk:19|def:28|spa:20|spd:21|spe:31",
+    "duplicateOf": []
+  },
+  "PfTYTdaUqTzU": {
+    "id": "PfTYTdaUqTzU",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:12:32.704Z",
+    "userId": 7351488344,
+    "userTag": "@zoro_luffy7",
+    "pokemonName": "greninja",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 27,
+      "attack": 17,
+      "defense": 21,
+      "special_attack": 28,
+      "special_defense": 3,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "greninja|hasty|hp:27|atk:17|def:21|spa:28|spd:3|spe:31",
+    "duplicateOf": []
+  },
+  "NP7eULwfBwZD": {
+    "id": "NP7eULwfBwZD",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:12:45.465Z",
+    "userId": 7932011996,
+    "userTag": "@adityahun",
+    "pokemonName": "eternatus",
+    "nature": "timid",
+    "ivs": {
+      "hp": 26,
+      "attack": 31,
+      "defense": 30,
+      "special_attack": 28,
+      "special_defense": 18,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "eternatus|timid|hp:26|atk:31|def:30|spa:28|spd:18|spe:31",
+    "duplicateOf": []
+  },
+  "aAnCK6QAlcKv": {
+    "id": "aAnCK6QAlcKv",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:13:39.251Z",
+    "userId": 7932011996,
+    "userTag": "@adityahun",
+    "pokemonName": "kyogre",
+    "nature": "calm",
+    "ivs": {
+      "hp": 31,
+      "attack": 25,
+      "defense": 25,
+      "special_attack": 31,
+      "special_defense": 28,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "kyogre|calm|hp:31|atk:25|def:25|spa:31|spd:28|spe:23",
+    "duplicateOf": []
+  },
+  "iXz63p7BxtGn": {
+    "id": "iXz63p7BxtGn",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:13:46.786Z",
+    "userId": 7351488344,
+    "userTag": "@zoro_luffy7",
+    "pokemonName": "pheromosa",
+    "nature": "timid",
+    "ivs": {
+      "hp": 25,
+      "attack": 27,
+      "defense": 24,
+      "special_attack": 21,
+      "special_defense": 10,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "pheromosa|timid|hp:25|atk:27|def:24|spa:21|spd:10|spe:31",
+    "duplicateOf": []
+  },
+  "8VUX1rSUdRGP": {
+    "id": "8VUX1rSUdRGP",
+    "status": "pending",
+    "createdAt": "2026-03-20T07:14:09.621Z",
+    "userId": 7932011996,
+    "userTag": "@adityahun",
+    "pokemonName": "groudon",
+    "nature": "impish",
+    "ivs": {
+      "hp": 21,
+      "attack": 31,
+      "defense": 30,
+      "special_attack": 22,
+      "special_defense": 29,
+      "speed": 14
+    },
+    "shiny": false,
+    "fingerprint": "groudon|impish|hp:21|atk:31|def:30|spa:22|spd:29|spe:14",
+    "duplicateOf": []
+  },
+  "qmYEHML91gO5": {
+    "id": "qmYEHML91gO5",
+    "status": "approved",
+    "createdAt": "2026-03-20T07:34:04.221Z",
+    "userId": 7932011996,
+    "userTag": "@adityahun",
+    "pokemonName": "yveltal",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 28,
+      "attack": 29,
+      "defense": 25,
+      "special_attack": 29,
+      "special_defense": 25,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "yveltal|jolly|hp:28|atk:29|def:25|spa:29|spd:25|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T08:12:34.963Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "yveltal"
+    ]
+  },
+  "xhJdRR1y00GG": {
+    "id": "xhJdRR1y00GG",
+    "status": "approved",
+    "createdAt": "2026-03-20T07:57:02.692Z",
+    "userId": 7351488344,
+    "userTag": "@zoro_luffy7",
+    "pokemonName": "charcadet",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 21,
+      "attack": 22,
+      "defense": 23,
+      "special_attack": 25,
+      "special_defense": 25,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "charcadet|adamant|hp:21|atk:22|def:23|spa:25|spd:25|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T08:01:18.785Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "charcadet"
+    ]
+  },
+  "N2dqVzZcKNIY": {
+    "id": "N2dqVzZcKNIY",
+    "status": "approved",
+    "createdAt": "2026-03-20T07:59:51.312Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "snorlax",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 31,
+      "attack": 30,
+      "defense": 31,
+      "special_attack": 25,
+      "special_defense": 7,
+      "speed": 15
+    },
+    "shiny": false,
+    "fingerprint": "snorlax|adamant|hp:31|atk:30|def:31|spa:25|spd:7|spe:15",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T08:01:15.468Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "snorlax"
+    ]
+  },
+  "1yU5DfZh64YM": {
+    "id": "1yU5DfZh64YM",
+    "status": "approved",
+    "createdAt": "2026-03-20T08:08:32.773Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "squirtle",
+    "nature": "brave",
+    "ivs": {
+      "hp": 22,
+      "attack": 30,
+      "defense": 28,
+      "special_attack": 19,
+      "special_defense": 20,
+      "speed": 17
+    },
+    "shiny": false,
+    "fingerprint": "squirtle|brave|hp:22|atk:30|def:28|spa:19|spd:20|spe:17",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T08:08:42.268Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "squirtle"
+    ]
+  },
+  "dTkKrdsE8zzx": {
+    "id": "dTkKrdsE8zzx",
+    "status": "approved",
+    "createdAt": "2026-03-20T08:08:43.784Z",
+    "userId": 5433721548,
+    "userTag": "@Catalyst_01",
+    "pokemonName": "aggron",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 29,
+      "attack": 31,
+      "defense": 26,
+      "special_attack": 30,
+      "special_defense": 31,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "aggron|jolly|hp:29|atk:31|def:26|spa:30|spd:31|spe:31",
+    "duplicateOf": [
+      "Kv8UIcNxSlHW"
+    ],
+    "reviewedAt": "2026-03-20T08:08:46.576Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "aggron"
+    ]
+  },
+  "vFpCYFgolV00": {
+    "id": "vFpCYFgolV00",
+    "status": "approved",
+    "createdAt": "2026-03-20T08:10:41.647Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "beedrill",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 17,
+      "attack": 18,
+      "defense": 15,
+      "special_attack": 24,
+      "special_defense": 15,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "beedrill|adamant|hp:17|atk:18|def:15|spa:24|spd:15|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T08:12:20.929Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "beedrill"
+    ]
+  },
+  "4oQ1PkZvkh1p": {
+    "id": "4oQ1PkZvkh1p",
+    "status": "approved",
+    "createdAt": "2026-03-20T08:17:34.742Z",
+    "userId": 5433721548,
+    "userTag": "@Catalyst_01",
+    "pokemonName": "giratina-origin",
+    "nature": "sassy",
+    "ivs": {
+      "hp": 26,
+      "attack": 31,
+      "defense": 31,
+      "special_attack": 31,
+      "special_defense": 28,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "giratina-origin|sassy|hp:26|atk:31|def:31|spa:31|spd:28|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T08:29:39.447Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "giratina-origin"
+    ]
+  },
+  "v7T1qbmBdDtf": {
+    "id": "v7T1qbmBdDtf",
+    "status": "pending",
+    "createdAt": "2026-03-20T09:03:48.915Z",
+    "userId": 5926652027,
+    "userTag": "@ma_kma",
+    "pokemonName": "aerodactyl",
+    "nature": "hasty",
+    "ivs": {
+      "hp": 26,
+      "attack": 18,
+      "defense": 26,
+      "special_attack": 21,
+      "special_defense": 21,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "aerodactyl|hasty|hp:26|atk:18|def:26|spa:21|spd:21|spe:27",
+    "duplicateOf": []
+  },
+  "e17cXGgO6mDk": {
+    "id": "e17cXGgO6mDk",
+    "status": "pending",
+    "createdAt": "2026-03-20T09:10:15.991Z",
+    "userId": 6393627898,
+    "userTag": "@Dr_neil_watts",
+    "pokemonName": "arceus",
+    "nature": "bold",
+    "ivs": {
+      "hp": 24,
+      "attack": 25,
+      "defense": 31,
+      "special_attack": 19,
+      "special_defense": 22,
+      "speed": 25
+    },
+    "shiny": false,
+    "fingerprint": "arceus|bold|hp:24|atk:25|def:31|spa:19|spd:22|spe:25",
+    "duplicateOf": []
+  },
+  "0FdjTKj2WhCk": {
+    "id": "0FdjTKj2WhCk",
+    "type": "stones",
+    "status": "pending",
+    "createdAt": "2026-03-20T09:19:19.996Z",
+    "userId": 6393627898,
+    "userTag": "@Dr_neil_watts",
+    "sourceBotId": 572621020,
+    "stones": [
+      "rusted-sword",
+      "diancite",
+      "altarianite",
+      "charizardite-x",
+      "blazikenite",
+      "ampharosite",
+      "galladite",
+      "blastoisinite",
+      "blastoisinite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 6393627898,
+    "forwardMessageId": 5431,
+    "proofPhotoId": "AgACAgUAAxkBAAIVOWm9ERfzJuOVRsbGPKVbwyePmNRGAAJlDWsbtHPoVWLp-MFq47C8AQADAgADeQADOgQ"
+  },
+  "YFHPzI0hGBkv": {
+    "id": "YFHPzI0hGBkv",
+    "type": "stones",
+    "status": "pending",
+    "createdAt": "2026-03-20T09:22:40.577Z",
+    "userId": 7465378892,
+    "userTag": "@Iron_fortress2007",
+    "sourceBotId": 572621020,
+    "stones": [
+      "jade-orb",
+      "absolite",
+      "manectite",
+      "swampertite",
+      "latiosite",
+      "medichamite",
+      "pidgeotite",
+      "latiosite",
+      "charizardite-x",
+      "scizorite",
+      "gengarite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 7465378892,
+    "forwardMessageId": 5441,
+    "proofPhotoId": "AgACAgUAAxkBAAIVQ2m9EeDKnsu1pX5DB4nxEA366aVbAAIUDmsbGLHoVTSAIXRU0lScAQADAgADeQADOgQ"
+  },
+  "Wgbd941WHgG1": {
+    "id": "Wgbd941WHgG1",
+    "status": "pending",
+    "createdAt": "2026-03-20T09:27:06.087Z",
+    "userId": 7465378892,
+    "userTag": "@Iron_fortress2007",
+    "pokemonName": "swampert",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 30,
+      "attack": 14,
+      "defense": 13,
+      "special_attack": 29,
+      "special_defense": 28,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "swampert|jolly|hp:30|atk:14|def:13|spa:29|spd:28|spe:29",
+    "duplicateOf": []
+  },
+  "fKilttpHVvEU": {
+    "id": "fKilttpHVvEU",
+    "status": "approved",
+    "createdAt": "2026-03-20T09:29:48.151Z",
+    "userId": 2110889690,
+    "userTag": "@Kakkarot2402",
+    "pokemonName": "grookey",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 29,
+      "attack": 18,
+      "defense": 21,
+      "special_attack": 20,
+      "special_defense": 18,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "grookey|adamant|hp:29|atk:18|def:21|spa:20|spd:18|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T12:51:28.947Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "grookey"
+    ]
+  },
+  "V4hFHcpTjSBw": {
+    "id": "V4hFHcpTjSBw",
+    "status": "pending",
+    "createdAt": "2026-03-20T09:32:58.643Z",
+    "userId": 626925825,
+    "userTag": "@Baibhav948",
+    "pokemonName": "aerodactyl",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 4,
+      "attack": 10,
+      "defense": 17,
+      "special_attack": 26,
+      "special_defense": 26,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "aerodactyl|jolly|hp:4|atk:10|def:17|spa:26|spd:26|spe:31",
+    "duplicateOf": []
+  },
+  "l25R4hicr8X3": {
+    "id": "l25R4hicr8X3",
+    "status": "approved",
+    "createdAt": "2026-03-20T09:33:37.595Z",
+    "userId": 626925825,
+    "userTag": "@Baibhav948",
+    "pokemonName": "kyogre",
+    "nature": "modest",
+    "ivs": {
+      "hp": 30,
+      "attack": 16,
+      "defense": 27,
+      "special_attack": 30,
+      "special_defense": 14,
+      "speed": 29
+    },
+    "shiny": false,
+    "fingerprint": "kyogre|modest|hp:30|atk:16|def:27|spa:30|spd:14|spe:29",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T12:51:39.395Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "kyogre"
+    ]
+  },
+  "grZwQVCFfsz9": {
+    "id": "grZwQVCFfsz9",
+    "status": "pending",
+    "createdAt": "2026-03-20T09:57:43.578Z",
+    "userId": 7465378892,
+    "userTag": "@Iron_fortress2007",
+    "pokemonName": "rayquaza",
+    "nature": "adamant",
+    "ivs": {
+      "hp": 19,
+      "attack": 16,
+      "defense": 25,
+      "special_attack": 19,
+      "special_defense": 25,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "rayquaza|adamant|hp:19|atk:16|def:25|spa:19|spd:25|spe:28",
+    "duplicateOf": []
+  },
+  "cK4MoUmi5CdY": {
+    "id": "cK4MoUmi5CdY",
+    "status": "approved",
+    "createdAt": "2026-03-20T09:59:30.829Z",
+    "userId": 7465378892,
+    "userTag": "@Iron_fortress2007",
+    "pokemonName": "urshifu-single-strike",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 27,
+      "attack": 26,
+      "defense": 21,
+      "special_attack": 27,
+      "special_defense": 29,
+      "speed": 25
+    },
+    "shiny": false,
+    "fingerprint": "urshifu-single-strike|jolly|hp:27|atk:26|def:21|spa:27|spd:29|spe:25",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T09:59:42.779Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "urshifu-single-strike"
+    ]
+  },
+  "jaftODlCvyJQ": {
+    "id": "jaftODlCvyJQ",
+    "type": "stones",
+    "status": "pending",
+    "createdAt": "2026-03-20T10:08:35.898Z",
+    "userId": 6393627898,
+    "userTag": "@Dr_neil_watts",
+    "sourceBotId": 572621020,
+    "stones": [
+      "rusted-sword",
+      "diancite",
+      "altarianite",
+      "charizardite-x",
+      "blazikenite",
+      "ampharosite",
+      "galladite",
+      "blastoisinite",
+      "blastoisinite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 6393627898,
+    "forwardMessageId": 5492,
+    "proofPhotoId": "AgACAgUAAxkBAAIVdmm9HKMYaGnm-iXhMQABOcyoW5834wACfQ1rG7Rz6FWgdHPLE8KVpwEAAwIAA3kAAzoE"
+  },
+  "8c03jQncDapz": {
+    "id": "8c03jQncDapz",
+    "type": "stones",
+    "status": "pending",
+    "createdAt": "2026-03-20T10:18:55.778Z",
+    "userId": 7465378892,
+    "userTag": "@Iron_fortress2007",
+    "sourceBotId": 572621020,
+    "stones": [
+      "jade-orb",
+      "absolite",
+      "manectite",
+      "swampertite",
+      "latiosite",
+      "medichamite",
+      "pidgeotite",
+      "latiosite",
+      "charizardite-x",
+      "scizorite",
+      "gengarite"
+    ],
+    "keyStoneStatus": "Equipped",
+    "forwardChatId": 7465378892,
+    "forwardMessageId": 5504,
+    "proofPhotoId": "AgACAgUAAxkBAAIVQ2m9EeDKnsu1pX5DB4nxEA366aVbAAIUDmsbGLHoVTSAIXRU0lScAQADAgADeQADOgQ"
+  },
+  "5uBE1BTwmk5X": {
+    "id": "5uBE1BTwmk5X",
+    "status": "pending",
+    "createdAt": "2026-03-20T11:23:20.911Z",
+    "userId": 7932011996,
+    "userTag": "@adityahun",
+    "pokemonName": "zacian",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 16,
+      "attack": 25,
+      "defense": 20,
+      "special_attack": 16,
+      "special_defense": 20,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "zacian|jolly|hp:16|atk:25|def:20|spa:16|spd:20|spe:31",
+    "duplicateOf": [
+      "EIx5lz4JVwyO"
+    ]
+  },
+  "FJDkUo6b8aCD": {
+    "id": "FJDkUo6b8aCD",
+    "status": "approved",
+    "createdAt": "2026-03-20T12:43:23.500Z",
+    "userId": 1470441905,
+    "userTag": "@Koji_kunn",
+    "pokemonName": "calyrex-shadow",
+    "nature": "timid",
+    "ivs": {
+      "hp": 19,
+      "attack": 21,
+      "defense": 30,
+      "special_attack": 27,
+      "special_defense": 21,
+      "speed": 28
+    },
+    "shiny": false,
+    "fingerprint": "calyrex-shadow|timid|hp:19|atk:21|def:30|spa:27|spd:21|spe:28",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T12:49:33.770Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "calyrex-shadow"
+    ]
+  },
+  "3JHfFvDv3XJQ": {
+    "id": "3JHfFvDv3XJQ",
+    "status": "approved",
+    "createdAt": "2026-03-20T12:46:57.330Z",
+    "userId": 5228554516,
+    "userTag": "@Fullmetal_alchemist_65",
+    "pokemonName": "aron",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 24,
+      "attack": 24,
+      "defense": 31,
+      "special_attack": 24,
+      "special_defense": 27,
+      "speed": 27
+    },
+    "shiny": false,
+    "fingerprint": "aron|jolly|hp:24|atk:24|def:31|spa:24|spd:27|spe:27",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T12:47:48.109Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "aron"
+    ]
+  },
+  "Jdtc2jtzjKrJ": {
+    "id": "Jdtc2jtzjKrJ",
+    "status": "approved",
+    "createdAt": "2026-03-20T12:50:07.684Z",
+    "userId": 2110889690,
+    "userTag": "@Kakkarot2402",
+    "pokemonName": "aron",
+    "nature": "impish",
+    "ivs": {
+      "hp": 15,
+      "attack": 27,
+      "defense": 31,
+      "special_attack": 21,
+      "special_defense": 19,
+      "speed": 23
+    },
+    "shiny": false,
+    "fingerprint": "aron|impish|hp:15|atk:27|def:31|spa:21|spd:19|spe:23",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T12:50:28.492Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "aron"
+    ]
+  },
+  "qdHacm623IPB": {
+    "id": "qdHacm623IPB",
+    "status": "approved",
+    "createdAt": "2026-03-20T12:52:48.857Z",
+    "userId": 2110889690,
+    "userTag": "@Kakkarot2402",
+    "pokemonName": "rowlet",
+    "nature": "jolly",
+    "ivs": {
+      "hp": 18,
+      "attack": 22,
+      "defense": 15,
+      "special_attack": 20,
+      "special_defense": 23,
+      "speed": 30
+    },
+    "shiny": false,
+    "fingerprint": "rowlet|jolly|hp:18|atk:22|def:15|spa:20|spd:23|spe:30",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T12:53:30.480Z",
+    "reviewedBy": 6265981509,
+    "added": [
+      "rowlet"
+    ]
+  },
+  "bbs1SYMFX5gY": {
+    "id": "bbs1SYMFX5gY",
+    "status": "approved",
+    "createdAt": "2026-03-20T12:56:29.374Z",
+    "userId": 1968408733,
+    "userTag": null,
+    "pokemonName": "sceptile",
+    "nature": "naive",
+    "ivs": {
+      "hp": 10,
+      "attack": 31,
+      "defense": 14,
+      "special_attack": 20,
+      "special_defense": 4,
+      "speed": 31
+    },
+    "shiny": false,
+    "fingerprint": "sceptile|naive|hp:10|atk:31|def:14|spa:20|spd:4|spe:31",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T12:57:28.189Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "sceptile"
+    ]
+  },
+  "jkldvnSPihxp": {
+    "id": "jkldvnSPihxp",
+    "status": "approved",
+    "createdAt": "2026-03-20T12:57:06.243Z",
+    "userId": 7577674783,
+    "userTag": "@The_another_onee",
+    "pokemonName": "ampharos",
+    "nature": "modest",
+    "ivs": {
+      "hp": 23,
+      "attack": 30,
+      "defense": 25,
+      "special_attack": 22,
+      "special_defense": 16,
+      "speed": 21
+    },
+    "shiny": false,
+    "fingerprint": "ampharos|modest|hp:23|atk:30|def:25|spa:22|spd:16|spe:21",
+    "duplicateOf": [],
+    "reviewedAt": "2026-03-20T12:57:12.352Z",
+    "reviewedBy": 7074080974,
+    "added": [
+      "ampharos"
+    ]
+  }
+}

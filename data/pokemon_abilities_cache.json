@@ -22,12 +22,10 @@
     "justified"
   ],
   "groudon": [
-    "drought",
-    "desolate-land"
+    "drought"
   ],
   "kyogre": [
-    "drizzle",
-    "primordial-sea"
+    "drizzle"
   ],
   "garchomp": [
     "sand-veil",
@@ -911,8 +909,7 @@
   "dondozo": [
     "unaware",
     "oblivious",
-    "water-veil",
-    "drizzle"
+    "water-veil"
   ],
   "delphox": [
     "blaze",
@@ -2006,8 +2003,7 @@
     "cute-charm"
   ],
   "zygarde-50": [
-    "aura-break",
-    "power-construct"
+    "aura-break"
   ],
   "malamar": [
     "contrary",
@@ -2693,8 +2689,7 @@
     "inner-focus"
   ],
   "rayquaza": [
-    "air-lock",
-    "delta-stream"
+    "air-lock"
   ],
   "swampert": [
     "torrent",
@@ -5246,8 +5241,5 @@
   ],
   "salamence-mega": [
     "aerilate"
-  ],
-  "beartic": [
-    "drought"
   ]
 }

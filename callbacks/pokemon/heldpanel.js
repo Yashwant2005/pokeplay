@@ -1,6 +1,5 @@
 function registerHeldPanelCallbacks(bot, deps) {
   Object.assign(globalThis, deps, { bot });
-  const { getHeldItemDescription } = require('../../utils/held_item_shop');
   const {
     getPokemonHeldItemRestrictionMessage,
     getSanitizedHeldItemForPokemon,
@@ -32,9 +31,35 @@ function registerHeldPanelCallbacks(bot, deps) {
     return data.extra.itembox.heldItems;
   }
 
+  function getMegaStoneCounts(data) {
+    const counts = {};
+    const stones = Array.isArray(data && data.inv && data.inv.stones) ? data.inv.stones : [];
+    for (const raw of stones) {
+      const name = normalizeHeldItemName(raw);
+      counts[name] = Number(counts[name] || 0) + 1;
+    }
+    return counts;
+  }
+
+  function getCombinedHeldEntries(data) {
+    const combined = {};
+    const heldItems = ensureHeldItemBox(data);
+    for (const [key, value] of Object.entries(heldItems)) {
+      const amount = Number(value) || 0;
+      if (amount > 0) combined[normalizeHeldItemName(key)] = amount;
+    }
+    const stoneCounts = getMegaStoneCounts(data);
+    for (const [key, value] of Object.entries(stoneCounts)) {
+      combined[key] = Number(combined[key] || 0) + Number(value || 0);
+    }
+    return Object.entries(combined).sort((a, b) => a[0].localeCompare(b[0]));
+  }
+
   function getOwnedHeldItemCount(data, itemName) {
     const heldItems = ensureHeldItemBox(data);
-    return Number(heldItems[itemName]) || 0;
+    const heldCount = Number(heldItems[itemName]) || 0;
+    const stoneCount = Number(getMegaStoneCounts(data)[itemName]) || 0;
+    return heldCount + stoneCount;
   }
 
   function getEquippedHeldItemCount(data, itemName, ignorePass = '') {
@@ -67,16 +92,11 @@ function registerHeldPanelCallbacks(bot, deps) {
     let msg = '*Held Item Manager*\n';
     msg += '*Pokemon:* ' + c(poke.nickname || poke.name) + '\n';
     msg += '*Current Held Item:* ' + c(titleCaseHeldItem(currentItem || 'none'));
-    if (currentItem && currentItem !== 'none') {
-      msg += '\n*Current Effect:* ' + c(getHeldItemDescription(currentItem));
-    }
 
-    const entries = Object.entries(ensureHeldItemBox(data))
-      .filter(([, amount]) => Number(amount) > 0)
-      .sort((a, b) => a[0].localeCompare(b[0]));
+    const entries = getCombinedHeldEntries(data);
 
     if (restricted) {
-      msg += '\n\n*Held items are disabled for this Rayquaza because it knows Dragon Ascent.*';
+      msg += '\n\n*Held items are disabled for this Pokemon.*';
     } else if (entries.length < 1) {
       msg += '\n\nYou do not have any *held items* in your bag.';
     } else {
@@ -86,7 +106,6 @@ function registerHeldPanelCallbacks(bot, deps) {
         const free = Math.max(0, Number(amount) - equippedElsewhere);
         msg += '\n- ' + c(titleCaseHeldItem(itemName)) + ': *' + amount + '*';
         msg += ' | Free: *' + free + '*';
-        msg += '\n  ' + c(getHeldItemDescription(itemName));
       }
     }
 

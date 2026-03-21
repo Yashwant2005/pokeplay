@@ -67,13 +67,27 @@ const HELD_ITEM_PC_TIERS = [
       'booster-energy',
       'rusted-sword',
       'rusted-shield',
+      'jade-orb',
       'red-orb',
       'blue-orb'
     ]
   }
 ];
 
-const HELD_ITEM_POOL = HELD_ITEM_PC_TIERS.flatMap((tier) => tier.items);
+const MEGA_STONES = (() => {
+  try {
+    return require('../data/stones.json') || {};
+  } catch (error) {
+    return {};
+  }
+})();
+
+const HELD_ITEM_POOL = [
+  ...new Set([
+    ...HELD_ITEM_PC_TIERS.flatMap((tier) => tier.items),
+    ...Object.keys(MEGA_STONES || {})
+  ])
+];
 
 const HELD_ITEM_ALIASES = {
   airballoon: 'air-balloon',
@@ -120,6 +134,8 @@ const HELD_ITEM_ALIASES = {
   'rusted-sword': 'rusted-sword',
   rustedshield: 'rusted-shield',
   'rusted-shield': 'rusted-shield',
+  jadeorb: 'jade-orb',
+  'jade-orb': 'jade-orb',
   redorb: 'red-orb',
   'red-orb': 'red-orb',
   blueorb: 'blue-orb',
@@ -129,6 +145,11 @@ const HELD_ITEM_ALIASES = {
 for (const entry of ARCEUS_PLATES) {
   HELD_ITEM_ALIASES[entry.item] = entry.item;
   HELD_ITEM_ALIASES[entry.item.replace(/-/g, '')] = entry.item;
+}
+
+for (const stoneName of Object.keys(MEGA_STONES || {})) {
+  HELD_ITEM_ALIASES[stoneName] = stoneName;
+  HELD_ITEM_ALIASES[stoneName.replace(/-/g, '')] = stoneName;
 }
 
 function normalizeHeldItemShopName(value) {
@@ -186,9 +207,15 @@ function getHeldItemDescription(itemName) {
     'light-ball': 'Doubles Pikachu\'s Attack and Special Attack.',
     'rusted-sword': 'Transforms Zacian into its Crowned form in battle and supports its signature ability behavior.',
     'rusted-shield': 'Transforms Zamazenta into its Crowned form in battle and supports its signature ability behavior.',
+    'jade-orb': 'Transforms Rayquaza into Mega Rayquaza in battle.',
     'red-orb': 'Transforms Groudon into Primal Groudon in battle.',
     'blue-orb': 'Transforms Kyogre into Primal Kyogre in battle.'
   };
+
+  if (MEGA_STONES[normalized]) {
+    const meta = MEGA_STONES[normalized];
+    return 'Transforms ' + titleCaseHeldItem(meta.pokemon) + ' into ' + titleCaseHeldItem(meta.mega) + ' in battle.';
+  }
 
   return descriptions[normalized] || 'Held battle item.';
 }

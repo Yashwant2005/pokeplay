@@ -1,5 +1,6 @@
 function registerCandyCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { getReadyEvolutionRows } = require('../../utils/evolution_rules');
   commands.set('candy', async ctx => {  
   const data = await getUserData(ctx.from.id)  
   if(!data.inv){  
@@ -73,12 +74,12 @@ function registerCandyCommand(bot, deps) {
   [{text:'+1 Candy 🍬',callback_data:'candy_'+p2.pass+'_'+ctx.from.id+'_1'} , {text:'+5 Candy',callback_data:'candy_'+p2.pass+'_'+ctx.from.id+'_5'}],
   [{text:'+10 Candy',callback_data:'candy_'+p2.pass+'_'+ctx.from.id+'_10'} , {text:'+20 Candy',callback_data:'candy_'+p2.pass+'_'+ctx.from.id+'_20'}]
   ]}})
-  const evo = chains.evolution_chains.filter((chain)=>chain.current_pokemon==p2.name)[0]  
-  if(evo && evo.evolution_level && evo.evolution_method == 'level-up' && evo.evolution_level <= (currentLevel+1) && evo.evolution_level > currentLevel){  
+  const readyEvolutions = getReadyEvolutionRows(p2.name, currentLevel + 1, chains, forms, { data, now: new Date() })
+  if(readyEvolutions.length > 0){
   if(ctx.chat.type!='private'){  
   await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},'<a href="tg://user?id='+ctx.from.id+'"><b>'+data.inv.name+'</b></a> Your Pokemon <b>'+c(p2.name)+'</b> Is Ready To Evolve',{reply_markup:{inline_keyboard:[[{text:'Evolve',url:'t.me/'+bot.botInfo.username+''}]]}})  
   }  
-  await sendMessage(ctx,ctx.from.id,'*'+c(p2.name)+'* Is Ready To Evolve',{parse_mode:'markdown',reply_markup:{inline_keyboard:[[{text:'Evolve',callback_data:'evy_'+p2.name+'_'+p2.pass+''}]]}})  
+  await sendMessage(ctx,ctx.from.id,'*'+c(p2.name)+'* Is Ready To Evolve.\nUse */evolve '+c(p2.name)+'* to choose the evolution.',{parse_mode:'markdown'})
   }  
   if(((currentLevel+1)-currentLevel)!= 0){  
   const moves = pokemoves[p2.name]  

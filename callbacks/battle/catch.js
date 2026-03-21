@@ -1,6 +1,7 @@
 const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
 const { applyEntryAbility, getAirBalloonInfo, getDisplayedWeatherState, getWeatherDisplayName, setBattleWeatherNegationState } = require('../../utils/battle_abilities');
 const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
+const { activateImpersonateForPass, getBattleBaseStats } = require('../../utils/battle_impersonate');
 const { applyIvBoostEventToEncounter, IV_STAT_LABELS } = require('../../utils/iv_boost_campaign');
 const { ARCEUS_PLATES } = require('../../utils/held_item_shop');
 const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rules');
@@ -81,8 +82,9 @@ function register_011_catch(bot, deps) {
       speed: 0
     };
     const nat = getRandomNature();
+    const playerImpersonateTarget = activateImpersonateForPass({ battleData, pass: p.pass, pokemonName: p.name, abilityName: p.ability });
     const base = pokestats[name];
-    const base2 = pokestats[p.name];
+    const base2 = getBattleBaseStats({ battleData, pass: p.pass, pokemonName: p.name, abilityName: p.ability, pokestats });
     const uname = he.encode(ctx.from.first_name);
     const stats2 = await Stats(base, iv, ev, c(nat), level);
     const hp2 = stats2.hp;
@@ -195,7 +197,7 @@ function register_011_catch(bot, deps) {
     for (const teamPass of data.teams[data.inv.team]) {
       const pk = data.pokes.filter((poke) => poke.pass == teamPass);
       if (pk && pk[0]) {
-        const partyBase = pokestats[pk[0].name];
+        const partyBase = getBattleBaseStats({ battleData, pass: pk[0].pass, pokemonName: pk[0].name, abilityName: pk[0].ability, pokestats });
         const partyLevel = plevel(pk[0].name, pk[0].exp);
         if(!partyBase){
           continue;
@@ -240,6 +242,9 @@ function register_011_catch(bot, deps) {
     });
     if (getAirBalloonInfo({ battleData, pass: p.pass, heldItem: p.held_item }).active) {
       msg += '\n\n-> <b>' + c(p.name) + '</b>\'s <b>Air Balloon</b> is floating it above the ground!';
+    }
+    if (playerImpersonateTarget) {
+      msg += '\n-> <b>' + c(p.name) + '</b>\'s <b>Impersonate</b> copied <b>' + c(playerImpersonateTarget) + '</b>!';
     }
     if (getAirBalloonInfo({ battleData, pass: battleData.opass, heldItem: battleData.oheld_item }).active) {
       msg += '\n-> <b>' + c(name) + '</b>\'s <b>Air Balloon</b> is floating it above the ground!';

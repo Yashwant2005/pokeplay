@@ -2,6 +2,7 @@ function registerBattleStatsCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
 
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
+  const { getBattleBaseStats, getImpersonateTargetName } = require('../../utils/battle_impersonate');
   const {
     ensurePokemonStatStages,
     applyStageToStat,
@@ -110,7 +111,13 @@ function registerBattleStatsCommand(bot, deps) {
       return;
     }
 
-    const base = pokestats[p.name];
+    const base = getBattleBaseStats({
+      battleData,
+      pass: p.pass,
+      pokemonName: p.name,
+      abilityName: p.ability,
+      pokestats
+    });
     if (!base) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Could not find base stats for *' + c(p.name) + '*.', { reply_to_message_id: ctx.message.message_id });
       return;
@@ -125,6 +132,12 @@ function registerBattleStatsCommand(bot, deps) {
       evolutionChains: chains
     });
     const liveHeldItem = getBattleHeldItemName({ battleData, pass: p.pass, heldItem: p.held_item });
+    const impersonateTarget = getImpersonateTargetName({
+      battleData,
+      pass: p.pass,
+      pokemonName: p.name,
+      abilityName: p.ability
+    });
     const supremeOverlordInfo = getSupremeOverlordInfo({
       abilityName: p.ability,
       partyHpMap: battleSide.sideMap,
@@ -173,6 +186,9 @@ function registerBattleStatsCommand(bot, deps) {
     msg += '\n*Level:* ' + level + ' | *Nature:* ' + c(p.nature);
     msg += '\n*Ability:* ' + c(titleCaseAbility(p.ability || 'none'));
     msg += '\n*Held Item:* ' + c(titleCaseHeldItem(liveHeldItem || 'none'));
+    if (impersonateTarget) {
+      msg += '\n*Impersonate:* ' + c(impersonateTarget);
+    }
     msg += '\n*HP:* ' + finalStats.hp + '/' + stats.hp;
     if (battleStatus) {
       msg += '\n*Status:* ' + c(String(battleStatus).replace(/_/g, ' '));

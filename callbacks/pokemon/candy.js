@@ -1,5 +1,6 @@
 function register_066_candy(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { getReadyEvolutionRows } = require('../../utils/evolution_rules');
   bot.action(/candy_/, check2q, async ctx => {
     const pass = ctx.callbackQuery.data.split('_')[1]
     const id = ctx.callbackQuery.data.split('_')[2]
@@ -50,12 +51,12 @@ function register_066_candy(bot, deps) {
       p2.exp = exp[nextLevel]
       used++
 
-      const evo = chains.evolution_chains.filter((chain) => chain.current_pokemon == p2.name)[0]
-      if (evo && evo.evolution_level && evo.evolution_method == 'level-up' && evo.evolution_level <= nextLevel && evo.evolution_level > currentLevel) {
+      const readyEvolutions = getReadyEvolutionRows(p2.name, nextLevel, chains, forms, { data, now: new Date() })
+      if (readyEvolutions.length > 0) {
         if (ctx.chat.type != 'private') {
           await sendMessage(ctx, ctx.chat.id, { parse_mode: 'HTML' }, '<a href="tg://user?id=' + ctx.from.id + '"><b>' + data.inv.name + '</b></a> Your Pokemon <b>' + c(p2.name) + '</b> Is Ready To Evolve', { reply_markup: { inline_keyboard: [[{ text: 'Evolve', url: 't.me/' + bot.botInfo.username + '' }]] } })
         }
-        await sendMessage(ctx, ctx.from.id, '*' + c(p2.name) + '* Is Ready To Evolve', { parse_mode: 'markdown', reply_markup: { inline_keyboard: [[{ text: 'Evolve', callback_data: 'evy_' + p2.name + '_' + p2.pass + '' }]] } })
+        await sendMessage(ctx, ctx.from.id, '*' + c(p2.name) + '* Is Ready To Evolve.\nUse */evolve ' + c(p2.name) + '* to choose the evolution.', { parse_mode: 'markdown' })
       }
 
       if (pokemoves[p2.name] && pokemoves[p2.name].moves_info) {

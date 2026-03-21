@@ -1,5 +1,6 @@
 function registerMybagCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { titleCaseZCrystal } = require('../../utils/z_crystals');
   bot.command('mybag',async ctx => {
   
   const data = await getUserData(ctx.from.id)
@@ -50,9 +51,38 @@ function registerMybagCommand(bot, deps) {
   
   }
   
+  if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+  if(!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
+  if(!Number.isFinite(data.extra.itembox.dynamaxCandy)) data.extra.itembox.dynamaxCandy = 0
+  if(!Number.isFinite(data.extra.itembox.maxSoup)) data.extra.itembox.maxSoup = 0
+  if(!data.extra.itembox.zCrystals || typeof data.extra.itembox.zCrystals !== 'object') data.extra.itembox.zCrystals = {}
+  if(data.extra.itembox.dynamaxCandy > 0){
+  
+  msg += '\n- *Dynamax Candy:* '+data.extra.itembox.dynamaxCandy+''
+  
+  }
+  if(data.extra.itembox.maxSoup > 0){
+  
+  msg += '\nâ€¢ *🥣 Max Soup:* '+data.extra.itembox.maxSoup+''
+  
+  }
+
+  const zCrystalKeys = Object.keys(data.extra.itembox.zCrystals).filter((key) => Number(data.extra.itembox.zCrystals[key]) > 0)
+  if(zCrystalKeys.length > 0){
+  for(const key of zCrystalKeys.sort()){
+  msg += '\n- *'+titleCaseZCrystal(key)+':* '+data.extra.itembox.zCrystals[key]+''
+  }
+  }
+
   if(data.inv.omniring || data.inv.ring || data.inv.gmax_band){
   
   msgg += '\n• *🧬 OmniRing:* Equipped'
+  
+  }
+
+  if(data.extra.equippedZCrystal){
+  
+  msgg += '\nâ€¢ *Z-Crystal:* '+titleCaseZCrystal(data.extra.equippedZCrystal)
   
   }
 

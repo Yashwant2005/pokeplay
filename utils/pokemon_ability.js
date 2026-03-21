@@ -39,6 +39,8 @@ function normalizeName(name) {
 function specialCaseAbilities(name) {
   const n = normalizeName(name);
   if (n === 'greninja-ash' || n === 'greninja-battle-bond') return ['battle-bond'];
+  if (n === 'eevee-starter') return ['impersonate'];
+  if (n === 'pikachu-starter') return ['static'];
   return null;
 }
 

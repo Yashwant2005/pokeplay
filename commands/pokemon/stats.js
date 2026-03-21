@@ -1,6 +1,8 @@
 function registerStatsCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
 const { titleCaseAbility } = require('../../utils/pokemon_ability');
+const { getDisplayPokemonName, getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
+const { getDynamaxLevel, getDynamaxLevelBar } = require('../../utils/dynamax_level');
 const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');
 const titleCaseHeldItem = (value) => String(value || 'none')
     .replace(/[_-]+/g, ' ')
@@ -106,12 +108,14 @@ bot.command('stats',async ctx => {
   
   }
   
-  let msg = '➤ *'+c(p2.name)+' '+p2.symbol+'*'
+  let msg = '➤ *'+c(getDisplayPokemonName(p2, forms))+' '+getDisplayPokemonSymbol(p2)+'*'
   
   msg += '\n*Level:* '+currentLevel+' | *Nature:* '+c(p2.nature)+''
 
   msg += '\n*Ability:* '+c(titleCaseAbility(p2.ability || 'none'))+''
   msg += '\n*Held Item:* '+c(titleCaseHeldItem(p2.held_item || 'none'))+''
+  msg += '\n*Dynamax Level:* '+getDynamaxLevel(p2)+''
+  msg += '\n`'+getDynamaxLevelBar(p2)+'`'
   
   msg += '\n*Types:* '+c(p.types.join(' / '))+''
   
@@ -290,10 +294,12 @@ bot.action(/suger_/, async ctx => {
     if(n2==0){
       b7 = p2.exp;
     }
-    let msg = '➤ *'+c(p2.name)+' '+p2.symbol+'*';
+    let msg = '➤ *'+c(getDisplayPokemonName(p2, forms))+' '+getDisplayPokemonSymbol(p2)+'*';
     msg += '\n*Level:* '+currentLevel+' | *Nature:* '+c(p2.nature)+'';
     msg += '\n*Ability:* '+c(titleCaseAbility(p2.ability || 'none'))+'';
     msg += '\n*Held Item:* '+c(titleCaseHeldItem(p2.held_item || 'none'))+'';
+    msg += '\n*Dynamax Level:* '+getDynamaxLevel(p2)+'';
+    msg += '\n`'+getDynamaxLevelBar(p2)+'`';
     msg += '\n*Types:* '+c(p.types.join(' / '))+'';
     msg += '\n*EXP:* '+p2.exp.toLocaleString()+'';
     msg += '\n*Need To Next Level:* '+n2.toLocaleString()+'';

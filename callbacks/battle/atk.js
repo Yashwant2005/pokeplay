@@ -43,6 +43,7 @@ const {
   applyStageToStat,
   ensurePokemonStatStages
 } = require('../../utils/battle_abilities');
+const { getBattleBaseStats, activateImpersonateForPass } = require('../../utils/battle_impersonate');
 const {
   claimTrainerRankRewards,
   getTrainerLevel
@@ -54,6 +55,7 @@ const {
 
 function register_012_atk(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { getReadyEvolutionRows } = require('../../utils/evolution_rules');
   bot.action(/atk_/,async ctx => {
 const now = Date.now();
 const chatKey = ctx.chat && ctx.chat.id;
@@ -218,6 +220,7 @@ const getDisplayedMovePower = (move, abilityName, currentHp, maxHp, battleDataAr
     battleData: battleDataArg,
     pass,
     pokemonName,
+    abilityName,
     moveName: move && move.name,
     moveType: effectiveMoveType,
     movePower: move && move.power
@@ -309,15 +312,16 @@ if(!move1 || !p){
   ctx.answerCbQuery('Battle desynced. Use /reset_battle.')
   return
 }
+activateImpersonateForPass({ battleData, pass: p.pass, pokemonName: p.name, abilityName: p.ability })
 syncBattleFormAndAbility({ battleData, pokemon: p, pass: p.pass, pokestats })
-const base = pokestats[battleData.name]
-const base2 = pokestats[p.name]
 const uname = he.encode(ctx.from.first_name)
+const opponentPass = battleData.opass || 'wild-opponent'
+battleData.opass = opponentPass
+const base = getBattleBaseStats({ battleData, pass: opponentPass, pokemonName: battleData.name, abilityName: battleData.oability || battleData.ability, pokestats })
+const base2 = getBattleBaseStats({ battleData, pass: p.pass, pokemonName: p.name, abilityName: p.ability, pokestats })
 const stats2 = await Stats(base,battleData.ivs,battleData.evs,c(battleData.nat),battleData.level)
 const clevel = plevel(p.name,p.exp)
 const stats = await Stats(base2,p.ivs,p.evs,c(p.nature),clevel)
-const opponentPass = battleData.opass || 'wild-opponent'
-battleData.opass = opponentPass
 if(!battleData.oability){
   battleData.oability = getRandomAbilityForPokemon(battleData.name, pokes)
 }
@@ -468,8 +472,8 @@ const wildTechnicianInfo = getTechnicianPowerInfo({
   abilityName: wildAbility,
   movePower: move2.power
 })
-const playerBasePower = getBattleMovePower({ battleData, pass: p.pass, pokemonName: p.name, heldItem: playerHeldItemName, moveName: move1.name, moveType: playerMoveType, movePower: move1.power })
-const wildBasePower = getBattleMovePower({ battleData, pass: opponentPass, pokemonName: battleData.name, heldItem: wildHeldItemName, moveName: move2.name, moveType: wildMoveType, movePower: move2.power })
+const playerBasePower = getBattleMovePower({ battleData, pass: p.pass, pokemonName: p.name, abilityName: playerAbility, heldItem: playerHeldItemName, moveName: move1.name, moveType: playerMoveType, movePower: move1.power })
+const wildBasePower = getBattleMovePower({ battleData, pass: opponentPass, pokemonName: battleData.name, abilityName: wildAbility, heldItem: wildHeldItemName, moveName: move2.name, moveType: wildMoveType, movePower: move2.power })
 const playerPower = move1.category === 'status' || !move1.power
   ? 0
   : Math.max(1, Math.floor(Number(playerBasePower || 0) * getWeatherMovePowerMultiplier({ battleData, moveName: move1.name, moveType: playerMoveType }) * playerPinchMult * playerTechnicianInfo.multiplier))
@@ -1124,12 +1128,12 @@ if(baseexp && clevel!=100){
 const ee = await calcexp(baseexp.baseExp,battleData.level,clevel)
 p.exp = Math.min((p.exp+ee),exp69)
 var l2 = await plevel(p.name,p.exp)
-const evo = chains.evolution_chains.filter((chain)=>chain.current_pokemon==p.name)[0]
-if(evo && evo.evolution_level && evo.evolution_method == 'level-up' && evo.evolution_level <= l2 &&  evo.evolution_level > clevel){
+const readyEvolutions = getReadyEvolutionRows(p.name, l2, chains, forms, { data, now: new Date() })
+if(readyEvolutions.length > 0){
 if(ctx.chat.type!='private'){
 await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},'<a href="tg://user?id='+ctx.from.id+'"><b>'+uname+'</b></a> Your Pokemon <b>'+c(p.name)+'</b> Is Ready To Evolve',{reply_markup:{inline_keyboard:[[{text:'Evolve',url:'t.me/'+bot.botInfo.username+''}]]}})
 }
-await sendMessage(ctx,ctx.from.id,'*'+c(p.name)+'* Is Ready To Evolve',{parse_mode:'markdown',reply_markup:{inline_keyboard:[[{text:'Evolve',callback_data:'evy_'+p.name+'_'+p.pass+''}]]}})
+await sendMessage(ctx,ctx.from.id,'*'+c(p.name)+'* Is Ready To Evolve.\nUse */evolve '+c(p.name)+'* to choose the evolution.',{parse_mode:'markdown'})
 }
 if((l2-clevel)!= 0){
 const moves = pokemoves[p.name]
@@ -1232,7 +1236,11 @@ return
 	const nu = battleData.name
 battleData.name = al[Math.floor(Math.random() *al.length) ]
 battleData.ohp = battleData.ot[battleData.c]
+const replacementImpersonateTarget = activateImpersonateForPass({ battleData, pass: p.pass, pokemonName: p.name, abilityName: p.ability })
 ms2 += '\n\n<b>'+c(nu)+'</b> has fainted. <b>'+c(battleData.name) +'</b> came for battle. '
+if (replacementImpersonateTarget) {
+ms2 += '\n<b>' + c(p.name) + '</b>\'s <b>Impersonate</b> copied <b>' + c(replacementImpersonateTarget) + '</b>!'
+}
 return
 }
 return
@@ -1249,12 +1257,12 @@ if(baseexp && clevel!=100){
 const ee = Math.floor(await calcexp(baseexp.baseExp,battleData.level,clevel)/5.5) 
 p.exp = Math.min((p.exp+ee),exp69)
 var l2 = await plevel(p.name,p.exp)
-const evo = chains.evolution_chains.filter((chain)=>chain.current_pokemon==p.name)[0]
-if(evo && evo.evolution_level && evo.evolution_method == 'level-up' && evo.evolution_level <= l2 &&  evo.evolution_level > clevel){
+const readyEvolutions = getReadyEvolutionRows(p.name, l2, chains, forms, { data, now: new Date() })
+if(readyEvolutions.length > 0){
 if(ctx.chat.type!='private'){
 await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},'<a href="tg://user?id='+ctx.from.id+'"><b>'+uname+'</b></a> Your Pokemon <b>'+c(p.name)+'</b> Is Ready To Evolve',{reply_markup:{inline_keyboard:[[{text:'Evolve',url:'t.me/'+bot.botInfo.username+''}]]}})
 }
-await sendMessage(ctx,ctx.from.id,'*'+c(p.name)+'* Is Ready To Evolve',{parse_mode:'markdown',reply_markup:{inline_keyboard:[[{text:'Evolve',callback_data:'evy_'+p.name+'_'+p.pass+''}]]}})
+await sendMessage(ctx,ctx.from.id,'*'+c(p.name)+'* Is Ready To Evolve.\nUse */evolve '+c(p.name)+'* to choose the evolution.',{parse_mode:'markdown'})
 }
 if((l2-clevel)!= 0){
 const moves = pokemoves[p.name]
@@ -1317,7 +1325,7 @@ const rows = [];
 for (let i = 0; i < buttons.length; i += 2) {
   rows.push(buttons.slice(i, i + 2));
 }
-const base2 = pokestats[p.name]
+const base2 = getBattleBaseStats({ battleData, pass: p.pass, pokemonName: p.name, abilityName: p.ability, pokestats })
 const stats = await Stats(base2,p.ivs,p.evs,c(p.nature),clevel)
 const key = []
 rows.push(key)
@@ -1420,7 +1428,7 @@ enemyAttackAbilityMsg += applyWeatherEndTurn({
 enemyAttackAbilityMsg += advanceBattleWeather(battleData, c).message
 await saveUserData2(ctx.from.id, data)
 await saveBattleData(bword, battleData)
-const postPlayerStats = await Stats(pokestats[p.name], p.ivs, p.evs, c(p.nature), plevel(p.name, p.exp))
+const postPlayerStats = await Stats(getBattleBaseStats({ battleData, pass: p.pass, pokemonName: p.name, abilityName: p.ability, pokestats }), p.ivs, p.evs, c(p.nature), plevel(p.name, p.exp))
 const wildDisplayNameAfter = getEffectivePokemonDisplayName({
   pokemonName: battleData.name,
   abilityName: wildAbility,

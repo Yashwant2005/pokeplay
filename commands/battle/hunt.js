@@ -1,8 +1,13 @@
 function registerHuntCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   const { toBaseIdentifier } = require('../../utils/base_form_pokemon');
+  const { Z_CRYSTALS, titleCaseZCrystal } = require('../../utils/z_crystals');
   function isBlockedWildArceusForm(identifier) {
     return /^arceus-(bug|dark|dragon|electric|fighting|fire|flying|ghost|grass|ground|ice|poison|psychic|rock|steel|water|fairy)$/.test(String(identifier || '').toLowerCase());
+  }
+  function isBlockedStarterHuntPokemon(identifier) {
+    const name = String(identifier || '').toLowerCase();
+    return name === 'eevee-starter' || name === 'pikachu-starter';
   }
   commands.set('hunt', async (ctx) => {
   
@@ -123,6 +128,44 @@ function registerHuntCommand(bot, deps) {
   return
   
   }
+
+  if(!data.extra || typeof data.extra !== 'object'){
+  data.extra = {}
+  }
+  if(!data.extra.itembox || typeof data.extra.itembox !== 'object'){
+  data.extra.itembox = {}
+  }
+  if(!Number.isFinite(data.extra.itembox.maxSoup)){
+  data.extra.itembox.maxSoup = 0
+  }
+  if(!data.extra.itembox.zCrystals || typeof data.extra.itembox.zCrystals !== 'object'){
+  data.extra.itembox.zCrystals = {}
+  }
+
+  if(Math.random()<0.0000125){
+
+  data.extra.itembox.maxSoup += 1
+
+  await saveUserData2(ctx.from.id,data)
+
+  await sendMessage(ctx,ctx.chat.id,gmax,{caption:'You found a *Max Soup*.',parse_mode:'markdown'})
+
+  return}
+
+  if(Math.random()<0.00005){
+
+  const crystal = Z_CRYSTALS[Math.floor(Math.random()*Z_CRYSTALS.length)]
+
+  if(!Number.isFinite(data.extra.itembox.zCrystals[crystal])){
+  data.extra.itembox.zCrystals[crystal] = 0
+  }
+  data.extra.itembox.zCrystals[crystal] += 1
+
+  await saveUserData2(ctx.from.id,data)
+
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You found a *'+titleCaseZCrystal(crystal)+'*.')
+
+  return}
   
   
   
@@ -238,17 +281,17 @@ function registerHuntCommand(bot, deps) {
   
     const pokemonData = pokes[pokemon];
   
-    return pokemonData && pokemonData.ev_yield.some(([stat, value]) => stat ===  data.extra.evh && value > 1);
+    return pokemonData && !isBlockedStarterHuntPokemon(pokemon) && pokemonData.ev_yield.some(([stat, value]) => stat ===  data.extra.evh && value > 1);
   
   });
   
   }else if(data.balls.safari && data.balls.safari > 0){
   
-  var list = safari[data.extra.saf.toLowerCase()] || []
+  var list = (safari[data.extra.saf.toLowerCase()] || []).filter((pk) => !isBlockedStarterHuntPokemon(pk))
   
   }else{
   
-  var list = Object.keys(spawn).filter(pk=>spawn[pk] && ar.includes(spawn[pk].toLowerCase()) && list2.includes(pk))
+  var list = Object.keys(spawn).filter(pk=>spawn[pk] && ar.includes(spawn[pk].toLowerCase()) && list2.includes(pk) && !isBlockedStarterHuntPokemon(pk))
   
   }
   
@@ -268,17 +311,17 @@ function registerHuntCommand(bot, deps) {
   
     const pokemonData = pokes[pokemon.identifier];
   
-    return pokemonData && !isBlockedWildArceusForm(pokemon.identifier) && pokemonData.ev_yield.some(([stat, value]) => stat ===  data.extra.evh && value > 1 && !nut.some((pk2)=> pokemon.identifier.includes(pk2)));
+    return pokemonData && !isBlockedStarterHuntPokemon(pokemon.identifier) && !isBlockedWildArceusForm(pokemon.identifier) && pokemonData.ev_yield.some(([stat, value]) => stat ===  data.extra.evh && value > 1 && !nut.some((pk2)=> pokemon.identifier.includes(pk2)));
   
   });
   
   }else if(data.balls.safari && data.balls.safari > 0){
   
-  var fr = forms[name5].filter(pk=> !nut.some((pk2)=> pk.identifier.includes(pk2)) && !isBlockedWildArceusForm(pk.identifier))
+  var fr = forms[name5].filter(pk=> !isBlockedStarterHuntPokemon(pk.identifier) && !nut.some((pk2)=> pk.identifier.includes(pk2)) && !isBlockedWildArceusForm(pk.identifier))
   
   }else{
   
-  var fr = forms[name5].filter(pk=> !nut.some((pk2)=> pk.identifier.includes(pk2)) && ar.includes(spawn[pk.identifier].toLowerCase()))
+  var fr = forms[name5].filter(pk=> !isBlockedStarterHuntPokemon(pk.identifier) && !nut.some((pk2)=> pk.identifier.includes(pk2)) && ar.includes(spawn[pk.identifier].toLowerCase()))
   
   }
   

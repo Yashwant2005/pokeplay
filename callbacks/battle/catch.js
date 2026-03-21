@@ -3,6 +3,7 @@ const { applyEntryAbility, getAirBalloonInfo, getDisplayedWeatherState, getWeath
 const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
 const { applyIvBoostEventToEncounter, IV_STAT_LABELS } = require('../../utils/iv_boost_campaign');
 const { ARCEUS_PLATES } = require('../../utils/held_item_shop');
+const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rules');
 
 function register_011_catch(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -202,7 +203,7 @@ function register_011_catch(bot, deps) {
         const partyStats = await Stats(partyBase, pk[0].ivs, pk[0].evs, c(pk[0].nature), partyLevel);
         la[pk[0].pass] = partyLevel;
         tem[pk[0].pass] = partyStats.hp;
-        heldItems[pk[0].pass] = pk[0].held_item || 'none';
+        heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], pk[0].held_item);
       }
     }
     battleData.team = tem;

@@ -1,6 +1,7 @@
 function register_004_stats(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
+  const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');
   const titleCaseHeldItem = (value) => String(value || 'none')
     .replace(/[_-]+/g, ' ')
     .trim()
@@ -58,9 +59,15 @@ await ctx.deleteMessage()
 }catch(error){
 }
 
+const actionRow = [{text:'Evolve',callback_data:'evolve_'+p2.pass+'_'+ctx.from.id+''}]
+if(!isRayquazaLockedFromHeldItems(p2)){
+  actionRow.push({text:'Held Items',callback_data:'heldpanel_'+p2.pass+'_'+ctx.from.id+''})
+}
+actionRow.push({text:'Release',callback_data:'release_'+p2.pass+'_'+ctx.from.id+''})
+
 const keyboardArray = [
 [{text:'Stats',callback_data:'ste_'+p2.pass+'_'+ctx.from.id+''},{text:'IVs/EVs',callback_data:'pkisvs_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+p2.pass+'_'+ctx.from.id+''}],
-[{text:'Evolve',callback_data:'evolve_'+p2.pass+'_'+ctx.from.id+''},{text:'Held Items',callback_data:'heldpanel_'+p2.pass+'_'+ctx.from.id+''},{text:'Release',callback_data:'release_'+p2.pass+'_'+ctx.from.id+''}]
+actionRow
 ]
 
 // Check if Zygarde with Aura Break

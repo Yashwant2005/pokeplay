@@ -53,6 +53,7 @@
   applyKoAbility: applyAbilityKo,
   applyOnDamageTakenAbilities: applyAbilityOnDamageTaken
 } = require('../../utils/battle_abilities');
+const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rules');
 
 const ABILITY_BY_FORM = (() => {
   try {
@@ -950,7 +951,10 @@ function registerBattleCallbacks(bot, deps) {
 
     if (!attacker.inv.stones) attacker.inv.stones = [];
     const isstone = [...new Set(attacker.inv.stones)].filter(stone => stones[stone]?.pokemon === p1.name && stone !== 'jade-orb');
-    if (battleData.set.key_item && isstone.length > 0 && attacker.extra && Object.keys(attacker.extra.megas||{}).length == 0 && (attacker.inv.omniring || attacker.inv.ring)) {
+    const isRayquazaWithDragonAscent = p1
+      && String(p1.name || '').toLowerCase() === 'rayquaza'
+      && pokemonKnowsMoveByName(p1, 'dragon ascent');
+    if (!isRayquazaWithDragonAscent && battleData.set.key_item && isstone.length > 0 && attacker.extra && Object.keys(attacker.extra.megas||{}).length == 0 && (attacker.inv.omniring || attacker.inv.ring)) {
       const rows5 = isstone.map(i => ({text:'Use '+c(i)+'',callback_data:'megtst_'+i+'_'+bword+''}));
       rows.push(rows5);
     }
@@ -3816,7 +3820,7 @@ const stats = await Stats(base,pk[0].ivs,pk[0].evs,c(pk[0].nature),clevel)
 la[pk[0].pass] = clevel
 tem[pk[0].pass] = stats.hp
 spe[pk[0].pass] = stats.speed
-heldItems[pk[0].pass] = pk[0].held_item || 'none'
+heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], pk[0].held_item)
 }
 }
 var la2 = {}
@@ -3831,7 +3835,7 @@ const stats = await Stats(base,pk[0].ivs,pk[0].evs,c(pk[0].nature),clevel)
 la2[pk[0].pass] = clevel
 tem2[pk[0].pass] = stats.hp
 spe2[pk[0].pass] = stats.speed
-heldItems[pk[0].pass] = pk[0].held_item || 'none'
+heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], pk[0].held_item)
 }
 }
 const user1poke = data.pokes.filter((poke)=>poke.pass==pokes1[0])[0]

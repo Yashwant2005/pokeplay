@@ -1,6 +1,7 @@
 function register_007_ste(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
+  const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');
   const titleCaseHeldItem = (value) => String(value || 'none')
     .replace(/[_-]+/g, ' ')
     .trim()
@@ -56,9 +57,15 @@ statsText += `\`Sp. Attack       ${stats.special_attack.toString().padStart(2)}\
 statsText += `\`Sp. Defense      ${stats.special_defense.toString().padStart(2)}\` *${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].increased === 'special_defense' ? '(+)' : ''}${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].decreased === 'special_defense' ? '(-)' : ''}*\n`;
 statsText += `\`Speed            ${stats.speed.toString().padStart(2)}\` *${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].increased === 'speed' ? '(+)' : ''}${natureEffects[c(p2.nature)] && natureEffects[c(p2.nature)].decreased === 'speed' ? '(-)' : ''}*\n`;
 
+const actionRow = [{text:'Evolve',callback_data:'evolve_'+pass+'_'+id+''}]
+if(!isRayquazaLockedFromHeldItems(p2)){
+  actionRow.push({text:'Held Items',callback_data:'heldpanel_'+pass+'_'+id+''})
+}
+actionRow.push({text:'Release',callback_data:'release_'+pass+'_'+id+''})
+
 const keyboardArray = [
 [{text:'Info',callback_data:'info_'+pass+'_'+id+''},{text:'IVs/EVs',callback_data:'pkisvs_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+pass+'_'+id+''}],
-[{text:'Evolve',callback_data:'evolve_'+pass+'_'+id+''},{text:'Held Items',callback_data:'heldpanel_'+pass+'_'+id+''},{text:'Release',callback_data:'release_'+pass+'_'+id+''}]
+actionRow
 ]
 
 const abilityNorm = String(p2.ability || '').toLowerCase().replace(/[-_\s]/g, '')

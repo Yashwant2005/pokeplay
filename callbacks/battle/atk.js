@@ -382,8 +382,8 @@ if (wildUnawareModifiers.attackerActivated) {
 if (wildUnawareModifiers.defenderActivated) {
   wildUnawareMessage += '\n<b>✶ '+c(p.name)+'</b>\'s <b>Unaware</b> activated!'
 }
-const playerMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: playerHeldItemName, moveName: move1.name, moveType: move1.type })
-const wildMoveType = getEffectiveMoveType({ battleData, pokemonName: battleData.name, heldItem: wildHeldItemName, moveName: move2.name, moveType: move2.type })
+const playerMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, abilityName: playerAbility, heldItem: playerHeldItemName, moveName: move1.name, moveType: move1.type })
+const wildMoveType = getEffectiveMoveType({ battleData, pokemonName: battleData.name, abilityName: wildAbility, heldItem: wildHeldItemName, moveName: move2.name, moveType: move2.type })
 const wildTypes = getEffectivePokemonTypes({ pokemonName: battleData.name, pokemonTypes: pokes[battleData.name]?.types || [], heldItem: wildHeldItemName, abilityName: wildAbility })
 const playerTypes = getEffectivePokemonTypes({ pokemonName: p.name, pokemonTypes: pokes[p.name]?.types || [], heldItem: playerHeldItemName, abilityName: playerAbility })
 const wildDisplayName = getEffectivePokemonDisplayName({ pokemonName: battleData.name, abilityName: wildAbility, heldItem: wildHeldItemName })
@@ -1466,7 +1466,8 @@ const moves = []
 for(const move2 of p.moves){
 let move = dmoves[move2]
 const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name)
-msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
+const shownType = getDisplayedMoveType(move, battleData, p.pass, p.name, p.held_item)
+msg += '\n• <b>'+c(move.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }
 msg += '\n\n<i>Choose Your Next Move:</i>'

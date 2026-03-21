@@ -1,4 +1,4 @@
-const { getBattleMovePower, getDisplayedWeatherState, getPinchAbilityInfo, getWeatherDisplayName } = require('../../utils/battle_abilities');
+const { getBattleMovePower, getDisplayedWeatherState, getEffectiveMoveType, getPinchAbilityInfo, getWeatherDisplayName } = require('../../utils/battle_abilities');
 
 function register_017_pokemon(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -24,6 +24,10 @@ let battleData = {};
     }
 const data = await getUserData(ctx.from.id)
 const p = data.pokes.filter((poke)=>poke.pass==battleData.c)[0]
+if(!battleData || !battleData.c || !battleData.team || !battleData.name || !p || !pokestats[p.name] || !pokes[battleData.name]){
+  await ctx.answerCbQuery('Battle desynced. Reopen battle.', { show_alert: true })
+  return
+}
 const clevel = plevel(p.name,p.exp)
 const av = [];
 for (const p in battleData.team) {
@@ -70,12 +74,14 @@ msg += '\n\n<b>Moves :</b>'
 const moves = []
 for(const move2 of p.moves){
 let move = dmoves[move2]
+if(!move) continue
 const rawPower = getBattleMovePower({ battleData, pass: p.pass, pokemonName: p.name, moveName: move && move.name, movePower: move && move.power })
+const shownType = getEffectiveMoveType({ battleData, pokemonName: p.name, abilityName: p.ability, heldItem: p.held_item, moveName: move && move.name, moveType: move && move.type }) || move.type
 const pinchInfo = getPinchAbilityInfo({ abilityName: p.ability, moveType: move && move.type, currentHp: battleData.chp, maxHp: stats.hp })
 const shownPower = Number.isFinite(rawPower) && rawPower > 0 && pinchInfo.active
   ? rawPower + ' (x' + pinchInfo.multiplier + ' ' + pinchInfo.abilityLabel + ')'
   : move.power
-msg += '\n<b>'+c(move.name)+'</b>['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
+msg += '\n<b>'+c(move.name)+'</b>['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }
 msg += '\n\n<i>Choose Which Poke Send For Battle:</i>'

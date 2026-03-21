@@ -160,6 +160,14 @@ function registerBattleCallbacks(bot, deps) {
       .join(' ');
   }
 
+  function pokemonKnowsMoveByName(pokemon, moveName) {
+    const target = normalizeMoveName(moveName);
+    return Array.isArray(pokemon && pokemon.moves) && pokemon.moves.some((moveId) => {
+      const move = dmoves[moveId];
+      return move && normalizeMoveName(move.name) === target;
+    });
+  }
+
   function getAbilityActivationMessage(pokemonName, abilityLabel) {
     return '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + abilityLabel + '</b> activated!';
   }
@@ -190,6 +198,7 @@ function registerBattleCallbacks(bot, deps) {
     const effectiveMoveType = getEffectiveMoveType({
       battleData: battleDataArg,
       pokemonName,
+      abilityName,
       heldItem: getBattleHeldItemName({ battleData: battleDataArg, pass }),
       moveName: move && move.name,
       moveType: move && move.type
@@ -874,7 +883,7 @@ function registerBattleCallbacks(bot, deps) {
       for (const move2 of p1.moves) {
         let move = dmoves[move2];
         const shownPower = getDisplayedMovePower(move, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name);
-        const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: move.name, moveType: move.type }) || move.type;
+        const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, abilityName: p1.ability, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: move.name, moveType: move.type }) || move.type;
         msg += '\n- <b>'+c(move.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')';
       }
     } else if (isGroup && p1UsedMoves.length > 0 && !hideTurn) {
@@ -883,7 +892,8 @@ function registerBattleCallbacks(bot, deps) {
         const mv = dmoves[mid];
         if (mv) {
           const shownPower = getDisplayedMovePower(mv, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name);
-          msg += '\n- <b>'+c(mv.name)+'</b> ['+c(mv.type)+' '+emojis[mv.type]+'] <b>Power:</b> '+shownPower+' <b>Acc:</b> '+mv.accuracy+' ('+c(mv.category.charAt(0))+')';
+          const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, abilityName: p1.ability, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: mv.name, moveType: mv.type }) || mv.type;
+          msg += '\n- <b>'+c(mv.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+'] <b>Power:</b> '+shownPower+' <b>Acc:</b> '+mv.accuracy+' ('+c(mv.category.charAt(0))+')';
         }
       }
     }
@@ -939,10 +949,17 @@ function registerBattleCallbacks(bot, deps) {
     ]);
 
     if (!attacker.inv.stones) attacker.inv.stones = [];
-    const isstone = [...new Set(attacker.inv.stones)].filter(stone => stones[stone]?.pokemon === p1.name);
+    const isstone = [...new Set(attacker.inv.stones)].filter(stone => stones[stone]?.pokemon === p1.name && stone !== 'jade-orb');
     if (battleData.set.key_item && isstone.length > 0 && attacker.extra && Object.keys(attacker.extra.megas||{}).length == 0 && (attacker.inv.omniring || attacker.inv.ring)) {
       const rows5 = isstone.map(i => ({text:'Use '+c(i)+'',callback_data:'megtst_'+i+'_'+bword+''}));
       rows.push(rows5);
+    }
+    const canMegaRayquaza = p1
+      && String(p1.name || '').toLowerCase() === 'rayquaza'
+      && pokemonKnowsMoveByName(p1, 'dragon ascent')
+      && (!attacker.extra || !attacker.extra.megas || Object.keys(attacker.extra.megas).length === 0);
+    if (canMegaRayquaza) {
+      rows.push([{ text: 'Mega Evolve', callback_data: 'megtst_rayquaza-dragon-ascent_' + bword }]);
     }
 
     // Bag/Pokemon buttons removed per new UI layout
@@ -1916,14 +1933,14 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
       const attackerHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item });
       const defenderHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item });
-      const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
+      const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, abilityName: attackerAbility, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
       const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name].types || [], heldItem: defenderHeldItemName });
 
       // Check type effectiveness
       const type3 = defenderTypes[0];
       const type4 = defenderTypes[1] ? c(defenderTypes[1]) : null;
       let eff1 = 1;
-      if (battleData.set.type_effects) { eff1 = await eff(c(move.type), c(type3), type4); }
+      if (battleData.set.type_effects) { eff1 = await eff(c(effectiveMoveType), c(type3), type4); }
       const defenderLevitateInfo = getLevitateInfo({ abilityName: defenderAbility });
       const defenderAirBalloonInfo = getAirBalloonInfo({ battleData, pass: battleData.o, heldItem: op.held_item });
       const groundBlockedMove = (defenderLevitateInfo.active || defenderAirBalloonInfo.active) && String(effectiveMoveType || '').toLowerCase() === 'ground';
@@ -4832,7 +4849,7 @@ async function executeStandardMove(act) {
     
     const attackerHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item });
     const defenderHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item });
-    const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
+    const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, abilityName: attackerAbility, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
     const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name].types || [], heldItem: defenderHeldItemName });
 
     // Check type effectiveness
@@ -5922,12 +5939,33 @@ if(ctx.from.id!=battleData.cid){
 ctx.answerCbQuery('Not Your Turn')
 return
 }
-const stone = stones[stone5]
 const d2b = await getUserData(battleData.cid)
 const pke = d2b.pokes.filter((pk)=>pk.pass == battleData.c)[0]
-const n = pke.name
-if(stone.pokemon!=pke.name){
+if(!pke){
+ctx.answerCbQuery('Battle desynced')
 return
+}
+const previousFormName = pke.name
+let megaFormName = ''
+if (stone5 === 'rayquaza-dragon-ascent') {
+  if (String(pke.name || '').toLowerCase() !== 'rayquaza' || !pokemonKnowsMoveByName(pke, 'dragon ascent')) {
+    ctx.answerCbQuery('Rayquaza must know Dragon Ascent')
+    return
+  }
+  megaFormName = 'rayquaza-mega'
+} else {
+  const stone = stones[stone5]
+  if (!stone || stone5 === 'jade-orb') {
+    ctx.answerCbQuery('That mega item cannot be used')
+    return
+  }
+  if(stone.pokemon!=pke.name){
+    return
+  }
+  megaFormName = stone.mega
+}
+if(!d2b.extra){
+  d2b.extra = {}
 }
 if(!d2b.extra.megas){
 d2b.extra.megas = {}
@@ -5937,14 +5975,14 @@ battleData.megas = {}
 }
 battleData.megas[pke.pass] = pke.name
 d2b.extra.megas[pke.pass] = pke.name
-pke.name = stone.mega
-syncBattleFormAndAbility({ battleData, pokemon: pke, pass: pke.pass, forceName: stone.mega })
+pke.name = megaFormName
+syncBattleFormAndAbility({ battleData, pokemon: pke, pass: pke.pass, forceName: megaFormName })
 await saveUserData2(ctx.from.id,d2b)
 const pass = battleData.c
 const atta = await getUserData(battleData.cid)
 const deffa = await getUserData(battleData.oid)
 const p12 = atta.pokes.filter((poke)=>poke.pass==pass)[0]
-let msg = '<b>'+c(p12.name)+'</b> has transformed into <b>'+c(stone.mega)+'</b>'
+let msg = '<b>'+c(p12.name)+'</b> has transformed into <b>'+c(megaFormName)+'</b>'
 const p22 = deffa.pokes.filter((poke)=>poke.pass==battleData.o)[0]
 const base12 = pokestats[p22.name]
 const base22 = pokestats[p12.name]
@@ -5996,13 +6034,12 @@ const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
 const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
 const isGroupMeg = ctx.chat.type !== 'private';
 const pvpMeg = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMeg);
-const pk = pokes[stone.mega]
 let img2 = pokes[p12.name].front_default_image
 const im2 = shiny.filter((poke)=>poke.name==p12.name)[0]
 if(im2 && p12.symbol=='✨'){
 img2=im2.shiny_url
 }
-await sendMessage(ctx,ctx.chat.id,img2,{caption:'*'+c(n)+'* has transformed into *'+c(pke.name)+'*.',parse_mode:'markdown',reply_to_message_id:ctx.callbackQuery.message.message_id})
+await sendMessage(ctx,ctx.chat.id,img2,{caption:'*'+c(previousFormName)+'* has transformed into *'+c(megaFormName)+'*.',parse_mode:'markdown',reply_to_message_id:ctx.callbackQuery.message.message_id})
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMeg.msg,{parse_mode:'HTML',reply_markup:pvpMeg.keyboard,...pvpMeg.ext})
 })
 
@@ -6208,7 +6245,15 @@ for (const mid of p1v.moves) {
   if (mv) {
     const power = mv.power ?? '?'
     const acc = mv.accuracy ?? '?'
-    popupText += '\n• ' + c(mv.name) + ' [' + c(mv.type) + '] P:' + power + ' A:' + acc
+    const shownType = getEffectiveMoveType({
+      battleData: battleData2,
+      pokemonName: p1v.name,
+      abilityName: p1v.ability,
+      heldItem: getBattleHeldItemName({ battleData: battleData2, pass: p1v.pass, heldItem: p1v.held_item }),
+      moveName: mv.name,
+      moveType: mv.type
+    }) || mv.type
+    popupText += '\n• ' + c(mv.name) + ' [' + c(shownType) + '] P:' + power + ' A:' + acc
   }
 }
 if (popupText.length > 195) popupText = popupText.substring(0, 195) + '...';

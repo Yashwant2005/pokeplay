@@ -81,6 +81,18 @@ function registerRelearnerCallbacks(bot, deps) {
         { text: '>> (+5)', callback_data: 'relearn_' + id + '_' + (page + 5) }
       ]);
     }
+    if (totalPages > 20) {
+      inlineKeyboard.push([
+        { text: '(-10) <<<', callback_data: 'relearn_' + id + '_' + (page - 10) },
+        { text: '>>> (+10)', callback_data: 'relearn_' + id + '_' + (page + 10) }
+      ]);
+    }
+    if (totalPages > 40) {
+      inlineKeyboard.push([
+        { text: '(-20) <<<<', callback_data: 'relearn_' + id + '_' + (page - 20) },
+        { text: '>>>> (+20)', callback_data: 'relearn_' + id + '_' + (page + 20) }
+      ]);
+    }
 
     let messageText = `List Of Your Pokes (*Page ${page}*):\n\n`;
     messageText += await pokelist(pks22.map((item) => item.pass), ctx, startIndex);

@@ -19,18 +19,26 @@ const cl = callback.replace(ctx.from.id+'n',ctx.from.id+'y')
 const id3 = cl.split('_')[1]
 const id4 = cl.split('_')[3]
 if(!id3.includes('n') && !id4.includes('n')){
-const data1 = await getUserData(id1.replace(/[ny]/g,''))
-const data2 = await getUserData(id2.replace(/[ny]/g,''))
-const poke = data1.pokes.filter((p)=>p.pass==pass1)[0]
-const poke2 = data2.pokes.filter((p)=>p.pass==pass2)[0]
+  const data1 = await getUserData(id1.replace(/[ny]/g,''))
+  const data2 = await getUserData(id2.replace(/[ny]/g,''))
+  const poke = data1.pokes.filter((p)=>p.pass==pass1)[0]
+  const poke2 = data2.pokes.filter((p)=>p.pass==pass2)[0]
 if(!poke){
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<a href="tg://user?id='+id1.replace(/[ny]/g,'')+'"><b>'+data1.inv.name+'</b></a> does not have the choosen poke any more.',{parse_mode:'html'})
 return
 }
-if(!poke2){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<a href="tg://user?id='+id2.replace(/[ny]/g,'')+'"><b>'+data2.inv.name+'</b></a> does not have the choosen poke any more.',{parse_mode:'html'})
-return
-}
+  if(!poke2){
+  await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<a href="tg://user?id='+id2.replace(/[ny]/g,'')+'"><b>'+data2.inv.name+'</b></a> does not have the choosen poke any more.',{parse_mode:'html'})
+  return
+  }
+  const hasHeldItem = (p) => {
+    const item = p && p.held_item ? String(p.held_item).trim().toLowerCase() : 'none';
+    return item && item !== 'none';
+  };
+  if(hasHeldItem(poke) || hasHeldItem(poke2)){
+    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>Trade blocked:</b> remove held items from both pokes before trading.',{parse_mode:'html'})
+    return
+  }
 const mdata = await loadMessageData()
 if(mdata.battle.includes(parseInt(id1)) || mdata.battle.includes(parseInt(id2))){
 if(mdata.battle.includes(ctx.from.id)){

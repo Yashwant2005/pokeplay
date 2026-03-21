@@ -16,7 +16,7 @@ function registerTravelCommand(bot, deps) {
   
   }
   
-  if(data.balls.safari && data.balls.safari > 0){
+  if(data.balls.safari && data.balls.safari > 0 && data.extra && data.extra.saf){
   
   await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Are In *'+c(data.extra.saf)+' Safari Zone*',{reply_to_message_id:ctx.message.message_id})
   

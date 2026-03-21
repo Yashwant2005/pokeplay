@@ -132,7 +132,7 @@ var value = Math.floor(Math.random()*25)
 return value
 }
 function c(sentence) {
-const a = sentence.replace(/[-_]/g,' ')
+const a = String(sentence ?? '').replace(/[-_]/g,' ')
 return a.replace(/\b\w/g, char => char.toUpperCase());
 }
 function getLevel(exp,char){

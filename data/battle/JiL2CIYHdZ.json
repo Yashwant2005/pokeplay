@@ -1,0 +1,65 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 53,
+  "ochp": -65,
+  "ohp": 28,
+  "ivs": {
+    "hp": 18,
+    "attack": 15,
+    "defense": 20,
+    "special_attack": 22,
+    "special_defense": 16,
+    "speed": 26
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "MbbCKz2v",
+  "level": 10,
+  "name": "ekans",
+  "omoves": [
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ekans": -65
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 53,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 45,
+    "INnWVvZa": 65,
+    "hElvGj1W": 84,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 25,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 18,
+    "INnWVvZa": 23,
+    "hElvGj1W": 20,
+    "yJT8NrzJ": 25
+  }
+}

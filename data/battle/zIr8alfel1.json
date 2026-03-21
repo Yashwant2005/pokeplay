@@ -1,0 +1,70 @@
+{
+  "c": "cfBHIXq4",
+  "org": "no",
+  "chp": 112,
+  "ochp": 85,
+  "ohp": 85,
+  "ivs": {
+    "hp": 13,
+    "attack": 10,
+    "defense": 17,
+    "special_attack": 7,
+    "special_defense": 19,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "QAO3Zlt0",
+  "level": 30,
+  "name": "kleavor",
+  "omoves": [
+    {
+      "id": 206,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 479,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 458,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kleavor": 85
+  },
+  "symbol": "",
+  "team": {
+    "cfBHIXq4": 112,
+    "By51g7on": 169,
+    "fc4Z3rKh": 92,
+    "djIFsPnu": 116,
+    "sUHb2dTI": 50,
+    "lknTQtK4": 77
+  },
+  "la": {
+    "cfBHIXq4": 37,
+    "By51g7on": 48,
+    "fc4Z3rKh": 37,
+    "djIFsPnu": 38,
+    "sUHb2dTI": 21,
+    "lknTQtK4": 32
+  }
+}

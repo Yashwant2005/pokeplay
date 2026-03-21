@@ -1,0 +1,135 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "7058516053": true,
+    "5344294772": true
+  },
+  "status": {},
+  "c": "rgGXc2wr",
+  "chp": 0,
+  "o": "ChA5eDTE",
+  "ohp": 212,
+  "cid": "7058516053",
+  "oid": "5344294772",
+  "tem": {
+    "dp9wUkNP": 260,
+    "b8tDewTn": 296,
+    "rgGXc2wr": 0,
+    "8HAnFBbX": 284,
+    "kBbvwA1l": 379,
+    "NKztvgnG": 293
+  },
+  "la": {
+    "dp9wUkNP": 100,
+    "b8tDewTn": 100,
+    "rgGXc2wr": 100,
+    "8HAnFBbX": 100,
+    "kBbvwA1l": 100,
+    "NKztvgnG": 100
+  },
+  "tem2": {
+    "ChA5eDTE": 212,
+    "vaq9VMGk": 323,
+    "TQRhfkgG": 309,
+    "D67XQciZ": 406,
+    "NwJTfM5m": 323,
+    "qyjsdRAV": 276
+  },
+  "la2": {
+    "ChA5eDTE": 100,
+    "vaq9VMGk": 100,
+    "TQRhfkgG": 100,
+    "D67XQciZ": 100,
+    "NwJTfM5m": 100,
+    "qyjsdRAV": 100
+  },
+  "ot": {
+    "undefined": 356
+  },
+  "usedMoves": {
+    "ChA5eDTE": [
+      "163",
+      "242"
+    ],
+    "dp9wUkNP": [
+      "94"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 2,
+  "bideState": {},
+  "statStages": {
+    "ChA5eDTE": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "dp9wUkNP": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "rgGXc2wr": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "rgGXc2wr": {
+      "damage": 282,
+      "category": "physical",
+      "from": "ChA5eDTE",
+      "move": "crunch"
+    }
+  },
+  "entryHazards": {
+    "7058516053": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "5344294772": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "lastMoveByPass": {
+    "ChA5eDTE": "242"
+  }
+}

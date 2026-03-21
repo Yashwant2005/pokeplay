@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 99,
+  "ochp": -34,
+  "ohp": 157,
+  "ivs": {
+    "hp": 16,
+    "attack": 10,
+    "defense": 15,
+    "special_attack": 11,
+    "special_defense": 18,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "rT7aYvMT",
+  "level": 43,
+  "name": "amoonguss",
+  "omoves": [
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 499,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 202,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "amoonguss": -34
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 99
+  },
+  "la": {
+    "ZpYcR2c0": 40
+  }
+}

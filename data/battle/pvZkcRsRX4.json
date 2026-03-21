@@ -1,0 +1,70 @@
+{
+  "c": "cze1261l",
+  "org": "no",
+  "chp": 299,
+  "ochp": 191,
+  "ohp": 191,
+  "ivs": {
+    "hp": 20,
+    "attack": 16,
+    "defense": 20,
+    "special_attack": 14,
+    "special_defense": 12,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "UEZwaMWS",
+  "level": 60,
+  "name": "terrakion",
+  "omoves": [
+    {
+      "id": 514,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 157,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 533,
+      "learn_method": "level-up",
+      "level_learned_at": 49
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "terrakion": 191
+  },
+  "symbol": "",
+  "team": {
+    "cze1261l": 299,
+    "4Tw0KZme": 282,
+    "hlyEzZae": 268,
+    "Ucpvix4F": 244,
+    "RMpYTLbb": 248,
+    "T0cDrkKy": 264
+  },
+  "la": {
+    "cze1261l": 82,
+    "4Tw0KZme": 76,
+    "hlyEzZae": 72,
+    "Ucpvix4F": 66,
+    "RMpYTLbb": 74,
+    "T0cDrkKy": 72
+  }
+}

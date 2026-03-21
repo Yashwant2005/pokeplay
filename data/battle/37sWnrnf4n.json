@@ -1,0 +1,64 @@
+{
+  "c": "CEj9lCP4",
+  "org": "no",
+  "chp": 13,
+  "ochp": 220,
+  "ohp": 220,
+  "ivs": {
+    "hp": 18,
+    "attack": 17,
+    "defense": 24,
+    "special_attack": 18,
+    "special_defense": 18,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "YD6oYlE4",
+  "level": 57,
+  "name": "yveltal",
+  "omoves": [
+    {
+      "id": 399,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 94,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 613,
+      "learn_method": "level-up",
+      "level_learned_at": 50
+    },
+    {
+      "id": 566,
+      "learn_method": "level-up",
+      "level_learned_at": 55
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "yveltal": 220
+  },
+  "symbol": "",
+  "team": {
+    "CEj9lCP4": 13,
+    "QZ8J9qLh": 207,
+    "SUnG6AC0": 126
+  },
+  "la": {
+    "CEj9lCP4": 1,
+    "QZ8J9qLh": 53,
+    "SUnG6AC0": 31
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "c": "Tsxr5AMS",
+  "org": "no",
+  "chp": 470,
+  "ochp": 74,
+  "ohp": 74,
+  "ivs": {
+    "hp": 19,
+    "attack": 14,
+    "defense": 18,
+    "special_attack": 14,
+    "special_defense": 12,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "Soa97ayg",
+  "level": 26,
+  "name": "falinks",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 249,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "falinks": 74
+  },
+  "symbol": "",
+  "team": {
+    "Tsxr5AMS": 470,
+    "BiLqcvCr": 169,
+    "lTTgD8x0": 118,
+    "Aw7KRyyT": 174,
+    "tIBtUAc4": 56,
+    "q1MmfUoj": 50
+  },
+  "la": {
+    "Tsxr5AMS": 100,
+    "BiLqcvCr": 51,
+    "lTTgD8x0": 40,
+    "Aw7KRyyT": 37,
+    "tIBtUAc4": 23,
+    "q1MmfUoj": 19
+  }
+}

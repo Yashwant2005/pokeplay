@@ -1,0 +1,124 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "1335302812": true,
+    "8393905391": true
+  },
+  "status": {},
+  "c": "3O4nrK4z",
+  "chp": 0,
+  "o": "DDF81qpZ",
+  "ohp": 78,
+  "cid": "8393905391",
+  "oid": "1335302812",
+  "tem": {
+    "mgGrdb5X": 0,
+    "3O4nrK4z": 0,
+    "TSM5HKDD": 33,
+    "MX7OLZFk": 32,
+    "Fgg8MDfR": 32,
+    "f1v3x5md": 33
+  },
+  "la": {
+    "mgGrdb5X": 10,
+    "3O4nrK4z": 10,
+    "TSM5HKDD": 10,
+    "MX7OLZFk": 10,
+    "Fgg8MDfR": 10,
+    "f1v3x5md": 10
+  },
+  "tem2": {
+    "DDF81qpZ": 78,
+    "X9zAZB5V": 364,
+    "bljOQUsH": 336,
+    "O4lfvQNf": 364,
+    "l6ZgUuWk": 383,
+    "gDwGXojB": 186
+  },
+  "la2": {
+    "DDF81qpZ": 21,
+    "X9zAZB5V": 100,
+    "bljOQUsH": 100,
+    "O4lfvQNf": 100,
+    "l6ZgUuWk": 100,
+    "gDwGXojB": 64
+  },
+  "ot": {
+    "undefined": 32
+  },
+  "usedMoves": {
+    "DDF81qpZ": [
+      "427"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 2,
+  "bideState": {},
+  "statStages": {
+    "DDF81qpZ": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "mgGrdb5X": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "3O4nrK4z": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "3O4nrK4z": {
+      "damage": 32,
+      "category": "physical",
+      "from": "DDF81qpZ",
+      "move": "psycho cut"
+    }
+  },
+  "entryHazards": {
+    "8393905391": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "lastMoveByPass": {
+    "DDF81qpZ": "427"
+  }
+}

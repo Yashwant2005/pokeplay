@@ -1,0 +1,70 @@
+{
+  "c": "HpXcPATS",
+  "org": "no",
+  "chp": 349,
+  "ochp": 105,
+  "ohp": 105,
+  "ivs": {
+    "hp": 20,
+    "attack": 13,
+    "defense": 23,
+    "special_attack": 25,
+    "special_defense": 20,
+    "speed": 27
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "az9xD7u1",
+  "level": 33,
+  "name": "armarouge",
+  "omoves": [
+    {
+      "id": 83,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 488,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 510,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 436,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "armarouge": 105
+  },
+  "symbol": "",
+  "team": {
+    "HpXcPATS": 349,
+    "tdUgaQnE": 13,
+    "F3k2zUW6": 127,
+    "8RU7FGoo": 61,
+    "RZVZgpuG": 159,
+    "lau7OoXQ": 157
+  },
+  "la": {
+    "HpXcPATS": 100,
+    "tdUgaQnE": 1,
+    "F3k2zUW6": 42,
+    "8RU7FGoo": 22,
+    "RZVZgpuG": 50,
+    "lau7OoXQ": 50
+  }
+}

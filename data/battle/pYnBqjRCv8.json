@@ -1,0 +1,55 @@
+{
+  "c": "bAUBesJM",
+  "org": "no",
+  "chp": 336,
+  "ochp": 36,
+  "ohp": 36,
+  "ivs": {
+    "hp": 24,
+    "attack": 18,
+    "defense": 24,
+    "special_attack": 17,
+    "special_defense": 15,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "GYrk1FlZ",
+  "level": 11,
+  "name": "exeggcute",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "exeggcute": 36
+  },
+  "symbol": "",
+  "team": {
+    "bAUBesJM": 336,
+    "Efnc0PUS": 373,
+    "uclThfWK": 332,
+    "CDIkqF92": 369,
+    "GgOR8D5A": 366,
+    "okkGwwjh": 370
+  },
+  "la": {
+    "bAUBesJM": 100,
+    "Efnc0PUS": 100,
+    "uclThfWK": 100,
+    "CDIkqF92": 100,
+    "GgOR8D5A": 100,
+    "okkGwwjh": 100
+  }
+}

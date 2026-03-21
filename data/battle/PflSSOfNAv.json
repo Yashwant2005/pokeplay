@@ -1,0 +1,70 @@
+{
+  "c": "FaGwls2m",
+  "org": "no",
+  "chp": 6,
+  "ochp": -50,
+  "ohp": 61,
+  "ivs": {
+    "hp": 10,
+    "attack": 15,
+    "defense": 18,
+    "special_attack": 11,
+    "special_defense": 17,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "FwPmL0Fe",
+  "level": 24,
+  "name": "deino",
+  "omoves": [
+    {
+      "id": 225,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "deino": -50
+  },
+  "symbol": "",
+  "team": {
+    "FaGwls2m": 6,
+    "V0U7GxoB": 117,
+    "gDXv98kD": 102,
+    "I34eO0qk": 101,
+    "5aMBTgt9": 101,
+    "wXFdO3ZJ": 167
+  },
+  "la": {
+    "FaGwls2m": 28,
+    "V0U7GxoB": 42,
+    "gDXv98kD": 34,
+    "I34eO0qk": 39,
+    "5aMBTgt9": 36,
+    "wXFdO3ZJ": 53
+  }
+}

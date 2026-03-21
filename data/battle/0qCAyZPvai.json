@@ -1,0 +1,52 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 25,
+  "ochp": 34,
+  "ohp": 34,
+  "ivs": {
+    "hp": 10,
+    "attack": 12,
+    "defense": 17,
+    "special_attack": 15,
+    "special_defense": 15,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "CMIgOwlc",
+  "level": 13,
+  "name": "vulpix",
+  "omoves": [
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "vulpix": 34
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 25,
+    "F5chvUKh": 48
+  },
+  "la": {
+    "jpIgbHmU": 8,
+    "F5chvUKh": 13
+  }
+}

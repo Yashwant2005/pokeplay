@@ -1,0 +1,70 @@
+{
+  "c": "GyptShX6",
+  "org": "no",
+  "chp": 0,
+  "ochp": -49,
+  "ohp": 160,
+  "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 14,
+    "special_attack": 23,
+    "special_defense": 12,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "JNv7Jhf0",
+  "level": 50,
+  "name": "hydreigon",
+  "omoves": [
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 406,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 34,
+      "learn_method": "level-up",
+      "level_learned_at": 44
+    },
+    {
+      "id": 304,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "hydreigon": -49
+  },
+  "symbol": "",
+  "team": {
+    "GyptShX6": 0,
+    "qprXez3B": 168,
+    "nzrnd7Gh": 167,
+    "YhzNyYZC": 145,
+    "EMnVbXEj": 72,
+    "YzmR2Ig5": 104
+  },
+  "la": {
+    "GyptShX6": 39,
+    "qprXez3B": 54,
+    "nzrnd7Gh": 36,
+    "YhzNyYZC": 52,
+    "EMnVbXEj": 25,
+    "YzmR2Ig5": 32
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 23,
+  "ochp": -19,
+  "ohp": 46,
+  "ivs": {
+    "hp": 16,
+    "attack": 19,
+    "defense": 10,
+    "special_attack": 17,
+    "special_defense": 7,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "o7wulTy7",
+  "level": 15,
+  "name": "eevee-starter",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "eevee-starter": -19
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 23,
+    "Bo6PaTm9": 27,
+    "4vHKM3tf": 41,
+    "INnWVvZa": 65,
+    "hElvGj1W": 80
+  },
+  "la": {
+    "xPNmpDgC": 20,
+    "Bo6PaTm9": 9,
+    "4vHKM3tf": 16,
+    "INnWVvZa": 23,
+    "hElvGj1W": 19
+  }
+}

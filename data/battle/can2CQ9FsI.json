@@ -1,0 +1,70 @@
+{
+  "c": "MQTRLHSp",
+  "org": "no",
+  "chp": 156,
+  "ochp": 132,
+  "ohp": 132,
+  "ivs": {
+    "hp": 18,
+    "attack": 23,
+    "defense": 23,
+    "special_attack": 19,
+    "special_defense": 18,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "cqOWmi6v",
+  "level": 56,
+  "name": "deoxys-speed",
+  "omoves": [
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 94,
+      "learn_method": "level-up",
+      "level_learned_at": 31
+    },
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 37
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 49
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "deoxys-speed": 132
+  },
+  "symbol": "",
+  "team": {
+    "MQTRLHSp": 156,
+    "HZZy8ghZ": 32,
+    "xNJurU1c": 44,
+    "heCUyNdb": 149,
+    "t0gGUuMj": 86,
+    "5mOTmKN0": 60
+  },
+  "la": {
+    "MQTRLHSp": 52,
+    "HZZy8ghZ": 18,
+    "xNJurU1c": 19,
+    "heCUyNdb": 44,
+    "t0gGUuMj": 29,
+    "5mOTmKN0": 29
+  }
+}

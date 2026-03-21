@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 153,
+  "ochp": -55,
+  "ohp": 81,
+  "ivs": {
+    "hp": 2,
+    "attack": 6,
+    "defense": 3,
+    "special_attack": 5,
+    "special_defense": 9,
+    "speed": 5
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "CqGyCloC",
+  "level": 37,
+  "name": "haunter",
+  "omoves": [
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 371,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 389,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "haunter": -55
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 153,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 46,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "c": "Qg0neG4d",
+  "org": "no",
+  "chp": 91,
+  "ochp": 176,
+  "ohp": 176,
+  "ivs": {
+    "hp": 24,
+    "attack": 9,
+    "defense": 12,
+    "special_attack": 18,
+    "special_defense": 16,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "F4qaV7jN",
+  "level": 49,
+  "name": "garchomp",
+  "omoves": [
+    {
+      "id": 523,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 27
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 34
+    },
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "garchomp": 176
+  },
+  "symbol": "",
+  "team": {
+    "Qg0neG4d": 91,
+    "gr12PJa6": 187,
+    "0ezspPPo": 107
+  },
+  "la": {
+    "Qg0neG4d": 32,
+    "gr12PJa6": 50,
+    "0ezspPPo": 38
+  }
+}

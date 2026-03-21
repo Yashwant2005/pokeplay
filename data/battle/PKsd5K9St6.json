@@ -1,0 +1,60 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 348,
+  "ochp": -738,
+  "ohp": 27,
+  "ivs": {
+    "hp": 13,
+    "attack": 12,
+    "defense": 10,
+    "special_attack": 13,
+    "special_defense": 21,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "JOddZp34",
+  "level": 8,
+  "name": "snorunt",
+  "omoves": [
+    {
+      "id": 181,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "snorunt": -738
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 348,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

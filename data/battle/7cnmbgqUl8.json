@@ -1,0 +1,70 @@
+{
+  "c": "RmAfRbQ0",
+  "org": "no",
+  "chp": 283,
+  "ochp": -274,
+  "ohp": 97,
+  "ivs": {
+    "hp": 22,
+    "attack": 14,
+    "defense": 19,
+    "special_attack": 21,
+    "special_defense": 18,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "saw07NUK",
+  "level": 39,
+  "name": "vanillish",
+  "omoves": [
+    {
+      "id": 196,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 419,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 333,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 253,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "vanillish": -274
+  },
+  "symbol": "",
+  "team": {
+    "RmAfRbQ0": 283,
+    "kHXdgByh": 139,
+    "GazDdiPV": 175,
+    "hPTkP4fC": 138,
+    "iBIAqMa8": 303,
+    "29dmbqBS": 207
+  },
+  "la": {
+    "RmAfRbQ0": 68,
+    "kHXdgByh": 47,
+    "GazDdiPV": 55,
+    "hPTkP4fC": 49,
+    "iBIAqMa8": 90,
+    "29dmbqBS": 64
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "ZoD90TvE",
+  "org": "no",
+  "chp": 47,
+  "ochp": 205,
+  "ohp": 205,
+  "ivs": {
+    "hp": 10,
+    "attack": 11,
+    "defense": 17,
+    "special_attack": 7,
+    "special_defense": 15,
+    "speed": 27
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "WhB4reb4",
+  "level": 54,
+  "name": "yveltal",
+  "omoves": [
+    {
+      "id": 403,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 399,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 94,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 613,
+      "learn_method": "level-up",
+      "level_learned_at": 50
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "yveltal": 205
+  },
+  "symbol": "",
+  "team": {
+    "ZoD90TvE": 47,
+    "yfDAprPp": 155,
+    "f1ICJdrT": 38,
+    "2Oq1ashf": 169,
+    "45uJ60M7": 149,
+    "QqUv3vTf": 151
+  },
+  "la": {
+    "ZoD90TvE": 18,
+    "yfDAprPp": 50,
+    "f1ICJdrT": 15,
+    "2Oq1ashf": 43,
+    "45uJ60M7": 49,
+    "QqUv3vTf": 64
+  }
+}

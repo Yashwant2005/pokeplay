@@ -1,0 +1,64 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 191,
+  "ochp": -142,
+  "ohp": 106,
+  "ivs": {
+    "hp": 12,
+    "attack": 12,
+    "defense": 13,
+    "special_attack": 20,
+    "special_defense": 9,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "RjozZtm3",
+  "level": 39,
+  "name": "araquanid-totem",
+  "omoves": [
+    {
+      "id": 61,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 141,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 38
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "araquanid-totem": -142
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 191,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 53,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

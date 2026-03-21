@@ -1,0 +1,70 @@
+{
+  "c": "cfBHIXq4",
+  "org": "no",
+  "chp": 112,
+  "ochp": 54,
+  "ohp": 54,
+  "ivs": {
+    "hp": 20,
+    "attack": 18,
+    "defense": 17,
+    "special_attack": 8,
+    "special_defense": 18,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "V1ZSMKSr",
+  "level": 20,
+  "name": "tympole",
+  "omoves": [
+    {
+      "id": 497,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 51,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 341,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 496,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "tympole": 54
+  },
+  "symbol": "",
+  "team": {
+    "cfBHIXq4": 112,
+    "By51g7on": 169,
+    "fc4Z3rKh": 92,
+    "djIFsPnu": 116,
+    "sUHb2dTI": 50,
+    "MXDVSfUC": 157
+  },
+  "la": {
+    "cfBHIXq4": 37,
+    "By51g7on": 48,
+    "fc4Z3rKh": 37,
+    "djIFsPnu": 38,
+    "sUHb2dTI": 21,
+    "MXDVSfUC": 55
+  }
+}

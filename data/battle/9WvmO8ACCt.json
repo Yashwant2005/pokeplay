@@ -1,0 +1,60 @@
+{
+  "c": "qEphjgzU",
+  "org": "no",
+  "chp": 20,
+  "ochp": 92,
+  "ohp": 92,
+  "ivs": {
+    "hp": 20,
+    "attack": 21,
+    "defense": 20,
+    "special_attack": 13,
+    "special_defense": 17,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "dUx41vkG",
+  "level": 34,
+  "name": "dragonair",
+  "omoves": [
+    {
+      "id": 239,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 525,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 21,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 401,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dragonair": 92
+  },
+  "symbol": "",
+  "team": {
+    "qEphjgzU": 20
+  },
+  "la": {
+    "qEphjgzU": 5
+  }
+}

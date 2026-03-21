@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 190,
+  "ochp": 118,
+  "ohp": 118,
+  "ivs": {
+    "hp": 29,
+    "attack": 22,
+    "defense": 12,
+    "special_attack": 12,
+    "special_defense": 7,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "grdMAhr5",
+  "level": 41,
+  "name": "gabite",
+  "omoves": [
+    {
+      "id": 530,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 523,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 27
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 34
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "gabite": 118
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 190,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 140,
+    "xPNmpDgC": 122,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 48,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 45,
+    "xPNmpDgC": 42,
+    "V585CIwf": 38
+  }
+}

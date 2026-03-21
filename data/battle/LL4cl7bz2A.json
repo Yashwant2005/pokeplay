@@ -1,0 +1,64 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 118,
+  "ochp": -291,
+  "ohp": 67,
+  "ivs": {
+    "hp": 20,
+    "attack": 19,
+    "defense": 19,
+    "special_attack": 13,
+    "special_defense": 10,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "4vV8zh6K",
+  "level": 26,
+  "name": "cacnea",
+  "omoves": [
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 302,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 185,
+      "learn_method": "level-up",
+      "level_learned_at": 19
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "cacnea": -291
+  },
+  "symbol": "",
+  "team": {
+    "J4F20ScC": 35,
+    "Xb9OMUmh": 118,
+    "dnSoMyRy": 106
+  },
+  "la": {
+    "J4F20ScC": 10,
+    "Xb9OMUmh": 44,
+    "dnSoMyRy": 37
+  }
+}

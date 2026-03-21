@@ -1,0 +1,70 @@
+{
+  "c": "MQTRLHSp",
+  "org": "no",
+  "chp": 122,
+  "ochp": -83,
+  "ohp": 85,
+  "ivs": {
+    "hp": 22,
+    "attack": 13,
+    "defense": 20,
+    "special_attack": 21,
+    "special_defense": 20,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "CLO6jl3h",
+  "level": 34,
+  "name": "grovyle",
+  "omoves": [
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 202,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 21,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "grovyle": -83
+  },
+  "symbol": "",
+  "team": {
+    "MQTRLHSp": 122,
+    "HZZy8ghZ": 32,
+    "xNJurU1c": 44,
+    "heCUyNdb": 149,
+    "t0gGUuMj": 86,
+    "5mOTmKN0": 60
+  },
+  "la": {
+    "MQTRLHSp": 51,
+    "HZZy8ghZ": 18,
+    "xNJurU1c": 19,
+    "heCUyNdb": 44,
+    "t0gGUuMj": 29,
+    "5mOTmKN0": 29
+  }
+}

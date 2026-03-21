@@ -1,0 +1,70 @@
+{
+  "c": "ChA5eDTE",
+  "org": "no",
+  "chp": 292,
+  "ochp": -7,
+  "ohp": 90,
+  "ivs": {
+    "hp": 15,
+    "attack": 18,
+    "defense": 12,
+    "special_attack": 18,
+    "special_defense": 13,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "ajEhVF89",
+  "level": 36,
+  "name": "floette-red",
+  "omoves": [
+    {
+      "id": 584,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 75,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 345,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 572,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "floette-red": -7
+  },
+  "symbol": "",
+  "team": {
+    "ChA5eDTE": 292,
+    "vaq9VMGk": 323,
+    "TQRhfkgG": 309,
+    "D67XQciZ": 406,
+    "NwJTfM5m": 323,
+    "qyjsdRAV": 276
+  },
+  "la": {
+    "ChA5eDTE": 100,
+    "vaq9VMGk": 100,
+    "TQRhfkgG": 100,
+    "D67XQciZ": 100,
+    "NwJTfM5m": 100,
+    "qyjsdRAV": 100
+  }
+}

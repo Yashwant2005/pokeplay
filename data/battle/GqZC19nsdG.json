@@ -1,0 +1,60 @@
+{
+  "c": "kOymg0ik",
+  "org": "no",
+  "chp": 0,
+  "ochp": -61,
+  "ohp": 47,
+  "ivs": {
+    "hp": 11,
+    "attack": 12,
+    "defense": 12,
+    "special_attack": 16,
+    "special_defense": 20,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "6zAiGgYB",
+  "level": 18,
+  "name": "larvitar",
+  "omoves": [
+    {
+      "id": 88,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    },
+    {
+      "id": 371,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 157,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "larvitar": -61
+  },
+  "symbol": "",
+  "team": {
+    "kOymg0ik": 0
+  },
+  "la": {
+    "kOymg0ik": 13
+  }
+}

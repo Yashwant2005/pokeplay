@@ -1,0 +1,65 @@
+{
+  "c": "ofNBxSsf",
+  "org": "no",
+  "chp": 227,
+  "ochp": -149,
+  "ohp": 40,
+  "ivs": {
+    "hp": 15,
+    "attack": 11,
+    "defense": 14,
+    "special_attack": 14,
+    "special_defense": 12,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "JAYLkGAh",
+  "level": 15,
+  "name": "elekid",
+  "omoves": [
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "elekid": -149
+  },
+  "symbol": "",
+  "team": {
+    "ofNBxSsf": 227,
+    "sGoT9d9S": 49,
+    "ugba3Au1": 197,
+    "y3rOVeVe": 53,
+    "5ZGqYPX6": 126,
+    "h2nNdaoR": 317
+  },
+  "la": {
+    "ofNBxSsf": 65,
+    "sGoT9d9S": 24,
+    "ugba3Au1": 58,
+    "y3rOVeVe": 22,
+    "5ZGqYPX6": 48,
+    "h2nNdaoR": 100
+  }
+}

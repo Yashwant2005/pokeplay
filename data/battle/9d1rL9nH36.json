@@ -1,0 +1,68 @@
+{
+  "c": "i7LaUu1x",
+  "org": "no",
+  "chp": 107,
+  "ochp": -192,
+  "ohp": 64,
+  "ivs": {
+    "hp": 17,
+    "attack": 19,
+    "defense": 17,
+    "special_attack": 21,
+    "special_defense": 13,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "8hJnoRoz",
+  "level": 22,
+  "name": "tangela",
+  "omoves": [
+    {
+      "id": 20,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 22,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "tangela": -192
+  },
+  "symbol": "",
+  "team": {
+    "i7LaUu1x": 107,
+    "CUjuRmvK": 131,
+    "hPhvdCbe": 116,
+    "vKBfWrqL": 21,
+    "hzLVLriw": 13
+  },
+  "la": {
+    "i7LaUu1x": 39,
+    "CUjuRmvK": 45,
+    "hPhvdCbe": 40,
+    "vKBfWrqL": 3,
+    "hzLVLriw": 1
+  }
+}

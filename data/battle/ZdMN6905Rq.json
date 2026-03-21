@@ -1,0 +1,55 @@
+{
+  "c": "Q5EkNEkh",
+  "org": "no",
+  "chp": 26,
+  "ochp": 25,
+  "ohp": 25,
+  "ivs": {
+    "hp": 15,
+    "attack": 23,
+    "defense": 8,
+    "special_attack": 14,
+    "special_defense": 19,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "9j2Q8MzH",
+  "level": 7,
+  "name": "cascoon",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "cascoon": 25
+  },
+  "symbol": "",
+  "team": {
+    "Q5EkNEkh": 26,
+    "07OL7b8r": 56,
+    "KTx0Jmv5": 33,
+    "6IjY0t5A": 43,
+    "DxctgyxD": 33,
+    "EfVjHAse": 25
+  },
+  "la": {
+    "Q5EkNEkh": 10,
+    "07OL7b8r": 14,
+    "KTx0Jmv5": 10,
+    "6IjY0t5A": 14,
+    "DxctgyxD": 10,
+    "EfVjHAse": 7
+  }
+}

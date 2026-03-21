@@ -1,0 +1,70 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 120,
+  "ochp": -174,
+  "ohp": 42,
+  "ivs": {
+    "hp": 20,
+    "attack": 22,
+    "defense": 17,
+    "special_attack": 17,
+    "special_defense": 24,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "9ADCMFAo",
+  "level": 17,
+  "name": "remoraid",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 62,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "remoraid": -174
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 120,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 60,
+    "SmX3uZcP": 219,
+    "Ih35m8uD": 158,
+    "Z86cfwaX": 215
+  },
+  "la": {
+    "ytrF7ks6": 35,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 21,
+    "SmX3uZcP": 34,
+    "Ih35m8uD": 24,
+    "Z86cfwaX": 33
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "Rm4RUlTM",
+  "org": "no",
+  "chp": 250,
+  "ochp": 174,
+  "ohp": 174,
+  "ivs": {
+    "hp": 18,
+    "attack": 29,
+    "defense": 14,
+    "special_attack": 13,
+    "special_defense": 24,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "V3MpFOv3",
+  "level": 59,
+  "name": "chien-pao",
+  "omoves": [
+    {
+      "id": 399,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 556,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 877,
+      "learn_method": "level-up",
+      "level_learned_at": 50
+    },
+    {
+      "id": 389,
+      "learn_method": "level-up",
+      "level_learned_at": 55
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "chien-pao": 174
+  },
+  "symbol": "",
+  "team": {
+    "Rm4RUlTM": 250,
+    "knB5UKsA": 135,
+    "QYLvfHJR": 94,
+    "bIPO2fdy": 138,
+    "uMBi3j2C": 151,
+    "4JKJDskM": 139
+  },
+  "la": {
+    "Rm4RUlTM": 100,
+    "knB5UKsA": 49,
+    "QYLvfHJR": 31,
+    "bIPO2fdy": 39,
+    "uMBi3j2C": 42,
+    "4JKJDskM": 49
+  }
+}

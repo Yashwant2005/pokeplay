@@ -1,0 +1,70 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 241,
+  "ochp": -71,
+  "ohp": 97,
+  "ivs": {
+    "hp": 23,
+    "attack": 19,
+    "defense": 24,
+    "special_attack": 15,
+    "special_defense": 14,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "uLuUtCTd",
+  "level": 32,
+  "name": "ambipom",
+  "omoves": [
+    {
+      "id": 530,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 22
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ambipom": -71
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 241,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36,
+    "torhqPbg": 38,
+    "ZoPY7v6L": 208,
+    "qmVPBK5k": 27
+  },
+  "la": {
+    "ZpYcR2c0": 55,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10,
+    "torhqPbg": 13,
+    "ZoPY7v6L": 62,
+    "qmVPBK5k": 8
+  }
+}

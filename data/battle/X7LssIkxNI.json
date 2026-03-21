@@ -1,0 +1,70 @@
+{
+  "c": "HpXcPATS",
+  "org": "no",
+  "chp": 349,
+  "ochp": 148,
+  "ohp": 148,
+  "ivs": {
+    "hp": 23,
+    "attack": 14,
+    "defense": 12,
+    "special_attack": 13,
+    "special_defense": 8,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "eJkVwZRz",
+  "level": 51,
+  "name": "iron-valiant",
+  "omoves": [
+    {
+      "id": 605,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 427,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 400,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 348,
+      "learn_method": "level-up",
+      "level_learned_at": 49
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "iron-valiant": 148
+  },
+  "symbol": "",
+  "team": {
+    "HpXcPATS": 349,
+    "tdUgaQnE": 13,
+    "F3k2zUW6": 127,
+    "8RU7FGoo": 61,
+    "RZVZgpuG": 159,
+    "lau7OoXQ": 157
+  },
+  "la": {
+    "HpXcPATS": 100,
+    "tdUgaQnE": 1,
+    "F3k2zUW6": 42,
+    "8RU7FGoo": 22,
+    "RZVZgpuG": 50,
+    "lau7OoXQ": 50
+  }
+}

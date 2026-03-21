@@ -1,0 +1,60 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 170,
+  "ochp": -174,
+  "ohp": 41,
+  "ivs": {
+    "hp": 8,
+    "attack": 5,
+    "defense": 3,
+    "special_attack": 4,
+    "special_defense": 3,
+    "speed": 6
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "7N2bEnK6",
+  "level": 15,
+  "name": "ponyta",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ponyta": -174
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 170,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 47,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

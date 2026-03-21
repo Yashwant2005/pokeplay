@@ -1,0 +1,60 @@
+{
+  "c": "MQTRLHSp",
+  "org": "no",
+  "chp": 147,
+  "ochp": -476,
+  "ohp": 20,
+  "ivs": {
+    "hp": 14,
+    "attack": 19,
+    "defense": 18,
+    "special_attack": 16,
+    "special_defense": 17,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "97xpIYI7",
+  "level": 5,
+  "name": "anorith",
+  "omoves": [
+    {
+      "id": 210,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "anorith": -476
+  },
+  "symbol": "",
+  "team": {
+    "MQTRLHSp": 147,
+    "HZZy8ghZ": 32,
+    "xNJurU1c": 44,
+    "heCUyNdb": 149,
+    "t0gGUuMj": 86,
+    "5mOTmKN0": 60
+  },
+  "la": {
+    "MQTRLHSp": 51,
+    "HZZy8ghZ": 18,
+    "xNJurU1c": 19,
+    "heCUyNdb": 44,
+    "t0gGUuMj": 29,
+    "5mOTmKN0": 29
+  }
+}

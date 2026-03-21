@@ -1,0 +1,60 @@
+{
+  "c": "BO3VNBUR",
+  "org": "no",
+  "chp": 80,
+  "ochp": -57,
+  "ohp": 35,
+  "ivs": {
+    "hp": 19,
+    "attack": 10,
+    "defense": 17,
+    "special_attack": 14,
+    "special_defense": 11,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "AjI52Zu4",
+  "level": 13,
+  "name": "vulpix",
+  "omoves": [
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "vulpix": -57
+  },
+  "symbol": "",
+  "team": {
+    "BO3VNBUR": 80,
+    "bmhgy5Ib": 33,
+    "i9ncUySE": 13,
+    "GtZ6KmSH": 114,
+    "ZHAL8qZB": 168,
+    "0dwCNEDH": 312
+  },
+  "la": {
+    "BO3VNBUR": 34,
+    "bmhgy5Ib": 7,
+    "i9ncUySE": 1,
+    "GtZ6KmSH": 38,
+    "ZHAL8qZB": 54,
+    "0dwCNEDH": 100
+  }
+}

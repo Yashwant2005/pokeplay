@@ -1,0 +1,70 @@
+{
+  "c": "QhOEmRvf",
+  "org": "no",
+  "chp": 330,
+  "ochp": 156,
+  "ohp": 156,
+  "ivs": {
+    "hp": 22,
+    "attack": 28,
+    "defense": 18,
+    "special_attack": 23,
+    "special_defense": 21,
+    "speed": 26
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "yjKMunVN",
+  "level": 47,
+  "name": "silvally-ground",
+  "omoves": [
+    {
+      "id": 403,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 161,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 404,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "silvally-ground": 156
+  },
+  "symbol": "",
+  "team": {
+    "QhOEmRvf": 330,
+    "kMZTz6gx": 376,
+    "3RCqSkfd": 277,
+    "H5HE1pKF": 13,
+    "AVGFV6Dt": 13,
+    "Unspc6ge": 13
+  },
+  "la": {
+    "QhOEmRvf": 100,
+    "kMZTz6gx": 100,
+    "3RCqSkfd": 100,
+    "H5HE1pKF": 1,
+    "AVGFV6Dt": 1,
+    "Unspc6ge": 1
+  }
+}

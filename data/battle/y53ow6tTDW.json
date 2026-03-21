@@ -1,0 +1,55 @@
+{
+  "c": "9eeViYIB",
+  "org": "no",
+  "chp": 0,
+  "ochp": 1,
+  "ohp": 27,
+  "ivs": {
+    "hp": 21,
+    "attack": 16,
+    "defense": 24,
+    "special_attack": 25,
+    "special_defense": 14,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "xqYfQljn",
+  "level": 8,
+  "name": "psyduck",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "psyduck": 1
+  },
+  "symbol": "",
+  "team": {
+    "9eeViYIB": 0
+  },
+  "la": {
+    "9eeViYIB": 8
+  }
+}

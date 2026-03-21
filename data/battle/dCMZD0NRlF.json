@@ -1,0 +1,70 @@
+{
+  "c": "C6mPJkDH",
+  "org": "no",
+  "chp": 100,
+  "ochp": -64,
+  "ohp": 74,
+  "ivs": {
+    "hp": 12,
+    "attack": 27,
+    "defense": 19,
+    "special_attack": 27,
+    "special_defense": 20,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "ZLWBziAQ",
+  "level": 24,
+  "name": "linoone",
+  "omoves": [
+    {
+      "id": 42,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "linoone": -64
+  },
+  "symbol": "",
+  "team": {
+    "C6mPJkDH": 100,
+    "MQTRLHSp": 156,
+    "wIskIkq2": 147,
+    "irp1hwET": 163,
+    "HZZy8ghZ": 32,
+    "5mOTmKN0": 60
+  },
+  "la": {
+    "C6mPJkDH": 56,
+    "MQTRLHSp": 52,
+    "wIskIkq2": 43,
+    "irp1hwET": 50,
+    "HZZy8ghZ": 18,
+    "5mOTmKN0": 29
+  }
+}

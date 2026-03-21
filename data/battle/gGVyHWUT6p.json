@@ -1,0 +1,49 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 37,
+  "ochp": -24,
+  "ohp": 35,
+  "ivs": {
+    "hp": 18,
+    "attack": 17,
+    "defense": 21,
+    "special_attack": 21,
+    "special_defense": 24,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "keWerPIQ",
+  "level": 13,
+  "name": "budew",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "budew": -24
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 37,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 57
+  },
+  "la": {
+    "ytrF7ks6": 11,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 20
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 77,
+  "ochp": -197,
+  "ohp": 59,
+  "ivs": {
+    "hp": 21,
+    "attack": 12,
+    "defense": 12,
+    "special_attack": 10,
+    "special_defense": 13,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "NmsWzHVF",
+  "level": 20,
+  "name": "monferno",
+  "omoves": [
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 172,
+      "learn_method": "level-up",
+      "level_learned_at": 19
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "monferno": -197
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 77,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 60,
+    "SmX3uZcP": 219,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 28,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 21,
+    "SmX3uZcP": 34,
+    "Ih35m8uD": 24
+  }
+}

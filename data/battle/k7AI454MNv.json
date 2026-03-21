@@ -1,0 +1,70 @@
+{
+  "c": "lmjdKxgm",
+  "org": "no",
+  "chp": 47,
+  "ochp": -2,
+  "ohp": 122,
+  "ivs": {
+    "hp": 19,
+    "attack": 13,
+    "defense": 16,
+    "special_attack": 14,
+    "special_defense": 11,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "s9BcMZPz",
+  "level": 45,
+  "name": "shelgon",
+  "omoves": [
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 39
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "shelgon": -2
+  },
+  "symbol": "",
+  "team": {
+    "jrSKvJQa": 0,
+    "CuGtMWDv": 227,
+    "UmyfORGQ": 198,
+    "lmjdKxgm": 47,
+    "Kfajk3g4": 161,
+    "50uITbfe": 173
+  },
+  "la": {
+    "jrSKvJQa": 40,
+    "CuGtMWDv": 65,
+    "UmyfORGQ": 59,
+    "lmjdKxgm": 33,
+    "Kfajk3g4": 53,
+    "50uITbfe": 49
+  }
+}

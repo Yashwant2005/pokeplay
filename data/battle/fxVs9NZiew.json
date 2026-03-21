@@ -1,0 +1,60 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 51,
+  "ochp": -58,
+  "ohp": 22,
+  "ivs": {
+    "hp": 14,
+    "attack": 11,
+    "defense": 18,
+    "special_attack": 15,
+    "special_defense": 21,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "0UPI9XrQ",
+  "level": 6,
+  "name": "wurmple",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "wurmple": -58
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 51,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 104,
+    "xPNmpDgC": 117
+  },
+  "la": {
+    "hoTfaX8w": 20,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 41,
+    "xPNmpDgC": 40
+  }
+}

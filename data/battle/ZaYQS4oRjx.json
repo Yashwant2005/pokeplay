@@ -1,0 +1,64 @@
+{
+  "c": "Mw2VufPM",
+  "org": "no",
+  "chp": 363,
+  "ochp": 179,
+  "ohp": 179,
+  "ivs": {
+    "hp": 20,
+    "attack": 17,
+    "defense": 16,
+    "special_attack": 15,
+    "special_defense": 22,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "VDaL7g7k",
+  "level": 56,
+  "name": "heatran",
+  "omoves": [
+    {
+      "id": 442,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    },
+    {
+      "id": 436,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 414,
+      "learn_method": "level-up",
+      "level_learned_at": 54
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "heatran": 179
+  },
+  "symbol": "",
+  "team": {
+    "Mw2VufPM": 363,
+    "G4nEQcmU": 330,
+    "jxVhX0GC": 232
+  },
+  "la": {
+    "Mw2VufPM": 100,
+    "G4nEQcmU": 100,
+    "jxVhX0GC": 62
+  }
+}

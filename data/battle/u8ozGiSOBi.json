@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 106,
+  "ochp": -17,
+  "ohp": 129,
+  "ivs": {
+    "hp": 15,
+    "attack": 29,
+    "defense": 19,
+    "special_attack": 19,
+    "special_defense": 12,
+    "speed": 24
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "l6NALkqg",
+  "level": 47,
+  "name": "froslass",
+  "omoves": [
+    {
+      "id": 420,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 577,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 196,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 524,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "froslass": -17
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 106,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 108,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 49,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 38,
+    "xPNmpDgC": 42
+  }
+}

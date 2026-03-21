@@ -1,0 +1,50 @@
+{
+  "c": "YSv2n2Fh",
+  "org": "no",
+  "chp": 82,
+  "ochp": -38,
+  "ohp": 37,
+  "ivs": {
+    "hp": 12,
+    "attack": 18,
+    "defense": 22,
+    "special_attack": 19,
+    "special_defense": 18,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "dbp71w5B",
+  "level": 10,
+  "name": "rhyhorn",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 479,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "rhyhorn": -38
+  },
+  "symbol": "",
+  "team": {
+    "YSv2n2Fh": 82
+  },
+  "la": {
+    "YSv2n2Fh": 34
+  }
+}

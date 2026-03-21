@@ -1,0 +1,70 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 68,
+  "ochp": 171,
+  "ohp": 171,
+  "ivs": {
+    "hp": 29,
+    "attack": 29,
+    "defense": 20,
+    "special_attack": 12,
+    "special_defense": 20,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "Ne2JSfVw",
+  "level": 56,
+  "name": "hoopa-unbound",
+  "omoves": [
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 19
+    },
+    {
+      "id": 282,
+      "learn_method": "level-up",
+      "level_learned_at": 46
+    },
+    {
+      "id": 399,
+      "learn_method": "level-up",
+      "level_learned_at": 55
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "hoopa-unbound": 171
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 68,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 107,
+    "xPNmpDgC": 117
+  },
+  "la": {
+    "hoTfaX8w": 24,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 42,
+    "xPNmpDgC": 40
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "c": "YSv2n2Fh",
+  "org": "no",
+  "chp": 0,
+  "ochp": -30,
+  "ohp": 93,
+  "ivs": {
+    "hp": 10,
+    "attack": 19,
+    "defense": 16,
+    "special_attack": 21,
+    "special_defense": 22,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "O4MEbR2O",
+  "level": 38,
+  "name": "togetic",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 38,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "togetic": -30
+  },
+  "symbol": "",
+  "team": {
+    "YSv2n2Fh": 0
+  },
+  "la": {
+    "YSv2n2Fh": 35
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 241,
+  "ochp": -394,
+  "ohp": 28,
+  "ivs": {
+    "hp": 16,
+    "attack": 16,
+    "defense": 21,
+    "special_attack": 17,
+    "special_defense": 15,
+    "speed": 27
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "SNsDGsGS",
+  "level": 8,
+  "name": "pyukumuku",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pyukumuku": -394
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 241,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 55,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

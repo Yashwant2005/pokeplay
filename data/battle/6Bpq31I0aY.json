@@ -1,0 +1,51 @@
+{
+  "c": "SnE37Nn3",
+  "org": "no",
+  "chp": 45,
+  "ochp": 24,
+  "ohp": 24,
+  "ivs": {
+    "hp": 12,
+    "attack": 11,
+    "defense": 22,
+    "special_attack": 15,
+    "special_defense": 22,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "MI40EYBm",
+  "level": 7,
+  "name": "silcoon",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "silcoon": 24
+  },
+  "symbol": "",
+  "team": {
+    "SnE37Nn3": 45,
+    "fhrGjddJ": 232,
+    "5EllGrmf": 213,
+    "k24Ky80h": 13
+  },
+  "la": {
+    "SnE37Nn3": 18,
+    "fhrGjddJ": 62,
+    "5EllGrmf": 33,
+    "k24Ky80h": 1
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "c": "AfrJyFT3",
+  "org": "no",
+  "chp": 0,
+  "ochp": -1,
+  "ohp": 51,
+  "ivs": {
+    "hp": 17,
+    "attack": 9,
+    "defense": 21,
+    "special_attack": 17,
+    "special_defense": 18,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "QHf68YEl",
+  "level": 19,
+  "name": "chewtle",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "chewtle": -1
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 0,
+    "USP6eG1Z": 50,
+    "i3Zbowkn": 73,
+    "ZZds2WM5": 52,
+    "YXw2z1Y1": 46,
+    "9jvifJC5": 89
+  },
+  "la": {
+    "AfrJyFT3": 19,
+    "USP6eG1Z": 17,
+    "i3Zbowkn": 25,
+    "ZZds2WM5": 16,
+    "YXw2z1Y1": 12,
+    "9jvifJC5": 33
+  }
+}

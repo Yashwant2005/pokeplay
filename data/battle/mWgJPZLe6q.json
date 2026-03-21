@@ -1,0 +1,55 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 76,
+  "ochp": -50,
+  "ohp": 21,
+  "ivs": {
+    "hp": 13,
+    "attack": 15,
+    "defense": 10,
+    "special_attack": 14,
+    "special_defense": 17,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "zHlifXtJ",
+  "level": 6,
+  "name": "poliwag",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "poliwag": -50
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 76,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 95,
+    "FwnmeApD": 136,
+    "zIc5R3QM": 83
+  },
+  "la": {
+    "xPNmpDgC": 36,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 23,
+    "FwnmeApD": 52,
+    "zIc5R3QM": 30
+  }
+}

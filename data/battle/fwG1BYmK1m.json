@@ -1,0 +1,60 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 71,
+  "ochp": -55,
+  "ohp": 24,
+  "ivs": {
+    "hp": 23,
+    "attack": 15,
+    "defense": 10,
+    "special_attack": 15,
+    "special_defense": 14,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "YioZ5pBt",
+  "level": 7,
+  "name": "squirtle",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "squirtle": -55
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 71,
+    "F5chvUKh": 87,
+    "LG4mTUpP": 71,
+    "UiiozQZj": 77,
+    "XhF014r3": 81,
+    "XQu3Dlrw": 57
+  },
+  "la": {
+    "jpIgbHmU": 33,
+    "F5chvUKh": 26,
+    "LG4mTUpP": 24,
+    "UiiozQZj": 18,
+    "XhF014r3": 28,
+    "XQu3Dlrw": 25
+  }
+}

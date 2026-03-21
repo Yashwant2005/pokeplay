@@ -1,0 +1,60 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 353,
+  "ochp": 36,
+  "ohp": 36,
+  "ivs": {
+    "hp": 14,
+    "attack": 15,
+    "defense": 17,
+    "special_attack": 13,
+    "special_defense": 17,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "3VSmeqDL",
+  "level": 11,
+  "name": "pinsir",
+  "omoves": [
+    {
+      "id": 11,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 20,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pinsir": 36
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 353,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

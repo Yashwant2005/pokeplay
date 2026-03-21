@@ -1,0 +1,70 @@
+{
+  "c": "LN8ihIqk",
+  "org": "no",
+  "chp": 163,
+  "ochp": -150,
+  "ohp": 44,
+  "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 9,
+    "special_attack": 14,
+    "special_defense": 18,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "b7T7uX4B",
+  "level": 14,
+  "name": "frigibax",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 525,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 196,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 225,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "frigibax": -150
+  },
+  "symbol": "",
+  "team": {
+    "6eVdGqdR": 137,
+    "PzS8LwHX": 116,
+    "pY1EJRcp": 30,
+    "5RWVyitD": 175,
+    "oINhfz6I": 34,
+    "LN8ihIqk": 163
+  },
+  "la": {
+    "6eVdGqdR": 47,
+    "PzS8LwHX": 39,
+    "pY1EJRcp": 10,
+    "5RWVyitD": 54,
+    "oINhfz6I": 13,
+    "LN8ihIqk": 58
+  }
+}

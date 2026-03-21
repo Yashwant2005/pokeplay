@@ -1,0 +1,52 @@
+{
+  "c": "0EPYTqmt",
+  "org": "no",
+  "chp": 1,
+  "ochp": 1,
+  "ohp": 33,
+  "ivs": {
+    "hp": 13,
+    "attack": 15,
+    "defense": 13,
+    "special_attack": 14,
+    "special_defense": 22,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "7xvf0Zfv",
+  "level": 13,
+  "name": "paras",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "paras": 1
+  },
+  "symbol": "",
+  "team": {
+    "0EPYTqmt": 1,
+    "67urJNnx": 32
+  },
+  "la": {
+    "0EPYTqmt": 13,
+    "67urJNnx": 7
+  }
+}

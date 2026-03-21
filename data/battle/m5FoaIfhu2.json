@@ -1,0 +1,70 @@
+{
+  "c": "yx4Mz6GJ",
+  "org": "no",
+  "chp": 78,
+  "ochp": -20,
+  "ohp": 43,
+  "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 9,
+    "special_attack": 14,
+    "special_defense": 18,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "hu8ljl3j",
+  "level": 14,
+  "name": "drilbur",
+  "omoves": [
+    {
+      "id": 189,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 229,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "drilbur": -20
+  },
+  "symbol": "",
+  "team": {
+    "yx4Mz6GJ": 78,
+    "u0wRDkpV": 91,
+    "UtfDaQTH": 109,
+    "RTXYaCR3": 91,
+    "iceEdRvu": 100,
+    "bywYVs7a": 36
+  },
+  "la": {
+    "yx4Mz6GJ": 30,
+    "u0wRDkpV": 34,
+    "UtfDaQTH": 33,
+    "RTXYaCR3": 32,
+    "iceEdRvu": 40,
+    "bywYVs7a": 13
+  }
+}

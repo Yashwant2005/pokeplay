@@ -1,0 +1,56 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 84,
+  "ochp": -255,
+  "ohp": 27,
+  "ivs": {
+    "hp": 18,
+    "attack": 22,
+    "defense": 19,
+    "special_attack": 18,
+    "special_defense": 19,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "vJzQRUjA",
+  "level": 9,
+  "name": "starly",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "starly": -255
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 84,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 60,
+    "SmX3uZcP": 219
+  },
+  "la": {
+    "ytrF7ks6": 24,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 21,
+    "SmX3uZcP": 34
+  }
+}

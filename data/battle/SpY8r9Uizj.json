@@ -1,0 +1,45 @@
+{
+  "c": "CbuLy5HY",
+  "org": "no",
+  "chp": 0,
+  "ochp": -24,
+  "ohp": 26,
+  "ivs": {
+    "hp": 17,
+    "attack": 14,
+    "defense": 18,
+    "special_attack": 16,
+    "special_defense": 16,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "GY2UVruc",
+  "level": 8,
+  "name": "kakuna",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kakuna": -24
+  },
+  "symbol": "",
+  "team": {
+    "CbuLy5HY": 0
+  },
+  "la": {
+    "CbuLy5HY": 5
+  }
+}

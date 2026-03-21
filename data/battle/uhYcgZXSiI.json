@@ -1,0 +1,61 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 122,
+  "ochp": -327,
+  "ohp": 51,
+  "ivs": {
+    "hp": 8,
+    "attack": 12,
+    "defense": 23,
+    "special_attack": 19,
+    "special_defense": 25,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "UL0dAtvi",
+  "level": 19,
+  "name": "pumpkaboo-large",
+  "omoves": [
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 425,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 75,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pumpkaboo-large": -327
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 122,
+    "J4F20ScC": 35,
+    "dnSoMyRy": 106,
+    "Miai3ctV": 36
+  },
+  "la": {
+    "Xb9OMUmh": 44,
+    "J4F20ScC": 10,
+    "dnSoMyRy": 37,
+    "Miai3ctV": 10
+  }
+}

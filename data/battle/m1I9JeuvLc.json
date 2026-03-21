@@ -1,0 +1,64 @@
+{
+  "c": "3MxJF5Sp",
+  "org": "no",
+  "chp": 0,
+  "ochp": 13,
+  "ohp": 30,
+  "ivs": {
+    "hp": 9,
+    "attack": 19,
+    "defense": 12,
+    "special_attack": 15,
+    "special_defense": 17,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "2gx3kx9L",
+  "level": 11,
+  "name": "tentacool",
+  "omoves": [
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 51,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "tentacool": 13
+  },
+  "symbol": "",
+  "team": {
+    "3MxJF5Sp": 0,
+    "u0kSy0i7": 20,
+    "mHEcY6mQ": 22
+  },
+  "la": {
+    "3MxJF5Sp": 5,
+    "u0kSy0i7": 5,
+    "mHEcY6mQ": 6
+  }
+}

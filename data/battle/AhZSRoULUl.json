@@ -1,0 +1,59 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 227,
+  "ochp": -426,
+  "ohp": 41,
+  "ivs": {
+    "hp": 21,
+    "attack": 16,
+    "defense": 20,
+    "special_attack": 17,
+    "special_defense": 27,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "Cqc5JabS",
+  "level": 12,
+  "name": "cramorant-gulping",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 562,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "cramorant-gulping": -426
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 227,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 54,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

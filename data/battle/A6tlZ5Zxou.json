@@ -1,0 +1,55 @@
+{
+  "c": "ofNBxSsf",
+  "org": "no",
+  "chp": 241,
+  "ochp": -187,
+  "ohp": 27,
+  "ivs": {
+    "hp": 14,
+    "attack": 14,
+    "defense": 23,
+    "special_attack": 19,
+    "special_defense": 24,
+    "speed": 9
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "Wuelrd7k",
+  "level": 8,
+  "name": "emolga",
+  "omoves": [
+    {
+      "id": 609,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "emolga": -187
+  },
+  "symbol": "",
+  "team": {
+    "ofNBxSsf": 241,
+    "sGoT9d9S": 49,
+    "ugba3Au1": 197,
+    "y3rOVeVe": 53,
+    "5ZGqYPX6": 126,
+    "h2nNdaoR": 317
+  },
+  "la": {
+    "ofNBxSsf": 65,
+    "sGoT9d9S": 24,
+    "ugba3Au1": 58,
+    "y3rOVeVe": 22,
+    "5ZGqYPX6": 48,
+    "h2nNdaoR": 100
+  }
+}

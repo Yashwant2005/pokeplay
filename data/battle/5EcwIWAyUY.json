@@ -1,0 +1,62 @@
+{
+  "c": "XKeiQ3Dp",
+  "org": "no",
+  "chp": 21,
+  "ochp": 204,
+  "ohp": 204,
+  "ivs": {
+    "hp": 30,
+    "attack": 18,
+    "defense": 20,
+    "special_attack": 17,
+    "special_defense": 27,
+    "speed": 27
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "JNA9Yp7a",
+  "level": 60,
+  "name": "necrozma-dawn",
+  "omoves": [
+    {
+      "id": 400,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 427,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 500,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 350,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "necrozma-dawn": 204
+  },
+  "symbol": "",
+  "team": {
+    "XKeiQ3Dp": 21,
+    "GIMqIpoc": 254
+  },
+  "la": {
+    "XKeiQ3Dp": 5,
+    "GIMqIpoc": 62
+  }
+}

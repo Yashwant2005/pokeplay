@@ -1,0 +1,70 @@
+{
+  "c": "vCre5lBj",
+  "org": "no",
+  "chp": 138,
+  "ochp": 182,
+  "ohp": 182,
+  "ivs": {
+    "hp": 24,
+    "attack": 24,
+    "defense": 15,
+    "special_attack": 14,
+    "special_defense": 15,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "NRlBT1ms",
+  "level": 64,
+  "name": "naganadel",
+  "omoves": [
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 565,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    },
+    {
+      "id": 474,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 398,
+      "learn_method": "level-up",
+      "level_learned_at": 49
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "naganadel": 182
+  },
+  "symbol": "",
+  "team": {
+    "vCre5lBj": 138,
+    "H8Bl42iC": 122,
+    "NjUKJJ77": 70,
+    "2tV5OwNS": 79,
+    "GOCau2XF": 81,
+    "DByCFqv8": 185
+  },
+  "la": {
+    "vCre5lBj": 47,
+    "H8Bl42iC": 41,
+    "NjUKJJ77": 27,
+    "2tV5OwNS": 27,
+    "GOCau2XF": 25,
+    "DByCFqv8": 47
+  }
+}

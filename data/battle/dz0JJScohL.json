@@ -1,0 +1,65 @@
+{
+  "c": "Az7eBnWK",
+  "org": "no",
+  "chp": 104,
+  "ochp": -105,
+  "ohp": 68,
+  "ivs": {
+    "hp": 14,
+    "attack": 19,
+    "defense": 16,
+    "special_attack": 16,
+    "special_defense": 19,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "f5NJ7WdA",
+  "level": 22,
+  "name": "golbat",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 305,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "golbat": -105
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 181,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 74,
+    "Az7eBnWK": 104,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 47,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 27,
+    "Az7eBnWK": 33,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

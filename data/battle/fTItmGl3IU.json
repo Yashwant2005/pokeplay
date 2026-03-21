@@ -1,0 +1,70 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 35,
+  "ochp": 0,
+  "ohp": 74,
+  "ivs": {
+    "hp": 18,
+    "attack": 23,
+    "defense": 20,
+    "special_attack": 25,
+    "special_defense": 18,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "HgpXUC4g",
+  "level": 27,
+  "name": "venonat",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 17
+    },
+    {
+      "id": 324,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "venonat": 0
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 35,
+    "F5chvUKh": 87,
+    "LG4mTUpP": 71,
+    "UiiozQZj": 77,
+    "XhF014r3": 81,
+    "XQu3Dlrw": 55
+  },
+  "la": {
+    "jpIgbHmU": 27,
+    "F5chvUKh": 26,
+    "LG4mTUpP": 24,
+    "UiiozQZj": 18,
+    "XhF014r3": 28,
+    "XQu3Dlrw": 24
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "7577674783": true,
+    "8551864967": true
+  },
+  "status": {},
+  "c": "nd0097xj",
+  "chp": 0,
+  "o": "vD5upjkr",
+  "ohp": 230,
+  "cid": "8551864967",
+  "oid": "7577674783",
+  "tem": {
+    "nd0097xj": 0
+  },
+  "la": {
+    "nd0097xj": 100
+  },
+  "tem2": {
+    "vD5upjkr": 230,
+    "7MCZA9Su": 261,
+    "4cCrIxsi": 315,
+    "ezUyeQl9": 410,
+    "1IPhMvBn": 269
+  },
+  "la2": {
+    "vD5upjkr": 100,
+    "7MCZA9Su": 100,
+    "4cCrIxsi": 100,
+    "ezUyeQl9": 100,
+    "1IPhMvBn": 100
+  },
+  "ot": {
+    "undefined": 310
+  },
+  "usedMoves": {
+    "vD5upjkr": [
+      "247"
+    ],
+    "nd0097xj": [
+      "136"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 1,
+  "bideState": {},
+  "statStages": {
+    "vD5upjkr": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "nd0097xj": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": -1,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "nd0097xj": {
+      "damage": 159,
+      "category": "special",
+      "from": "vD5upjkr",
+      "move": "shadow ball"
+    },
+    "vD5upjkr": {
+      "damage": 0,
+      "category": "physical",
+      "from": "nd0097xj",
+      "move": "high jump kick"
+    }
+  },
+  "lastMoveByPass": {
+    "vD5upjkr": "247",
+    "nd0097xj": "136"
+  }
+}

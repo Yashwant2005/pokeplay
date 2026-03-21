@@ -1,0 +1,70 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 92,
+  "ochp": -133,
+  "ohp": 54,
+  "ivs": {
+    "hp": 22,
+    "attack": 13,
+    "defense": 24,
+    "special_attack": 19,
+    "special_defense": 21,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "CzXCsrYR",
+  "level": 21,
+  "name": "magby",
+  "omoves": [
+    {
+      "id": 123,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 499,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 172,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magby": -133
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 92,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "V585CIwf": 114,
+    "zIc5R3QM": 83,
+    "hElvGj1W": 106
+  },
+  "la": {
+    "xPNmpDgC": 37,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "V585CIwf": 38,
+    "zIc5R3QM": 30,
+    "hElvGj1W": 26
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "c": "GZT96diT",
+  "org": "no",
+  "chp": 170,
+  "ochp": 179,
+  "ohp": 179,
+  "ivs": {
+    "hp": 25,
+    "attack": 29,
+    "defense": 21,
+    "special_attack": 20,
+    "special_defense": 19,
+    "speed": 24
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "8Zj9JOxt",
+  "level": 50,
+  "name": "buzzwole",
+  "omoves": [
+    {
+      "id": 565,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    },
+    {
+      "id": 233,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 5,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 679,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "buzzwole": 179
+  },
+  "symbol": "",
+  "team": {
+    "GZT96diT": 170,
+    "Apic5Dsh": 46,
+    "okBMueJl": 22,
+    "YhuTMVwR": 132
+  },
+  "la": {
+    "GZT96diT": 56,
+    "Apic5Dsh": 15,
+    "okBMueJl": 5,
+    "YhuTMVwR": 50
+  }
+}

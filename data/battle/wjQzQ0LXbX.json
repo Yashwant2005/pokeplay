@@ -1,0 +1,55 @@
+{
+  "c": "AfrJyFT3",
+  "org": "no",
+  "chp": 13,
+  "ochp": -56,
+  "ohp": 28,
+  "ivs": {
+    "hp": 10,
+    "attack": 4,
+    "defense": 9,
+    "special_attack": 9,
+    "special_defense": 9,
+    "speed": 9
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "SJ7WV0LZ",
+  "level": 9,
+  "name": "spewpa",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "spewpa": -56
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 13,
+    "USP6eG1Z": 50,
+    "i3Zbowkn": 73,
+    "ZZds2WM5": 52,
+    "YXw2z1Y1": 46,
+    "9jvifJC5": 89
+  },
+  "la": {
+    "AfrJyFT3": 18,
+    "USP6eG1Z": 17,
+    "i3Zbowkn": 25,
+    "ZZds2WM5": 16,
+    "YXw2z1Y1": 12,
+    "9jvifJC5": 33
+  }
+}

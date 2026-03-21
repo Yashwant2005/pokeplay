@@ -1,0 +1,64 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 241,
+  "ochp": -297,
+  "ohp": 76,
+  "ivs": {
+    "hp": 10,
+    "attack": 17,
+    "defense": 18,
+    "special_attack": 14,
+    "special_defense": 15,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "tlHnqhWj",
+  "level": 29,
+  "name": "lombre",
+  "omoves": [
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 61,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "lombre": -297
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 241,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 55,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

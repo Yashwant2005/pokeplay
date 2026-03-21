@@ -1,0 +1,70 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 105,
+  "ochp": 200,
+  "ohp": 200,
+  "ivs": {
+    "hp": 23,
+    "attack": 17,
+    "defense": 22,
+    "special_attack": 30,
+    "special_defense": 29,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "2yc6JVXp",
+  "level": 57,
+  "name": "mewtwo",
+  "omoves": [
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 427,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 396,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 94,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mewtwo": 200
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 105,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 95,
+    "FwnmeApD": 136,
+    "zIc5R3QM": 83
+  },
+  "la": {
+    "xPNmpDgC": 36,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 23,
+    "FwnmeApD": 52,
+    "zIc5R3QM": 30
+  }
+}

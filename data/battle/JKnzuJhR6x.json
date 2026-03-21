@@ -1,0 +1,65 @@
+{
+  "c": "GyptShX6",
+  "org": "no",
+  "chp": 100,
+  "ochp": -93,
+  "ohp": 69,
+  "ivs": {
+    "hp": 9,
+    "attack": 16,
+    "defense": 14,
+    "special_attack": 10,
+    "special_defense": 16,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "1tOCDT5w",
+  "level": 30,
+  "name": "haunter",
+  "omoves": [
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 371,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "haunter": -93
+  },
+  "symbol": "",
+  "team": {
+    "GyptShX6": 100,
+    "qprXez3B": 168,
+    "nzrnd7Gh": 167,
+    "YhzNyYZC": 145,
+    "EMnVbXEj": 79,
+    "YzmR2Ig5": 113
+  },
+  "la": {
+    "GyptShX6": 42,
+    "qprXez3B": 54,
+    "nzrnd7Gh": 36,
+    "YhzNyYZC": 52,
+    "EMnVbXEj": 28,
+    "YzmR2Ig5": 35
+  }
+}

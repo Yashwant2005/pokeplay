@@ -1,0 +1,70 @@
+{
+  "c": "XxmBb8ir",
+  "org": "no",
+  "chp": 187,
+  "ochp": 52,
+  "ohp": 52,
+  "ivs": {
+    "hp": 16,
+    "attack": 23,
+    "defense": 27,
+    "special_attack": 12,
+    "special_defense": 20,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "LyrmCJTt",
+  "level": 19,
+  "name": "archen",
+  "omoves": [
+    {
+      "id": 17,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 225,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 365,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "archen": 52
+  },
+  "symbol": "",
+  "team": {
+    "XxmBb8ir": 187,
+    "BDoHP5wy": 122,
+    "z8uGifBR": 201,
+    "puss3zIS": 347,
+    "OchBd1I4": 249,
+    "bMyjfqev": 123
+  },
+  "la": {
+    "XxmBb8ir": 60,
+    "BDoHP5wy": 50,
+    "z8uGifBR": 55,
+    "puss3zIS": 59,
+    "OchBd1I4": 61,
+    "bMyjfqev": 47
+  }
+}

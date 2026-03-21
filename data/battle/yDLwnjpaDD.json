@@ -1,0 +1,50 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 155,
+  "ochp": -134,
+  "ohp": 42,
+  "ivs": {
+    "hp": 18,
+    "attack": 14,
+    "defense": 14,
+    "special_attack": 20,
+    "special_defense": 16,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "pS5ZzOLX",
+  "level": 10,
+  "name": "kangaskhan",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 252,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kangaskhan": -134
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 155
+  },
+  "la": {
+    "ZpYcR2c0": 38
+  }
+}

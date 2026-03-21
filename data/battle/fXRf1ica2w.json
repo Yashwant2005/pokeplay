@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 128,
+  "ochp": -22,
+  "ohp": 90,
+  "ivs": {
+    "hp": 15,
+    "attack": 18,
+    "defense": 12,
+    "special_attack": 15,
+    "special_defense": 17,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "Jsg6StOH",
+  "level": 34,
+  "name": "dragonair",
+  "omoves": [
+    {
+      "id": 239,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 525,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 21,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 401,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dragonair": -22
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 128,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 41,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

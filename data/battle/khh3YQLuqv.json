@@ -1,0 +1,65 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 153,
+  "ochp": -83,
+  "ohp": 59,
+  "ivs": {
+    "hp": 17,
+    "attack": 16,
+    "defense": 13,
+    "special_attack": 14,
+    "special_defense": 16,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "Yhx2vFe8",
+  "level": 23,
+  "name": "snorunt",
+  "omoves": [
+    {
+      "id": 181,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 420,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "snorunt": -83
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 153,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 41,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

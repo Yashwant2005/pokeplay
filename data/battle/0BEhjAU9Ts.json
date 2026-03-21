@@ -1,0 +1,65 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 0,
+  "ochp": -8,
+  "ohp": 38,
+  "ivs": {
+    "hp": 16,
+    "attack": 15,
+    "defense": 18,
+    "special_attack": 19,
+    "special_defense": 18,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "zlmh0VHN",
+  "level": 14,
+  "name": "elekid",
+  "omoves": [
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "elekid": -8
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 0,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 104,
+    "xPNmpDgC": 117
+  },
+  "la": {
+    "hoTfaX8w": 11,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 41,
+    "xPNmpDgC": 40
+  }
+}

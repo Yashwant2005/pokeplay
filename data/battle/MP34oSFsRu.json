@@ -1,0 +1,70 @@
+{
+  "c": "ka283FJN",
+  "org": "no",
+  "chp": 51,
+  "ochp": -19,
+  "ohp": 60,
+  "ivs": {
+    "hp": 10,
+    "attack": 13,
+    "defense": 24,
+    "special_attack": 15,
+    "special_defense": 17,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "K6pE5xMO",
+  "level": 22,
+  "name": "gloom",
+  "omoves": [
+    {
+      "id": 51,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 202,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "gloom": -19
+  },
+  "symbol": "",
+  "team": {
+    "ka283FJN": 51,
+    "fe4s1SV4": 140,
+    "p6sCfffS": 153,
+    "HKmqM4sZ": 66,
+    "NwV4rdsE": 35,
+    "CcH25gY5": 13
+  },
+  "la": {
+    "ka283FJN": 16,
+    "fe4s1SV4": 51,
+    "p6sCfffS": 62,
+    "HKmqM4sZ": 14,
+    "NwV4rdsE": 7,
+    "CcH25gY5": 1
+  }
+}

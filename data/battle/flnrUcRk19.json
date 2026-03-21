@@ -1,0 +1,60 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 150,
+  "ochp": -235,
+  "ohp": 32,
+  "ivs": {
+    "hp": 13,
+    "attack": 21,
+    "defense": 16,
+    "special_attack": 23,
+    "special_defense": 22,
+    "speed": 24
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "2m3hkMB1",
+  "level": 11,
+  "name": "chimchar",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "chimchar": -235
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 150,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 69,
+    "Az7eBnWK": 30,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 42,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 25,
+    "Az7eBnWK": 6,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

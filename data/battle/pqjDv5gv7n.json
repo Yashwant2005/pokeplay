@@ -1,0 +1,52 @@
+{
+  "c": "QU99PvjF",
+  "org": "no",
+  "chp": 161,
+  "ochp": -205,
+  "ohp": 28,
+  "ivs": {
+    "hp": 21,
+    "attack": 20,
+    "defense": 10,
+    "special_attack": 14,
+    "special_defense": 17,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "uD5eWLHh",
+  "level": 8,
+  "name": "oshawott",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "oshawott": -205
+  },
+  "symbol": "",
+  "team": {
+    "QU99PvjF": 161,
+    "3zK8PVU5": 208
+  },
+  "la": {
+    "QU99PvjF": 44,
+    "3zK8PVU5": 60
+  }
+}

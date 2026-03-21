@@ -1,0 +1,49 @@
+{
+  "c": "4vHKM3tf",
+  "org": "no",
+  "chp": 0,
+  "ochp": -40,
+  "ohp": 40,
+  "ivs": {
+    "hp": 19,
+    "attack": 20,
+    "defense": 15,
+    "special_attack": 19,
+    "special_defense": 13,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "BSSwMV3l",
+  "level": 14,
+  "name": "ditto",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ditto": -40
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 0,
+    "Bo6PaTm9": 25,
+    "4vHKM3tf": 0
+  },
+  "la": {
+    "xPNmpDgC": 12,
+    "Bo6PaTm9": 8,
+    "4vHKM3tf": 15
+  }
+}

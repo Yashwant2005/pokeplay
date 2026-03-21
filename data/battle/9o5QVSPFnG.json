@@ -1,0 +1,62 @@
+{
+  "c": "J4F20ScC",
+  "org": "no",
+  "chp": 22,
+  "ochp": 253,
+  "ohp": 253,
+  "ivs": {
+    "hp": 12,
+    "attack": 18,
+    "defense": 19,
+    "special_attack": 11,
+    "special_defense": 17,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "oABaHlCK",
+  "level": 59,
+  "name": "giratina-altered",
+  "omoves": [
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 421,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 396,
+      "learn_method": "level-up",
+      "level_learned_at": 56
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "giratina-altered": 253
+  },
+  "symbol": "",
+  "team": {
+    "J4F20ScC": 22,
+    "Xb9OMUmh": 126
+  },
+  "la": {
+    "J4F20ScC": 5,
+    "Xb9OMUmh": 43
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "i3Zbowkn",
+  "org": "no",
+  "chp": 0,
+  "ochp": -3,
+  "ohp": 78,
+  "ivs": {
+    "hp": 15,
+    "attack": 13,
+    "defense": 21,
+    "special_attack": 14,
+    "special_defense": 16,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "o8HjvgdW",
+  "level": 28,
+  "name": "primeape",
+  "omoves": [
+    {
+      "id": 2,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 238,
+      "learn_method": "level-up",
+      "level_learned_at": 22
+    },
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 26
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "primeape": -3
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 0,
+    "USP6eG1Z": 50,
+    "i3Zbowkn": 0,
+    "ZZds2WM5": 52,
+    "dYk06Ntb": 49,
+    "YXw2z1Y1": 37
+  },
+  "la": {
+    "AfrJyFT3": 16,
+    "USP6eG1Z": 17,
+    "i3Zbowkn": 23,
+    "ZZds2WM5": 16,
+    "dYk06Ntb": 19,
+    "YXw2z1Y1": 9
+  }
+}

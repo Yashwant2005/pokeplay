@@ -1,0 +1,55 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 89,
+  "ochp": -50,
+  "ohp": 22,
+  "ivs": {
+    "hp": 13,
+    "attack": 12,
+    "defense": 10,
+    "special_attack": 17,
+    "special_defense": 17,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "xXhR3kHC",
+  "level": 8,
+  "name": "mime-jr",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mime-jr": -50
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 89,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "V585CIwf": 114,
+    "zIc5R3QM": 83,
+    "hElvGj1W": 106
+  },
+  "la": {
+    "xPNmpDgC": 36,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "V585CIwf": 38,
+    "zIc5R3QM": 30,
+    "hElvGj1W": 26
+  }
+}

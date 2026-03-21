@@ -1,0 +1,70 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 76,
+  "ochp": 0,
+  "ohp": 50,
+  "ivs": {
+    "hp": 20,
+    "attack": 15,
+    "defense": 10,
+    "special_attack": 12,
+    "special_defense": 17,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "kDRAMtef",
+  "level": 17,
+  "name": "wartortle",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 229,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "wartortle": 0
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 76,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 95,
+    "FwnmeApD": 136,
+    "zIc5R3QM": 83
+  },
+  "la": {
+    "xPNmpDgC": 36,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 23,
+    "FwnmeApD": 52,
+    "zIc5R3QM": 30
+  }
+}

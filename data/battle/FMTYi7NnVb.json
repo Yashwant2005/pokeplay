@@ -1,0 +1,49 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 227,
+  "ochp": -578,
+  "ohp": 71,
+  "ivs": {
+    "hp": 20,
+    "attack": 20,
+    "defense": 21,
+    "special_attack": 16,
+    "special_defense": 15,
+    "speed": 7
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "sH1gfx4G",
+  "level": 28,
+  "name": "dottler",
+  "omoves": [
+    {
+      "id": 522,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dottler": -578
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 227,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 54,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

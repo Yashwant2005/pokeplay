@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 131,
+  "ochp": -188,
+  "ohp": 59,
+  "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 7,
+    "special_attack": 15,
+    "special_defense": 15,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "pnhrsGNK",
+  "level": 24,
+  "name": "mantyke",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 17,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mantyke": -188
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 131,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 47,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

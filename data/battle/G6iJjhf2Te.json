@@ -1,0 +1,70 @@
+{
+  "c": "yx4Mz6GJ",
+  "org": "no",
+  "chp": 87,
+  "ochp": 128,
+  "ohp": 128,
+  "ivs": {
+    "hp": 16,
+    "attack": 13,
+    "defense": 19,
+    "special_attack": 13,
+    "special_defense": 12,
+    "speed": 9
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "7h47EYDP",
+  "level": 40,
+  "name": "abomasnow",
+  "omoves": [
+    {
+      "id": 670,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 420,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 75,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 196,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "abomasnow": 128
+  },
+  "symbol": "",
+  "team": {
+    "yx4Mz6GJ": 87,
+    "u0wRDkpV": 89,
+    "UtfDaQTH": 109,
+    "RTXYaCR3": 91,
+    "iceEdRvu": 100,
+    "bywYVs7a": 36
+  },
+  "la": {
+    "yx4Mz6GJ": 29,
+    "u0wRDkpV": 33,
+    "UtfDaQTH": 33,
+    "RTXYaCR3": 32,
+    "iceEdRvu": 40,
+    "bywYVs7a": 13
+  }
+}

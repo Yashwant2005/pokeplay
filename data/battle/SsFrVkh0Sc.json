@@ -1,0 +1,68 @@
+{
+  "c": "MRg3VA6C",
+  "org": "no",
+  "chp": 20,
+  "ochp": 124,
+  "ohp": 124,
+  "ivs": {
+    "hp": 16,
+    "attack": 17,
+    "defense": 14,
+    "special_attack": 12,
+    "special_defense": 12,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "QnO1LwQN",
+  "level": 40,
+  "name": "sandy-shocks",
+  "omoves": [
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 523,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    },
+    {
+      "id": 451,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 161,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sandy-shocks": 124
+  },
+  "symbol": "",
+  "team": {
+    "MRg3VA6C": 20,
+    "SW26GIcU": 153,
+    "0epnbV5g": 245,
+    "UOdZ0Oud": 135,
+    "ey4GFAmA": 244
+  },
+  "la": {
+    "MRg3VA6C": 5,
+    "SW26GIcU": 50,
+    "0epnbV5g": 55,
+    "UOdZ0Oud": 47,
+    "ey4GFAmA": 56
+  }
+}

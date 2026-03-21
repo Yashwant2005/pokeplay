@@ -1,0 +1,70 @@
+{
+  "c": "GZT96diT",
+  "org": "no",
+  "chp": 170,
+  "ochp": 47,
+  "ohp": 47,
+  "ivs": {
+    "hp": 23,
+    "attack": 13,
+    "defense": 18,
+    "special_attack": 17,
+    "special_defense": 14,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "Er4CG8Gf",
+  "level": 16,
+  "name": "mimikyu-disguised",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 452,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 425,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mimikyu-disguised": 47
+  },
+  "symbol": "",
+  "team": {
+    "GZT96diT": 170,
+    "Apic5Dsh": 46,
+    "okBMueJl": 22,
+    "YhuTMVwR": 132,
+    "EXhNRksB": 166,
+    "5HjXAh6U": 120
+  },
+  "la": {
+    "GZT96diT": 56,
+    "Apic5Dsh": 15,
+    "okBMueJl": 5,
+    "YhuTMVwR": 50,
+    "EXhNRksB": 63,
+    "5HjXAh6U": 42
+  }
+}

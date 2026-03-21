@@ -1,0 +1,66 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 230,
+  "ochp": -96,
+  "ohp": 86,
+  "ivs": {
+    "hp": 12,
+    "attack": 15,
+    "defense": 22,
+    "special_attack": 16,
+    "special_defense": 11,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "e35Bz3Wz",
+  "level": 33,
+  "name": "chandelure",
+  "omoves": [
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 315,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 517,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "chandelure": -96
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 230,
+    "J4F20ScC": 64,
+    "dnSoMyRy": 111,
+    "Miai3ctV": 71
+  },
+  "la": {
+    "Xb9OMUmh": 91,
+    "J4F20ScC": 19,
+    "dnSoMyRy": 39,
+    "Miai3ctV": 23
+  }
+}

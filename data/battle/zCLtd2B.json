@@ -1,0 +1,47 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "1253339353": true,
+    "8597250058": false
+  },
+  "tempTeams": {
+    "1253339353": [
+      "cEqXUlSY",
+      "Gbs35a84",
+      "8kRCifqb",
+      "mPunqq1L",
+      "h2AQMLPg",
+      "SGHYDtAU"
+    ],
+    "8597250058": [
+      "7ES7UpT5",
+      "Iyv1hLpy",
+      "w1I43Bk8",
+      "tHNx4CaH",
+      "RZY1aqB7",
+      "sR7ymvg0"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "zCLtd2B"
+}

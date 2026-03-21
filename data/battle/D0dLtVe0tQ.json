@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 119,
+  "ochp": -94,
+  "ohp": 132,
+  "ivs": {
+    "hp": 13,
+    "attack": 12,
+    "defense": 20,
+    "special_attack": 23,
+    "special_defense": 17,
+    "speed": 7
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "t7gZvMjN",
+  "level": 39,
+  "name": "azumarill",
+  "omoves": [
+    {
+      "id": 21,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 340,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 401,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 583,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "azumarill": -94
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 119
+  },
+  "la": {
+    "ZpYcR2c0": 44
+  }
+}

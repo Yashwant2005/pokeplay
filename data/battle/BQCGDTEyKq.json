@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 216,
+  "ochp": 172,
+  "ohp": 172,
+  "ivs": {
+    "hp": 18,
+    "attack": 17,
+    "defense": 19,
+    "special_attack": 26,
+    "special_defense": 16,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "TCPtahY4",
+  "level": 51,
+  "name": "urshifu-single-strike",
+  "omoves": [
+    {
+      "id": 280,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 442,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    },
+    {
+      "id": 223,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 370,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "urshifu-single-strike": 172
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 216
+  },
+  "la": {
+    "ZpYcR2c0": 49
+  }
+}

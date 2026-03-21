@@ -1,0 +1,70 @@
+{
+  "c": "HB9CWb2r",
+  "org": "no",
+  "chp": 31,
+  "ochp": 133,
+  "ohp": 133,
+  "ivs": {
+    "hp": 13,
+    "attack": 18,
+    "defense": 19,
+    "special_attack": 14,
+    "special_defense": 14,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "CgVkMV6e",
+  "level": 48,
+  "name": "greninja-battle-bond",
+  "omoves": [
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    },
+    {
+      "id": 425,
+      "learn_method": "level-up",
+      "level_learned_at": 23
+    },
+    {
+      "id": 185,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "greninja-battle-bond": 133
+  },
+  "symbol": "",
+  "team": {
+    "HB9CWb2r": 31,
+    "XOazMcFw": 13,
+    "1LfnGN0z": 172,
+    "dyFMvUzr": 154,
+    "lMzQCtR5": 151,
+    "ZczsrG3q": 252
+  },
+  "la": {
+    "HB9CWb2r": 11,
+    "XOazMcFw": 1,
+    "1LfnGN0z": 53,
+    "dyFMvUzr": 55,
+    "lMzQCtR5": 54,
+    "ZczsrG3q": 61
+  }
+}

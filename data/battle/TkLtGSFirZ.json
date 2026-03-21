@@ -1,0 +1,64 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 99,
+  "ochp": -116,
+  "ohp": 61,
+  "ivs": {
+    "hp": 9,
+    "attack": 19,
+    "defense": 15,
+    "special_attack": 13,
+    "special_defense": 19,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "tYu3QpZN",
+  "level": 26,
+  "name": "impidimp",
+  "omoves": [
+    {
+      "id": 252,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 389,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "impidimp": -116
+  },
+  "symbol": "",
+  "team": {
+    "J4F20ScC": 35,
+    "Xb9OMUmh": 99,
+    "dnSoMyRy": 106
+  },
+  "la": {
+    "J4F20ScC": 10,
+    "Xb9OMUmh": 44,
+    "dnSoMyRy": 37
+  }
+}

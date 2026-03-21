@@ -1,0 +1,64 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 199,
+  "ochp": -359,
+  "ohp": 143,
+  "ivs": {
+    "hp": 19,
+    "attack": 10,
+    "defense": 17,
+    "special_attack": 16,
+    "special_defense": 12,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "5wF6gVRB",
+  "level": 42,
+  "name": "jellicent",
+  "omoves": [
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 362,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 247,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 250,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "jellicent": -359
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 199,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 55,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

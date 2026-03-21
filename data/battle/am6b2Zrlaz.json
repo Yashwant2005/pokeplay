@@ -1,0 +1,70 @@
+{
+  "c": "HpXcPATS",
+  "org": "no",
+  "chp": 349,
+  "ochp": 232,
+  "ohp": 232,
+  "ivs": {
+    "hp": 12,
+    "attack": 15,
+    "defense": 17,
+    "special_attack": 14,
+    "special_defense": 17,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "h1sHacME",
+  "level": 53,
+  "name": "iron-hands",
+  "omoves": [
+    {
+      "id": 252,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 9,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 21,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 395,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "iron-hands": 232
+  },
+  "symbol": "",
+  "team": {
+    "HpXcPATS": 349,
+    "tdUgaQnE": 13,
+    "F3k2zUW6": 127,
+    "8RU7FGoo": 61,
+    "RZVZgpuG": 159,
+    "lau7OoXQ": 157
+  },
+  "la": {
+    "HpXcPATS": 100,
+    "tdUgaQnE": 1,
+    "F3k2zUW6": 42,
+    "8RU7FGoo": 22,
+    "RZVZgpuG": 50,
+    "lau7OoXQ": 50
+  }
+}

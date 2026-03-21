@@ -1,0 +1,65 @@
+{
+  "c": "ZHAL8qZB",
+  "org": "no",
+  "chp": 156,
+  "ochp": -246,
+  "ohp": 34,
+  "ivs": {
+    "hp": 12,
+    "attack": 17,
+    "defense": 13,
+    "special_attack": 15,
+    "special_defense": 19,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "pD46spWx",
+  "level": 11,
+  "name": "eevee",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "eevee": -246
+  },
+  "symbol": "",
+  "team": {
+    "ZHAL8qZB": 156,
+    "bmhgy5Ib": 33,
+    "i9ncUySE": 13,
+    "GtZ6KmSH": 114,
+    "BO3VNBUR": 90,
+    "0dwCNEDH": 312
+  },
+  "la": {
+    "ZHAL8qZB": 54,
+    "bmhgy5Ib": 7,
+    "i9ncUySE": 1,
+    "GtZ6KmSH": 38,
+    "BO3VNBUR": 34,
+    "0dwCNEDH": 100
+  }
+}

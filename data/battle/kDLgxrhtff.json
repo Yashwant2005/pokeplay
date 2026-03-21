@@ -1,0 +1,70 @@
+{
+  "c": "yx4Mz6GJ",
+  "org": "no",
+  "chp": 0,
+  "ochp": -29,
+  "ohp": 89,
+  "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 27,
+    "special_attack": 19,
+    "special_defense": 20,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "OL5EqkIQ",
+  "level": 31,
+  "name": "pupitar",
+  "omoves": [
+    {
+      "id": 157,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 707,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 399,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 27
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pupitar": -29
+  },
+  "symbol": "",
+  "team": {
+    "yx4Mz6GJ": 0,
+    "u0wRDkpV": 86,
+    "UtfDaQTH": 109,
+    "RTXYaCR3": 91,
+    "iceEdRvu": 100,
+    "bywYVs7a": 36
+  },
+  "la": {
+    "yx4Mz6GJ": 28,
+    "u0wRDkpV": 32,
+    "UtfDaQTH": 33,
+    "RTXYaCR3": 32,
+    "iceEdRvu": 40,
+    "bywYVs7a": 13
+  }
+}

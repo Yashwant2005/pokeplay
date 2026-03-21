@@ -1,0 +1,70 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 134,
+  "ochp": -121,
+  "ohp": 58,
+  "ivs": {
+    "hp": 23,
+    "attack": 17,
+    "defense": 17,
+    "special_attack": 24,
+    "special_defense": 16,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "8sZ77fd3",
+  "level": 22,
+  "name": "glameow",
+  "omoves": [
+    {
+      "id": 252,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 185,
+      "learn_method": "level-up",
+      "level_learned_at": 17
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "glameow": -121
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 134,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 64,
+    "SmX3uZcP": 219,
+    "Ih35m8uD": 158,
+    "Z86cfwaX": 215
+  },
+  "la": {
+    "ytrF7ks6": 40,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 23,
+    "SmX3uZcP": 34,
+    "Ih35m8uD": 24,
+    "Z86cfwaX": 33
+  }
+}

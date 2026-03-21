@@ -1,0 +1,70 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 136,
+  "ochp": -308,
+  "ohp": 58,
+  "ivs": {
+    "hp": 14,
+    "attack": 26,
+    "defense": 24,
+    "special_attack": 16,
+    "special_defense": 15,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "w0hJPr8t",
+  "level": 20,
+  "name": "stunky",
+  "omoves": [
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    },
+    {
+      "id": 491,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "stunky": -308
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 136,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 67,
+    "Az7eBnWK": 30,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 42,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 24,
+    "Az7eBnWK": 6,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

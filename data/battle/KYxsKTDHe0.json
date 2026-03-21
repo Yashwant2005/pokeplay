@@ -1,0 +1,60 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 53,
+  "ochp": -37,
+  "ohp": 25,
+  "ivs": {
+    "hp": 13,
+    "attack": 19,
+    "defense": 19,
+    "special_attack": 9,
+    "special_defense": 30,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "fxyr4LMT",
+  "level": 9,
+  "name": "rattata",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "rattata": -37
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 53,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 107,
+    "xPNmpDgC": 120
+  },
+  "la": {
+    "hoTfaX8w": 26,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 42,
+    "xPNmpDgC": 41
+  }
+}

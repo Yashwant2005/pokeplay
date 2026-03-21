@@ -1,0 +1,60 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 0,
+  "ochp": -21,
+  "ohp": 25,
+  "ivs": {
+    "hp": 14,
+    "attack": 15,
+    "defense": 18,
+    "special_attack": 11,
+    "special_defense": 14,
+    "speed": 8
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "cvaDhKyE",
+  "level": 10,
+  "name": "duskull",
+  "omoves": [
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 425,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "duskull": -21
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 0,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 104,
+    "xPNmpDgC": 117
+  },
+  "la": {
+    "hoTfaX8w": 14,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 41,
+    "xPNmpDgC": 40
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "c": "oJYApvHa",
+  "org": "no",
+  "chp": 222,
+  "ochp": 197,
+  "ohp": 197,
+  "ivs": {
+    "hp": 12,
+    "attack": 13,
+    "defense": 13,
+    "special_attack": 16,
+    "special_defense": 13,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "3BaZnDP7",
+  "level": 58,
+  "name": "mewtwo",
+  "omoves": [
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 427,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 396,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 94,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mewtwo": 197
+  },
+  "symbol": "",
+  "team": {
+    "oJYApvHa": 222,
+    "3MxJF5Sp": 19,
+    "GuItVgM1": 29,
+    "QnXq8TIw": 111
+  },
+  "la": {
+    "oJYApvHa": 64,
+    "3MxJF5Sp": 5,
+    "GuItVgM1": 7,
+    "QnXq8TIw": 44
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 57,
+  "ochp": -165,
+  "ohp": 41,
+  "ivs": {
+    "hp": 18,
+    "attack": 21,
+    "defense": 23,
+    "special_attack": 17,
+    "special_defense": 23,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "ycMSU4qM",
+  "level": 15,
+  "name": "elekid",
+  "omoves": [
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "elekid": -165
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 57,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 57
+  },
+  "la": {
+    "ytrF7ks6": 23,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 20
+  }
+}

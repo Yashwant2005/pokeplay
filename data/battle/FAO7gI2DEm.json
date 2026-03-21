@@ -1,0 +1,55 @@
+{
+  "c": "vUSVE8kA",
+  "org": "no",
+  "chp": 0,
+  "ochp": 81,
+  "ohp": 81,
+  "ivs": {
+    "hp": 12,
+    "attack": 7,
+    "defense": 3,
+    "special_attack": 10,
+    "special_defense": 6,
+    "speed": 7
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "L3wdG1ao",
+  "level": 37,
+  "name": "mr-mime",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mr-mime": 81
+  },
+  "symbol": "",
+  "team": {
+    "vUSVE8kA": 0
+  },
+  "la": {
+    "vUSVE8kA": 23
+  }
+}

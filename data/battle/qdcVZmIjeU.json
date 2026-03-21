@@ -1,0 +1,60 @@
+{
+  "c": "DY5xusUV",
+  "org": "no",
+  "chp": 81,
+  "ochp": -32,
+  "ohp": 37,
+  "ivs": {
+    "hp": 19,
+    "attack": 13,
+    "defense": 16,
+    "special_attack": 10,
+    "special_defense": 15,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "QtDhfAMm",
+  "level": 13,
+  "name": "houndour",
+  "omoves": [
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 123,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "houndour": -32
+  },
+  "symbol": "",
+  "team": {
+    "DY5xusUV": 81,
+    "er2BGMZK": 101,
+    "hK3IxtEj": 159,
+    "MoqdSLB0": 152,
+    "pIjB75RY": 186,
+    "TrpLrvEK": 187
+  },
+  "la": {
+    "DY5xusUV": 20,
+    "er2BGMZK": 36,
+    "hK3IxtEj": 50,
+    "MoqdSLB0": 66,
+    "pIjB75RY": 58,
+    "TrpLrvEK": 55
+  }
+}

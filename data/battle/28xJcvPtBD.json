@@ -1,0 +1,66 @@
+{
+  "c": "dnSoMyRy",
+  "org": "no",
+  "chp": 35,
+  "ochp": -53,
+  "ohp": 190,
+  "ivs": {
+    "hp": 28,
+    "attack": 16,
+    "defense": 21,
+    "special_attack": 16,
+    "special_defense": 16,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "sI5xxrRy",
+  "level": 58,
+  "name": "zacian",
+  "omoves": [
+    {
+      "id": 533,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    },
+    {
+      "id": 442,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 55
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zacian": -53
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 0,
+    "J4F20ScC": 0,
+    "dnSoMyRy": 35,
+    "Miai3ctV": 71
+  },
+  "la": {
+    "Xb9OMUmh": 50,
+    "J4F20ScC": 16,
+    "dnSoMyRy": 37,
+    "Miai3ctV": 23
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "pY1EJRcp",
+  "org": "no",
+  "chp": 30,
+  "ochp": 165,
+  "ohp": 165,
+  "ivs": {
+    "hp": 15,
+    "attack": 12,
+    "defense": 13,
+    "special_attack": 18,
+    "special_defense": 16,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "yKjpq1WB",
+  "level": 59,
+  "name": "iron-valiant",
+  "omoves": [
+    {
+      "id": 427,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 400,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 348,
+      "learn_method": "level-up",
+      "level_learned_at": 49
+    },
+    {
+      "id": 585,
+      "learn_method": "level-up",
+      "level_learned_at": 56
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "iron-valiant": 165
+  },
+  "symbol": "",
+  "team": {
+    "pY1EJRcp": 30,
+    "PzS8LwHX": 116,
+    "6eVdGqdR": 137,
+    "5RWVyitD": 175,
+    "KgMidtCC": 46,
+    "oINhfz6I": 34
+  },
+  "la": {
+    "pY1EJRcp": 10,
+    "PzS8LwHX": 39,
+    "6eVdGqdR": 47,
+    "5RWVyitD": 54,
+    "KgMidtCC": 18,
+    "oINhfz6I": 13
+  }
+}

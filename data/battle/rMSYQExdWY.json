@@ -1,0 +1,62 @@
+{
+  "c": "bRnR7Krx",
+  "org": "no",
+  "chp": 197,
+  "ochp": 3,
+  "ohp": 88,
+  "ivs": {
+    "hp": 12,
+    "attack": 17,
+    "defense": 19,
+    "special_attack": 13,
+    "special_defense": 11,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "lALVG0fg",
+  "level": 37,
+  "name": "magneton",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 430,
+      "learn_method": "level-up",
+      "level_learned_at": 34
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magneton": 3
+  },
+  "symbol": "",
+  "team": {
+    "9eeViYIB": 0,
+    "bRnR7Krx": 197
+  },
+  "la": {
+    "9eeViYIB": 19,
+    "bRnR7Krx": 54
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 166,
+  "ochp": -399,
+  "ohp": 21,
+  "ivs": {
+    "hp": 20,
+    "attack": 16,
+    "defense": 11,
+    "special_attack": 13,
+    "special_defense": 18,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "pK4G2kbK",
+  "level": 5,
+  "name": "bronzor",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "bronzor": -399
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 166,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 44,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

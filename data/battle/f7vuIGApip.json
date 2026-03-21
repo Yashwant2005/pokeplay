@@ -1,0 +1,70 @@
+{
+  "c": "QhOEmRvf",
+  "org": "no",
+  "chp": 330,
+  "ochp": -516,
+  "ohp": 59,
+  "ivs": {
+    "hp": 26,
+    "attack": 10,
+    "defense": 14,
+    "special_attack": 17,
+    "special_defense": 9,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "rM2OFDfF",
+  "level": 24,
+  "name": "whirlipede",
+  "omoves": [
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 205,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 342,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 450,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "whirlipede": -516
+  },
+  "symbol": "",
+  "team": {
+    "QhOEmRvf": 330,
+    "kMZTz6gx": 376,
+    "3RCqSkfd": 277,
+    "H5HE1pKF": 13,
+    "AVGFV6Dt": 13,
+    "Unspc6ge": 13
+  },
+  "la": {
+    "QhOEmRvf": 100,
+    "kMZTz6gx": 100,
+    "3RCqSkfd": 100,
+    "H5HE1pKF": 1,
+    "AVGFV6Dt": 1,
+    "Unspc6ge": 1
+  }
+}

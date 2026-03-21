@@ -1,0 +1,70 @@
+{
+  "c": "QqUv3vTf",
+  "org": "no",
+  "chp": 58,
+  "ochp": -3,
+  "ohp": 150,
+  "ivs": {
+    "hp": 22,
+    "attack": 25,
+    "defense": 22,
+    "special_attack": 12,
+    "special_defense": 19,
+    "speed": 24
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "ANhhHD8y",
+  "level": 53,
+  "name": "zweilous",
+  "omoves": [
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 406,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 34,
+      "learn_method": "level-up",
+      "level_learned_at": 44
+    },
+    {
+      "id": 304,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zweilous": -3
+  },
+  "symbol": "",
+  "team": {
+    "ZoD90TvE": 0,
+    "yfDAprPp": 155,
+    "f1ICJdrT": 38,
+    "2Oq1ashf": 169,
+    "45uJ60M7": 149,
+    "QqUv3vTf": 58
+  },
+  "la": {
+    "ZoD90TvE": 17,
+    "yfDAprPp": 50,
+    "f1ICJdrT": 15,
+    "2Oq1ashf": 43,
+    "45uJ60M7": 49,
+    "QqUv3vTf": 64
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 20,
+  "ochp": -4,
+  "ohp": 91,
+  "ivs": {
+    "hp": 8,
+    "attack": 7,
+    "defense": 17,
+    "special_attack": 9,
+    "special_defense": 7,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "eWybeAvl",
+  "level": 24,
+  "name": "jigglypuff",
+  "omoves": [
+    {
+      "id": 574,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 497,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 496,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "jigglypuff": -4
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 20,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 109,
+    "xPNmpDgC": 120
+  },
+  "la": {
+    "hoTfaX8w": 28,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 43,
+    "xPNmpDgC": 41
+  }
+}

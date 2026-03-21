@@ -1,0 +1,55 @@
+{
+  "c": "QnXq8TIw",
+  "org": "no",
+  "chp": 104,
+  "ochp": -264,
+  "ohp": 35,
+  "ivs": {
+    "hp": 14,
+    "attack": 16,
+    "defense": 6,
+    "special_attack": 3,
+    "special_defense": 8,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "I6Qfis2L",
+  "level": 13,
+  "name": "budew",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "budew": -264
+  },
+  "symbol": "",
+  "team": {
+    "QnXq8TIw": 104,
+    "W3exZd5k": 58,
+    "OWUQ86Li": 36,
+    "oJYApvHa": 222,
+    "3zK8PVU5": 208,
+    "M22B9MwZ": 75
+  },
+  "la": {
+    "QnXq8TIw": 44,
+    "W3exZd5k": 18,
+    "OWUQ86Li": 8,
+    "oJYApvHa": 64,
+    "3zK8PVU5": 60,
+    "M22B9MwZ": 26
+  }
+}

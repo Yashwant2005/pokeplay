@@ -1,0 +1,47 @@
+{
+  "c": "mLxqAIGf",
+  "org": "no",
+  "chp": 0,
+  "ochp": -1,
+  "ohp": 21,
+  "ivs": {
+    "hp": 20,
+    "attack": 22,
+    "defense": 15,
+    "special_attack": 21,
+    "special_defense": 24,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "KK54v123",
+  "level": 7,
+  "name": "abra",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "abra": -1
+  },
+  "symbol": "",
+  "team": {
+    "mLxqAIGf": 0,
+    "Rk3HTscs": 13
+  },
+  "la": {
+    "mLxqAIGf": 5,
+    "Rk3HTscs": 1
+  }
+}

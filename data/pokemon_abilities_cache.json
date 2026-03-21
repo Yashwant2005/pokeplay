@@ -5241,5 +5241,35 @@
   ],
   "salamence-mega": [
     "aerilate"
+  ],
+  "victini": [
+    "victory-star"
+  ],
+  "perrserker": [
+    "battle-armor",
+    "tough-claws",
+    "steely-spirit"
+  ],
+  "simipour": [
+    "gluttony",
+    "torrent"
+  ],
+  "meganium": [
+    "overgrow",
+    "leaf-guard"
+  ],
+  "florges": [
+    "flower-veil",
+    "symbiosis"
+  ],
+  "ariados": [
+    "swarm",
+    "insomnia",
+    "sniper"
+  ],
+  "sunflora": [
+    "chlorophyll",
+    "solar-power",
+    "early-bird"
   ]
 }

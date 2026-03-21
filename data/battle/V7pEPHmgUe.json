@@ -1,0 +1,70 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 0,
+  "ochp": -247,
+  "ohp": 99,
+  "ivs": {
+    "hp": 19,
+    "attack": 11,
+    "defense": 12,
+    "special_attack": 16,
+    "special_defense": 16,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "169ZinvP",
+  "level": 41,
+  "name": "magneton",
+  "omoves": [
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 430,
+      "learn_method": "level-up",
+      "level_learned_at": 34
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magneton": -247
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 0,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "V585CIwf": 114,
+    "zIc5R3QM": 83,
+    "hElvGj1W": 106
+  },
+  "la": {
+    "xPNmpDgC": 39,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "V585CIwf": 38,
+    "zIc5R3QM": 30,
+    "hElvGj1W": 26
+  }
+}

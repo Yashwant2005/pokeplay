@@ -1,0 +1,70 @@
+{
+  "c": "QnXq8TIw",
+  "org": "no",
+  "chp": 83,
+  "ochp": -84,
+  "ohp": 78,
+  "ivs": {
+    "hp": 23,
+    "attack": 10,
+    "defense": 17,
+    "special_attack": 27,
+    "special_defense": 19,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "H4VKqGKF",
+  "level": 25,
+  "name": "dewott",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 534,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 210,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dewott": -84
+  },
+  "symbol": "",
+  "team": {
+    "QnXq8TIw": 83,
+    "W3exZd5k": 58,
+    "OWUQ86Li": 36,
+    "oJYApvHa": 222,
+    "3zK8PVU5": 208,
+    "M22B9MwZ": 75
+  },
+  "la": {
+    "QnXq8TIw": 44,
+    "W3exZd5k": 18,
+    "OWUQ86Li": 8,
+    "oJYApvHa": 64,
+    "3zK8PVU5": 60,
+    "M22B9MwZ": 26
+  }
+}

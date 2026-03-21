@@ -1,0 +1,64 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 196,
+  "ochp": -112,
+  "ohp": 112,
+  "ivs": {
+    "hp": 15,
+    "attack": 16,
+    "defense": 11,
+    "special_attack": 16,
+    "special_defense": 14,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "bFFUizSi",
+  "level": 41,
+  "name": "sliggoo",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 225,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 406,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sliggoo": -112
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 196,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 53,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

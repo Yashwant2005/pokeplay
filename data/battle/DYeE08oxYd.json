@@ -1,0 +1,68 @@
+{
+  "c": "GZT96diT",
+  "org": "no",
+  "chp": 170,
+  "ochp": 56,
+  "ohp": 56,
+  "ivs": {
+    "hp": 21,
+    "attack": 14,
+    "defense": 16,
+    "special_attack": 18,
+    "special_defense": 14,
+    "speed": 26
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "Qfq6UUyK",
+  "level": 18,
+  "name": "dhelmise",
+  "omoves": [
+    {
+      "id": 229,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dhelmise": 56
+  },
+  "symbol": "",
+  "team": {
+    "GZT96diT": 170,
+    "Apic5Dsh": 46,
+    "okBMueJl": 22,
+    "YhuTMVwR": 132,
+    "EXhNRksB": 166
+  },
+  "la": {
+    "GZT96diT": 56,
+    "Apic5Dsh": 15,
+    "okBMueJl": 5,
+    "YhuTMVwR": 50,
+    "EXhNRksB": 63
+  }
+}

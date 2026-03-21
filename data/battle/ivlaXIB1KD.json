@@ -1,0 +1,65 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 71,
+  "ochp": -45,
+  "ohp": 41,
+  "ivs": {
+    "hp": 15,
+    "attack": 20,
+    "defense": 9,
+    "special_attack": 14,
+    "special_defense": 13,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "Qysgqm2j",
+  "level": 18,
+  "name": "kabuto",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 453,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kabuto": -45
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 71,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120
+  },
+  "la": {
+    "hoTfaX8w": 31,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41
+  }
+}

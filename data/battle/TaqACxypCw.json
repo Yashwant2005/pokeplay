@@ -1,0 +1,66 @@
+{
+  "c": "BjnaCP3R",
+  "org": "no",
+  "chp": 75,
+  "ochp": -69,
+  "ohp": 79,
+  "ivs": {
+    "hp": 18,
+    "attack": 9,
+    "defense": 11,
+    "special_attack": 9,
+    "special_defense": 18,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "aNqmaRj8",
+  "level": 28,
+  "name": "primeape",
+  "omoves": [
+    {
+      "id": 2,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 238,
+      "learn_method": "level-up",
+      "level_learned_at": 22
+    },
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 26
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "primeape": -69
+  },
+  "symbol": "",
+  "team": {
+    "vUSVE8kA": 0,
+    "mjg3bO2U": 71,
+    "BjnaCP3R": 75,
+    "TyZh456N": 88
+  },
+  "la": {
+    "vUSVE8kA": 24,
+    "mjg3bO2U": 26,
+    "BjnaCP3R": 40,
+    "TyZh456N": 37
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "c": "dp9wUkNP",
+  "org": "no",
+  "chp": 319,
+  "ochp": -475,
+  "ohp": 56,
+  "ivs": {
+    "hp": 22,
+    "attack": 9,
+    "defense": 12,
+    "special_attack": 21,
+    "special_defense": 17,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "SzCPbe9N",
+  "level": 27,
+  "name": "wimpod",
+  "omoves": [
+    {
+      "id": 522,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "wimpod": -475
+  },
+  "symbol": "",
+  "team": {
+    "dp9wUkNP": 319,
+    "b8tDewTn": 296,
+    "rgGXc2wr": 282,
+    "8HAnFBbX": 284,
+    "kBbvwA1l": 379,
+    "NKztvgnG": 293
+  },
+  "la": {
+    "dp9wUkNP": 100,
+    "b8tDewTn": 100,
+    "rgGXc2wr": 100,
+    "8HAnFBbX": 100,
+    "kBbvwA1l": 100,
+    "NKztvgnG": 100
+  }
+}

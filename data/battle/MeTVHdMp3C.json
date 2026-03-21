@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 81,
+  "ochp": -342,
+  "ohp": 188,
+  "ivs": {
+    "hp": 16,
+    "attack": 10,
+    "defense": 18,
+    "special_attack": 19,
+    "special_defense": 22,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "3rW4gTCW",
+  "level": 43,
+  "name": "drifblim",
+  "omoves": [
+    {
+      "id": 371,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 247,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 120,
+      "learn_method": "level-up",
+      "level_learned_at": 31
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "drifblim": -342
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 81
+  },
+  "la": {
+    "ZpYcR2c0": 41
+  }
+}

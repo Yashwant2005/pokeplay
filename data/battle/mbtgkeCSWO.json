@@ -1,0 +1,70 @@
+{
+  "c": "HUh1DYK2",
+  "org": "no",
+  "chp": 103,
+  "ochp": 143,
+  "ohp": 143,
+  "ivs": {
+    "hp": 12,
+    "attack": 14,
+    "defense": 15,
+    "special_attack": 12,
+    "special_defense": 19,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "HxNTOMVd",
+  "level": 49,
+  "name": "metagross",
+  "omoves": [
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 430,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 26
+    },
+    {
+      "id": 94,
+      "learn_method": "level-up",
+      "level_learned_at": 34
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "metagross": 143
+  },
+  "symbol": "",
+  "team": {
+    "HUh1DYK2": 103,
+    "Pne7iYOy": 132,
+    "Ll1ltq4f": 109,
+    "mTCqiClo": 128,
+    "9uRTUtu4": 30,
+    "uasHxgEj": 178
+  },
+  "la": {
+    "HUh1DYK2": 26,
+    "Pne7iYOy": 45,
+    "Ll1ltq4f": 38,
+    "mTCqiClo": 43,
+    "9uRTUtu4": 11,
+    "uasHxgEj": 56
+  }
+}

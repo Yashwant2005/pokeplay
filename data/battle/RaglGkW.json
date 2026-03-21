@@ -1,0 +1,78 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [
+      "paldea",
+      "johto"
+    ],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "6265981509": true,
+    "7577674783": true
+  },
+  "tempTeams": {
+    "6265981509": [
+      "3I6dtZyE",
+      "jQO3wwTE",
+      "z6IEFTFs",
+      "SyLb5tUB",
+      "Sj2OJADP",
+      "jOPIL7G7"
+    ],
+    "7577674783": [
+      "yi7SnWu9",
+      "HblHoTvy",
+      "mp8xnLRg",
+      "FOk95jz6",
+      "WtPMXosU",
+      "vqh79lu7"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "RaglGkW",
+  "status": {},
+  "c": "jQO3wwTE",
+  "chp": 295,
+  "o": "FOk95jz6",
+  "ohp": 222,
+  "cid": "6265981509",
+  "oid": "7577674783",
+  "tem": {
+    "jQO3wwTE": 295,
+    "SyLb5tUB": 240
+  },
+  "la": {
+    "jQO3wwTE": 100,
+    "SyLb5tUB": 100
+  },
+  "tem2": {
+    "FOk95jz6": 222
+  },
+  "la2": {
+    "FOk95jz6": 100
+  },
+  "ot": {
+    "undefined": 222
+  },
+  "usedMoves": {},
+  "runs": [
+    6265981509
+  ]
+}

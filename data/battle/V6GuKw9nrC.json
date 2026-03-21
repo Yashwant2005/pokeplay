@@ -1,0 +1,49 @@
+{
+  "c": "J4F20ScC",
+  "org": "no",
+  "chp": 6,
+  "ochp": 12,
+  "ohp": 36,
+  "ivs": {
+    "hp": 16,
+    "attack": 19,
+    "defense": 17,
+    "special_attack": 18,
+    "special_defense": 11,
+    "speed": 24
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "L7xeluwi",
+  "level": 10,
+  "name": "tauros-paldea-blaze-breed",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "tauros-paldea-blaze-breed": 12
+  },
+  "symbol": "",
+  "team": {
+    "J4F20ScC": 6,
+    "Xb9OMUmh": 129,
+    "dnSoMyRy": 106
+  },
+  "la": {
+    "J4F20ScC": 10,
+    "Xb9OMUmh": 44,
+    "dnSoMyRy": 37
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 75,
+  "ochp": -54,
+  "ohp": 84,
+  "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 18,
+    "special_attack": 14,
+    "special_defense": 16,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "FCs6kz7f",
+  "level": 29,
+  "name": "torkoal",
+  "omoves": [
+    {
+      "id": 229,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 499,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 172,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 436,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "torkoal": -54
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 75,
+    "J4F20ScC": 35,
+    "dnSoMyRy": 106,
+    "Miai3ctV": 36
+  },
+  "la": {
+    "Xb9OMUmh": 45,
+    "J4F20ScC": 10,
+    "dnSoMyRy": 37,
+    "Miai3ctV": 10
+  }
+}

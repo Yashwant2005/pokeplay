@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 196,
+  "ochp": -74,
+  "ohp": 117,
+  "ivs": {
+    "hp": 17,
+    "attack": 24,
+    "defense": 24,
+    "special_attack": 17,
+    "special_defense": 16,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "s7teD6Di",
+  "level": 31,
+  "name": "jigglypuff",
+  "omoves": [
+    {
+      "id": 497,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 496,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 34,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "jigglypuff": -74
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 196
+  },
+  "la": {
+    "ZpYcR2c0": 45
+  }
+}

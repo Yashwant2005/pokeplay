@@ -1,0 +1,70 @@
+{
+  "c": "HpXcPATS",
+  "org": "no",
+  "chp": 349,
+  "ochp": 156,
+  "ohp": 156,
+  "ivs": {
+    "hp": 22,
+    "attack": 23,
+    "defense": 27,
+    "special_attack": 23,
+    "special_defense": 25,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "ugq4SD3J",
+  "level": 49,
+  "name": "fezandipiti",
+  "omoves": [
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 17,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 440,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 541,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "fezandipiti": 156
+  },
+  "symbol": "",
+  "team": {
+    "HpXcPATS": 349,
+    "tdUgaQnE": 13,
+    "F3k2zUW6": 127,
+    "8RU7FGoo": 61,
+    "RZVZgpuG": 159,
+    "lau7OoXQ": 157
+  },
+  "la": {
+    "HpXcPATS": 100,
+    "tdUgaQnE": 1,
+    "F3k2zUW6": 42,
+    "8RU7FGoo": 22,
+    "RZVZgpuG": 50,
+    "lau7OoXQ": 50
+  }
+}

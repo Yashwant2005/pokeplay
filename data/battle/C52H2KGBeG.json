@@ -1,0 +1,59 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 93,
+  "ochp": -511,
+  "ohp": 28,
+  "ivs": {
+    "hp": 13,
+    "attack": 17,
+    "defense": 14,
+    "special_attack": 13,
+    "special_defense": 13,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "Jzfc2KE3",
+  "level": 8,
+  "name": "murkrow",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "murkrow": -511
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 93,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 57
+  },
+  "la": {
+    "ytrF7ks6": 23,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 20
+  }
+}

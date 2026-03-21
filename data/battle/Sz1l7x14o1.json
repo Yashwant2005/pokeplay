@@ -1,0 +1,70 @@
+{
+  "c": "GyptShX6",
+  "org": "no",
+  "chp": 104,
+  "ochp": -122,
+  "ohp": 96,
+  "ivs": {
+    "hp": 15,
+    "attack": 17,
+    "defense": 12,
+    "special_attack": 19,
+    "special_defense": 16,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "3OnalNJz",
+  "level": 34,
+  "name": "lilligant",
+  "omoves": [
+    {
+      "id": 345,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 412,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 437,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 572,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "lilligant": -122
+  },
+  "symbol": "",
+  "team": {
+    "GyptShX6": 104,
+    "qprXez3B": 168,
+    "nzrnd7Gh": 167,
+    "YhzNyYZC": 145,
+    "EMnVbXEj": 72,
+    "YzmR2Ig5": 104
+  },
+  "la": {
+    "GyptShX6": 39,
+    "qprXez3B": 54,
+    "nzrnd7Gh": 36,
+    "YhzNyYZC": 52,
+    "EMnVbXEj": 25,
+    "YzmR2Ig5": 32
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 87,
+  "ochp": -140,
+  "ohp": 33,
+  "ivs": {
+    "hp": 14,
+    "attack": 12,
+    "defense": 10,
+    "special_attack": 17,
+    "special_defense": 11,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "yodpi2Es",
+  "level": 11,
+  "name": "cubone",
+  "omoves": [
+    {
+      "id": 189,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 206,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "cubone": -140
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 87,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 95,
+    "FwnmeApD": 136,
+    "zIc5R3QM": 83
+  },
+  "la": {
+    "xPNmpDgC": 36,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 23,
+    "FwnmeApD": 52,
+    "zIc5R3QM": 30
+  }
+}

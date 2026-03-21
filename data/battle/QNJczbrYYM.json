@@ -1,0 +1,45 @@
+{
+  "c": "ddCNAJRm",
+  "org": "no",
+  "chp": 0,
+  "ochp": 10,
+  "ohp": 34,
+  "ivs": {
+    "hp": 19,
+    "attack": 22,
+    "defense": 18,
+    "special_attack": 22,
+    "special_defense": 17,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "5vnEHST8",
+  "level": 9,
+  "name": "tauros",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "tauros": 10
+  },
+  "symbol": "",
+  "team": {
+    "ddCNAJRm": 0
+  },
+  "la": {
+    "ddCNAJRm": 7
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 0,
+  "ochp": -70,
+  "ohp": 48,
+  "ivs": {
+    "hp": 4,
+    "attack": 7,
+    "defense": 8,
+    "special_attack": 8,
+    "special_defense": 8,
+    "speed": 2
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "SkzpsX8r",
+  "level": 17,
+  "name": "venonat",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "venonat": -70
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 0,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 45,
+    "INnWVvZa": 65,
+    "hElvGj1W": 84,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 25,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 18,
+    "INnWVvZa": 23,
+    "hElvGj1W": 20,
+    "yJT8NrzJ": 25
+  }
+}

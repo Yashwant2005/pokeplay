@@ -1,0 +1,61 @@
+{
+  "c": "Tsxr5AMS",
+  "org": "no",
+  "chp": 470,
+  "ochp": 56,
+  "ohp": 56,
+  "ivs": {
+    "hp": 13,
+    "attack": 19,
+    "defense": 26,
+    "special_attack": 13,
+    "special_defense": 22,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "3vnpEPsY",
+  "level": 23,
+  "name": "rockruff-own-tempo",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 88,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "rockruff-own-tempo": 56
+  },
+  "symbol": "",
+  "team": {
+    "Tsxr5AMS": 470,
+    "BiLqcvCr": 169,
+    "lTTgD8x0": 118,
+    "Aw7KRyyT": 174
+  },
+  "la": {
+    "Tsxr5AMS": 100,
+    "BiLqcvCr": 51,
+    "lTTgD8x0": 40,
+    "Aw7KRyyT": 37
+  }
+}

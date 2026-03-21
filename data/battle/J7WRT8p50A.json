@@ -1,0 +1,65 @@
+{
+  "c": "XxmBb8ir",
+  "org": "no",
+  "chp": 187,
+  "ochp": 55,
+  "ohp": 55,
+  "ivs": {
+    "hp": 19,
+    "attack": 21,
+    "defense": 13,
+    "special_attack": 12,
+    "special_defense": 18,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "p2v783UM",
+  "level": 21,
+  "name": "finneon",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 16,
+      "learn_method": "level-up",
+      "level_learned_at": 17
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "finneon": 55
+  },
+  "symbol": "",
+  "team": {
+    "XxmBb8ir": 187,
+    "BDoHP5wy": 122,
+    "z8uGifBR": 201,
+    "puss3zIS": 347,
+    "OchBd1I4": 249,
+    "bMyjfqev": 123
+  },
+  "la": {
+    "XxmBb8ir": 60,
+    "BDoHP5wy": 50,
+    "z8uGifBR": 55,
+    "puss3zIS": 59,
+    "OchBd1I4": 61,
+    "bMyjfqev": 47
+  }
+}

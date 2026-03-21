@@ -1,0 +1,60 @@
+{
+  "c": "ALb1cDQf",
+  "org": "no",
+  "chp": 29,
+  "ochp": 44,
+  "ohp": 44,
+  "ivs": {
+    "hp": 22,
+    "attack": 19,
+    "defense": 12,
+    "special_attack": 16,
+    "special_defense": 18,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "AJpl4pkZ",
+  "level": 17,
+  "name": "mankey",
+  "omoves": [
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 2,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mankey": 44
+  },
+  "symbol": "",
+  "team": {
+    "ALb1cDQf": 29
+  },
+  "la": {
+    "ALb1cDQf": 9
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 58,
+  "ochp": -164,
+  "ohp": 27,
+  "ivs": {
+    "hp": 13,
+    "attack": 10,
+    "defense": 13,
+    "special_attack": 15,
+    "special_defense": 18,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "5QtZuDGP",
+  "level": 8,
+  "name": "bellsprout",
+  "omoves": [
+    {
+      "id": 22,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "bellsprout": -164
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 58,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 45,
+    "INnWVvZa": 68,
+    "hElvGj1W": 84,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 25,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 18,
+    "INnWVvZa": 24,
+    "hElvGj1W": 20,
+    "yJT8NrzJ": 25
+  }
+}

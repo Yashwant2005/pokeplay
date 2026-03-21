@@ -1,0 +1,62 @@
+{
+  "c": "fhrGjddJ",
+  "org": "no",
+  "chp": 222,
+  "ochp": -85,
+  "ohp": 133,
+  "ivs": {
+    "hp": 18,
+    "attack": 22,
+    "defense": 19,
+    "special_attack": 7,
+    "special_defense": 12,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "Ye0OLaEp",
+  "level": 20,
+  "name": "chansey",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 574,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 497,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "chansey": -85
+  },
+  "symbol": "",
+  "team": {
+    "SnE37Nn3": 0,
+    "fhrGjddJ": 222
+  },
+  "la": {
+    "SnE37Nn3": 15,
+    "fhrGjddJ": 62
+  }
+}

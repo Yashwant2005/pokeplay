@@ -1,0 +1,62 @@
+{
+  "c": "F5chvUKh",
+  "org": "no",
+  "chp": 0,
+  "ochp": 47,
+  "ohp": 70,
+  "ivs": {
+    "hp": 10,
+    "attack": 12,
+    "defense": 22,
+    "special_attack": 15,
+    "special_defense": 21,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "ktn8QZVy",
+  "level": 25,
+  "name": "poliwhirl",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 341,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 61,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "poliwhirl": 47
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 0,
+    "F5chvUKh": 0
+  },
+  "la": {
+    "jpIgbHmU": 9,
+    "F5chvUKh": 13
+  }
+}

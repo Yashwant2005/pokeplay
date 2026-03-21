@@ -1,0 +1,62 @@
+{
+  "c": "kunjtho9",
+  "org": "no",
+  "chp": 28,
+  "ochp": 196,
+  "ohp": 196,
+  "ivs": {
+    "hp": 21,
+    "attack": 16,
+    "defense": 29,
+    "special_attack": 23,
+    "special_defense": 26,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "q8uBFJJ7",
+  "level": 58,
+  "name": "spectrier",
+  "omoves": [
+    {
+      "id": 23,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 247,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 37,
+      "learn_method": "level-up",
+      "level_learned_at": 54
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "spectrier": 196
+  },
+  "symbol": "",
+  "team": {
+    "kunjtho9": 28,
+    "SG6Axr1x": 182
+  },
+  "la": {
+    "kunjtho9": 7,
+    "SG6Axr1x": 53
+  }
+}

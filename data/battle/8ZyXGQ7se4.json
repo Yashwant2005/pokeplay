@@ -1,0 +1,60 @@
+{
+  "c": "V585CIwf",
+  "org": "no",
+  "chp": 92,
+  "ochp": -95,
+  "ohp": 44,
+  "ivs": {
+    "hp": 19,
+    "attack": 21,
+    "defense": 17,
+    "special_attack": 27,
+    "special_defense": 20,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "lpLmNR0u",
+  "level": 16,
+  "name": "glameow",
+  "omoves": [
+    {
+      "id": 252,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "glameow": -95
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 0,
+    "V585CIwf": 92,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 104,
+    "xPNmpDgC": 117
+  },
+  "la": {
+    "hoTfaX8w": 11,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 41,
+    "xPNmpDgC": 40
+  }
+}

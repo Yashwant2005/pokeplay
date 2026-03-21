@@ -1,0 +1,70 @@
+{
+  "c": "YhzNyYZC",
+  "org": "no",
+  "chp": 97,
+  "ochp": -118,
+  "ohp": 93,
+  "ivs": {
+    "hp": 18,
+    "attack": 19,
+    "defense": 21,
+    "special_attack": 12,
+    "special_defense": 14,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "hikSRJl4",
+  "level": 35,
+  "name": "gothorita",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 473,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "gothorita": -118
+  },
+  "symbol": "",
+  "team": {
+    "YhzNyYZC": 97,
+    "qprXez3B": 168,
+    "nzrnd7Gh": 167,
+    "GyptShX6": 94,
+    "EMnVbXEj": 54,
+    "YzmR2Ig5": 101
+  },
+  "la": {
+    "YhzNyYZC": 48,
+    "qprXez3B": 54,
+    "nzrnd7Gh": 36,
+    "GyptShX6": 35,
+    "EMnVbXEj": 18,
+    "YzmR2Ig5": 31
+  }
+}

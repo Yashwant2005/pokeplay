@@ -1,0 +1,110 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "1222434823": true,
+    "7074080974": true
+  },
+  "tempTeams": {
+    "1222434823": [
+      "RfxuEJtC",
+      "BXHmqbKy",
+      "sEL6v1HM",
+      "0EyPuKya",
+      "k94gp9tJ",
+      "xW8743MP"
+    ],
+    "7074080974": [
+      "VRnuADTQ",
+      "mhHYmhgY",
+      "VU84t3ub",
+      "fw1veAWm",
+      "jtqpGAIu",
+      "wp2TU5xf"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "6QuHYQ5",
+  "status": {},
+  "c": "VRnuADTQ",
+  "chp": 369,
+  "o": "RfxuEJtC",
+  "ohp": 232,
+  "cid": "7074080974",
+  "oid": "1222434823",
+  "tem": {
+    "VRnuADTQ": 369,
+    "mhHYmhgY": 277,
+    "VU84t3ub": 406,
+    "fw1veAWm": 256,
+    "jtqpGAIu": 309,
+    "wp2TU5xf": 263
+  },
+  "la": {
+    "VRnuADTQ": 100,
+    "mhHYmhgY": 100,
+    "VU84t3ub": 100,
+    "fw1veAWm": 100,
+    "jtqpGAIu": 100,
+    "wp2TU5xf": 100
+  },
+  "tem2": {
+    "RfxuEJtC": 232,
+    "BXHmqbKy": 307,
+    "sEL6v1HM": 272,
+    "0EyPuKya": 303,
+    "k94gp9tJ": 224,
+    "xW8743MP": 236
+  },
+  "la2": {
+    "RfxuEJtC": 100,
+    "BXHmqbKy": 100,
+    "sEL6v1HM": 100,
+    "0EyPuKya": 100,
+    "k94gp9tJ": 100,
+    "xW8743MP": 100
+  },
+  "ot": {
+    "undefined": 232
+  },
+  "usedMoves": {},
+  "queuedActions": [
+    {
+      "cid": 7074080974,
+      "c": "VRnuADTQ",
+      "type": "move",
+      "id": "407"
+    }
+  ],
+  "megas": {
+    "RfxuEJtC": "sableye"
+  },
+  "entryHazards": {
+    "1222434823": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  }
+}

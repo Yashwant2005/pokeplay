@@ -1,0 +1,70 @@
+{
+  "c": "myl79ipR",
+  "org": "no",
+  "chp": 35,
+  "ochp": 174,
+  "ohp": 174,
+  "ivs": {
+    "hp": 23,
+    "attack": 22,
+    "defense": 13,
+    "special_attack": 14,
+    "special_defense": 26,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "Rw2eSCwX",
+  "level": 58,
+  "name": "volcanion",
+  "omoves": [
+    {
+      "id": 510,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    },
+    {
+      "id": 23,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 503,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 54
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "volcanion": 174
+  },
+  "symbol": "",
+  "team": {
+    "myl79ipR": 35,
+    "38gO5Rz5": 32,
+    "JjQkcwpm": 108,
+    "edPmWQiC": 128,
+    "UVKEwweT": 204,
+    "6MCMaP3b": 142
+  },
+  "la": {
+    "myl79ipR": 14,
+    "38gO5Rz5": 11,
+    "JjQkcwpm": 37,
+    "edPmWQiC": 52,
+    "UVKEwweT": 52,
+    "6MCMaP3b": 49
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "3Suqua9f",
+  "org": "no",
+  "chp": 71,
+  "ochp": -3,
+  "ohp": 50,
+  "ivs": {
+    "hp": 14,
+    "attack": 17,
+    "defense": 13,
+    "special_attack": 16,
+    "special_defense": 11,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "7kdBRewU",
+  "level": 16,
+  "name": "orthworm",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 189,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 479,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "orthworm": -3
+  },
+  "symbol": "",
+  "team": {
+    "3Suqua9f": 71,
+    "w9s3hYBw": 60,
+    "9UPD72Ih": 94,
+    "OUTQeDXY": 56,
+    "OEv5j9Ej": 72,
+    "liCLJSCe": 65
+  },
+  "la": {
+    "3Suqua9f": 33,
+    "w9s3hYBw": 21,
+    "9UPD72Ih": 33,
+    "OUTQeDXY": 26,
+    "OEv5j9Ej": 34,
+    "liCLJSCe": 26
+  }
+}

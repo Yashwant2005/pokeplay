@@ -1,0 +1,135 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "7074080974": true,
+    "8226797513": true
+  },
+  "tempTeams": {
+    "7074080974": [
+      "k75nsklS",
+      "sPIUhFpP",
+      "Xi27Ej8l",
+      "tWToJRls",
+      "5C4VMk5x",
+      "7aOmiNhQ"
+    ],
+    "8226797513": [
+      "MoSC7EEU",
+      "wo3xukxt",
+      "B89pzz8l",
+      "lYSQyaPM",
+      "1Dwp3TR7",
+      "tMBn9K4I"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "tLkNeJk",
+  "status": {},
+  "c": "sPIUhFpP",
+  "chp": 328,
+  "o": "tMBn9K4I",
+  "ohp": 248,
+  "cid": "7074080974",
+  "oid": "8226797513",
+  "tem": {
+    "k75nsklS": 282,
+    "sPIUhFpP": 328,
+    "Xi27Ej8l": 576,
+    "tWToJRls": 220,
+    "5C4VMk5x": 275,
+    "7aOmiNhQ": 259
+  },
+  "la": {
+    "k75nsklS": 100,
+    "sPIUhFpP": 100,
+    "Xi27Ej8l": 100,
+    "tWToJRls": 100,
+    "5C4VMk5x": 100,
+    "7aOmiNhQ": 100
+  },
+  "tem2": {
+    "MoSC7EEU": 397,
+    "wo3xukxt": 326,
+    "B89pzz8l": 278,
+    "lYSQyaPM": 250,
+    "1Dwp3TR7": 352,
+    "tMBn9K4I": 248
+  },
+  "la2": {
+    "MoSC7EEU": 100,
+    "wo3xukxt": 100,
+    "B89pzz8l": 100,
+    "lYSQyaPM": 100,
+    "1Dwp3TR7": 100,
+    "tMBn9K4I": 100
+  },
+  "ot": {
+    "undefined": 397
+  },
+  "usedMoves": {
+    "MoSC7EEU": [
+      "276"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 2,
+  "bideState": {},
+  "turnHits": {},
+  "lastMoveByPass": {},
+  "entryHazards": {
+    "7074080974": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "8226797513": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "statStages": {
+    "MoSC7EEU": {
+      "attack": -1,
+      "defense": -1,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "tWToJRls": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  }
+}

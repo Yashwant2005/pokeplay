@@ -1,0 +1,70 @@
+{
+  "c": "5tZxhJFu",
+  "org": "no",
+  "chp": 55,
+  "ochp": 194,
+  "ohp": 194,
+  "ivs": {
+    "hp": 13,
+    "attack": 11,
+    "defense": 18,
+    "special_attack": 19,
+    "special_defense": 11,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "6sfTiMCB",
+  "level": 63,
+  "name": "marshadow",
+  "omoves": [
+    {
+      "id": 395,
+      "learn_method": "level-up",
+      "level_learned_at": 27
+    },
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    },
+    {
+      "id": 389,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 409,
+      "learn_method": "level-up",
+      "level_learned_at": 54
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "marshadow": 194
+  },
+  "symbol": "",
+  "team": {
+    "5tZxhJFu": 55,
+    "qAAOYBrq": 316,
+    "zY2JlJMJ": 162,
+    "1Cf4rzjK": 156,
+    "kwOtdG3J": 246,
+    "4IAgPl8m": 188
+  },
+  "la": {
+    "5tZxhJFu": 20,
+    "qAAOYBrq": 54,
+    "zY2JlJMJ": 50,
+    "1Cf4rzjK": 63,
+    "kwOtdG3J": 61,
+    "4IAgPl8m": 53
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "YhzNyYZC",
+  "org": "no",
+  "chp": 91,
+  "ochp": -68,
+  "ohp": 129,
+  "ivs": {
+    "hp": 17,
+    "attack": 14,
+    "defense": 13,
+    "special_attack": 15,
+    "special_defense": 11,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "Omilp8uU",
+  "level": 42,
+  "name": "empoleon",
+  "omoves": [
+    {
+      "id": 61,
+      "learn_method": "level-up",
+      "level_learned_at": 19
+    },
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 362,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    },
+    {
+      "id": 250,
+      "learn_method": "level-up",
+      "level_learned_at": 39
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "empoleon": -68
+  },
+  "symbol": "",
+  "team": {
+    "YhzNyYZC": 91,
+    "qprXez3B": 168,
+    "nzrnd7Gh": 167,
+    "GyptShX6": 94,
+    "EMnVbXEj": 59,
+    "YzmR2Ig5": 101
+  },
+  "la": {
+    "YhzNyYZC": 51,
+    "qprXez3B": 54,
+    "nzrnd7Gh": 36,
+    "GyptShX6": 35,
+    "EMnVbXEj": 20,
+    "YzmR2Ig5": 31
+  }
+}

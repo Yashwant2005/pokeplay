@@ -1,0 +1,60 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 51,
+  "ochp": -74,
+  "ohp": 34,
+  "ivs": {
+    "hp": 8,
+    "attack": 5,
+    "defense": 6,
+    "special_attack": 3,
+    "special_defense": 6,
+    "speed": 7
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "ILlBQc5O",
+  "level": 9,
+  "name": "grimer",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 189,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "grimer": -74
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 51,
+    "F5chvUKh": 87,
+    "LG4mTUpP": 71,
+    "UiiozQZj": 77,
+    "XhF014r3": 81,
+    "XQu3Dlrw": 55
+  },
+  "la": {
+    "jpIgbHmU": 26,
+    "F5chvUKh": 26,
+    "LG4mTUpP": 24,
+    "UiiozQZj": 18,
+    "XhF014r3": 28,
+    "XQu3Dlrw": 24
+  }
+}

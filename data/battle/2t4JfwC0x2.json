@@ -1,0 +1,62 @@
+{
+  "c": "QU99PvjF",
+  "org": "no",
+  "chp": 83,
+  "ochp": -34,
+  "ohp": 110,
+  "ivs": {
+    "hp": 18,
+    "attack": 11,
+    "defense": 16,
+    "special_attack": 15,
+    "special_defense": 15,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "2OVTSaC7",
+  "level": 36,
+  "name": "machoke",
+  "omoves": [
+    {
+      "id": 490,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 282,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 233,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 70,
+      "learn_method": "level-up",
+      "level_learned_at": 31
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "machoke": -34
+  },
+  "symbol": "",
+  "team": {
+    "QU99PvjF": 83,
+    "3zK8PVU5": 208
+  },
+  "la": {
+    "QU99PvjF": 43,
+    "3zK8PVU5": 60
+  }
+}

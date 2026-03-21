@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 41,
+  "ochp": -46,
+  "ohp": 154,
+  "ivs": {
+    "hp": 15,
+    "attack": 15,
+    "defense": 13,
+    "special_attack": 18,
+    "special_defense": 19,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "jpwbJzKg",
+  "level": 67,
+  "name": "spiritomb",
+  "omoves": [
+    {
+      "id": 389,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 247,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 399,
+      "learn_method": "level-up",
+      "level_learned_at": 50
+    },
+    {
+      "id": 138,
+      "learn_method": "level-up",
+      "level_learned_at": 60
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "spiritomb": -46
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 41,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 143,
+    "xPNmpDgC": 122,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 46,
+    "xPNmpDgC": 42,
+    "V585CIwf": 38
+  }
+}

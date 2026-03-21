@@ -1,0 +1,68 @@
+{
+  "c": "3zK8PVU5",
+  "org": "no",
+  "chp": 166,
+  "ochp": -62,
+  "ohp": 96,
+  "ivs": {
+    "hp": 23,
+    "attack": 7,
+    "defense": 11,
+    "special_attack": 16,
+    "special_defense": 14,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "rUKHNhY8",
+  "level": 34,
+  "name": "fearow",
+  "omoves": [
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    },
+    {
+      "id": 332,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 23
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "fearow": -62
+  },
+  "symbol": "",
+  "team": {
+    "3zK8PVU5": 166,
+    "QnXq8TIw": 111,
+    "W3exZd5k": 58,
+    "OWUQ86Li": 13,
+    "oJYApvHa": 222
+  },
+  "la": {
+    "3zK8PVU5": 60,
+    "QnXq8TIw": 44,
+    "W3exZd5k": 18,
+    "OWUQ86Li": 1,
+    "oJYApvHa": 64
+  }
+}

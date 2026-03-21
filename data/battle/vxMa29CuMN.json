@@ -1,0 +1,56 @@
+{
+  "c": "Tsxr5AMS",
+  "org": "no",
+  "chp": 466,
+  "ochp": -332,
+  "ohp": 27,
+  "ivs": {
+    "hp": 14,
+    "attack": 14,
+    "defense": 17,
+    "special_attack": 12,
+    "special_defense": 15,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "aJC7fDXz",
+  "level": 9,
+  "name": "spearow",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "spearow": -332
+  },
+  "symbol": "",
+  "team": {
+    "Tsxr5AMS": 466,
+    "BiLqcvCr": 169,
+    "lTTgD8x0": 118,
+    "Aw7KRyyT": 174
+  },
+  "la": {
+    "Tsxr5AMS": 100,
+    "BiLqcvCr": 51,
+    "lTTgD8x0": 40,
+    "Aw7KRyyT": 37
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 150,
+  "ochp": -76,
+  "ohp": 115,
+  "ivs": {
+    "hp": 20,
+    "attack": 11,
+    "defense": 11,
+    "special_attack": 13,
+    "special_defense": 17,
+    "speed": 9
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "aIUxKPWY",
+  "level": 42,
+  "name": "lopunny",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 24,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "lopunny": -76
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 150,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 108,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 44,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 38,
+    "xPNmpDgC": 42
+  }
+}

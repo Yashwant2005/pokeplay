@@ -1,0 +1,51 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 15,
+  "ochp": -21,
+  "ohp": 23,
+  "ivs": {
+    "hp": 14,
+    "attack": 24,
+    "defense": 21,
+    "special_attack": 26,
+    "special_defense": 24,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "4DAhsD3n",
+  "level": 9,
+  "name": "magikarp",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magikarp": -21
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 15,
+    "Bo6PaTm9": 27,
+    "4vHKM3tf": 41,
+    "INnWVvZa": 65
+  },
+  "la": {
+    "xPNmpDgC": 16,
+    "Bo6PaTm9": 9,
+    "4vHKM3tf": 16,
+    "INnWVvZa": 23
+  }
+}

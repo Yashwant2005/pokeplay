@@ -1,0 +1,55 @@
+{
+  "c": "QnXq8TIw",
+  "org": "no",
+  "chp": 94,
+  "ochp": -59,
+  "ohp": 41,
+  "ivs": {
+    "hp": 17,
+    "attack": 13,
+    "defense": 16,
+    "special_attack": 16,
+    "special_defense": 11,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "NfxJL78j",
+  "level": 16,
+  "name": "kadabra",
+  "omoves": [
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kadabra": -59
+  },
+  "symbol": "",
+  "team": {
+    "QnXq8TIw": 94,
+    "W3exZd5k": 58,
+    "OWUQ86Li": 36,
+    "oJYApvHa": 222,
+    "3zK8PVU5": 208,
+    "M22B9MwZ": 75
+  },
+  "la": {
+    "QnXq8TIw": 44,
+    "W3exZd5k": 18,
+    "OWUQ86Li": 8,
+    "oJYApvHa": 64,
+    "3zK8PVU5": 60,
+    "M22B9MwZ": 26
+  }
+}

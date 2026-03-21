@@ -1,0 +1,45 @@
+{
+  "c": "kOymg0ik",
+  "org": "no",
+  "chp": 72,
+  "ochp": -192,
+  "ohp": 33,
+  "ivs": {
+    "hp": 13,
+    "attack": 18,
+    "defense": 19,
+    "special_attack": 21,
+    "special_defense": 24,
+    "speed": 30
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "qfjocHmg",
+  "level": 8,
+  "name": "igglybuff",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "igglybuff": -192
+  },
+  "symbol": "",
+  "team": {
+    "kOymg0ik": 72
+  },
+  "la": {
+    "kOymg0ik": 24
+  }
+}

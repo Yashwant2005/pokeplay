@@ -1,0 +1,64 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 189,
+  "ochp": -366,
+  "ohp": 89,
+  "ivs": {
+    "hp": 15,
+    "attack": 23,
+    "defense": 16,
+    "special_attack": 14,
+    "special_defense": 23,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "KxL0yUsA",
+  "level": 34,
+  "name": "orbeetle",
+  "omoves": [
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 522,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 405,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "orbeetle": -366
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 189,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 49,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

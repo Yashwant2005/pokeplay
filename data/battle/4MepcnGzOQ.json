@@ -1,0 +1,60 @@
+{
+  "c": "6N3lz88v",
+  "org": "no",
+  "chp": 19,
+  "ochp": 76,
+  "ohp": 76,
+  "ivs": {
+    "hp": 22,
+    "attack": 22,
+    "defense": 15,
+    "special_attack": 25,
+    "special_defense": 14,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "Q2KKLJjP",
+  "level": 27,
+  "name": "pidgeotto",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 16,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 13
+    },
+    {
+      "id": 239,
+      "learn_method": "level-up",
+      "level_learned_at": 22
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pidgeotto": 76
+  },
+  "symbol": "",
+  "team": {
+    "6N3lz88v": 19
+  },
+  "la": {
+    "6N3lz88v": 5
+  }
+}

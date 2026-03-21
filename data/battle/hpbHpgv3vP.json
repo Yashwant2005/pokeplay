@@ -1,0 +1,70 @@
+{
+  "c": "bAUBesJM",
+  "org": "no",
+  "chp": 328,
+  "ochp": -249,
+  "ohp": 30,
+  "ivs": {
+    "hp": 16,
+    "attack": 13,
+    "defense": 10,
+    "special_attack": 16,
+    "special_defense": 17,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "Qry2B55b",
+  "level": 11,
+  "name": "onix",
+  "omoves": [
+    {
+      "id": 20,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 88,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 479,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "onix": -249
+  },
+  "symbol": "",
+  "team": {
+    "bAUBesJM": 328,
+    "Efnc0PUS": 373,
+    "uclThfWK": 332,
+    "CDIkqF92": 369,
+    "GgOR8D5A": 366,
+    "okkGwwjh": 370
+  },
+  "la": {
+    "bAUBesJM": 100,
+    "Efnc0PUS": 100,
+    "uclThfWK": 100,
+    "CDIkqF92": 100,
+    "GgOR8D5A": 100,
+    "okkGwwjh": 100
+  }
+}

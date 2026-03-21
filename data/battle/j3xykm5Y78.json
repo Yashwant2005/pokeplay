@@ -1,0 +1,70 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 53,
+  "ochp": -102,
+  "ohp": 49,
+  "ivs": {
+    "hp": 17,
+    "attack": 19,
+    "defense": 13,
+    "special_attack": 19,
+    "special_defense": 20,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "BUKzcKJq",
+  "level": 18,
+  "name": "cubone",
+  "omoves": [
+    {
+      "id": 189,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 206,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 514,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "cubone": -102
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 53,
+    "F5chvUKh": 87,
+    "LG4mTUpP": 71,
+    "UiiozQZj": 77,
+    "XhF014r3": 81,
+    "XQu3Dlrw": 57
+  },
+  "la": {
+    "jpIgbHmU": 32,
+    "F5chvUKh": 26,
+    "LG4mTUpP": 24,
+    "UiiozQZj": 18,
+    "XhF014r3": 28,
+    "XQu3Dlrw": 25
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 113,
+  "ochp": -505,
+  "ohp": 60,
+  "ivs": {
+    "hp": 25,
+    "attack": 23,
+    "defense": 13,
+    "special_attack": 15,
+    "special_defense": 8,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "WVjkWEnJ",
+  "level": 29,
+  "name": "magnemite",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magnemite": -505
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 113,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 64,
+    "SmX3uZcP": 219,
+    "Ih35m8uD": 158,
+    "Z86cfwaX": 215
+  },
+  "la": {
+    "ytrF7ks6": 36,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 23,
+    "SmX3uZcP": 34,
+    "Ih35m8uD": 24,
+    "Z86cfwaX": 33
+  }
+}

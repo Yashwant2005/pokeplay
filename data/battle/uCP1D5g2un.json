@@ -1,0 +1,65 @@
+{
+  "c": "vCre5lBj",
+  "org": "no",
+  "chp": 138,
+  "ochp": 86,
+  "ohp": 86,
+  "ivs": {
+    "hp": 25,
+    "attack": 19,
+    "defense": 16,
+    "special_attack": 19,
+    "special_defense": 21,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "YIadkez2",
+  "level": 34,
+  "name": "diancie",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 479,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    },
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "diancie": 86
+  },
+  "symbol": "",
+  "team": {
+    "vCre5lBj": 138,
+    "H8Bl42iC": 122,
+    "NjUKJJ77": 70,
+    "2tV5OwNS": 79,
+    "GOCau2XF": 81,
+    "DByCFqv8": 185
+  },
+  "la": {
+    "vCre5lBj": 47,
+    "H8Bl42iC": 41,
+    "NjUKJJ77": 27,
+    "2tV5OwNS": 27,
+    "GOCau2XF": 25,
+    "DByCFqv8": 47
+  }
+}

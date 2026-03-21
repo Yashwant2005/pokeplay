@@ -1,0 +1,70 @@
+{
+  "c": "6eVdGqdR",
+  "org": "no",
+  "chp": 137,
+  "ochp": 54,
+  "ohp": 54,
+  "ivs": {
+    "hp": 16,
+    "attack": 15,
+    "defense": 11,
+    "special_attack": 15,
+    "special_defense": 15,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "yLmwdBAj",
+  "level": 17,
+  "name": "seviper",
+  "omoves": [
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 342,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    },
+    {
+      "id": 474,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "seviper": 54
+  },
+  "symbol": "",
+  "team": {
+    "6eVdGqdR": 137,
+    "PzS8LwHX": 116,
+    "pY1EJRcp": 30,
+    "5RWVyitD": 175,
+    "oINhfz6I": 34,
+    "LN8ihIqk": 200
+  },
+  "la": {
+    "6eVdGqdR": 47,
+    "PzS8LwHX": 39,
+    "pY1EJRcp": 10,
+    "5RWVyitD": 54,
+    "oINhfz6I": 13,
+    "LN8ihIqk": 58
+  }
+}

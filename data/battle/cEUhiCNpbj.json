@@ -1,0 +1,70 @@
+{
+  "c": "myl79ipR",
+  "org": "no",
+  "chp": 35,
+  "ochp": 129,
+  "ohp": 129,
+  "ivs": {
+    "hp": 15,
+    "attack": 19,
+    "defense": 26,
+    "special_attack": 18,
+    "special_defense": 16,
+    "speed": 25
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "jJeLjQQ0",
+  "level": 41,
+  "name": "decidueye-hisui",
+  "omoves": [
+    {
+      "id": 425,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 75,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 365,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 389,
+      "learn_method": "level-up",
+      "level_learned_at": 37
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "decidueye-hisui": 129
+  },
+  "symbol": "",
+  "team": {
+    "myl79ipR": 35,
+    "38gO5Rz5": 32,
+    "JjQkcwpm": 108,
+    "edPmWQiC": 128,
+    "UVKEwweT": 204,
+    "6MCMaP3b": 142
+  },
+  "la": {
+    "myl79ipR": 14,
+    "38gO5Rz5": 11,
+    "JjQkcwpm": 37,
+    "edPmWQiC": 52,
+    "UVKEwweT": 52,
+    "6MCMaP3b": 49
+  }
+}

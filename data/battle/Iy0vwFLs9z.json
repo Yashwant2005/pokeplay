@@ -1,0 +1,70 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 124,
+  "ochp": -171,
+  "ohp": 131,
+  "ivs": {
+    "hp": 26,
+    "attack": 27,
+    "defense": 16,
+    "special_attack": 16,
+    "special_defense": 14,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "7yJeY70h",
+  "level": 41,
+  "name": "floatzel",
+  "omoves": [
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 453,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 458,
+      "learn_method": "level-up",
+      "level_learned_at": 29
+    },
+    {
+      "id": 250,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "floatzel": -171
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 124,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 69,
+    "Az7eBnWK": 33,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 46,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 25,
+    "Az7eBnWK": 7,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

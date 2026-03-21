@@ -1,0 +1,70 @@
+{
+  "c": "okkGwwjh",
+  "org": "no",
+  "chp": 370,
+  "ochp": 217,
+  "ohp": 217,
+  "ivs": {
+    "hp": 14,
+    "attack": 18,
+    "defense": 15,
+    "special_attack": 23,
+    "special_defense": 21,
+    "speed": 24
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "msfqGW2J",
+  "level": 57,
+  "name": "kyurem-white",
+  "omoves": [
+    {
+      "id": 58,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 304,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 558,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    },
+    {
+      "id": 59,
+      "learn_method": "level-up",
+      "level_learned_at": 56
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kyurem-white": 217
+  },
+  "symbol": "",
+  "team": {
+    "okkGwwjh": 370,
+    "Efnc0PUS": 373,
+    "uclThfWK": 332,
+    "CDIkqF92": 369,
+    "GgOR8D5A": 366,
+    "bAUBesJM": 336
+  },
+  "la": {
+    "okkGwwjh": 100,
+    "Efnc0PUS": 100,
+    "uclThfWK": 100,
+    "CDIkqF92": 100,
+    "GgOR8D5A": 100,
+    "bAUBesJM": 100
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 135,
+  "ochp": 104,
+  "ohp": 104,
+  "ivs": {
+    "hp": 17,
+    "attack": 22,
+    "defense": 22,
+    "special_attack": 19,
+    "special_defense": 19,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "ZPBT59Zr",
+  "level": 40,
+  "name": "lampent",
+  "omoves": [
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 83,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 247,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "lampent": 104
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 135,
+    "J4F20ScC": 35,
+    "dnSoMyRy": 106,
+    "Miai3ctV": 36
+  },
+  "la": {
+    "Xb9OMUmh": 46,
+    "J4F20ScC": 10,
+    "dnSoMyRy": 37,
+    "Miai3ctV": 10
+  }
+}

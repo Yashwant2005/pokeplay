@@ -1,0 +1,55 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 147,
+  "ochp": -411,
+  "ohp": 23,
+  "ivs": {
+    "hp": 23,
+    "attack": 21,
+    "defense": 19,
+    "special_attack": 23,
+    "special_defense": 22,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "gpmKBWxx",
+  "level": 8,
+  "name": "magikarp",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magikarp": -411
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 147,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 67,
+    "Az7eBnWK": 30,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 41,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 24,
+    "Az7eBnWK": 6,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

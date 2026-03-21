@@ -1,0 +1,70 @@
+{
+  "c": "cfBHIXq4",
+  "org": "no",
+  "chp": 112,
+  "ochp": 112,
+  "ohp": 112,
+  "ivs": {
+    "hp": 24,
+    "attack": 21,
+    "defense": 16,
+    "special_attack": 21,
+    "special_defense": 16,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "JoJFxuEp",
+  "level": 31,
+  "name": "wyrdeer",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 23,
+      "learn_method": "level-up",
+      "level_learned_at": 13
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "wyrdeer": 112
+  },
+  "symbol": "",
+  "team": {
+    "cfBHIXq4": 112,
+    "By51g7on": 169,
+    "fc4Z3rKh": 92,
+    "djIFsPnu": 116,
+    "sUHb2dTI": 50,
+    "lknTQtK4": 77
+  },
+  "la": {
+    "cfBHIXq4": 37,
+    "By51g7on": 48,
+    "fc4Z3rKh": 37,
+    "djIFsPnu": 38,
+    "sUHb2dTI": 21,
+    "lknTQtK4": 32
+  }
+}

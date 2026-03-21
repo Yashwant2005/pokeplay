@@ -1,0 +1,55 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 151,
+  "ochp": -382,
+  "ohp": 23,
+  "ivs": {
+    "hp": 19,
+    "attack": 12,
+    "defense": 18,
+    "special_attack": 13,
+    "special_defense": 11,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "7EybN3Tb",
+  "level": 6,
+  "name": "piplup",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "piplup": -382
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 151,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 64,
+    "Az7eBnWK": 30,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 41,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 23,
+    "Az7eBnWK": 6,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

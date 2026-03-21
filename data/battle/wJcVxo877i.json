@@ -1,0 +1,70 @@
+{
+  "c": "DY5xusUV",
+  "org": "no",
+  "chp": 97,
+  "ochp": 201,
+  "ohp": 201,
+  "ivs": {
+    "hp": 17,
+    "attack": 19,
+    "defense": 16,
+    "special_attack": 13,
+    "special_defense": 23,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "40Kh1FFp",
+  "level": 46,
+  "name": "slaking",
+  "omoves": [
+    {
+      "id": 359,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 185,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    },
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 23
+    },
+    {
+      "id": 498,
+      "learn_method": "level-up",
+      "level_learned_at": 27
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "slaking": 201
+  },
+  "symbol": "",
+  "team": {
+    "DY5xusUV": 97,
+    "er2BGMZK": 103,
+    "hK3IxtEj": 159,
+    "MoqdSLB0": 152,
+    "pIjB75RY": 186,
+    "TrpLrvEK": 187
+  },
+  "la": {
+    "DY5xusUV": 21,
+    "er2BGMZK": 37,
+    "hK3IxtEj": 50,
+    "MoqdSLB0": 66,
+    "pIjB75RY": 58,
+    "TrpLrvEK": 55
+  }
+}

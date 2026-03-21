@@ -1,0 +1,154 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "7406582778": true,
+    "8503511287": true
+  },
+  "tempTeams": {
+    "7406582778": [
+      "ukNeIbaF",
+      "cdGU7Wif",
+      "tRd5QILC",
+      "UGKJQZ0J",
+      "ChSmpGOv",
+      "iXDISq1O"
+    ],
+    "8503511287": [
+      "WFT6TynM",
+      "NQOJksOe",
+      "dQNw0TRy",
+      "PdSMLXov",
+      "d1tynfkg",
+      "GeMMW0aI"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "iHNMCzF",
+  "status": {},
+  "c": "WFT6TynM",
+  "chp": 0,
+  "o": "ukNeIbaF",
+  "ohp": 101,
+  "cid": "8503511287",
+  "oid": "7406582778",
+  "tem": {
+    "WFT6TynM": 0,
+    "NQOJksOe": 299,
+    "dQNw0TRy": 272,
+    "PdSMLXov": 285,
+    "d1tynfkg": 278,
+    "GeMMW0aI": 244
+  },
+  "la": {
+    "WFT6TynM": 100,
+    "NQOJksOe": 100,
+    "dQNw0TRy": 100,
+    "PdSMLXov": 100,
+    "d1tynfkg": 100,
+    "GeMMW0aI": 100
+  },
+  "tem2": {
+    "ukNeIbaF": 101,
+    "cdGU7Wif": 286,
+    "tRd5QILC": 284,
+    "UGKJQZ0J": 317,
+    "ChSmpGOv": 255,
+    "iXDISq1O": 276
+  },
+  "la2": {
+    "ukNeIbaF": 100,
+    "cdGU7Wif": 100,
+    "tRd5QILC": 100,
+    "UGKJQZ0J": 100,
+    "ChSmpGOv": 100,
+    "iXDISq1O": 100
+  },
+  "ot": {
+    "undefined": 266
+  },
+  "usedMoves": {
+    "WFT6TynM": [
+      "26"
+    ],
+    "ukNeIbaF": [
+      "405"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 1,
+  "bideState": {},
+  "statStages": {
+    "WFT6TynM": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "ukNeIbaF": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "ukNeIbaF": {
+      "damage": 165,
+      "category": "physical",
+      "from": "WFT6TynM",
+      "move": "jump kick"
+    },
+    "WFT6TynM": {
+      "damage": 281,
+      "category": "special",
+      "from": "ukNeIbaF",
+      "move": "bug buzz"
+    }
+  },
+  "entryHazards": {
+    "7406582778": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "8503511287": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "lastMoveByPass": {
+    "WFT6TynM": "26",
+    "ukNeIbaF": "405"
+  }
+}

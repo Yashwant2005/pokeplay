@@ -1,0 +1,70 @@
+{
+  "c": "HB9CWb2r",
+  "org": "no",
+  "chp": 31,
+  "ochp": 325,
+  "ohp": 325,
+  "ivs": {
+    "hp": 17,
+    "attack": 9,
+    "defense": 15,
+    "special_attack": 16,
+    "special_defense": 19,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "iR9780d8",
+  "level": 56,
+  "name": "guzzlord",
+  "omoves": [
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 34,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 359,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 407,
+      "learn_method": "level-up",
+      "level_learned_at": 55
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "guzzlord": 325
+  },
+  "symbol": "",
+  "team": {
+    "HB9CWb2r": 31,
+    "XOazMcFw": 13,
+    "1LfnGN0z": 172,
+    "dyFMvUzr": 154,
+    "lMzQCtR5": 151,
+    "ZczsrG3q": 252
+  },
+  "la": {
+    "HB9CWb2r": 11,
+    "XOazMcFw": 1,
+    "1LfnGN0z": 53,
+    "dyFMvUzr": 55,
+    "lMzQCtR5": 54,
+    "ZczsrG3q": 61
+  }
+}

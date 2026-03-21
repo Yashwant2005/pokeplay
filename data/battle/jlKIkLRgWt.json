@@ -1,0 +1,70 @@
+{
+  "c": "MQTRLHSp",
+  "org": "no",
+  "chp": 156,
+  "ochp": 192,
+  "ohp": 192,
+  "ivs": {
+    "hp": 21,
+    "attack": 13,
+    "defense": 14,
+    "special_attack": 13,
+    "special_defense": 12,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "S1OQTZd4",
+  "level": 57,
+  "name": "kyogre",
+  "omoves": [
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 401,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 330,
+      "learn_method": "level-up",
+      "level_learned_at": 27
+    },
+    {
+      "id": 58,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kyogre": 192
+  },
+  "symbol": "",
+  "team": {
+    "MQTRLHSp": 156,
+    "HZZy8ghZ": 32,
+    "xNJurU1c": 44,
+    "heCUyNdb": 149,
+    "t0gGUuMj": 86,
+    "5mOTmKN0": 60
+  },
+  "la": {
+    "MQTRLHSp": 52,
+    "HZZy8ghZ": 18,
+    "xNJurU1c": 19,
+    "heCUyNdb": 44,
+    "t0gGUuMj": 29,
+    "5mOTmKN0": 29
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "c": "Rm4RUlTM",
+  "org": "no",
+  "chp": 250,
+  "ochp": 123,
+  "ohp": 123,
+  "ivs": {
+    "hp": 21,
+    "attack": 22,
+    "defense": 13,
+    "special_attack": 13,
+    "special_defense": 11,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "eXGpM7Ni",
+  "level": 42,
+  "name": "ceruledge",
+  "omoves": [
+    {
+      "id": 83,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 488,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 510,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 436,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ceruledge": 123
+  },
+  "symbol": "",
+  "team": {
+    "Rm4RUlTM": 250
+  },
+  "la": {
+    "Rm4RUlTM": 100
+  }
+}

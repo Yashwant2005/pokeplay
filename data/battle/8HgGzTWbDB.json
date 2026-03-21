@@ -1,0 +1,60 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 347,
+  "ochp": -676,
+  "ohp": 43,
+  "ivs": {
+    "hp": 22,
+    "attack": 23,
+    "defense": 16,
+    "special_attack": 23,
+    "special_defense": 16,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "j3QZSEVF",
+  "level": 14,
+  "name": "misdreavus",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "misdreavus": -676
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 347,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

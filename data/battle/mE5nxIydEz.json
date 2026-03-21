@@ -1,0 +1,65 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 120,
+  "ochp": -151,
+  "ohp": 84,
+  "ivs": {
+    "hp": 17,
+    "attack": 13,
+    "defense": 15,
+    "special_attack": 12,
+    "special_defense": 17,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "JX7jaocV",
+  "level": 38,
+  "name": "mr-mime",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mr-mime": -151
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 120,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 40,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 41,
+  "ochp": -113,
+  "ohp": 36,
+  "ivs": {
+    "hp": 15,
+    "attack": 21,
+    "defense": 18,
+    "special_attack": 16,
+    "special_defense": 27,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "sp43KuNs",
+  "level": 9,
+  "name": "slowpoke",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "slowpoke": -113
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 41,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 84,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 30,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 20,
+    "yJT8NrzJ": 25
+  }
+}

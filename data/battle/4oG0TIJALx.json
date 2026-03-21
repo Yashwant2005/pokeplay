@@ -1,0 +1,55 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 25,
+  "ochp": 48,
+  "ohp": 48,
+  "ivs": {
+    "hp": 17,
+    "attack": 15,
+    "defense": 21,
+    "special_attack": 14,
+    "special_defense": 12,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "mEvTkfQA",
+  "level": 13,
+  "name": "slowpoke",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "slowpoke": 48
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 25
+  },
+  "la": {
+    "jpIgbHmU": 8
+  }
+}

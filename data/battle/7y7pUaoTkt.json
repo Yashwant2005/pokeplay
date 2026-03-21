@@ -1,0 +1,70 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 105,
+  "ochp": 189,
+  "ohp": 189,
+  "ivs": {
+    "hp": 25,
+    "attack": 24,
+    "defense": 22,
+    "special_attack": 16,
+    "special_defense": 26,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "sMarUFew",
+  "level": 59,
+  "name": "zapdos",
+  "omoves": [
+    {
+      "id": 65,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 542,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 87,
+      "learn_method": "level-up",
+      "level_learned_at": 55
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zapdos": 189
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 105,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 95,
+    "FwnmeApD": 136,
+    "zIc5R3QM": 83
+  },
+  "la": {
+    "xPNmpDgC": 36,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 23,
+    "FwnmeApD": 52,
+    "zIc5R3QM": 30
+  }
+}

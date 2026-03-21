@@ -1,0 +1,56 @@
+{
+  "c": "USP6eG1Z",
+  "org": "no",
+  "chp": 17,
+  "ochp": -30,
+  "ohp": 27,
+  "ivs": {
+    "hp": 16,
+    "attack": 10,
+    "defense": 11,
+    "special_attack": 13,
+    "special_defense": 11,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "Y3y7b6pD",
+  "level": 8,
+  "name": "mareanie",
+  "omoves": [
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mareanie": -30
+  },
+  "symbol": "",
+  "team": {
+    "USP6eG1Z": 17,
+    "AfrJyFT3": 31,
+    "i3Zbowkn": 62,
+    "ZZds2WM5": 49
+  },
+  "la": {
+    "USP6eG1Z": 13,
+    "AfrJyFT3": 11,
+    "i3Zbowkn": 21,
+    "ZZds2WM5": 15
+  }
+}

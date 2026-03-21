@@ -1,0 +1,55 @@
+{
+  "c": "kOymg0ik",
+  "org": "no",
+  "chp": 57,
+  "ochp": -75,
+  "ohp": 48,
+  "ivs": {
+    "hp": 3,
+    "attack": 3,
+    "defense": 8,
+    "special_attack": 9,
+    "special_defense": 3,
+    "speed": 4
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "g1kbicNw",
+  "level": 18,
+  "name": "buizel",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "buizel": -75
+  },
+  "symbol": "",
+  "team": {
+    "kOymg0ik": 57
+  },
+  "la": {
+    "kOymg0ik": 19
+  }
+}

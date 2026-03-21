@@ -1,0 +1,60 @@
+{
+  "c": "XKeiQ3Dp",
+  "org": "no",
+  "chp": 21,
+  "ochp": 254,
+  "ohp": 254,
+  "ivs": {
+    "hp": 21,
+    "attack": 23,
+    "defense": 19,
+    "special_attack": 16,
+    "special_defense": 17,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "y4IKT6yf",
+  "level": 62,
+  "name": "solgaleo",
+  "omoves": [
+    {
+      "id": 430,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 528,
+      "learn_method": "level-up",
+      "level_learned_at": 56
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "solgaleo": 254
+  },
+  "symbol": "",
+  "team": {
+    "XKeiQ3Dp": 21
+  },
+  "la": {
+    "XKeiQ3Dp": 5
+  }
+}

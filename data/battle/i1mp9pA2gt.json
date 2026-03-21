@@ -1,0 +1,70 @@
+{
+  "c": "dC9jW0x4",
+  "org": "no",
+  "chp": 0,
+  "ochp": -18,
+  "ohp": 50,
+  "ivs": {
+    "hp": 21,
+    "attack": 11,
+    "defense": 16,
+    "special_attack": 14,
+    "special_defense": 13,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "8ER9lmwc",
+  "level": 20,
+  "name": "mankey",
+  "omoves": [
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 2,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mankey": -18
+  },
+  "symbol": "",
+  "team": {
+    "dC9jW0x4": 0,
+    "07qBEog3": 377,
+    "irChEF9Z": 359,
+    "saofW0Kt": 307,
+    "uQhxBwQC": 285,
+    "EUhDeUKM": 263
+  },
+  "la": {
+    "dC9jW0x4": 8,
+    "07qBEog3": 100,
+    "irChEF9Z": 100,
+    "saofW0Kt": 100,
+    "uQhxBwQC": 100,
+    "EUhDeUKM": 100
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 72,
+  "ochp": -9,
+  "ohp": 89,
+  "ivs": {
+    "hp": 19,
+    "attack": 18,
+    "defense": 14,
+    "special_attack": 17,
+    "special_defense": 26,
+    "speed": 25
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "5ddjnYxG",
+  "level": 32,
+  "name": "electabuzz",
+  "omoves": [
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 351,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 9,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "electabuzz": -9
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 72,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 44,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

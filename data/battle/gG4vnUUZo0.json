@@ -1,0 +1,65 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 56,
+  "ochp": 119,
+  "ohp": 119,
+  "ivs": {
+    "hp": 27,
+    "attack": 18,
+    "defense": 19,
+    "special_attack": 15,
+    "special_defense": 16,
+    "speed": 30
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "a3hNmjLm",
+  "level": 41,
+  "name": "darkrai",
+  "omoves": [
+    {
+      "id": 466,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    },
+    {
+      "id": 185,
+      "learn_method": "level-up",
+      "level_learned_at": 29
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "darkrai": 119
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 56,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 104,
+    "xPNmpDgC": 117
+  },
+  "la": {
+    "hoTfaX8w": 21,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 41,
+    "xPNmpDgC": 40
+  }
+}

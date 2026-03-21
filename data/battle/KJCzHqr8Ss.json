@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 0,
+  "ochp": -28,
+  "ohp": 207,
+  "ivs": {
+    "hp": 14,
+    "attack": 13,
+    "defense": 19,
+    "special_attack": 15,
+    "special_defense": 14,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "QajL8Bnj",
+  "level": 63,
+  "name": "dialga",
+  "omoves": [
+    {
+      "id": 430,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 396,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    },
+    {
+      "id": 408,
+      "learn_method": "level-up",
+      "level_learned_at": 56
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dialga": -28
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 0,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 108,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 51,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 38,
+    "xPNmpDgC": 42
+  }
+}

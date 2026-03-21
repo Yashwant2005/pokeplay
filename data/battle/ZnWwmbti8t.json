@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 133,
+  "ochp": -153,
+  "ohp": 192,
+  "ivs": {
+    "hp": 4,
+    "attack": 2,
+    "defense": 0,
+    "special_attack": 5,
+    "special_defense": 5,
+    "speed": 4
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "WZ4gTOUH",
+  "level": 41,
+  "name": "wailord",
+  "omoves": [
+    {
+      "id": 250,
+      "learn_method": "level-up",
+      "level_learned_at": 27
+    },
+    {
+      "id": 291,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 340,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    },
+    {
+      "id": 34,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "wailord": -153
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 133
+  },
+  "la": {
+    "ZpYcR2c0": 46
+  }
+}

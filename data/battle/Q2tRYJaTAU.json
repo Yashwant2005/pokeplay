@@ -1,0 +1,70 @@
+{
+  "c": "DY5xusUV",
+  "org": "no",
+  "chp": 97,
+  "ochp": 157,
+  "ohp": 157,
+  "ivs": {
+    "hp": 30,
+    "attack": 27,
+    "defense": 15,
+    "special_attack": 26,
+    "special_defense": 21,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "pq5FegK7",
+  "level": 64,
+  "name": "deoxys-attack",
+  "omoves": [
+    {
+      "id": 94,
+      "learn_method": "level-up",
+      "level_learned_at": 31
+    },
+    {
+      "id": 276,
+      "learn_method": "level-up",
+      "level_learned_at": 37
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 49
+    },
+    {
+      "id": 192,
+      "learn_method": "level-up",
+      "level_learned_at": 61
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "deoxys-attack": 157
+  },
+  "symbol": "",
+  "team": {
+    "DY5xusUV": 97,
+    "er2BGMZK": 103,
+    "hK3IxtEj": 159,
+    "MoqdSLB0": 152,
+    "pIjB75RY": 186,
+    "TrpLrvEK": 187
+  },
+  "la": {
+    "DY5xusUV": 21,
+    "er2BGMZK": 37,
+    "hK3IxtEj": 50,
+    "MoqdSLB0": 66,
+    "pIjB75RY": 58,
+    "TrpLrvEK": 55
+  }
+}

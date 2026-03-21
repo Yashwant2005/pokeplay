@@ -1,0 +1,60 @@
+{
+  "c": "rcJRTEBD",
+  "org": "no",
+  "chp": 0,
+  "ochp": 53,
+  "ohp": 105,
+  "ivs": {
+    "hp": 14,
+    "attack": 9,
+    "defense": 18,
+    "special_attack": 12,
+    "special_defense": 17,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "XaBMp72T",
+  "level": 39,
+  "name": "electabuzz",
+  "omoves": [
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 351,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 9,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 34
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "electabuzz": 53
+  },
+  "symbol": "",
+  "team": {
+    "rcJRTEBD": 0
+  },
+  "la": {
+    "rcJRTEBD": 28
+  }
+}

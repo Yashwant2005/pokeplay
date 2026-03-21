@@ -1,0 +1,70 @@
+{
+  "c": "yx4Mz6GJ",
+  "org": "no",
+  "chp": 89,
+  "ochp": 78,
+  "ohp": 78,
+  "ivs": {
+    "hp": 13,
+    "attack": 19,
+    "defense": 20,
+    "special_attack": 17,
+    "special_defense": 13,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "WDkBIrUj",
+  "level": 32,
+  "name": "litwick",
+  "omoves": [
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 83,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "litwick": 78
+  },
+  "symbol": "",
+  "team": {
+    "yx4Mz6GJ": 89,
+    "u0wRDkpV": 91,
+    "UtfDaQTH": 109,
+    "RTXYaCR3": 91,
+    "iceEdRvu": 100,
+    "bywYVs7a": 36
+  },
+  "la": {
+    "yx4Mz6GJ": 30,
+    "u0wRDkpV": 34,
+    "UtfDaQTH": 33,
+    "RTXYaCR3": 32,
+    "iceEdRvu": 40,
+    "bywYVs7a": 13
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 159,
+  "ochp": -360,
+  "ohp": 32,
+  "ivs": {
+    "hp": 19,
+    "attack": 28,
+    "defense": 16,
+    "special_attack": 16,
+    "special_defense": 16,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "nHu9GhWV",
+  "level": 11,
+  "name": "chingling",
+  "omoves": [
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "chingling": -360
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 159,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 67,
+    "Az7eBnWK": 30,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 41,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 24,
+    "Az7eBnWK": 6,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "AfrJyFT3",
+  "org": "no",
+  "chp": 0,
+  "ochp": -18,
+  "ohp": 42,
+  "ivs": {
+    "hp": 16,
+    "attack": 21,
+    "defense": 23,
+    "special_attack": 19,
+    "special_defense": 22,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "OAbyfYhG",
+  "level": 15,
+  "name": "sableye",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    },
+    {
+      "id": 425,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 252,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sableye": -18
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 0,
+    "USP6eG1Z": 50,
+    "i3Zbowkn": 73,
+    "ZZds2WM5": 52,
+    "dYk06Ntb": 49,
+    "YXw2z1Y1": 46
+  },
+  "la": {
+    "AfrJyFT3": 18,
+    "USP6eG1Z": 17,
+    "i3Zbowkn": 25,
+    "ZZds2WM5": 16,
+    "dYk06Ntb": 19,
+    "YXw2z1Y1": 12
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "c": "kunjtho9",
+  "org": "no",
+  "chp": 28,
+  "ochp": 173,
+  "ohp": 173,
+  "ivs": {
+    "hp": 15,
+    "attack": 16,
+    "defense": 19,
+    "special_attack": 17,
+    "special_defense": 18,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "X3D8LhhJ",
+  "level": 52,
+  "name": "glastrier",
+  "omoves": [
+    {
+      "id": 419,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 23,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 556,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "glastrier": 173
+  },
+  "symbol": "",
+  "team": {
+    "kunjtho9": 28,
+    "SG6Axr1x": 182,
+    "T0Yrf2Tp": 141,
+    "iTkYTYd6": 28
+  },
+  "la": {
+    "kunjtho9": 7,
+    "SG6Axr1x": 53,
+    "T0Yrf2Tp": 41,
+    "iTkYTYd6": 6
+  }
+}

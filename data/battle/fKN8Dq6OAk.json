@@ -1,0 +1,66 @@
+{
+  "c": "dnSoMyRy",
+  "org": "no",
+  "chp": 0,
+  "ochp": -112,
+  "ohp": 150,
+  "ivs": {
+    "hp": 19,
+    "attack": 15,
+    "defense": 13,
+    "special_attack": 10,
+    "special_defense": 15,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "b5ZG1BYk",
+  "level": 55,
+  "name": "drakloak",
+  "omoves": [
+    {
+      "id": 458,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 369,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    },
+    {
+      "id": 566,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 54
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "drakloak": -112
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 0,
+    "J4F20ScC": 35,
+    "dnSoMyRy": 0,
+    "Miai3ctV": 36
+  },
+  "la": {
+    "Xb9OMUmh": 44,
+    "J4F20ScC": 10,
+    "dnSoMyRy": 37,
+    "Miai3ctV": 10
+  }
+}

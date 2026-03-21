@@ -1,0 +1,68 @@
+{
+  "c": "uJZ6NrvQ",
+  "org": "no",
+  "chp": 170,
+  "ochp": 184,
+  "ohp": 184,
+  "ivs": {
+    "hp": 15,
+    "attack": 10,
+    "defense": 11,
+    "special_attack": 16,
+    "special_defense": 16,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "JcYFbhG4",
+  "level": 40,
+  "name": "snorlax",
+  "omoves": [
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 173,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 34,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "snorlax": 184
+  },
+  "symbol": "",
+  "team": {
+    "uJZ6NrvQ": 170,
+    "n3kaFm6d": 126,
+    "IJvSLp87": 136,
+    "VtCivnDv": 106,
+    "8aRFPWpW": 205
+  },
+  "la": {
+    "uJZ6NrvQ": 54,
+    "n3kaFm6d": 43,
+    "IJvSLp87": 48,
+    "VtCivnDv": 44,
+    "8aRFPWpW": 45
+  }
+}

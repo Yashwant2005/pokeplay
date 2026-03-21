@@ -1,0 +1,70 @@
+{
+  "c": "YhzNyYZC",
+  "org": "no",
+  "chp": 137,
+  "ochp": -38,
+  "ohp": 49,
+  "ivs": {
+    "hp": 19,
+    "attack": 17,
+    "defense": 21,
+    "special_attack": 20,
+    "special_defense": 16,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "A1l7izsT",
+  "level": 20,
+  "name": "kirlia",
+  "omoves": [
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 574,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 577,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kirlia": -38
+  },
+  "symbol": "",
+  "team": {
+    "YhzNyYZC": 137,
+    "qprXez3B": 168,
+    "nzrnd7Gh": 167,
+    "GyptShX6": 94,
+    "EMnVbXEj": 54,
+    "YzmR2Ig5": 101
+  },
+  "la": {
+    "YhzNyYZC": 49,
+    "qprXez3B": 54,
+    "nzrnd7Gh": 36,
+    "GyptShX6": 35,
+    "EMnVbXEj": 18,
+    "YzmR2Ig5": 31
+  }
+}

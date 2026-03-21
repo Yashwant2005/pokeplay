@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 27,
+  "ochp": 27,
+  "ohp": 171,
+  "ivs": {
+    "hp": 22,
+    "attack": 15,
+    "defense": 22,
+    "special_attack": 27,
+    "special_defense": 18,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "SrVmm3qS",
+  "level": 64,
+  "name": "bisharp",
+  "omoves": [
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 400,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 442,
+      "learn_method": "level-up",
+      "level_learned_at": 57
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "bisharp": 27
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 27,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 143,
+    "xPNmpDgC": 122,
+    "Bo6PaTm9": 31
+  },
+  "la": {
+    "rdxaq1mP": 51,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 46,
+    "xPNmpDgC": 42,
+    "Bo6PaTm9": 11
+  }
+}

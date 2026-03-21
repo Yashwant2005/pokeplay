@@ -1,0 +1,47 @@
+{
+  "c": "bRnR7Krx",
+  "org": "no",
+  "chp": 189,
+  "ochp": -172,
+  "ohp": 24,
+  "ivs": {
+    "hp": 17,
+    "attack": 13,
+    "defense": 15,
+    "special_attack": 16,
+    "special_defense": 18,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "xnZucalg",
+  "level": 7,
+  "name": "goldeen",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "goldeen": -172
+  },
+  "symbol": "",
+  "team": {
+    "9eeViYIB": 53,
+    "bRnR7Krx": 189
+  },
+  "la": {
+    "9eeViYIB": 18,
+    "bRnR7Krx": 54
+  }
+}

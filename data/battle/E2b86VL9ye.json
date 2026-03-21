@@ -1,0 +1,66 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 213,
+  "ochp": -704,
+  "ohp": 113,
+  "ivs": {
+    "hp": 26,
+    "attack": 14,
+    "defense": 29,
+    "special_attack": 21,
+    "special_defense": 16,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "MRQy5lDp",
+  "level": 39,
+  "name": "galvantula",
+  "omoves": [
+    {
+      "id": 450,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 527,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 389,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "galvantula": -704
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 213,
+    "J4F20ScC": 64,
+    "dnSoMyRy": 111,
+    "Miai3ctV": 71
+  },
+  "la": {
+    "Xb9OMUmh": 91,
+    "J4F20ScC": 19,
+    "dnSoMyRy": 39,
+    "Miai3ctV": 23
+  }
+}

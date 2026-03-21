@@ -1,0 +1,70 @@
+{
+  "c": "Az7eBnWK",
+  "org": "no",
+  "chp": 44,
+  "ochp": -16,
+  "ohp": 46,
+  "ivs": {
+    "hp": 20,
+    "attack": 19,
+    "defense": 13,
+    "special_attack": 22,
+    "special_defense": 14,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "IESIhorT",
+  "level": 19,
+  "name": "pikachu-sinnoh-cap",
+  "omoves": [
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 609,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pikachu-sinnoh-cap": -16
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 181,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 69,
+    "Az7eBnWK": 44,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 47,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 25,
+    "Az7eBnWK": 20,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

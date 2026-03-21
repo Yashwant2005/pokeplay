@@ -1,0 +1,59 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 31,
+  "ochp": -6,
+  "ohp": 34,
+  "ivs": {
+    "hp": 7,
+    "attack": 2,
+    "defense": 7,
+    "special_attack": 4,
+    "special_defense": 7,
+    "speed": 6
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "5HqWuwFD",
+  "level": 13,
+  "name": "poliwag",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 341,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "poliwag": -6
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 31,
+    "F5chvUKh": 81,
+    "LG4mTUpP": 71
+  },
+  "la": {
+    "jpIgbHmU": 22,
+    "F5chvUKh": 24,
+    "LG4mTUpP": 24
+  }
+}

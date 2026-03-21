@@ -1,0 +1,64 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 0,
+  "ochp": -54,
+  "ohp": 100,
+  "ivs": {
+    "hp": 12,
+    "attack": 17,
+    "defense": 16,
+    "special_attack": 12,
+    "special_defense": 20,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "4stNe30g",
+  "level": 47,
+  "name": "dusclops",
+  "omoves": [
+    {
+      "id": 425,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 371,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 247,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dusclops": -54
+  },
+  "symbol": "",
+  "team": {
+    "J4F20ScC": 33,
+    "Xb9OMUmh": 0,
+    "dnSoMyRy": 106
+  },
+  "la": {
+    "J4F20ScC": 9,
+    "Xb9OMUmh": 43,
+    "dnSoMyRy": 37
+  }
+}

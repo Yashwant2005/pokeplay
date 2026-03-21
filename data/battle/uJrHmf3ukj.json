@@ -1,0 +1,60 @@
+{
+  "c": "ciCCjf9Z",
+  "org": "no",
+  "chp": 57,
+  "ochp": 183,
+  "ohp": 183,
+  "ivs": {
+    "hp": 19,
+    "attack": 17,
+    "defense": 20,
+    "special_attack": 18,
+    "special_defense": 23,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "lQkWtktM",
+  "level": 58,
+  "name": "articuno",
+  "omoves": [
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 573,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 58,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 542,
+      "learn_method": "level-up",
+      "level_learned_at": 55
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "articuno": 183
+  },
+  "symbol": "",
+  "team": {
+    "ciCCjf9Z": 57
+  },
+  "la": {
+    "ciCCjf9Z": 20
+  }
+}

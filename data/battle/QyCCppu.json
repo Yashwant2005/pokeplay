@@ -1,0 +1,139 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "6265981509": true,
+    "8551864967": true
+  },
+  "tempTeams": {
+    "6265981509": [
+      "MX852lNk",
+      "F35enbkT",
+      "Jhi38fi0",
+      "1k2xS1ON",
+      "bHVecWjs",
+      "lH8w37wX"
+    ],
+    "8551864967": [
+      "qWbFy1de",
+      "H5xLlzQs",
+      "8SvfqyoA",
+      "sj1HLjSE",
+      "pSxnzCvq",
+      "27SCg1SX"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "QyCCppu",
+  "status": {},
+  "c": "MX852lNk",
+  "chp": 126,
+  "o": "qWbFy1de",
+  "ohp": 134,
+  "cid": "6265981509",
+  "oid": "8551864967",
+  "tem": {
+    "MX852lNk": 126,
+    "F35enbkT": 268,
+    "Jhi38fi0": 0,
+    "1k2xS1ON": 304,
+    "bHVecWjs": 295,
+    "lH8w37wX": 278
+  },
+  "la": {
+    "MX852lNk": 100,
+    "F35enbkT": 100,
+    "Jhi38fi0": 100,
+    "1k2xS1ON": 100,
+    "bHVecWjs": 100,
+    "lH8w37wX": 100
+  },
+  "tem2": {
+    "qWbFy1de": 134,
+    "H5xLlzQs": 328,
+    "8SvfqyoA": 432,
+    "sj1HLjSE": 271,
+    "pSxnzCvq": 317,
+    "27SCg1SX": 331
+  },
+  "la2": {
+    "qWbFy1de": 100,
+    "H5xLlzQs": 100,
+    "8SvfqyoA": 100,
+    "sj1HLjSE": 100,
+    "pSxnzCvq": 100,
+    "27SCg1SX": 100
+  },
+  "ot": {
+    "undefined": 356
+  },
+  "usedMoves": {
+    "MX852lNk": [
+      "387"
+    ],
+    "qWbFy1de": [
+      "38"
+    ]
+  },
+  "queuedActions": [],
+  "statStages": {
+    "MX852lNk": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "qWbFy1de": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "Jhi38fi0": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "Jhi38fi0": {
+      "damage": 270,
+      "category": "physical",
+      "from": "qWbFy1de",
+      "move": "double edge"
+    }
+  },
+  "runs": [
+    6265981509,
+    8551864967
+  ]
+}

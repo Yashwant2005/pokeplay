@@ -1,0 +1,70 @@
+{
+  "c": "C1czvzzB",
+  "org": "no",
+  "chp": 140,
+  "ochp": -8,
+  "ohp": 62,
+  "ivs": {
+    "hp": 17,
+    "attack": 12,
+    "defense": 11,
+    "special_attack": 15,
+    "special_defense": 15,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "xfSu83UK",
+  "level": 25,
+  "name": "axew",
+  "omoves": [
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "axew": -8
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 190,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 140,
+    "xPNmpDgC": 122,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 48,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 45,
+    "xPNmpDgC": 42,
+    "V585CIwf": 38
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "DY5xusUV",
+  "org": "no",
+  "chp": 93,
+  "ochp": 208,
+  "ohp": 208,
+  "ivs": {
+    "hp": 16,
+    "attack": 29,
+    "defense": 20,
+    "special_attack": 16,
+    "special_defense": 20,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "UycRZofo",
+  "level": 59,
+  "name": "regigigas",
+  "omoves": [
+    {
+      "id": 282,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 5,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    },
+    {
+      "id": 776,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 54
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "regigigas": 208
+  },
+  "symbol": "",
+  "team": {
+    "DY5xusUV": 93,
+    "er2BGMZK": 101,
+    "hK3IxtEj": 159,
+    "A9jA9xzc": 153,
+    "9Dk31Dce": 141,
+    "ughHx7Kc": 200
+  },
+  "la": {
+    "DY5xusUV": 20,
+    "er2BGMZK": 36,
+    "hK3IxtEj": 50,
+    "A9jA9xzc": 47,
+    "9Dk31Dce": 61,
+    "ughHx7Kc": 62
+  }
+}

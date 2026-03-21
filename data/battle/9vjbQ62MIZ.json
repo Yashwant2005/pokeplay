@@ -1,0 +1,70 @@
+{
+  "c": "HUh1DYK2",
+  "org": "no",
+  "chp": 103,
+  "ochp": 193,
+  "ohp": 193,
+  "ivs": {
+    "hp": 23,
+    "attack": 25,
+    "defense": 18,
+    "special_attack": 22,
+    "special_defense": 19,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "5wDEkkKX",
+  "level": 55,
+  "name": "zarude",
+  "omoves": [
+    {
+      "id": 22,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 369,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zarude": 193
+  },
+  "symbol": "",
+  "team": {
+    "HUh1DYK2": 103,
+    "Pne7iYOy": 132,
+    "Ll1ltq4f": 109,
+    "mTCqiClo": 128,
+    "9uRTUtu4": 30,
+    "uasHxgEj": 178
+  },
+  "la": {
+    "HUh1DYK2": 26,
+    "Pne7iYOy": 45,
+    "Ll1ltq4f": 38,
+    "mTCqiClo": 43,
+    "9uRTUtu4": 11,
+    "uasHxgEj": 56
+  }
+}

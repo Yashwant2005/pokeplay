@@ -1,0 +1,70 @@
+{
+  "c": "YhzNyYZC",
+  "org": "no",
+  "chp": 0,
+  "ochp": -284,
+  "ohp": 131,
+  "ivs": {
+    "hp": 13,
+    "attack": 16,
+    "defense": 24,
+    "special_attack": 14,
+    "special_defense": 13,
+    "speed": 29
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "6UPWFL7f",
+  "level": 48,
+  "name": "pupitar",
+  "omoves": [
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 27
+    },
+    {
+      "id": 89,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    },
+    {
+      "id": 444,
+      "learn_method": "level-up",
+      "level_learned_at": 37
+    },
+    {
+      "id": 37,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pupitar": -284
+  },
+  "symbol": "",
+  "team": {
+    "YhzNyYZC": 0,
+    "qprXez3B": 168,
+    "nzrnd7Gh": 167,
+    "GyptShX6": 94,
+    "EMnVbXEj": 54,
+    "YzmR2Ig5": 101
+  },
+  "la": {
+    "YhzNyYZC": 47,
+    "qprXez3B": 54,
+    "nzrnd7Gh": 36,
+    "GyptShX6": 35,
+    "EMnVbXEj": 18,
+    "YzmR2Ig5": 31
+  }
+}

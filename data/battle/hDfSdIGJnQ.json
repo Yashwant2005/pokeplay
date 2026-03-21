@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 0,
+  "ochp": -55,
+  "ohp": 184,
+  "ivs": {
+    "hp": 16,
+    "attack": 18,
+    "defense": 8,
+    "special_attack": 11,
+    "special_defense": 13,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "xLrTGsKI",
+  "level": 44,
+  "name": "wigglytuff",
+  "omoves": [
+    {
+      "id": 496,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 497,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 574,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 583,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "wigglytuff": -55
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 0
+  },
+  "la": {
+    "ZpYcR2c0": 40
+  }
+}

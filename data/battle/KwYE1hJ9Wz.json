@@ -1,0 +1,70 @@
+{
+  "c": "Az7eBnWK",
+  "org": "no",
+  "chp": 66,
+  "ochp": -48,
+  "ohp": 125,
+  "ivs": {
+    "hp": 21,
+    "attack": 19,
+    "defense": 12,
+    "special_attack": 25,
+    "special_defense": 17,
+    "speed": 30
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "SV2hBlCH",
+  "level": 48,
+  "name": "medicham",
+  "omoves": [
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 395,
+      "learn_method": "level-up",
+      "level_learned_at": 17
+    },
+    {
+      "id": 237,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 136,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "medicham": -48
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 181,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 0,
+    "Az7eBnWK": 66,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 47,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 27,
+    "Az7eBnWK": 30,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

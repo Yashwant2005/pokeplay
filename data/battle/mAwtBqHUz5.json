@@ -1,0 +1,70 @@
+{
+  "c": "a307nv5C",
+  "org": "no",
+  "chp": 219,
+  "ochp": 248,
+  "ohp": 248,
+  "ivs": {
+    "hp": 18,
+    "attack": 14,
+    "defense": 27,
+    "special_attack": 22,
+    "special_defense": 23,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "IH4QeiDA",
+  "level": 57,
+  "name": "giratina-altered",
+  "omoves": [
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 421,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 396,
+      "learn_method": "level-up",
+      "level_learned_at": 56
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "giratina-altered": 248
+  },
+  "symbol": "",
+  "team": {
+    "a307nv5C": 219,
+    "faxJzqpi": 218,
+    "rFHVPRdJ": 13,
+    "QcTHt2rl": 220,
+    "H8MFGvUI": 13,
+    "8HMb6sOO": 192
+  },
+  "la": {
+    "a307nv5C": 58,
+    "faxJzqpi": 59,
+    "rFHVPRdJ": 1,
+    "QcTHt2rl": 60,
+    "H8MFGvUI": 1,
+    "8HMb6sOO": 56
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "c": "mLxqAIGf",
+  "org": "no",
+  "chp": 23,
+  "ochp": 32,
+  "ohp": 32,
+  "ivs": {
+    "hp": 12,
+    "attack": 16,
+    "defense": 21,
+    "special_attack": 22,
+    "special_defense": 14,
+    "speed": 7
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "yFG2mKoB",
+  "level": 7,
+  "name": "kangaskhan",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kangaskhan": 32
+  },
+  "symbol": "",
+  "team": {
+    "mLxqAIGf": 23,
+    "Rk3HTscs": 13
+  },
+  "la": {
+    "mLxqAIGf": 7,
+    "Rk3HTscs": 1
+  }
+}

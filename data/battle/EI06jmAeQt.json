@@ -1,0 +1,53 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 73,
+  "ochp": -185,
+  "ohp": 41,
+  "ivs": {
+    "hp": 18,
+    "attack": 19,
+    "defense": 11,
+    "special_attack": 13,
+    "special_defense": 24,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "cOrezRsu",
+  "level": 16,
+  "name": "kadabra",
+  "omoves": [
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kadabra": -185
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 73,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 60,
+    "SmX3uZcP": 219,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 28,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 21,
+    "SmX3uZcP": 34,
+    "Ih35m8uD": 24
+  }
+}

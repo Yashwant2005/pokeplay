@@ -1,0 +1,70 @@
+{
+  "c": "h2nNdaoR",
+  "org": "no",
+  "chp": 317,
+  "ochp": 193,
+  "ohp": 193,
+  "ivs": {
+    "hp": 28,
+    "attack": 20,
+    "defense": 21,
+    "special_attack": 17,
+    "special_defense": 16,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "KfxKJLI6",
+  "level": 64,
+  "name": "tornadus-therian",
+  "omoves": [
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 326,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 253,
+      "learn_method": "level-up",
+      "level_learned_at": 50
+    },
+    {
+      "id": 359,
+      "learn_method": "level-up",
+      "level_learned_at": 55
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "tornadus-therian": 193
+  },
+  "symbol": "",
+  "team": {
+    "h2nNdaoR": 317,
+    "sGoT9d9S": 49,
+    "ugba3Au1": 197,
+    "y3rOVeVe": 53,
+    "5ZGqYPX6": 126,
+    "jDswAh8V": 69
+  },
+  "la": {
+    "h2nNdaoR": 100,
+    "sGoT9d9S": 24,
+    "ugba3Au1": 58,
+    "y3rOVeVe": 22,
+    "5ZGqYPX6": 48,
+    "jDswAh8V": 27
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 254,
+  "ochp": -301,
+  "ohp": 104,
+  "ivs": {
+    "hp": 15,
+    "attack": 19,
+    "defense": 19,
+    "special_attack": 18,
+    "special_defense": 12,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "0dPZJJ1g",
+  "level": 33,
+  "name": "floatzel",
+  "omoves": [
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 453,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 458,
+      "learn_method": "level-up",
+      "level_learned_at": 29
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "floatzel": -301
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 254,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36,
+    "torhqPbg": 38,
+    "ZoPY7v6L": 208,
+    "qmVPBK5k": 27
+  },
+  "la": {
+    "ZpYcR2c0": 58,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10,
+    "torhqPbg": 13,
+    "ZoPY7v6L": 62,
+    "qmVPBK5k": 8
+  }
+}

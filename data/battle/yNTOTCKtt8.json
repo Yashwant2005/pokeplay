@@ -1,0 +1,45 @@
+{
+  "c": "ciCCjf9Z",
+  "org": "no",
+  "chp": 0,
+  "ochp": -58,
+  "ohp": 41,
+  "ivs": {
+    "hp": 15,
+    "attack": 13,
+    "defense": 18,
+    "special_attack": 12,
+    "special_defense": 14,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "Swzp512Z",
+  "level": 16,
+  "name": "kadabra",
+  "omoves": [
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kadabra": -58
+  },
+  "symbol": "",
+  "team": {
+    "ciCCjf9Z": 0
+  },
+  "la": {
+    "ciCCjf9Z": 20
+  }
+}

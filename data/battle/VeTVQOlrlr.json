@@ -1,0 +1,55 @@
+{
+  "c": "kOymg0ik",
+  "org": "no",
+  "chp": 0,
+  "ochp": 2,
+  "ohp": 54,
+  "ivs": {
+    "hp": 21,
+    "attack": 18,
+    "defense": 12,
+    "special_attack": 21,
+    "special_defense": 6,
+    "speed": 24
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "oG1bY5Ea",
+  "level": 22,
+  "name": "dratini",
+  "omoves": [
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 239,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 525,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dratini": 2
+  },
+  "symbol": "",
+  "team": {
+    "kOymg0ik": 0
+  },
+  "la": {
+    "kOymg0ik": 13
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 220,
+  "ochp": -135,
+  "ohp": 109,
+  "ivs": {
+    "hp": 11,
+    "attack": 21,
+    "defense": 17,
+    "special_attack": 15,
+    "special_defense": 14,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "DaiWESD5",
+  "level": 47,
+  "name": "hitmontop",
+  "omoves": [
+    {
+      "id": 279,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 389,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 91,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 370,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "hitmontop": -135
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 220,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 50,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

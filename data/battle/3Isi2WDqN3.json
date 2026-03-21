@@ -1,0 +1,55 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 94,
+  "ochp": -194,
+  "ohp": 23,
+  "ivs": {
+    "hp": 22,
+    "attack": 20,
+    "defense": 12,
+    "special_attack": 15,
+    "special_defense": 18,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "mzZQz8Pi",
+  "level": 5,
+  "name": "machop",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "machop": -194
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 94,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "V585CIwf": 114,
+    "zIc5R3QM": 83,
+    "hElvGj1W": 106
+  },
+  "la": {
+    "xPNmpDgC": 37,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "V585CIwf": 38,
+    "zIc5R3QM": 30,
+    "hElvGj1W": 26
+  }
+}

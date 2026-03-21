@@ -1,0 +1,45 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 20,
+  "ochp": 5,
+  "ohp": 21,
+  "ivs": {
+    "hp": 16,
+    "attack": 17,
+    "defense": 19,
+    "special_attack": 15,
+    "special_defense": 19,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "4E3Fy0WE",
+  "level": 6,
+  "name": "vulpix",
+  "omoves": [
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "vulpix": 5
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 20
+  },
+  "la": {
+    "xPNmpDgC": 11
+  }
+}

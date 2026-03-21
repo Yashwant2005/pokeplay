@@ -1,0 +1,60 @@
+{
+  "c": "8s3qQqRk",
+  "org": "no",
+  "chp": 161,
+  "ochp": -209,
+  "ohp": 28,
+  "ivs": {
+    "hp": 22,
+    "attack": 22,
+    "defense": 9,
+    "special_attack": 14,
+    "special_defense": 25,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "KbiKHFKq",
+  "level": 8,
+  "name": "oshawott",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "oshawott": -209
+  },
+  "symbol": "",
+  "team": {
+    "8s3qQqRk": 161,
+    "7qvFAXaU": 149,
+    "UmyfORGQ": 198,
+    "96T1ggy5": 158,
+    "CuGtMWDv": 227,
+    "TVIJQdd9": 167
+  },
+  "la": {
+    "8s3qQqRk": 60,
+    "7qvFAXaU": 54,
+    "UmyfORGQ": 59,
+    "96T1ggy5": 50,
+    "CuGtMWDv": 65,
+    "TVIJQdd9": 56
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 84,
+  "ochp": -21,
+  "ohp": 84,
+  "ivs": {
+    "hp": 14,
+    "attack": 14,
+    "defense": 10,
+    "special_attack": 15,
+    "special_defense": 14,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "1rUOJTmU",
+  "level": 35,
+  "name": "mareanie",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    },
+    {
+      "id": 474,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 42,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mareanie": -21
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 84,
+    "J4F20ScC": 35,
+    "dnSoMyRy": 106,
+    "Miai3ctV": 36
+  },
+  "la": {
+    "Xb9OMUmh": 46,
+    "J4F20ScC": 10,
+    "dnSoMyRy": 37,
+    "Miai3ctV": 10
+  }
+}

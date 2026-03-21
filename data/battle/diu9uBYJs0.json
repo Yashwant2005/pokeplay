@@ -1,0 +1,70 @@
+{
+  "c": "cfBHIXq4",
+  "org": "no",
+  "chp": 112,
+  "ochp": 130,
+  "ohp": 130,
+  "ivs": {
+    "hp": 19,
+    "attack": 16,
+    "defense": 16,
+    "special_attack": 23,
+    "special_defense": 19,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "HKBRW7RR",
+  "level": 45,
+  "name": "enamorus-therian",
+  "omoves": [
+    {
+      "id": 239,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 577,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 595,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 605,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "enamorus-therian": 130
+  },
+  "symbol": "",
+  "team": {
+    "cfBHIXq4": 112,
+    "By51g7on": 169,
+    "fc4Z3rKh": 92,
+    "djIFsPnu": 116,
+    "sUHb2dTI": 50,
+    "lknTQtK4": 77
+  },
+  "la": {
+    "cfBHIXq4": 37,
+    "By51g7on": 48,
+    "fc4Z3rKh": 37,
+    "djIFsPnu": 38,
+    "sUHb2dTI": 21,
+    "lknTQtK4": 32
+  }
+}

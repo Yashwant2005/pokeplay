@@ -1,0 +1,65 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 91,
+  "ochp": 83,
+  "ohp": 83,
+  "ivs": {
+    "hp": 15,
+    "attack": 13,
+    "defense": 17,
+    "special_attack": 27,
+    "special_defense": 21,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "Q18UJnXd",
+  "level": 29,
+  "name": "clefairy",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 574,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 500,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "clefairy": 83
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 91,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 91,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 34,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 22,
+    "yJT8NrzJ": 25
+  }
+}

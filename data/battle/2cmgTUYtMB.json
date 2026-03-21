@@ -1,0 +1,60 @@
+{
+  "c": "kOymg0ik",
+  "org": "no",
+  "chp": 12,
+  "ochp": -30,
+  "ohp": 49,
+  "ivs": {
+    "hp": 18,
+    "attack": 14,
+    "defense": 14,
+    "special_attack": 22,
+    "special_defense": 15,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "dktPmLzG",
+  "level": 20,
+  "name": "voltorb",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 205,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    },
+    {
+      "id": 451,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "voltorb": -30
+  },
+  "symbol": "",
+  "team": {
+    "kOymg0ik": 12
+  },
+  "la": {
+    "kOymg0ik": 16
+  }
+}

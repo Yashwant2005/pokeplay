@@ -1,0 +1,65 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 90,
+  "ochp": -199,
+  "ohp": 43,
+  "ivs": {
+    "hp": 18,
+    "attack": 21,
+    "defense": 19,
+    "special_attack": 21,
+    "special_defense": 11,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "HBthq622",
+  "level": 12,
+  "name": "aerodactyl",
+  "omoves": [
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 17,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "aerodactyl": -199
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 90,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 95,
+    "FwnmeApD": 136,
+    "zIc5R3QM": 83
+  },
+  "la": {
+    "xPNmpDgC": 36,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 23,
+    "FwnmeApD": 52,
+    "zIc5R3QM": 30
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 76,
+  "ochp": -17,
+  "ohp": 104,
+  "ivs": {
+    "hp": 16,
+    "attack": 8,
+    "defense": 8,
+    "special_attack": 19,
+    "special_defense": 12,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "k2gl78xU",
+  "level": 40,
+  "name": "gothorita",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 473,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "gothorita": -17
+  },
+  "symbol": "",
+  "team": {
+    "J4F20ScC": 33,
+    "Xb9OMUmh": 76,
+    "dnSoMyRy": 106
+  },
+  "la": {
+    "J4F20ScC": 9,
+    "Xb9OMUmh": 43,
+    "dnSoMyRy": 37
+  }
+}

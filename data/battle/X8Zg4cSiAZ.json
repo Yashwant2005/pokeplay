@@ -1,0 +1,60 @@
+{
+  "c": "2DSVGA7V",
+  "org": "no",
+  "chp": 365,
+  "ochp": 187,
+  "ohp": 187,
+  "ivs": {
+    "hp": 20,
+    "attack": 25,
+    "defense": 19,
+    "special_attack": 19,
+    "special_defense": 14,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "RUVXe4EO",
+  "level": 59,
+  "name": "palkia",
+  "omoves": [
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 396,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    },
+    {
+      "id": 408,
+      "learn_method": "level-up",
+      "level_learned_at": 56
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "palkia": 187
+  },
+  "symbol": "",
+  "team": {
+    "2DSVGA7V": 365
+  },
+  "la": {
+    "2DSVGA7V": 100
+  }
+}

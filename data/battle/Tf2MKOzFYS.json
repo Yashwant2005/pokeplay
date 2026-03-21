@@ -1,0 +1,62 @@
+{
+  "c": "QU99PvjF",
+  "org": "no",
+  "chp": 169,
+  "ochp": -157,
+  "ohp": 46,
+  "ivs": {
+    "hp": 16,
+    "attack": 15,
+    "defense": 15,
+    "special_attack": 16,
+    "special_defense": 12,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "j2bR0mrZ",
+  "level": 17,
+  "name": "barboach",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 189,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 173,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "barboach": -157
+  },
+  "symbol": "",
+  "team": {
+    "QU99PvjF": 169,
+    "3zK8PVU5": 208
+  },
+  "la": {
+    "QU99PvjF": 44,
+    "3zK8PVU5": 60
+  }
+}

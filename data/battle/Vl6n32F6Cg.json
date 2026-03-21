@@ -1,0 +1,60 @@
+{
+  "c": "Zk0uUgKy",
+  "org": "no",
+  "chp": 414,
+  "ochp": 33,
+  "ohp": 33,
+  "ivs": {
+    "hp": 12,
+    "attack": 9,
+    "defense": 14,
+    "special_attack": 13,
+    "special_defense": 23,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "3R1BZesq",
+  "level": 11,
+  "name": "bonsly",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 88,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "bonsly": 33
+  },
+  "symbol": "",
+  "team": {
+    "Zk0uUgKy": 414,
+    "XO6qeZ2o": 377,
+    "7oWX0gHd": 329,
+    "psj2Bvuf": 317,
+    "emJt2aMY": 307,
+    "irChEF9Z": 359
+  },
+  "la": {
+    "Zk0uUgKy": 100,
+    "XO6qeZ2o": 100,
+    "7oWX0gHd": 100,
+    "psj2Bvuf": 100,
+    "emJt2aMY": 100,
+    "irChEF9Z": 100
+  }
+}

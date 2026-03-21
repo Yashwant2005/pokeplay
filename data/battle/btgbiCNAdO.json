@@ -1,0 +1,62 @@
+{
+  "c": "bRnR7Krx",
+  "org": "no",
+  "chp": 197,
+  "ochp": 67,
+  "ohp": 105,
+  "ivs": {
+    "hp": 18,
+    "attack": 15,
+    "defense": 10,
+    "special_attack": 14,
+    "special_defense": 17,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "VhRvhwOZ",
+  "level": 37,
+  "name": "girafarig",
+  "omoves": [
+    {
+      "id": 23,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 19
+    },
+    {
+      "id": 458,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "girafarig": 67
+  },
+  "symbol": "",
+  "team": {
+    "9eeViYIB": 0,
+    "bRnR7Krx": 197
+  },
+  "la": {
+    "9eeViYIB": 18,
+    "bRnR7Krx": 54
+  }
+}

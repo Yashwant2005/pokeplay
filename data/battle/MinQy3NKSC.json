@@ -1,0 +1,60 @@
+{
+  "c": "FSMxgVfE",
+  "org": "no",
+  "chp": 348,
+  "ochp": 32,
+  "ohp": 32,
+  "ivs": {
+    "hp": 7,
+    "attack": 6,
+    "defense": 4,
+    "special_attack": 5,
+    "special_defense": 5,
+    "speed": 4
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "e6PBgLCI",
+  "level": 12,
+  "name": "charmander",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "charmander": 32
+  },
+  "symbol": "",
+  "team": {
+    "FSMxgVfE": 348,
+    "7ec8BLAg": 363,
+    "BhfloQjr": 362,
+    "qfQm5lQN": 354,
+    "JMZRkOQh": 304,
+    "DSnxaWfe": 421
+  },
+  "la": {
+    "FSMxgVfE": 100,
+    "7ec8BLAg": 100,
+    "BhfloQjr": 100,
+    "qfQm5lQN": 100,
+    "JMZRkOQh": 100,
+    "DSnxaWfe": 100
+  }
+}

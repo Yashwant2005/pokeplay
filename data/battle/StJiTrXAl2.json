@@ -1,0 +1,70 @@
+{
+  "c": "ka283FJN",
+  "org": "no",
+  "chp": 30,
+  "ochp": -66,
+  "ohp": 101,
+  "ivs": {
+    "hp": 17,
+    "attack": 16,
+    "defense": 9,
+    "special_attack": 27,
+    "special_defense": 19,
+    "speed": 31
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "TXLVavEE",
+  "level": 39,
+  "name": "doublade",
+  "omoves": [
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 400,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 514,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 442,
+      "learn_method": "level-up",
+      "level_learned_at": 38
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "doublade": -66
+  },
+  "symbol": "",
+  "team": {
+    "ka283FJN": 30,
+    "fe4s1SV4": 140,
+    "p6sCfffS": 153,
+    "HKmqM4sZ": 66,
+    "NwV4rdsE": 35,
+    "CcH25gY5": 13
+  },
+  "la": {
+    "ka283FJN": 31,
+    "fe4s1SV4": 51,
+    "p6sCfffS": 62,
+    "HKmqM4sZ": 14,
+    "NwV4rdsE": 7,
+    "CcH25gY5": 1
+  }
+}

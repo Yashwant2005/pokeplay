@@ -1,0 +1,70 @@
+{
+  "c": "GZT96diT",
+  "org": "no",
+  "chp": 170,
+  "ochp": 166,
+  "ohp": 166,
+  "ivs": {
+    "hp": 26,
+    "attack": 19,
+    "defense": 20,
+    "special_attack": 19,
+    "special_defense": 14,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "sys76NvO",
+  "level": 59,
+  "name": "tapu-fini",
+  "omoves": [
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 362,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 57,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 330,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "tapu-fini": 166
+  },
+  "symbol": "",
+  "team": {
+    "GZT96diT": 170,
+    "Apic5Dsh": 46,
+    "okBMueJl": 22,
+    "YhuTMVwR": 132,
+    "EXhNRksB": 166,
+    "5HjXAh6U": 120
+  },
+  "la": {
+    "GZT96diT": 56,
+    "Apic5Dsh": 15,
+    "okBMueJl": 5,
+    "YhuTMVwR": 50,
+    "EXhNRksB": 63,
+    "5HjXAh6U": 42
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 164,
+  "ochp": -142,
+  "ohp": 52,
+  "ivs": {
+    "hp": 20,
+    "attack": 15,
+    "defense": 14,
+    "special_attack": 11,
+    "special_defense": 10,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "OL4Rrw3P",
+  "level": 17,
+  "name": "prinplup",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 145,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 145,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "prinplup": -142
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 164,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 111,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 53,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 39,
+    "xPNmpDgC": 42
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 0,
+  "ochp": -137,
+  "ohp": 117,
+  "ivs": {
+    "hp": 9,
+    "attack": 18,
+    "defense": 17,
+    "special_attack": 16,
+    "special_defense": 14,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "uhW5QKuC",
+  "level": 47,
+  "name": "gengar",
+  "omoves": [
+    {
+      "id": 371,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 389,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    },
+    {
+      "id": 399,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "gengar": -137
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 0,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 111,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 55,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 39,
+    "xPNmpDgC": 42
+  }
+}

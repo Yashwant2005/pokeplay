@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 61,
+  "ochp": -51,
+  "ohp": 140,
+  "ivs": {
+    "hp": 27,
+    "attack": 14,
+    "defense": 20,
+    "special_attack": 14,
+    "special_defense": 20,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "p3DN69xr",
+  "level": 49,
+  "name": "magnezone",
+  "omoves": [
+    {
+      "id": 161,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 430,
+      "learn_method": "level-up",
+      "level_learned_at": 34
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magnezone": -51
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 61,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 108,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 52,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 38,
+    "xPNmpDgC": 42
+  }
+}

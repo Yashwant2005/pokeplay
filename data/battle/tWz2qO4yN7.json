@@ -1,0 +1,70 @@
+{
+  "c": "HUh1DYK2",
+  "org": "no",
+  "chp": 103,
+  "ochp": 103,
+  "ohp": 103,
+  "ivs": {
+    "hp": 9,
+    "attack": 10,
+    "defense": 17,
+    "special_attack": 18,
+    "special_defense": 13,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "yT1bHMPa",
+  "level": 38,
+  "name": "gallade",
+  "omoves": [
+    {
+      "id": 577,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 332,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 206,
+      "learn_method": "level-up",
+      "level_learned_at": 23
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "gallade": 103
+  },
+  "symbol": "",
+  "team": {
+    "HUh1DYK2": 103,
+    "Pne7iYOy": 132,
+    "Ll1ltq4f": 109,
+    "mTCqiClo": 128,
+    "9uRTUtu4": 30,
+    "uasHxgEj": 178
+  },
+  "la": {
+    "HUh1DYK2": 26,
+    "Pne7iYOy": 45,
+    "Ll1ltq4f": 38,
+    "mTCqiClo": 43,
+    "9uRTUtu4": 11,
+    "uasHxgEj": 56
+  }
+}

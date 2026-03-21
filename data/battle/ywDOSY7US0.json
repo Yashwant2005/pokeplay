@@ -1,0 +1,70 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 105,
+  "ochp": 173,
+  "ohp": 173,
+  "ivs": {
+    "hp": 18,
+    "attack": 15,
+    "defense": 24,
+    "special_attack": 26,
+    "special_defense": 26,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "aVfN9Gn5",
+  "level": 55,
+  "name": "moltres",
+  "omoves": [
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 510,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 403,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 257,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "moltres": 173
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 105,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 95,
+    "FwnmeApD": 136,
+    "zIc5R3QM": 83
+  },
+  "la": {
+    "xPNmpDgC": 36,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 23,
+    "FwnmeApD": 52,
+    "zIc5R3QM": 30
+  }
+}

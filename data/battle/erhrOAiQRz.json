@@ -1,0 +1,70 @@
+{
+  "c": "ka283FJN",
+  "org": "no",
+  "chp": 0,
+  "ochp": -119,
+  "ohp": 92,
+  "ivs": {
+    "hp": 20,
+    "attack": 19,
+    "defense": 12,
+    "special_attack": 12,
+    "special_defense": 13,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "Z1m0Tug7",
+  "level": 34,
+  "name": "litleo",
+  "omoves": [
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 424,
+      "learn_method": "level-up",
+      "level_learned_at": 23
+    },
+    {
+      "id": 497,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "litleo": -119
+  },
+  "symbol": "",
+  "team": {
+    "ka283FJN": 0,
+    "fe4s1SV4": 140,
+    "p6sCfffS": 153,
+    "HKmqM4sZ": 66,
+    "NwV4rdsE": 35,
+    "CcH25gY5": 13
+  },
+  "la": {
+    "ka283FJN": 26,
+    "fe4s1SV4": 51,
+    "p6sCfffS": 62,
+    "HKmqM4sZ": 14,
+    "NwV4rdsE": 7,
+    "CcH25gY5": 1
+  }
+}

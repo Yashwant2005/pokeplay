@@ -1,0 +1,60 @@
+{
+  "c": "vUSVE8kA",
+  "org": "no",
+  "chp": 0,
+  "ochp": 31,
+  "ohp": 87,
+  "ivs": {
+    "hp": 11,
+    "attack": 14,
+    "defense": 24,
+    "special_attack": 10,
+    "special_defense": 13,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "XogYERqf",
+  "level": 35,
+  "name": "seadra",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 239,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 225,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 61,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "seadra": 31
+  },
+  "symbol": "",
+  "team": {
+    "vUSVE8kA": 0
+  },
+  "la": {
+    "vUSVE8kA": 23
+  }
+}

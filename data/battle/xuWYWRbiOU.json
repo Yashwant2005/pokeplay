@@ -1,0 +1,70 @@
+{
+  "c": "uJZ6NrvQ",
+  "org": "no",
+  "chp": 170,
+  "ochp": 201,
+  "ohp": 201,
+  "ivs": {
+    "hp": 19,
+    "attack": 15,
+    "defense": 16,
+    "special_attack": 17,
+    "special_defense": 16,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "EOR6pmKs",
+  "level": 60,
+  "name": "kingambit",
+  "omoves": [
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 400,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 514,
+      "learn_method": "level-up",
+      "level_learned_at": 50
+    },
+    {
+      "id": 442,
+      "learn_method": "level-up",
+      "level_learned_at": 57
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kingambit": 201
+  },
+  "symbol": "",
+  "team": {
+    "uJZ6NrvQ": 170,
+    "SwLFAtN8": 122,
+    "KsagXYS3": 208,
+    "7eCp9IaI": 172,
+    "YaAiguNM": 26,
+    "8Tf7OCvM": 139
+  },
+  "la": {
+    "uJZ6NrvQ": 54,
+    "SwLFAtN8": 40,
+    "KsagXYS3": 45,
+    "7eCp9IaI": 56,
+    "YaAiguNM": 6,
+    "8Tf7OCvM": 48
+  }
+}

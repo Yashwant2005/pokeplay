@@ -1,0 +1,55 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 166,
+  "ochp": -75,
+  "ohp": 20,
+  "ivs": {
+    "hp": 16,
+    "attack": 15,
+    "defense": 15,
+    "special_attack": 12,
+    "special_defense": 18,
+    "speed": 8
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "o9CSFczd",
+  "level": 5,
+  "name": "azurill",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "azurill": -75
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 166,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 44,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

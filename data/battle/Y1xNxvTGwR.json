@@ -1,0 +1,70 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 0,
+  "ochp": -11,
+  "ohp": 74,
+  "ivs": {
+    "hp": 14,
+    "attack": 10,
+    "defense": 12,
+    "special_attack": 19,
+    "special_defense": 22,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "EtucS0qi",
+  "level": 28,
+  "name": "wartortle",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 229,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "wartortle": -11
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 0,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 84,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 27,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 20,
+    "yJT8NrzJ": 25
+  }
+}

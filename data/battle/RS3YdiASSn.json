@@ -1,0 +1,66 @@
+{
+  "c": "zemTCTKV",
+  "org": "no",
+  "chp": 40,
+  "ochp": 197,
+  "ohp": 197,
+  "ivs": {
+    "hp": 23,
+    "attack": 19,
+    "defense": 22,
+    "special_attack": 12,
+    "special_defense": 30,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "kGUVjyvL",
+  "level": 62,
+  "name": "zapdos",
+  "omoves": [
+    {
+      "id": 65,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 542,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 87,
+      "learn_method": "level-up",
+      "level_learned_at": 55
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zapdos": 197
+  },
+  "symbol": "",
+  "team": {
+    "zemTCTKV": 40,
+    "YKQgoIRm": 83,
+    "r2AVQFbR": 76,
+    "egDVYyXS": 185
+  },
+  "la": {
+    "zemTCTKV": 16,
+    "YKQgoIRm": 30,
+    "r2AVQFbR": 34,
+    "egDVYyXS": 58
+  }
+}

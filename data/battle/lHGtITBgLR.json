@@ -1,0 +1,65 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 66,
+  "ochp": -66,
+  "ohp": 59,
+  "ivs": {
+    "hp": 14,
+    "attack": 16,
+    "defense": 17,
+    "special_attack": 14,
+    "special_defense": 19,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "dKxzhGDQ",
+  "level": 21,
+  "name": "nidorino",
+  "omoves": [
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "nidorino": -66
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 66,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 84,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 29,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 20,
+    "yJT8NrzJ": 25
+  }
+}

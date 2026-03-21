@@ -1,0 +1,66 @@
+{
+  "c": "cwViJHTq",
+  "org": "no",
+  "chp": 128,
+  "ochp": 156,
+  "ohp": 156,
+  "ivs": {
+    "hp": 16,
+    "attack": 21,
+    "defense": 17,
+    "special_attack": 22,
+    "special_defense": 21,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "IFIFJrep",
+  "level": 40,
+  "name": "kyurem-white",
+  "omoves": [
+    {
+      "id": 573,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 406,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 58,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kyurem-white": 156
+  },
+  "symbol": "",
+  "team": {
+    "cwViJHTq": 128,
+    "ymkXGZ82": 114,
+    "dV44J3xa": 163,
+    "hGAsNUuJ": 141
+  },
+  "la": {
+    "cwViJHTq": 43,
+    "ymkXGZ82": 39,
+    "dV44J3xa": 52,
+    "hGAsNUuJ": 35
+  }
+}

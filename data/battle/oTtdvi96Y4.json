@@ -1,0 +1,60 @@
+{
+  "c": "kOymg0ik",
+  "org": "no",
+  "chp": 0,
+  "ochp": -1,
+  "ohp": 68,
+  "ivs": {
+    "hp": 15,
+    "attack": 14,
+    "defense": 20,
+    "special_attack": 15,
+    "special_defense": 11,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "zDjuLlvq",
+  "level": 25,
+  "name": "teddiursa",
+  "omoves": [
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 185,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "teddiursa": -1
+  },
+  "symbol": "",
+  "team": {
+    "kOymg0ik": 0
+  },
+  "la": {
+    "kOymg0ik": 19
+  }
+}

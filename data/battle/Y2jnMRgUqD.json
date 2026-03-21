@@ -1,0 +1,63 @@
+{
+  "c": "qZjiQSIR",
+  "org": "no",
+  "chp": 0,
+  "ochp": -5,
+  "ohp": 52,
+  "ivs": {
+    "hp": 15,
+    "attack": 13,
+    "defense": 13,
+    "special_attack": 27,
+    "special_defense": 15,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "U3kxjiyM",
+  "level": 19,
+  "name": "emolga",
+  "omoves": [
+    {
+      "id": 609,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "emolga": -5
+  },
+  "symbol": "",
+  "team": {
+    "pL6hF7y1": 64,
+    "qZjiQSIR": 0,
+    "XQhkG0sw": 82,
+    "yGPHcA10": 120,
+    "r6umgW7M": 0
+  },
+  "la": {
+    "pL6hF7y1": 24,
+    "qZjiQSIR": 11,
+    "XQhkG0sw": 17,
+    "yGPHcA10": 52,
+    "r6umgW7M": 5
+  }
+}

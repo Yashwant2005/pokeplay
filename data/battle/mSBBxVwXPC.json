@@ -1,0 +1,55 @@
+{
+  "c": "YSv2n2Fh",
+  "org": "no",
+  "chp": 43,
+  "ochp": -54,
+  "ohp": 38,
+  "ivs": {
+    "hp": 11,
+    "attack": 17,
+    "defense": 30,
+    "special_attack": 23,
+    "special_defense": 19,
+    "speed": 27
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "YzOOFxbw",
+  "level": 16,
+  "name": "remoraid",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "remoraid": -54
+  },
+  "symbol": "",
+  "team": {
+    "YSv2n2Fh": 43
+  },
+  "la": {
+    "YSv2n2Fh": 34
+  }
+}

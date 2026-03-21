@@ -1,0 +1,55 @@
+{
+  "c": "ciCCjf9Z",
+  "org": "no",
+  "chp": 23,
+  "ochp": -12,
+  "ohp": 33,
+  "ivs": {
+    "hp": 22,
+    "attack": 12,
+    "defense": 16,
+    "special_attack": 13,
+    "special_defense": 13,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "i3nY7ILb",
+  "level": 11,
+  "name": "squirtle",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    },
+    {
+      "id": 229,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "squirtle": -12
+  },
+  "symbol": "",
+  "team": {
+    "ciCCjf9Z": 23
+  },
+  "la": {
+    "ciCCjf9Z": 20
+  }
+}

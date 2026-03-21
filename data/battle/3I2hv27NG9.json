@@ -1,0 +1,70 @@
+{
+  "c": "HUh1DYK2",
+  "org": "no",
+  "chp": 103,
+  "ochp": 132,
+  "ohp": 132,
+  "ivs": {
+    "hp": 16,
+    "attack": 15,
+    "defense": 11,
+    "special_attack": 20,
+    "special_defense": 5,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "fzaXTpbX",
+  "level": 48,
+  "name": "sceptile",
+  "omoves": [
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 202,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 21,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 348,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sceptile": 132
+  },
+  "symbol": "",
+  "team": {
+    "HUh1DYK2": 103,
+    "Pne7iYOy": 132,
+    "Ll1ltq4f": 109,
+    "mTCqiClo": 128,
+    "9uRTUtu4": 30,
+    "uasHxgEj": 178
+  },
+  "la": {
+    "HUh1DYK2": 26,
+    "Pne7iYOy": 45,
+    "Ll1ltq4f": 38,
+    "mTCqiClo": 43,
+    "9uRTUtu4": 11,
+    "uasHxgEj": 56
+  }
+}

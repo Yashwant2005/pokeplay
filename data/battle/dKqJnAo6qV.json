@@ -1,0 +1,65 @@
+{
+  "c": "XxmBb8ir",
+  "org": "no",
+  "chp": 187,
+  "ochp": 72,
+  "ohp": 72,
+  "ivs": {
+    "hp": 21,
+    "attack": 13,
+    "defense": 24,
+    "special_attack": 20,
+    "special_defense": 23,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "LtrtV0Nz",
+  "level": 27,
+  "name": "smeargle",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    },
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "smeargle": 72
+  },
+  "symbol": "",
+  "team": {
+    "XxmBb8ir": 187,
+    "BDoHP5wy": 122,
+    "z8uGifBR": 201,
+    "puss3zIS": 347,
+    "OchBd1I4": 249,
+    "bMyjfqev": 123
+  },
+  "la": {
+    "XxmBb8ir": 60,
+    "BDoHP5wy": 50,
+    "z8uGifBR": 55,
+    "puss3zIS": 59,
+    "OchBd1I4": 61,
+    "bMyjfqev": 47
+  }
+}

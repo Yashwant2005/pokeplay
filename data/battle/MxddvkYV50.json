@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 120,
+  "ochp": -200,
+  "ohp": 101,
+  "ivs": {
+    "hp": 8,
+    "attack": 20,
+    "defense": 15,
+    "special_attack": 13,
+    "special_defense": 14,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "iy2vU0S1",
+  "level": 34,
+  "name": "machoke",
+  "omoves": [
+    {
+      "id": 490,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 282,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 233,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 70,
+      "learn_method": "level-up",
+      "level_learned_at": 31
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "machoke": -200
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 120,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 48,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

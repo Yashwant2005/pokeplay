@@ -1,0 +1,65 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 73,
+  "ochp": -63,
+  "ohp": 66,
+  "ivs": {
+    "hp": 17,
+    "attack": 13,
+    "defense": 13,
+    "special_attack": 14,
+    "special_defense": 28,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "yluKIAZF",
+  "level": 23,
+  "name": "weepinbell",
+  "omoves": [
+    {
+      "id": 22,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "weepinbell": -63
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 73,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 87,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 32,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 21,
+    "yJT8NrzJ": 25
+  }
+}

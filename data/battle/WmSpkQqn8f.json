@@ -1,0 +1,59 @@
+{
+  "c": "AfrJyFT3",
+  "org": "no",
+  "chp": 0,
+  "ochp": -13,
+  "ohp": 55,
+  "ivs": {
+    "hp": 13,
+    "attack": 10,
+    "defense": 22,
+    "special_attack": 18,
+    "special_defense": 9,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "emLMSAZo",
+  "level": 19,
+  "name": "litleo",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "litleo": -13
+  },
+  "symbol": "",
+  "team": {
+    "USP6eG1Z": 0,
+    "AfrJyFT3": 0,
+    "i3Zbowkn": 60
+  },
+  "la": {
+    "USP6eG1Z": 12,
+    "AfrJyFT3": 9,
+    "i3Zbowkn": 20
+  }
+}

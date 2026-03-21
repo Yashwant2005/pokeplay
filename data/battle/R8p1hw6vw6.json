@@ -1,0 +1,51 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 11,
+  "ochp": -19,
+  "ohp": 41,
+  "ivs": {
+    "hp": 10,
+    "attack": 12,
+    "defense": 16,
+    "special_attack": 17,
+    "special_defense": 18,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "p8nLkm8i",
+  "level": 13,
+  "name": "porygon",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "porygon": -19
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 11,
+    "Bo6PaTm9": 27,
+    "4vHKM3tf": 41,
+    "INnWVvZa": 65
+  },
+  "la": {
+    "xPNmpDgC": 14,
+    "Bo6PaTm9": 9,
+    "4vHKM3tf": 16,
+    "INnWVvZa": 23
+  }
+}

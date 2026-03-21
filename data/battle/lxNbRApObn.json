@@ -1,0 +1,55 @@
+{
+  "c": "m08rfuNt",
+  "org": "no",
+  "chp": 3,
+  "ochp": -21,
+  "ohp": 37,
+  "ivs": {
+    "hp": 16,
+    "attack": 14,
+    "defense": 14,
+    "special_attack": 14,
+    "special_defense": 16,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "x39LXvDO",
+  "level": 14,
+  "name": "charmander",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 225,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "charmander": -21
+  },
+  "symbol": "",
+  "team": {
+    "m08rfuNt": 3
+  },
+  "la": {
+    "m08rfuNt": 16
+  }
+}

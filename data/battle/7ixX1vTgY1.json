@@ -1,0 +1,70 @@
+{
+  "c": "Rm4RUlTM",
+  "org": "no",
+  "chp": 250,
+  "ochp": 213,
+  "ohp": 213,
+  "ivs": {
+    "hp": 18,
+    "attack": 13,
+    "defense": 19,
+    "special_attack": 18,
+    "special_defense": 23,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "m3brEcAY",
+  "level": 62,
+  "name": "roaring-moon",
+  "omoves": [
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 53,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 400,
+      "learn_method": "level-up",
+      "level_learned_at": 49
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "roaring-moon": 213
+  },
+  "symbol": "",
+  "team": {
+    "Rm4RUlTM": 250,
+    "knB5UKsA": 135,
+    "QYLvfHJR": 94,
+    "bIPO2fdy": 138,
+    "uMBi3j2C": 151,
+    "4JKJDskM": 139
+  },
+  "la": {
+    "Rm4RUlTM": 100,
+    "knB5UKsA": 49,
+    "QYLvfHJR": 31,
+    "bIPO2fdy": 39,
+    "uMBi3j2C": 42,
+    "4JKJDskM": 49
+  }
+}

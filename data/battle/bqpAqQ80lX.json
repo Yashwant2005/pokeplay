@@ -1,0 +1,54 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 18,
+  "ochp": -43,
+  "ohp": 32,
+  "ivs": {
+    "hp": 10,
+    "attack": 19,
+    "defense": 7,
+    "special_attack": 14,
+    "special_defense": 16,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "V7EcOf6J",
+  "level": 13,
+  "name": "gastly",
+  "omoves": [
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 371,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "gastly": -43
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 18,
+    "F5chvUKh": 69,
+    "LG4mTUpP": 63
+  },
+  "la": {
+    "jpIgbHmU": 19,
+    "F5chvUKh": 20,
+    "LG4mTUpP": 21
+  }
+}

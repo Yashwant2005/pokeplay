@@ -1,0 +1,70 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 353,
+  "ochp": 164,
+  "ohp": 164,
+  "ivs": {
+    "hp": 22,
+    "attack": 27,
+    "defense": 10,
+    "special_attack": 19,
+    "special_defense": 16,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "vG43PrpF",
+  "level": 52,
+  "name": "zeraora",
+  "omoves": [
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 521,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 9,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zeraora": 164
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 353,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

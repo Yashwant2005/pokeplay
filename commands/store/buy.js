@@ -11,6 +11,11 @@ function registerBuyCommand(bot, deps) {
     normalizeHeldItemShopName,
     titleCaseHeldItem
   } = require('../../utils/held_item_shop');
+  const {
+    EVOLUTION_STONES,
+    normalizeStoneName,
+    titleCaseEvolutionStone
+  } = require('../../utils/evolution_items');
   bot.command('buy',check,check2,async ctx => {
   
   const messageData = await loadMessageData();
@@ -40,6 +45,25 @@ function registerBuyCommand(bot, deps) {
   }
   
   const data = await getUserData(ctx.from.id)
+  const normalizedStoneName = normalizeStoneName((trailingAmount ? buyTokens.slice(0, -1) : buyTokens).join(' '))
+
+  if(EVOLUTION_STONES[normalizedStoneName]){
+  const amount = trailingAmount || 1
+  const pay = amount * EVOLUTION_STONES[normalizedStoneName].price
+  if(pay>data.inv.pc){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*You not have enough PokeCoinsÃ°Å¸â€™Â·*',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  if(!Array.isArray(data.inv.evostones)) data.inv.evostones = []
+  data.inv.pc -= pay
+  for(let i = 0; i < amount; i += 1){
+  data.inv.evostones.push(normalizedStoneName)
+  }
+  await saveUserData2(ctx.from.id,data)
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Bought *'+amount+'* '+c(titleCaseEvolutionStone(normalizedStoneName))+' for *'+pay+'* PokeCoins Ã°Å¸â€™Â·',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,-1003069884900,'#buy\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) bought <code>'+amount+' '+c(titleCaseEvolutionStone(normalizedStoneName))+'</code>',{parse_mode:'HTML'})
+  return
+  }
   
   if(item2.toLowerCase()=='card10'){
   
@@ -309,6 +333,32 @@ function registerBuyCommand(bot, deps) {
   await saveUserData2(ctx.from.id,data)
   await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Bought *'+amount+'* Ability Patch for *'+pay+'* PokeCoins ðŸ’·',{reply_to_message_id:ctx.message.message_id})
   await sendMessage(ctx,-1003069884900,'#buy\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) bought <code>'+amount+' Ability Patch</code>',{parse_mode:'HTML'})
+  return
+  }
+
+  if(['dynamaxcandy','dynamax-candy','dynamax_candy','dmaxcandy'].includes(item2.toLowerCase())){
+  const amount = Math.max(Math.floor(ctx.message.text.split(' ')[2]),0)
+  if(!amount){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Usage:* /buy dynamaxcandy <amount>',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  if(isNaN(amount)){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Invalid amount*',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  const pay = amount*5000
+  if(pay>data.inv.pc){
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*You not have enough PokeCoinsðŸ’·*',{reply_to_message_id:ctx.message.message_id})
+  return
+  }
+  if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+  if(!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
+  if(!Number.isFinite(data.extra.itembox.dynamaxCandy)) data.extra.itembox.dynamaxCandy = 0
+  data.inv.pc -= pay
+  data.extra.itembox.dynamaxCandy += amount
+  await saveUserData2(ctx.from.id,data)
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Bought *'+amount+'* Dynamax Candy for *'+pay+'* PokeCoins ðŸ’·',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,-1003069884900,'#buy\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) bought <code>'+amount+' Dynamax Candy</code>',{parse_mode:'HTML'})
   return
   }
 

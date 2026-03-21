@@ -178,6 +178,10 @@ msg += '• *Nature Mints:* '+totalMints+'\n'
 msg += '• *Bottle Caps:* '+data.extra.itembox.bottleCaps+'\n'
 msg += '• *Gold Bottle Caps:* '+data.extra.itembox.goldBottleCaps+'\n'
 
+if(!Number.isFinite(data.extra.itembox.dynamaxCandy)) data.extra.itembox.dynamaxCandy = 0
+msg += 'â€¢ *Dynamax Candy:* '+data.extra.itembox.dynamaxCandy+'\n'
+if(!Number.isFinite(data.extra.itembox.maxSoup)) data.extra.itembox.maxSoup = 0
+msg += '• *Max Soup:* '+data.extra.itembox.maxSoup+'\n'
 if(mintKeys.length > 0){
 msg += '\n*Mint Breakdown:*\n'
 for(const key of mintKeys){

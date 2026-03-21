@@ -1346,6 +1346,35 @@ const CONTACT_SPECIAL_MOVE_NAMES = new Set([
   'draining kiss'
 ]);
 
+const SHARPNESS_MOVE_NAMES = new Set([
+  'cut',
+  'razor leaf',
+  'slash',
+  'fury cutter',
+  'air cutter',
+  'aerial ace',
+  'leaf blade',
+  'night slash',
+  'air slash',
+  'x-scissor',
+  'psycho cut',
+  'cross poison',
+  'sacred sword',
+  'razor shell',
+  'secret sword',
+  'solar blade',
+  'behemoth blade',
+  'stone axe',
+  'ceaseless edge',
+  'population bomb',
+  'kowtow cleave',
+  'psyblade',
+  'bitter blade',
+  'aqua cutter',
+  'mighty cleave',
+  'tachyon cutter'
+]);
+
 function moveMakesContact(moveName, moveCategory) {
   const normalizedMove = normalizeMoveName(moveName);
   const category = String(moveCategory || '').toLowerCase();
@@ -1355,13 +1384,14 @@ function moveMakesContact(moveName, moveCategory) {
 }
 
 function getBattleMovePower(options) {
-  const { battleData, pass, pokemonName, moveName, moveType, movePower, heldItem } = options || {};
+  const { battleData, pass, pokemonName, moveName, moveType, movePower, heldItem, abilityName } = options || {};
   const rawPower = Number(movePower);
   if (!Number.isFinite(rawPower) || rawPower <= 0) return rawPower;
   const normalizedMove = normalizeMoveName(moveName);
   const baseSpecies = String(pokemonName || '').toLowerCase().split('-')[0];
   const state = ensureAbilityState(battleData);
   const item = getBattleHeldItemName({ battleData, pass, heldItem });
+  const ability = normalizeAbilityName(abilityName);
   const effectiveMoveType = getEffectiveMoveType({ pokemonName, heldItem: item, moveName, moveType, battleData });
   const plateType = getArceusPlateType(item);
   if (normalizedMove === 'order up' && baseSpecies === 'dondozo' && state.tatsugiriLunchboxTurn && state.tatsugiriLunchboxTurn[String(pass)]) {
@@ -1373,6 +1403,9 @@ function getBattleMovePower(options) {
   }
   if (plateType && effectiveMoveType === plateType) {
     return Math.max(1, Math.floor(rawPower * 1.2));
+  }
+  if (ability === 'sharpness' && SHARPNESS_MOVE_NAMES.has(normalizedMove)) {
+    return Math.max(1, Math.floor(rawPower * 1.5));
   }
   return rawPower;
 }

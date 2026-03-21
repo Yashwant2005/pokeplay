@@ -1,6 +1,11 @@
 function registerHeldPanelCallbacks(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   const { getHeldItemDescription } = require('../../utils/held_item_shop');
+  const {
+    getPokemonHeldItemRestrictionMessage,
+    getSanitizedHeldItemForPokemon,
+    isRayquazaLockedFromHeldItems
+  } = require('../../utils/pokemon_item_rules');
 
   function normalizeHeldItemName(value) {
     return normalizeHeldStone(value);
@@ -23,18 +28,9 @@ function registerHeldPanelCallbacks(bot, deps) {
     return data.extra.itembox.heldItems;
   }
 
-  function getStoneInventoryCount(data, itemName) {
-    const canon = normalizeStoneKey(itemName, stones);
-    if (!stones || !stones[canon]) return 0;
-    if (!data.inv || !Array.isArray(data.inv.stones)) return 0;
-    return data.inv.stones.filter((s) => normalizeStoneKey(s, stones) === canon).length;
-  }
-
   function getOwnedHeldItemCount(data, itemName) {
     const heldItems = ensureHeldItemBox(data);
-    const base = Number(heldItems[itemName]) || 0;
-    const stoneCount = getStoneInventoryCount(data, itemName);
-    return base + stoneCount;
+    return Number(heldItems[itemName]) || 0;
   }
 
   function getEquippedHeldItemCount(data, itemName, ignorePass = '') {
@@ -67,41 +63,15 @@ function registerHeldPanelCallbacks(bot, deps) {
     msg += '*Pokemon:* ' + c(poke.nickname || poke.name) + '\n';
     msg += '*Current Held Item:* ' + c(titleCaseHeldItem(currentItem || 'none'));
     if (currentItem && currentItem !== 'none') {
-      const currentDesc = getHeldItemDescription(currentItem);
-      if (currentDesc && currentDesc !== 'Unknown held item.') {
-        msg += '\n*Current Effect:* ' + c(currentDesc);
-      } else if (stones && stones[currentItem]) {
-        msg += '\n*Current Effect:* ' + c('Mega stone for ' + (stones[currentItem].pokemon || 'this pokemon'));
-      }
+      msg += '\n*Current Effect:* ' + c(getHeldItemDescription(currentItem));
     }
 
-    const heldEntries = Object.entries(ensureHeldItemBox(data))
-      .filter(([, amount]) => Number(amount) > 0);
-    const stoneKeysRaw = (data.inv && Array.isArray(data.inv.stones)) ? data.inv.stones : [];
-    const stoneKeys = stoneKeysRaw
-      .map((s) => normalizeStoneKey(s, stones))
-      .filter((key) => {
-        if (!stones || !stones[key]) return false;
-        const owner = normalizePokemonName(stones[key].pokemon);
-        return owner === pokeNameNorm;
-      });
-    const stoneCounts = {};
-    for (const key of stoneKeys) {
-      stoneCounts[key] = (stoneCounts[key] || 0) + 1;
-    }
-    const stoneEntries = Object.entries(stoneCounts).filter(([key, amount]) => amount > 0);
-    const combined = new Map();
-    for (const [key, amount] of heldEntries) {
-      combined.set(normalizeHeldItemName(key), Number(amount));
-    }
-    for (const [key, amount] of stoneEntries) {
-      const norm = normalizeStoneKey(key, stones);
-      combined.set(norm, (combined.get(norm) || 0) + Number(amount));
-    }
-    const entries = Array.from(combined.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+    const entries = Object.entries(ensureHeldItemBox(data))
+      .filter(([, amount]) => Number(amount) > 0)
+      .sort((a, b) => a[0].localeCompare(b[0]));
 
     if (restricted) {
-      msg += '\n\n*Held items are disabled for this Rayquaza because it knows Dragon Ascent.*';
+      msg += '\n\n*Held items are disabled for this Pokemon.*';
     } else if (entries.length < 1) {
       msg += '\n\nYou do not have any *held items* in your bag.';
     } else {
@@ -111,12 +81,7 @@ function registerHeldPanelCallbacks(bot, deps) {
         const free = Math.max(0, Number(amount) - equippedElsewhere);
         msg += '\n- ' + c(titleCaseHeldItem(itemName)) + ': *' + amount + '*';
         msg += ' | Free: *' + free + '*';
-        const desc = getHeldItemDescription(itemName);
-        if (desc && desc !== 'Unknown held item.') {
-          msg += '\n  ' + c(desc);
-        } else if (stones && stones[itemName]) {
-          msg += '\n  ' + c('Mega stone for ' + (stones[itemName].pokemon || 'this pokemon'));
-        }
+        msg += '\n  ' + c(getHeldItemDescription(itemName));
       }
     }
 

@@ -1,11 +1,16 @@
 function register_047_evy(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   const { toBaseIdentifier } = require('../../utils/base_form_pokemon');
-  bot.action(/evy_/,check2q,async ctx => {
+  const { getReadyEvolutionRows, getEvolutionBaseName, getEvolutionRowsForPokemon, getPseudoRandomEvolutionLevel, isEvolutionRequirementMet } = require('../../utils/evolution_rules');
+  const { getEvolutionStoneForTarget, removeEvolutionStone, titleCaseEvolutionStone } = require('../../utils/evolution_items');
+  const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
+  bot.action(/^(?:evy_|evytarget_|eeveeevy_)/,check2q,async ctx => {
 const data = await getUserData(ctx.from.id)
-//const name = ctx.callbackQuery.data.split('_')[1]
-const pass = ctx.callbackQuery.data.split('_')[2]
-const id = ctx.callbackQuery.data.split('_')[3]
+const parts = ctx.callbackQuery.data.split('_')
+const isTargetPick = ctx.callbackQuery.data.startsWith('evytarget_') || ctx.callbackQuery.data.startsWith('eeveeevy_')
+const pass = isTargetPick ? parts[1] : parts[2]
+const id = isTargetPick ? parts[2] : parts[3]
+const requestedTarget = isTargetPick ? parts.slice(3).join('_') : ''
 if(id && id!=ctx.from.id){
 ctx.answerCbQuery()
 return
@@ -16,20 +21,23 @@ await ctx.answerCbQuery('Poke not found', {show_alert:true})
 return
 }
 let name2 = poke.name
-const pokemonNames = Object.keys(forms);
-  for (const name3 of pokemonNames) {
-    const forms2 = forms[name3];
-    const matchingForm = forms2.filter(form => form.identifier === name2);
-    if (matchingForm.length > 0) {
-var name = name3;
-    }
-  }
-
-
-const evo2 = chains.evolution_chains.filter((chain)=>chain.current_pokemon==name && chain.evolution_method == 'level-up')
-const evo = evo2[Math.floor(Math.random()*evo2.length)]
+const name = getEvolutionBaseName(name2, forms)
+const currentLevel = plevel(poke.name,poke.exp)
+const evo2 = getReadyEvolutionRows(name2, currentLevel, chains, forms, { data, now: new Date() })
+const allEvolutionRows = getEvolutionRowsForPokemon(name2, chains, forms)
+const selectedEvolution = requestedTarget
+  ? allEvolutionRows.find((row) => String(row.evolved_pokemon || '').toLowerCase() === String(requestedTarget || '').toLowerCase())
+  : null
+const evo = selectedEvolution || evo2[Math.floor(Math.random()*evo2.length)]
 if(!evo){
-await ctx.answerCbQuery(c(name)+' does not evolve further or not via level up.', {show_alert:true})
+await ctx.answerCbQuery(c(name)+' does not evolve further or is not ready to evolve.', {show_alert:true})
+return
+}
+if(selectedEvolution && !isEvolutionRequirementMet(name2, currentLevel, selectedEvolution, { data, now: new Date() })){
+const levelNeeded = String(selectedEvolution.evolution_method || '').toLowerCase() === 'use-item'
+  ? getPseudoRandomEvolutionLevel(name2, selectedEvolution)
+  : Number(selectedEvolution.evolution_level) || 1
+await ctx.answerCbQuery(c(selectedEvolution.evolved_pokemon)+' is not ready yet.\nNeed Lv. '+levelNeeded+'.', {show_alert:true})
 return
 }
 if(poke.symbol == '🪅'){
@@ -37,7 +45,7 @@ await ctx.answerCbQuery('Event Pokemons cant be evolved.', {show_alert:true})
 return
 }
 
-if(evo && evo.evolution_level && evo.evolution_method == 'level-up' && evo.evolution_level <= plevel(poke.name,poke.exp)){
+if(evo){
 const fr = forms[evo.evolved_pokemon].filter((p)=> !p.identifier.includes('gmax') 
 && !p.identifier.includes('mega') && !p.identifier.includes('crowned') 
 && !p.identifier.includes('primal'))
@@ -87,8 +95,14 @@ var rn = fr
 let nam = rn[Math.floor(Math.random()*rn.length)].identifier
 nam = toBaseIdentifier(nam, forms)
 const d = pokes[nam]
+const requiredStone = evo.evolution_method == 'use-item' ? getEvolutionStoneForTarget(evo.evolved_pokemon) : ''
+if(requiredStone && !removeEvolutionStone(data, requiredStone)){
+await ctx.answerCbQuery('Missing ' + titleCaseEvolutionStone(requiredStone), {show_alert:true})
+return
+}
 poke.name = nam
 poke.id = d.pokedex_number
+poke.ability = getRandomAbilityForPokemon(nam, pokes)
 if(!d || !d.front_default_image){
 ctx.answerCbQuery('This Evolution Cant Be Performed,Contact Admins',{show_alert:true})
 return
@@ -136,7 +150,11 @@ await saveMessageData(mdata)
 }
 }
 await saveUserData2(ctx.from.id,data)
-await sendMessage(ctx,ctx.chat.id,img,{caption:'*'+c(name)+'* Has Been Evolved Into *'+c(nam)+'*',parse_mode:'markdown'})
+let finalCaption = '*'+c(name)+'* Has Been Evolved Into *'+c(nam)+'*'
+if(requiredStone){
+finalCaption += '\nUsed *'+c(titleCaseEvolutionStone(requiredStone))+'*'
+}
+await sendMessage(ctx,ctx.chat.id,img,{caption:finalCaption,parse_mode:'markdown'})
 },3500)
 }else{
 await ctx.answerCbQuery(c(name)+' does not meet the evolution requirements.', {show_alert:true})

@@ -75,7 +75,7 @@ const moves = []
 for(const move2 of p.moves){
 let move = dmoves[move2]
 if(!move) continue
-const rawPower = getBattleMovePower({ battleData, pass: p.pass, pokemonName: p.name, moveName: move && move.name, movePower: move && move.power })
+const rawPower = getBattleMovePower({ battleData, pass: p.pass, pokemonName: p.name, abilityName: p.ability, moveName: move && move.name, movePower: move && move.power })
 const shownType = getEffectiveMoveType({ battleData, pokemonName: p.name, abilityName: p.ability, heldItem: p.held_item, moveName: move && move.name, moveType: move && move.type }) || move.type
 const pinchInfo = getPinchAbilityInfo({ abilityName: p.ability, moveType: move && move.type, currentHp: battleData.chp, maxHp: stats.hp })
 const shownPower = Number.isFinite(rawPower) && rawPower > 0 && pinchInfo.active

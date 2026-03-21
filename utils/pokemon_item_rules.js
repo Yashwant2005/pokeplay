@@ -26,14 +26,10 @@ function pokemonKnowsMove(pokemon, moveName) {
 }
 
 function isRayquazaLockedFromHeldItems(pokemon) {
-  return String((pokemon && pokemon.name) || '').toLowerCase() === 'rayquaza'
-    && pokemonKnowsMove(pokemon, 'dragon ascent');
+  return false;
 }
 
 function getPokemonHeldItemRestrictionMessage(pokemon) {
-  if (isRayquazaLockedFromHeldItems(pokemon)) {
-    return 'Rayquaza that knows Dragon Ascent cannot hold held items.';
-  }
   return '';
 }
 

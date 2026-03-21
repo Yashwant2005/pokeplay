@@ -715,6 +715,7 @@ return msg
 async function pokelist(pokemon,ctx,str){
 let msg = ''
 const data = await getUserData(ctx.from.id)
+const { getDisplayPokemonSymbol } = require('./utils/gmax_utils')
 let i = 0
 for (const poke of pokemon) {
 const p = data.pokes.filter((poke3)=>poke3.pass==poke)[0]
@@ -729,36 +730,37 @@ sym.push(emojis[ty])
 const cat2 = spawn[p.name] ?spawn[p.name] : 'N/A'
 const cat = (cat2=='legendry') ? 'legendary' : cat2
 const stats = await Stats(pokestats[p.name],p.ivs,p.evs,c(p.nature),currentLevel)
+const displaySymbol = getDisplayPokemonSymbol(p)
 if(!data.extra || !data.extra.display || data.extra.display=='none'){
-msg += '\n*' + (i + 1 + str*1) + '.* ' + c(p.nickname || p.name) + ' '+p.symbol+''
+msg += '\n*' + (i + 1 + str*1) + '.* ' + c(p.nickname || p.name) + ' '+displaySymbol+''
 }else if(data.extra.display=='level'){
-    msg += '\n*' + (i + 1 + str*1) + '.* ' + c(p.nickname || p.name) + ' (*Lv.* ' + currentLevel + ') '+p.symbol+'';
+    msg += '\n*' + (i + 1 + str*1) + '.* ' + c(p.nickname || p.name) + ' (*Lv.* ' + currentLevel + ') '+displaySymbol+'';
 }else if(data.extra.display=='iv-points'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+calculateTotal(p.ivs)+' *IVs* '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+calculateTotal(p.ivs)+' *IVs* '+displaySymbol+''
 }else if(data.extra.display=='ev-points'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+calculateTotal(p.evs)+' *EVs* '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+calculateTotal(p.evs)+' *EVs* '+displaySymbol+''
 }else if(data.extra.display=='nature'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - *'+c(p.nature)+'* '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - *'+c(p.nature)+'* '+displaySymbol+''
 }else if(data.extra.display=='type'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - \['+c(pokes[p.name].types.join(', '))+'\] '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - \['+c(pokes[p.name].types.join(', '))+'\] '+displaySymbol+''
 }else if(data.extra.display=='type-symbol'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - ' + sym.join(', ') + ' ' + p.symbol;
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - ' + sym.join(', ') + ' ' + displaySymbol;
 }else if(data.extra.display=='category'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+cat+' '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+cat+' '+displaySymbol+''
 }else if(data.extra.display=='hp-points'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.hp+' *HP* '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.hp+' *HP* '+displaySymbol+''
 }else if(data.extra.display=='attack-points'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.attack+' *Atk* '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.attack+' *Atk* '+displaySymbol+''
 }else if(data.extra.display=='defense-points'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.defense+' *Def* '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.defense+' *Def* '+displaySymbol+''
 }else if(data.extra.display=='special-attack-points'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.special_attack+' *SpA* '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.special_attack+' *SpA* '+displaySymbol+''
 }else if(data.extra.display=='special-defense-points'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.special_defense+' *SpD* '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.special_defense+' *SpD* '+displaySymbol+''
 }else if(data.extra.display=='speed-points'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.speed+' *Spe* '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+stats.speed+' *Spe* '+displaySymbol+''
 }else if(data.extra.display=='total-points'){
-msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+calculateTotal(stats)+' *Stats* '+p.symbol+''
+msg += '\n*'+(i+1+str*1)+'.* '+c(p.nickname || p.name)+' - '+calculateTotal(stats)+' *Stats* '+displaySymbol+''
 }
 
 

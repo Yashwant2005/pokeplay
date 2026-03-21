@@ -1,5 +1,6 @@
 function register_075_nykne(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
   bot.action(/nykne_/,async ctx => {
 const id = ctx.callbackQuery.data.split('_')[2]
 if(ctx.from.id!=id){
@@ -20,7 +21,7 @@ const pokemon2 = await sort(ctx.from.id,pokes)
 const pokemon = pokemon2.slice(startIdx,endIdx)
 let b = startIdx
 for(const a of pokemon){
-msg += '\n*'+(b+1)+'. '+c(a.nickname)+'* '+a.symbol+' ('+c(a.name)+')'
+msg += '\n*'+(b+1)+'. '+c(a.nickname)+'* '+getDisplayPokemonSymbol(a)+' ('+c(a.name)+')'
 b++;
 }
 const key = []

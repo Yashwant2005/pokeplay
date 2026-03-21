@@ -1,5 +1,6 @@
 function registerMynicknamesCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
   bot.command('mynicknames',check,async ctx => {  
   const data = await getUserData(ctx.from.id)  
   const pokes = data.pokes.filter((pk)=>pk.nickname)  
@@ -12,7 +13,7 @@ function registerMynicknamesCommand(bot, deps) {
   const pokemon = pokemon2.slice(startIdx,endIdx)  
   let b = startIdx  
   for(const a of pokemon){  
-  msg += '\n*'+(b+1)+'. '+c(a.nickname)+'* '+a.symbol+' ('+c(a.name)+')'  
+  msg += '\n*'+(b+1)+'. '+c(a.nickname)+'* '+getDisplayPokemonSymbol(a)+' ('+c(a.name)+')'
   b++;}  
   const key = []  
   const row = []  

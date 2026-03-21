@@ -325,12 +325,7 @@ if(!move1 || !p){
   return
 }
 syncBattleFormAndAbility({ battleData, pokemon: p, pass: p.pass, pokestats })
-const base = pokestats[battleData.name]
-const base2 = pokestats[p.name]
 const uname = he.encode(ctx.from.first_name)
-const stats2 = await Stats(base,battleData.ivs,battleData.evs,c(battleData.nat),battleData.level)
-const clevel = plevel(p.name,p.exp)
-const stats = await Stats(base2,p.ivs,p.evs,c(p.nature),clevel)
 const opponentPass = battleData.opass || 'wild-opponent'
 battleData.opass = opponentPass
 if(!battleData.oability){

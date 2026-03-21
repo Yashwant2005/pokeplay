@@ -2178,7 +2178,6 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         if (getAirBalloonInfo({ battleData, pass: p12.pass, heldItem: p12.held_item }).active) {
           turnLogs += '\n-> <b>' + c(p12.name) + '</b>\'s <b>Air Balloon</b> is floating it above the ground!';
         }
-        const switchedStats = await Stats(pokestats[p12.name], p12.ivs, p12.evs, c(p12.nature), plevel(p12.name, p12.exp));
         turnLogs += await applyEntryHazardsOnSwitch({
           battleData,
           sideId: battleData.cid,
@@ -5203,8 +5202,6 @@ async function executeStandardMove(act) {
     let stats1 = await Stats(base1, p.ivs, p.evs, c(p.nature), level1);
     let stats2 = await Stats(base2, op.ivs, op.evs, c(op.nature), level2);
     
-    const attackerHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item });
-    const defenderHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item });
     const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
     const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name].types || [], heldItem: defenderHeldItemName });
 
@@ -6495,7 +6492,7 @@ const attacker = await getUserData(battleData.cid)
 const defender = await getUserData(battleData.oid)
 const p1 = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
 const p2 = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0]
-const msg = '<b>'+c(p1.name)+'</b> has transformed into <b>'+c(megaFormName)+'</b>\n<i>Mega Evolution does not consume your turn. Choose a move.</i>'
+const megaMsg = '<b>'+c(p1.name)+'</b> has transformed into <b>'+c(megaFormName)+'</b>\n<i>Mega Evolution does not consume your turn. Choose a move.</i>'
 const base1 = getBattleBaseStats({ battleData, pass: p2.pass, pokemonName: p2.name, abilityName: p2.ability, pokestats })
 const base2 = getBattleBaseStats({ battleData, pass: p1.pass, pokemonName: p1.name, abilityName: p1.ability, pokestats })
 const level1 = plevel(p2.name,p2.exp)
@@ -6503,7 +6500,7 @@ const level2 = plevel(p1.name,p1.exp)
 const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
 const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
 const isGroupMeg = ctx.chat.type !== 'private';
-const pvpMeg = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMeg);
+const pvpMeg = buildPvpMsg(megaMsg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMeg);
 let img2 = pokes[p12.name].front_default_image
 const im2 = shiny.filter((poke)=>poke.name==p12.name)[0]
 if(im2 && p12.symbol=='✨'){

@@ -887,7 +887,7 @@ if (!ivs[statToIncrease] || ivs[statToIncrease] < AIv) {
     }
 }
 
-  return withRandomIvRange(ivs, 26, 31);
+  return withGuaranteedIvSpread(ivs, 20, 31, 25);
 }
 
 function clampIvValue(value) {
@@ -916,6 +916,22 @@ function withRandomIvRange(ivs, minPerStat, maxPerStat) {
     const roll = Math.floor(Math.random() * (maxIv - minIv + 1)) + minIv;
     const base = clampIvValue(ivs && ivs[statName]);
     out[statName] = Math.max(base, roll);
+  }
+  return out;
+}
+
+function withGuaranteedIvSpread(ivs, minPerStat, maxPerStat, guaranteedMinimum) {
+  const stats = ['hp', 'attack', 'defense', 'special_attack', 'special_defense', 'speed'];
+  const out = withRandomIvRange(ivs, minPerStat, maxPerStat);
+  const guaranteedMin = Math.max(
+    Math.max(0, Math.min(31, Math.floor(Number(guaranteedMinimum) || 0))),
+    Math.max(0, Math.min(31, Math.floor(Number(minPerStat) || 0)))
+  );
+  const hasGuaranteedStat = stats.some((statName) => Number(out[statName]) >= guaranteedMin);
+  if (!hasGuaranteedStat) {
+    const chosenStat = stats[Math.floor(Math.random() * stats.length)];
+    const boostRoll = Math.floor(Math.random() * (31 - guaranteedMin + 1)) + guaranteedMin;
+    out[chosenStat] = Math.max(clampIvValue(out[chosenStat]), boostRoll);
   }
   return out;
 }

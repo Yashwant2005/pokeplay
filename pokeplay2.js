@@ -2,7 +2,7 @@
 const appr = [1072659486,6265981509]
 //const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //main bot
 //const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //backup bot
-const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // test bot
+const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' // test bot
 const { Telegraf } = require('telegraf')
 const bot = new Telegraf(botToken)
 if (process.env.QUIET_LOGS === '1') {
@@ -1065,6 +1065,7 @@ const groupCommands = [
 {command:'/ivlock',description:'Lock one IV stat during IV boost event'},
 {command:'/claimplate',description:'Claim one Arceus Plate once'},
     {command:'/daily',description:'Claim commemorative daily rewards'},
+{command:'/reset',description:'Reset data for yourself or a replied user'},
 {command:'/claim_safari_pass',description:'Claim your daily safari event pass'},
 {command:'/challenge',description:'Battle With Other Players'},
 {command:'/mybag',description:'Check Your Bag'},

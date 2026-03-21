@@ -1,5 +1,6 @@
 function register_009_run(bot, deps) {
   Object.assign(globalThis, deps, { bot });
+  const { revertTrackedFormsOnBattleEnd } = require('../../utils/battle_forms');
   bot.action(/run_/,async ctx => {
 let battleData = {};
 try {
@@ -23,6 +24,7 @@ if (battleData && battleData.powerConstructOriginal && Array.isArray(data.pokes)
     }
   }
 }
+revertTrackedFormsOnBattleEnd(battleData, data)
 data.extra.hunting = false
 await saveUserData2(ctx.from.id,data)
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Successfully Escaped')

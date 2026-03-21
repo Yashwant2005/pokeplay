@@ -47,6 +47,10 @@ const {
   claimTrainerRankRewards,
   getTrainerLevel
 } = require('../../utils/trainer_rank_rewards');
+const {
+  syncBattleFormAndAbility,
+  revertTrackedFormsOnBattleEnd
+} = require('../../utils/battle_forms');
 
 function register_012_atk(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -305,6 +309,7 @@ if(!move1 || !p){
   ctx.answerCbQuery('Battle desynced. Use /reset_battle.')
   return
 }
+syncBattleFormAndAbility({ battleData, pokemon: p, pass: p.pass, pokestats })
 const base = pokestats[battleData.name]
 const base2 = pokestats[p.name]
 const uname = he.encode(ctx.from.first_name)
@@ -1203,6 +1208,7 @@ if(newTrainerLevel > oldTrainerLevel){
 }
 data.extra.hunting = false
 revertPowerConstructFormsOnBattleEnd(battleData, data)
+revertTrackedFormsOnBattleEnd(battleData, data)
 await saveUserData2(ctx.from.id,data)
 const messageData = await loadMessageData();
 if(messageData[ctx.from.id]) {
@@ -1346,6 +1352,7 @@ await saveMessageData(messageData)
 }
 data.extra.hunting = false
 revertPowerConstructFormsOnBattleEnd(battleData, data)
+revertTrackedFormsOnBattleEnd(battleData, data)
 await saveUserData2(ctx.from.id,data)
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(wildDisplayName)+'</b> Used <b>'+c(move2.name)+'</b> And Dealt <b>'+c(playerDisplayName)+'</b> <code>'+damage2+'</code> HP.'+enemyAttackAbilityMsg+'\n\n- <b>'+c(playerDisplayName)+'</b> has fainted And You Got <b>Defeated</b>.',{parse_mode:'html'})
 return

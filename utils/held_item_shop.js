@@ -64,7 +64,11 @@ const HELD_ITEM_PC_TIERS = [
     pc: 100000,
     lp: 3000,
     items: [
-      'booster-energy'
+      'booster-energy',
+      'rusted-sword',
+      'rusted-shield',
+      'red-orb',
+      'blue-orb'
     ]
   }
 ];
@@ -111,7 +115,15 @@ const HELD_ITEM_ALIASES = {
   damprock: 'damp-rock',
   'damp-rock': 'damp-rock',
   boosterenergy: 'booster-energy',
-  'booster-energy': 'booster-energy'
+  'booster-energy': 'booster-energy',
+  rustedsword: 'rusted-sword',
+  'rusted-sword': 'rusted-sword',
+  rustedshield: 'rusted-shield',
+  'rusted-shield': 'rusted-shield',
+  redorb: 'red-orb',
+  'red-orb': 'red-orb',
+  blueorb: 'blue-orb',
+  'blue-orb': 'blue-orb'
 };
 
 for (const entry of ARCEUS_PLATES) {
@@ -171,7 +183,11 @@ function getHeldItemDescription(itemName) {
     'rocky-helmet': 'Damages foes that make contact with the holder.',
     'tatsugiri-lunchbox': 'Special Dondozo item. Grants a strong temporary stat burst on entry.',
     'weakness-policy': 'After taking a super-effective hit, sharply raises Attack and Special Attack.',
-    'light-ball': 'Doubles Pikachu\'s Attack and Special Attack.'
+    'light-ball': 'Doubles Pikachu\'s Attack and Special Attack.',
+    'rusted-sword': 'Transforms Zacian into its Crowned form in battle and supports its signature ability behavior.',
+    'rusted-shield': 'Transforms Zamazenta into its Crowned form in battle and supports its signature ability behavior.',
+    'red-orb': 'Transforms Groudon into Primal Groudon in battle.',
+    'blue-orb': 'Transforms Kyogre into Primal Kyogre in battle.'
   };
 
   return descriptions[normalized] || 'Held battle item.';

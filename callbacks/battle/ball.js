@@ -2,6 +2,7 @@ function register_015_ball(bot, deps) {
   Object.assign(globalThis, deps, { bot });
     const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
     const { getBattleHeldItemName } = require('../../utils/battle_abilities');
+    const { revertTrackedFormsOnBattleEnd } = require('../../utils/battle_forms');
     const revertPowerConstructFormsOnBattleEnd = (battleDataArg, userData) => {
       if (!battleDataArg || !battleDataArg.powerConstructOriginal || !userData || !Array.isArray(userData.pokes)) return
       for (const pass of Object.keys(battleDataArg.powerConstructOriginal)) {
@@ -147,6 +148,7 @@ await saveMessageData(mdata)
 }
 data.extra.hunting = false
 revertPowerConstructFormsOnBattleEnd(battleData, data)
+revertTrackedFormsOnBattleEnd(battleData, data)
 await saveUserData2(ctx.from.id,data)
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Your *'+c(ball)+'* Failed And wild *'+c(battleData.name)+'* Has fled.',{parse_mode:'markdown'})
 const messageData = await loadMessageData();
@@ -200,6 +202,7 @@ await sleep(800)
  if(!g || !chart[g.growth_rate] || !de){
    data.extra.hunting = false
    revertPowerConstructFormsOnBattleEnd(battleData, data)
+   revertTrackedFormsOnBattleEnd(battleData, data)
    await saveUserData2(ctx.from.id,data)
    try{
      await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Missing pokemon data. Please /hunt again.',{parse_mode:'markdown'})
@@ -284,6 +287,7 @@ if(!data.pokecaught.includes(battleData.name)){
 data.pokecaught.push(battleData.name)
 }
 revertPowerConstructFormsOnBattleEnd(battleData, data)
+revertTrackedFormsOnBattleEnd(battleData, data)
 await saveUserData2(ctx.from.id,data)
 const messageData = await loadMessageData();
 if(messageData[ctx.from.id]) {
@@ -315,6 +319,7 @@ await saveMessageData(mdata)
 }
 data.extra.hunting = false
 revertPowerConstructFormsOnBattleEnd(battleData, data)
+revertTrackedFormsOnBattleEnd(battleData, data)
 await saveUserData2(ctx.from.id,data)
 await sendMessage(ctx,-1003069884900,'#caught\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) caught <code>'+c(battleData.name)+'</code>',{parse_mode:'HTML'})
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,''+m+'\n\nSuccessfully Caught *'+c(battleData.name)+'*',{parse_mode:'markdown',reply_markup:{inline_keyboard:[[{text:'Check Stats',callback_data:'stats_'+pass2+'_'+ctx.from.id+'_0'}]]}})

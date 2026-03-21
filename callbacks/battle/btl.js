@@ -1,4 +1,5 @@
 const { getBattleHeldItemName, getEffectiveMoveType, getPinchAbilityInfo } = require('../../utils/battle_abilities');
+const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
 
 function register_016_btl(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -24,6 +25,9 @@ let battleData = {};
     }
 const data = await getUserData(ctx.from.id)
 const p = data.pokes.filter((poke)=>poke.pass==battleData.c)[0]
+if (p) {
+syncBattleFormAndAbility({ battleData, pokemon: p, pass: p.pass, pokestats })
+}
 const uname = he.encode(ctx.from.first_name)
 const clevel = plevel(p.name,p.exp)
 const op = pokes[battleData.name]

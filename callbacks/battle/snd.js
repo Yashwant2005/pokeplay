@@ -1,4 +1,5 @@
 const { applyEntryAbility, getBattleMovePower, getDisplayedWeatherState, getPinchAbilityInfo, getWeatherDisplayName, setBattleWeatherNegationState } = require('../../utils/battle_abilities');
+const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
 
 function register_018_snd(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -33,6 +34,7 @@ if(!p){
 ctx.answerCbQuery('Poke Not Found In Database')
 return
 }
+syncBattleFormAndAbility({ battleData, pokemon: p, pass: p.pass, pokestats })
 
 battleData.c = ps
 battleData.chp = battleData.team[ps]

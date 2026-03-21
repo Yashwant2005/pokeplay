@@ -1,5 +1,6 @@
 const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
 const { applyEntryAbility, getAirBalloonInfo, getDisplayedWeatherState, getWeatherDisplayName, setBattleWeatherNegationState } = require('../../utils/battle_abilities');
+const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
 const { applyIvBoostEventToEncounter, IV_STAT_LABELS } = require('../../utils/iv_boost_campaign');
 const { ARCEUS_PLATES } = require('../../utils/held_item_shop');
 
@@ -156,6 +157,7 @@ function register_011_catch(bot, deps) {
     const keyboard = {
       inline_keyboard: rows, key2
     };
+    syncBattleFormAndAbility({ battleData, pokemon: p, pass: p.pass, pokestats });
     const cp = word(8);
     battleData.opass = word(8);
     battleData.c = p.pass;

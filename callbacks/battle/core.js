@@ -54,6 +54,14 @@
   applyOnDamageTakenAbilities: applyAbilityOnDamageTaken
 } = require('../../utils/battle_abilities');
 
+const ABILITY_BY_FORM = (() => {
+  try {
+    return require('../../data/pokemon_abilities_cache.json') || {};
+  } catch (error) {
+    return {};
+  }
+})();
+
 function registerBattleCallbacks(bot, deps) {
   const {
     getUserData,
@@ -216,6 +224,99 @@ function registerBattleCallbacks(bot, deps) {
     return Math.max(1, Math.floor(weatherAdjustedPower * totalMultiplier)) + ' (' + labels.join(', ') + ')';
   }
 
+  function normalizeHeldItemForForm(value) {
+    return String(value || 'none')
+      .toLowerCase()
+      .replace(/[_\s]+/g, '-')
+      .replace(/-+/g, '-')
+      .trim();
+  }
+
+  function getItemDrivenFormName(pokemonName, heldItemName) {
+    const normalizedName = String(pokemonName || '').toLowerCase();
+    const item = normalizeHeldItemForForm(heldItemName);
+    if (normalizedName === 'zacian' || normalizedName === 'zacian-crowned') {
+      return item === 'rusted-sword' ? 'zacian-crowned' : 'zacian';
+    }
+    if (normalizedName === 'zamazenta' || normalizedName === 'zamazenta-crowned') {
+      return item === 'rusted-shield' ? 'zamazenta-crowned' : 'zamazenta';
+    }
+    if (normalizedName === 'groudon' || normalizedName === 'groudon-primal') {
+      return item === 'red-orb' ? 'groudon-primal' : 'groudon';
+    }
+    if (normalizedName === 'kyogre' || normalizedName === 'kyogre-primal') {
+      return item === 'blue-orb' ? 'kyogre-primal' : 'kyogre';
+    }
+    return normalizedName;
+  }
+
+  function getCanonicalFormAbility(pokemonName, fallbackAbility) {
+    const normalizedName = String(pokemonName || '').toLowerCase();
+    const pool = ABILITY_BY_FORM[normalizedName];
+    if (Array.isArray(pool) && pool.length > 0) {
+      return String(pool[0]);
+    }
+    return String(fallbackAbility || 'none');
+  }
+
+  function ensureBattleFormStateTracker(battleData) {
+    if (!battleData.formState || typeof battleData.formState !== 'object') {
+      battleData.formState = {};
+    }
+    if (!battleData.formState.originalName || typeof battleData.formState.originalName !== 'object') {
+      battleData.formState.originalName = {};
+    }
+    if (!battleData.formState.originalAbility || typeof battleData.formState.originalAbility !== 'object') {
+      battleData.formState.originalAbility = {};
+    }
+    return battleData.formState;
+  }
+
+  function syncBattleFormAndAbility(options) {
+    const { battleData, pokemon, pass, heldItem, forceName } = options || {};
+    if (!battleData || !pokemon || !pass) return false;
+
+    const tracker = ensureBattleFormStateTracker(battleData);
+    const passKey = String(pass);
+    const normalizedCurrent = String(pokemon.name || '').toLowerCase();
+    const keyItemEnabled = !battleData.set || battleData.set.key_item !== false;
+    const heldItemName = heldItem !== undefined
+      ? heldItem
+      : getBattleHeldItemName({ battleData, pass, heldItem: pokemon.held_item });
+
+    let desiredName = normalizedCurrent;
+    if (forceName && pokestats[String(forceName).toLowerCase()]) {
+      desiredName = String(forceName).toLowerCase();
+    } else if (keyItemEnabled) {
+      desiredName = getItemDrivenFormName(normalizedCurrent, heldItemName);
+    }
+
+    let changed = false;
+    if (desiredName && desiredName !== normalizedCurrent && pokestats[desiredName]) {
+      if (!tracker.originalName[passKey]) tracker.originalName[passKey] = normalizedCurrent;
+      if (!tracker.originalAbility[passKey]) tracker.originalAbility[passKey] = pokemon.ability;
+      pokemon.name = desiredName;
+      changed = true;
+    }
+
+    const activeName = String(pokemon.name || '').toLowerCase();
+    const shouldSyncAbility =
+      !!forceName
+      || changed
+      || /-mega|-primal|-crowned|zygarde-complete/.test(activeName);
+
+    if (shouldSyncAbility) {
+      const canonicalAbility = getCanonicalFormAbility(activeName, pokemon.ability);
+      if (normalizeAbilityName(canonicalAbility) !== normalizeAbilityName(pokemon.ability)) {
+        if (!tracker.originalAbility[passKey]) tracker.originalAbility[passKey] = pokemon.ability;
+        pokemon.ability = canonicalAbility;
+        changed = true;
+      }
+    }
+
+    return changed;
+  }
+
   async function applyPowerConstructEndTurn(options) {
     const {
       battleData,
@@ -267,6 +368,26 @@ function registerBattleCallbacks(bot, deps) {
       const poke = userData.pokes.find((entry) => String(entry.pass) === String(pass));
       if (poke) {
         poke.name = originalName;
+      }
+    }
+  }
+
+  function revertTrackedFormsOnBattleEnd(battleData, userData) {
+    if (!battleData || !battleData.formState || !userData || !Array.isArray(userData.pokes)) return;
+    const state = battleData.formState;
+    const originalName = state.originalName || {};
+    const originalAbility = state.originalAbility || {};
+    const passKeys = new Set([...Object.keys(originalName), ...Object.keys(originalAbility)]);
+    for (const pass of passKeys) {
+      const poke = userData.pokes.find((entry) => String(entry.pass) === String(pass));
+      if (!poke) continue;
+      if (originalName[pass]) poke.name = originalName[pass];
+      if (originalAbility[pass]) poke.ability = originalAbility[pass];
+    }
+
+    for (const poke of userData.pokes) {
+      if (String(poke && poke.name || '').toLowerCase() === 'zygarde-complete') {
+        poke.name = 'zygarde';
       }
     }
   }
@@ -1701,6 +1822,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       const defender = await getUserData(battleData.oid);
       const p12 = attacker.pokes.filter((poke)=>poke.pass==act.pass)[0];
       const opposingPokemon = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
+      if (p12) {
+        syncBattleFormAndAbility({ battleData, pokemon: p12, pass: act.pass });
+      }
       battleData.c = act.pass;
       battleData.chp = battleData.tem[act.pass];
       ensureTurnAbilityState(battleData).skipSpeedBoost[String(act.pass)] = true;
@@ -2851,6 +2975,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         }
         revertPowerConstructFormsOnBattleEnd(battleData, attacker)
         revertPowerConstructFormsOnBattleEnd(battleData, defender)
+        revertTrackedFormsOnBattleEnd(battleData, attacker)
+        revertTrackedFormsOnBattleEnd(battleData, defender)
         await saveUserData2(battleData.cid,attacker)
         await saveUserData2(battleData.oid,defender)
         const messageData = await loadMessageData();
@@ -3746,6 +3872,12 @@ const attacker = await getUserData(battleData.cid)
 const defender = await getUserData(battleData.oid)
 const p = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
 const p2 = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0]
+if (p) {
+syncBattleFormAndAbility({ battleData, pokemon: p, pass: p.pass })
+}
+if (p2) {
+syncBattleFormAndAbility({ battleData, pokemon: p2, pass: p2.pass })
+}
 const pp = pokes[p.name]
 const pp2 = pokes[p2.name]
 if (!battleData.usedMoves) battleData.usedMoves = {};
@@ -5626,6 +5758,8 @@ defender.inv.win += 1
   }
   revertPowerConstructFormsOnBattleEnd(battleData, attacker)
   revertPowerConstructFormsOnBattleEnd(battleData, defender)
+  revertTrackedFormsOnBattleEnd(battleData, attacker)
+  revertTrackedFormsOnBattleEnd(battleData, defender)
   await saveUserData2(battleData.cid,attacker)
   await saveUserData2(battleData.oid,defender)
 const messageData = await loadMessageData();
@@ -5804,6 +5938,7 @@ battleData.megas = {}
 battleData.megas[pke.pass] = pke.name
 d2b.extra.megas[pke.pass] = pke.name
 pke.name = stone.mega
+syncBattleFormAndAbility({ battleData, pokemon: pke, pass: pke.pass, forceName: stone.mega })
 await saveUserData2(ctx.from.id,d2b)
 const pass = battleData.c
 const atta = await getUserData(battleData.cid)
@@ -5958,6 +6093,9 @@ delete battleData.choiceLockedMoves[String(pass)];
 const atta = await getUserData(battleData.cid)
 const deffa = await getUserData(battleData.oid)
 const p12 = atta.pokes.filter((poke)=>poke.pass==pass)[0]
+if (p12) {
+syncBattleFormAndAbility({ battleData, pokemon: p12, pass: p12.pass })
+}
 let msg = '<b>'+c(p12.name)+'</b> came for battle'
 if (prop == 'change') {
   msg = '<b>A Pokemon was switched in.</b>'

@@ -41,6 +41,7 @@ const USER_LAST_FILE_CHECK = new Map();
 const USER_FLUSH_INTERVAL_MS = 3000;
 const USER_CACHE_TTL_MS = 5 * 60 * 1000;
 const USER_CACHE_FILE_CHECK_INTERVAL_MS = 2000;
+const USER_CACHE_ENABLED = false;
 
 let messageDataCache = null;
 let messageDataDirty = false;
@@ -93,11 +94,29 @@ await next();
 async function saveUserData2(userId, userData) {
   try {
     const key = String(userId);
-    USER_CACHE.set(key, userData);
-    USER_DIRTY.add(key);
-    USER_LAST_ACCESS.set(key, Date.now());
-    USER_CACHE_MTIME.set(key, Date.now());
-    USER_LAST_FILE_CHECK.set(key, Date.now());
+    if (USER_CACHE_ENABLED) {
+      USER_CACHE.set(key, userData);
+      USER_DIRTY.add(key);
+      USER_LAST_ACCESS.set(key, Date.now());
+      USER_CACHE_MTIME.set(key, Date.now());
+      USER_LAST_FILE_CHECK.set(key, Date.now());
+      return;
+    }
+    const filePath = './data/db/' + key + '.json';
+    let userDataEntry = [];
+    if (fs.existsSync(filePath)) {
+      const existingData = parseJsonFileNoBom(filePath);
+      userDataEntry = Array.isArray(existingData) ? existingData : [existingData];
+    } else {
+      userDataEntry = [{ user_id: key, data: {}, reset: false }];
+    }
+    let entry = userDataEntry.find(e => e.user_id == key);
+    if (!entry) {
+      entry = { user_id: key, data: {}, reset: false };
+      userDataEntry.push(entry);
+    }
+    entry.data = userData;
+    fs.writeFileSync(filePath, JSON.stringify(userDataEntry), 'utf8');
   } catch (error) {
     console.error('Error saving data:', error);
   }
@@ -108,7 +127,7 @@ async function getUserData(userId) {
   try {
     const key = String(userId);
     const filePath = './data/db/'+userId+'.json';
-    if (USER_CACHE.has(key)) {
+    if (USER_CACHE_ENABLED && USER_CACHE.has(key)) {
       // If this process already has newer in-memory changes, avoid disk checks.
       if (USER_DIRTY.has(key)) {
         USER_LAST_ACCESS.set(key, Date.now());
@@ -162,15 +181,17 @@ async function getUserData(userId) {
     if (!userDataEntry) {
       return {};
     }
-    USER_CACHE.set(key, userDataEntry.data);
-    try {
-      const stat = fs.statSync(filePath);
-      USER_CACHE_MTIME.set(key, stat.mtimeMs);
-    } catch (err) {
-      USER_CACHE_MTIME.set(key, Date.now());
+    if (USER_CACHE_ENABLED) {
+      USER_CACHE.set(key, userDataEntry.data);
+      try {
+        const stat = fs.statSync(filePath);
+        USER_CACHE_MTIME.set(key, stat.mtimeMs);
+      } catch (err) {
+        USER_CACHE_MTIME.set(key, Date.now());
+      }
+      USER_LAST_FILE_CHECK.set(key, Date.now());
+      USER_LAST_ACCESS.set(key, Date.now());
     }
-    USER_LAST_FILE_CHECK.set(key, Date.now());
-    USER_LAST_ACCESS.set(key, Date.now());
     return userDataEntry.data;
   } catch (error) {
     console.error('Error getting data:', error);
@@ -604,6 +625,7 @@ function resetUserData(userId) {
 }
 
 function flushUserCache() {
+  if (!USER_CACHE_ENABLED) return;
   if (USER_DIRTY.size < 1) return;
   for (const key of Array.from(USER_DIRTY)) {
     try {
@@ -668,12 +690,14 @@ function flushBattleCache() {
 
 function sweepCache() {
   const now = Date.now();
-  for (const [key, last] of USER_LAST_ACCESS.entries()) {
-    if (now - last > USER_CACHE_TTL_MS && !USER_DIRTY.has(key)) {
-      USER_CACHE.delete(key);
-      USER_LAST_ACCESS.delete(key);
-      USER_CACHE_MTIME.delete(key);
-      USER_LAST_FILE_CHECK.delete(key);
+  if (USER_CACHE_ENABLED) {
+    for (const [key, last] of USER_LAST_ACCESS.entries()) {
+      if (now - last > USER_CACHE_TTL_MS && !USER_DIRTY.has(key)) {
+        USER_CACHE.delete(key);
+        USER_LAST_ACCESS.delete(key);
+        USER_CACHE_MTIME.delete(key);
+        USER_LAST_FILE_CHECK.delete(key);
+      }
     }
   }
   if (messageDataCache && now - messageDataLastAccess > USER_CACHE_TTL_MS && !messageDataDirty) {

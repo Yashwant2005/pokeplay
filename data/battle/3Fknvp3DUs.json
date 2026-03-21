@@ -1,0 +1,70 @@
+{
+  "c": "Zk0uUgKy",
+  "org": "no",
+  "chp": 414,
+  "ochp": 128,
+  "ohp": 128,
+  "ivs": {
+    "hp": 13,
+    "attack": 17,
+    "defense": 22,
+    "special_attack": 13,
+    "special_defense": 25,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "pwyOiXQ2",
+  "level": 44,
+  "name": "talonflame",
+  "omoves": [
+    {
+      "id": 394,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 488,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 512,
+      "learn_method": "level-up",
+      "level_learned_at": 22
+    },
+    {
+      "id": 332,
+      "learn_method": "level-up",
+      "level_learned_at": 38
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "talonflame": 128
+  },
+  "symbol": "",
+  "team": {
+    "Zk0uUgKy": 414,
+    "XO6qeZ2o": 377,
+    "7oWX0gHd": 329,
+    "psj2Bvuf": 317,
+    "emJt2aMY": 307,
+    "irChEF9Z": 359
+  },
+  "la": {
+    "Zk0uUgKy": 100,
+    "XO6qeZ2o": 100,
+    "7oWX0gHd": 100,
+    "psj2Bvuf": 100,
+    "emJt2aMY": 100,
+    "irChEF9Z": 100
+  }
+}

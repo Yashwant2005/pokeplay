@@ -1,0 +1,60 @@
+{
+  "c": "YcbNG7z1",
+  "org": "no",
+  "chp": 58,
+  "ochp": -54,
+  "ohp": 45,
+  "ivs": {
+    "hp": 17,
+    "attack": 15,
+    "defense": 14,
+    "special_attack": 11,
+    "special_defense": 11,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "a8PpsxTs",
+  "level": 20,
+  "name": "horsea",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 239,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "horsea": -54
+  },
+  "symbol": "",
+  "team": {
+    "YcbNG7z1": 58,
+    "INnWVvZa": 70,
+    "hElvGj1W": 99,
+    "FwnmeApD": 136,
+    "zIc5R3QM": 83,
+    "4vHKM3tf": 49
+  },
+  "la": {
+    "YcbNG7z1": 30,
+    "INnWVvZa": 25,
+    "hElvGj1W": 24,
+    "FwnmeApD": 52,
+    "zIc5R3QM": 30,
+    "4vHKM3tf": 20
+  }
+}

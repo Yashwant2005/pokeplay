@@ -1,0 +1,116 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "6265981509": true,
+    "8578706920": true
+  },
+  "status": {},
+  "c": "kzrkLbjn",
+  "chp": 281,
+  "o": "Tsxr5AMS",
+  "ohp": 331,
+  "cid": "8578706920",
+  "oid": "6265981509",
+  "tem": {
+    "kzrkLbjn": 281,
+    "EzgxjA8x": 316,
+    "O4ZYsljw": 321,
+    "oz11nsms": 310,
+    "JXIthlbQ": 311,
+    "vyCIqDgz": 312
+  },
+  "la": {
+    "kzrkLbjn": 100,
+    "EzgxjA8x": 100,
+    "O4ZYsljw": 100,
+    "oz11nsms": 100,
+    "JXIthlbQ": 100,
+    "vyCIqDgz": 100
+  },
+  "tem2": {
+    "Tsxr5AMS": 331,
+    "BiLqcvCr": 172,
+    "lTTgD8x0": 118,
+    "Aw7KRyyT": 174,
+    "tIBtUAc4": 56,
+    "q1MmfUoj": 50
+  },
+  "la2": {
+    "Tsxr5AMS": 100,
+    "BiLqcvCr": 52,
+    "lTTgD8x0": 40,
+    "Aw7KRyyT": 37,
+    "tIBtUAc4": 23,
+    "q1MmfUoj": 19
+  },
+  "ot": {
+    "undefined": 470
+  },
+  "usedMoves": {
+    "kzrkLbjn": [
+      "585"
+    ],
+    "Tsxr5AMS": [
+      "185"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 1,
+  "bideState": {},
+  "statStages": {
+    "kzrkLbjn": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "Tsxr5AMS": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "Tsxr5AMS": {
+      "damage": 139,
+      "category": "special",
+      "from": "kzrkLbjn",
+      "move": "moonblast"
+    },
+    "kzrkLbjn": {
+      "damage": 35,
+      "category": "physical",
+      "from": "Tsxr5AMS",
+      "move": "feint attack"
+    }
+  },
+  "runs": [
+    6265981509,
+    8578706920
+  ]
+}

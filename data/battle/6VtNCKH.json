@@ -1,0 +1,169 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "7058516053": true,
+    "8597250058": true
+  },
+  "status": {},
+  "c": "saofW0Kt",
+  "chp": 307,
+  "o": "b8tDewTn",
+  "ohp": 0,
+  "cid": "8597250058",
+  "oid": "7058516053",
+  "tem": {
+    "dC9jW0x4": 0,
+    "wddhIz3b": 0,
+    "07qBEog3": 0,
+    "saofW0Kt": 307,
+    "wmzoASLK": 369,
+    "uQhxBwQC": 285
+  },
+  "la": {
+    "dC9jW0x4": 23,
+    "wddhIz3b": 1,
+    "07qBEog3": 100,
+    "saofW0Kt": 100,
+    "wmzoASLK": 100,
+    "uQhxBwQC": 100
+  },
+  "tem2": {
+    "b8tDewTn": 0,
+    "rgGXc2wr": 170,
+    "A64HJ0Bh": 13,
+    "NKztvgnG": 148,
+    "8HAnFBbX": 147,
+    "dp9wUkNP": 356
+  },
+  "la2": {
+    "b8tDewTn": 100,
+    "rgGXc2wr": 59,
+    "A64HJ0Bh": 1,
+    "NKztvgnG": 49,
+    "8HAnFBbX": 50,
+    "dp9wUkNP": 100
+  },
+  "ot": {
+    "undefined": 109
+  },
+  "usedMoves": {
+    "dC9jW0x4": [
+      "425"
+    ],
+    "b8tDewTn": [
+      "400",
+      "56"
+    ],
+    "wddhIz3b": [
+      "425"
+    ],
+    "07qBEog3": [
+      "120"
+    ]
+  },
+  "queuedActions": [
+    {
+      "cid": 7058516053,
+      "c": "b8tDewTn",
+      "type": "move",
+      "id": "400"
+    }
+  ],
+  "bideCycle": 3,
+  "bideState": {},
+  "statStages": {
+    "b8tDewTn": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "dC9jW0x4": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "wddhIz3b": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "07qBEog3": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "07qBEog3": {
+      "damage": 135,
+      "category": "special",
+      "from": "b8tDewTn",
+      "move": "hydro pump"
+    },
+    "b8tDewTn": {
+      "damage": 261,
+      "category": "physical",
+      "from": "07qBEog3",
+      "move": "self destruct"
+    }
+  },
+  "entryHazards": {
+    "7058516053": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "8597250058": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "lastMoveByPass": {
+    "dC9jW0x4": "425",
+    "b8tDewTn": "56",
+    "wddhIz3b": "425",
+    "07qBEog3": "120"
+  },
+  "runs": [
+    7058516053
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 158,
+  "ochp": -42,
+  "ohp": 38,
+  "ivs": {
+    "hp": 23,
+    "attack": 13,
+    "defense": 21,
+    "special_attack": 20,
+    "special_defense": 12,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "ig5W7532",
+  "level": 15,
+  "name": "togepi",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "togepi": -42
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 158,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 44,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

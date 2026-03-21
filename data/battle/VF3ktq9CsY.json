@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 98,
+  "ochp": -38,
+  "ohp": 83,
+  "ivs": {
+    "hp": 13,
+    "attack": 24,
+    "defense": 22,
+    "special_attack": 20,
+    "special_defense": 22,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "1S7ke9Ny",
+  "level": 33,
+  "name": "seadra",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 239,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 225,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 61,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "seadra": -38
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 98,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 39,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

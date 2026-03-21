@@ -1,0 +1,45 @@
+{
+  "c": "rcJRTEBD",
+  "org": "no",
+  "chp": 69,
+  "ochp": -30,
+  "ohp": 22,
+  "ivs": {
+    "hp": 12,
+    "attack": 18,
+    "defense": 16,
+    "special_attack": 11,
+    "special_defense": 20,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "Qw3vtHfh",
+  "level": 6,
+  "name": "caterpie",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "caterpie": -30
+  },
+  "symbol": "",
+  "team": {
+    "rcJRTEBD": 69
+  },
+  "la": {
+    "rcJRTEBD": 28
+  }
+}

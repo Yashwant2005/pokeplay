@@ -1,0 +1,68 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "1335302812": true,
+    "8393905391": true
+  },
+  "status": {},
+  "c": "mgGrdb5X",
+  "chp": 55,
+  "o": "ofNBxSsf",
+  "ohp": 58,
+  "cid": "8393905391",
+  "oid": "1335302812",
+  "tem": {
+    "mgGrdb5X": 55,
+    "3O4nrK4z": 52,
+    "TSM5HKDD": 52,
+    "MX7OLZFk": 49,
+    "Fgg8MDfR": 50,
+    "f1v3x5md": 53
+  },
+  "la": {
+    "mgGrdb5X": 20,
+    "3O4nrK4z": 19,
+    "TSM5HKDD": 18,
+    "MX7OLZFk": 18,
+    "Fgg8MDfR": 18,
+    "f1v3x5md": 18
+  },
+  "tem2": {
+    "ofNBxSsf": 58,
+    "sGoT9d9S": 49,
+    "ugba3Au1": 197,
+    "y3rOVeVe": 53,
+    "5ZGqYPX6": 126,
+    "h2nNdaoR": 317
+  },
+  "la2": {
+    "ofNBxSsf": 16,
+    "sGoT9d9S": 24,
+    "ugba3Au1": 58,
+    "y3rOVeVe": 22,
+    "5ZGqYPX6": 48,
+    "h2nNdaoR": 100
+  },
+  "ot": {
+    "undefined": 58
+  },
+  "usedMoves": {}
+}

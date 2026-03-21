@@ -1,0 +1,55 @@
+{
+  "c": "SnE37Nn3",
+  "org": "no",
+  "chp": 5,
+  "ochp": -25,
+  "ohp": 34,
+  "ivs": {
+    "hp": 24,
+    "attack": 29,
+    "defense": 14,
+    "special_attack": 12,
+    "special_defense": 20,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "094mUpC8",
+  "level": 11,
+  "name": "sandshrew",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    },
+    {
+      "id": 205,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sandshrew": -25
+  },
+  "symbol": "",
+  "team": {
+    "SnE37Nn3": 5
+  },
+  "la": {
+    "SnE37Nn3": 9
+  }
+}

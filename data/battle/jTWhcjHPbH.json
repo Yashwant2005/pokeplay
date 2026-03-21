@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 73,
+  "ochp": -96,
+  "ohp": 82,
+  "ivs": {
+    "hp": 16,
+    "attack": 17,
+    "defense": 14,
+    "special_attack": 17,
+    "special_defense": 22,
+    "speed": 8
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "2BbTrQSj",
+  "level": 31,
+  "name": "wartortle",
+  "omoves": [
+    {
+      "id": 229,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 401,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "wartortle": -96
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 73,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 39,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

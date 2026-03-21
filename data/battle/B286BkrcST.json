@@ -1,0 +1,50 @@
+{
+  "c": "rcJRTEBD",
+  "org": "no",
+  "chp": 67,
+  "ochp": -56,
+  "ohp": 35,
+  "ivs": {
+    "hp": 17,
+    "attack": 17,
+    "defense": 13,
+    "special_attack": 18,
+    "special_defense": 14,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "8GfZ14X3",
+  "level": 10,
+  "name": "machop",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 279,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "machop": -56
+  },
+  "symbol": "",
+  "team": {
+    "rcJRTEBD": 67
+  },
+  "la": {
+    "rcJRTEBD": 27
+  }
+}

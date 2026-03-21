@@ -1,0 +1,65 @@
+{
+  "c": "MQTRLHSp",
+  "org": "no",
+  "chp": 146,
+  "ochp": -23,
+  "ohp": 41,
+  "ivs": {
+    "hp": 7,
+    "attack": 13,
+    "defense": 13,
+    "special_attack": 7,
+    "special_defense": 15,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "IE3C0onL",
+  "level": 17,
+  "name": "geodude",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 205,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    },
+    {
+      "id": 88,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "geodude": -23
+  },
+  "symbol": "",
+  "team": {
+    "MQTRLHSp": 146,
+    "HZZy8ghZ": 32,
+    "xNJurU1c": 44,
+    "heCUyNdb": 149,
+    "t0gGUuMj": 86,
+    "5mOTmKN0": 60
+  },
+  "la": {
+    "MQTRLHSp": 51,
+    "HZZy8ghZ": 18,
+    "xNJurU1c": 19,
+    "heCUyNdb": 44,
+    "t0gGUuMj": 29,
+    "5mOTmKN0": 29
+  }
+}

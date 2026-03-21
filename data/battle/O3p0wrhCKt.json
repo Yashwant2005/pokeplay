@@ -1,0 +1,70 @@
+{
+  "c": "AfrJyFT3",
+  "org": "no",
+  "chp": 0,
+  "ochp": -14,
+  "ohp": 92,
+  "ivs": {
+    "hp": 19,
+    "attack": 22,
+    "defense": 15,
+    "special_attack": 20,
+    "special_defense": 21,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "bZhQCABq",
+  "level": 32,
+  "name": "foongus",
+  "omoves": [
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 499,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 202,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "foongus": -14
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 0,
+    "USP6eG1Z": 50,
+    "i3Zbowkn": 73,
+    "ZZds2WM5": 52,
+    "YXw2z1Y1": 46,
+    "9jvifJC5": 89
+  },
+  "la": {
+    "AfrJyFT3": 18,
+    "USP6eG1Z": 17,
+    "i3Zbowkn": 25,
+    "ZZds2WM5": 16,
+    "YXw2z1Y1": 12,
+    "9jvifJC5": 33
+  }
+}

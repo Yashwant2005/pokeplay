@@ -1,0 +1,70 @@
+{
+  "c": "oJYApvHa",
+  "org": "no",
+  "chp": 222,
+  "ochp": 5,
+  "ohp": 113,
+  "ivs": {
+    "hp": 20,
+    "attack": 20,
+    "defense": 15,
+    "special_attack": 21,
+    "special_defense": 24,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "zxEvbmue",
+  "level": 43,
+  "name": "aegislash-blade",
+  "omoves": [
+    {
+      "id": 442,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 457,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 514,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 533,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "aegislash-blade": 5
+  },
+  "symbol": "",
+  "team": {
+    "QnXq8TIw": 0,
+    "W3exZd5k": 58,
+    "OWUQ86Li": 36,
+    "oJYApvHa": 222,
+    "3zK8PVU5": 208,
+    "M22B9MwZ": 75
+  },
+  "la": {
+    "QnXq8TIw": 44,
+    "W3exZd5k": 18,
+    "OWUQ86Li": 8,
+    "oJYApvHa": 64,
+    "3zK8PVU5": 60,
+    "M22B9MwZ": 26
+  }
+}

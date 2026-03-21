@@ -1,0 +1,55 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 65,
+  "ochp": -213,
+  "ohp": 20,
+  "ivs": {
+    "hp": 20,
+    "attack": 9,
+    "defense": 11,
+    "special_attack": 12,
+    "special_defense": 21,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "nxQfjvZW",
+  "level": 6,
+  "name": "gastly",
+  "omoves": [
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "gastly": -213
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 65,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120
+  },
+  "la": {
+    "hoTfaX8w": 31,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41
+  }
+}

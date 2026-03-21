@@ -1,0 +1,52 @@
+{
+  "c": "QU99PvjF",
+  "org": "no",
+  "chp": 123,
+  "ochp": -191,
+  "ohp": 63,
+  "ivs": {
+    "hp": 18,
+    "attack": 13,
+    "defense": 13,
+    "special_attack": 17,
+    "special_defense": 14,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "ieomOAZC",
+  "level": 27,
+  "name": "mr-mime",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mr-mime": -191
+  },
+  "symbol": "",
+  "team": {
+    "QU99PvjF": 123,
+    "3zK8PVU5": 208
+  },
+  "la": {
+    "QU99PvjF": 40,
+    "3zK8PVU5": 60
+  }
+}

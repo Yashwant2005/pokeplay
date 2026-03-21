@@ -1,0 +1,56 @@
+{
+  "c": "USP6eG1Z",
+  "org": "no",
+  "chp": 2,
+  "ochp": -47,
+  "ohp": 30,
+  "ivs": {
+    "hp": 12,
+    "attack": 21,
+    "defense": 23,
+    "special_attack": 26,
+    "special_defense": 21,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "gcY0VGOF",
+  "level": 9,
+  "name": "shroomish",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "shroomish": -47
+  },
+  "symbol": "",
+  "team": {
+    "USP6eG1Z": 2,
+    "AfrJyFT3": 29,
+    "i3Zbowkn": 60,
+    "ZZds2WM5": 49
+  },
+  "la": {
+    "USP6eG1Z": 13,
+    "AfrJyFT3": 10,
+    "i3Zbowkn": 20,
+    "ZZds2WM5": 15
+  }
+}

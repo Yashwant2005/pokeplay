@@ -1,0 +1,150 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "1253339353": true,
+    "8597250058": true
+  },
+  "tempTeams": {
+    "1253339353": [
+      "1TyJ715W",
+      "kRNLve2E",
+      "YrH2SLCZ",
+      "HI152LOe",
+      "3TbTqIbb",
+      "sbre5TMr"
+    ],
+    "8597250058": [
+      "ptB2ItLd",
+      "qJfREbnZ",
+      "9RNqn5Fc",
+      "BEDyDzmT",
+      "kcqhaWLW",
+      "p4tqXBxU"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "2TVVH1l",
+  "status": {},
+  "c": "ptB2ItLd",
+  "chp": 0,
+  "o": "1TyJ715W",
+  "ohp": 87,
+  "cid": "8597250058",
+  "oid": "1253339353",
+  "tem": {
+    "ptB2ItLd": 0,
+    "qJfREbnZ": 256,
+    "9RNqn5Fc": 273,
+    "BEDyDzmT": 333,
+    "kcqhaWLW": 443,
+    "p4tqXBxU": 294
+  },
+  "la": {
+    "ptB2ItLd": 100,
+    "qJfREbnZ": 100,
+    "9RNqn5Fc": 100,
+    "BEDyDzmT": 100,
+    "kcqhaWLW": 100,
+    "p4tqXBxU": 100
+  },
+  "tem2": {
+    "1TyJ715W": 87,
+    "kRNLve2E": 324,
+    "YrH2SLCZ": 278,
+    "HI152LOe": 330,
+    "3TbTqIbb": 261,
+    "sbre5TMr": 323
+  },
+  "la2": {
+    "1TyJ715W": 100,
+    "kRNLve2E": 100,
+    "YrH2SLCZ": 100,
+    "HI152LOe": 100,
+    "3TbTqIbb": 100,
+    "sbre5TMr": 100
+  },
+  "ot": {
+    "undefined": 236
+  },
+  "usedMoves": {
+    "1TyJ715W": [
+      "605",
+      "60"
+    ],
+    "ptB2ItLd": [
+      "264",
+      "834"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 3,
+  "bideState": {},
+  "statStages": {
+    "ptB2ItLd": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "1TyJ715W": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "ptB2ItLd": {
+      "damage": 16,
+      "category": "special",
+      "from": "1TyJ715W",
+      "move": "psybeam"
+    }
+  },
+  "entryHazards": {
+    "1253339353": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "8597250058": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "lastMoveByPass": {
+    "1TyJ715W": "60",
+    "ptB2ItLd": "834"
+  }
+}

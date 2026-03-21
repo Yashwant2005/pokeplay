@@ -1,0 +1,65 @@
+{
+  "c": "gDXv98kD",
+  "org": "no",
+  "chp": 86,
+  "ochp": -76,
+  "ohp": 57,
+  "ivs": {
+    "hp": 24,
+    "attack": 19,
+    "defense": 21,
+    "special_attack": 22,
+    "special_defense": 25,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "I0YymSU4",
+  "level": 24,
+  "name": "vanillite",
+  "omoves": [
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 196,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 419,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "vanillite": -76
+  },
+  "symbol": "",
+  "team": {
+    "gDXv98kD": 86,
+    "k1PYGICf": 191,
+    "5aMBTgt9": 101,
+    "wXFdO3ZJ": 167,
+    "V0U7GxoB": 117,
+    "coZ7CueN": 112
+  },
+  "la": {
+    "gDXv98kD": 37,
+    "k1PYGICf": 63,
+    "5aMBTgt9": 36,
+    "wXFdO3ZJ": 53,
+    "V0U7GxoB": 42,
+    "coZ7CueN": 42
+  }
+}

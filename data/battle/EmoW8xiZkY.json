@@ -1,0 +1,70 @@
+{
+  "c": "b8tDewTn",
+  "org": "no",
+  "chp": 271,
+  "ochp": 176,
+  "ohp": 176,
+  "ivs": {
+    "hp": 14,
+    "attack": 13,
+    "defense": 22,
+    "special_attack": 18,
+    "special_defense": 25,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "cFz79P0h",
+  "level": 53,
+  "name": "jirachi",
+  "omoves": [
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 94,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 309,
+      "learn_method": "level-up",
+      "level_learned_at": 49
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "jirachi": 176
+  },
+  "symbol": "",
+  "team": {
+    "b8tDewTn": 271,
+    "rgGXc2wr": 170,
+    "A64HJ0Bh": 13,
+    "NKztvgnG": 148,
+    "8HAnFBbX": 147,
+    "dp9wUkNP": 356
+  },
+  "la": {
+    "b8tDewTn": 100,
+    "rgGXc2wr": 59,
+    "A64HJ0Bh": 1,
+    "NKztvgnG": 49,
+    "8HAnFBbX": 50,
+    "dp9wUkNP": 100
+  }
+}

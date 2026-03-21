@@ -1,0 +1,55 @@
+{
+  "c": "jrSKvJQa",
+  "org": "no",
+  "chp": 95,
+  "ochp": -130,
+  "ohp": 43,
+  "ivs": {
+    "hp": 17,
+    "attack": 25,
+    "defense": 23,
+    "special_attack": 25,
+    "special_defense": 14,
+    "speed": 25
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "P1HP24S1",
+  "level": 11,
+  "name": "wynaut",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "wynaut": -130
+  },
+  "symbol": "",
+  "team": {
+    "jrSKvJQa": 95,
+    "CuGtMWDv": 227,
+    "UmyfORGQ": 198,
+    "lmjdKxgm": 133,
+    "Kfajk3g4": 161,
+    "50uITbfe": 173
+  },
+  "la": {
+    "jrSKvJQa": 40,
+    "CuGtMWDv": 65,
+    "UmyfORGQ": 59,
+    "lmjdKxgm": 33,
+    "Kfajk3g4": 53,
+    "50uITbfe": 49
+  }
+}

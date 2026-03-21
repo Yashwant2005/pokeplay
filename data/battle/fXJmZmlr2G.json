@@ -1,0 +1,70 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 134,
+  "ochp": -83,
+  "ohp": 69,
+  "ivs": {
+    "hp": 13,
+    "attack": 14,
+    "defense": 13,
+    "special_attack": 12,
+    "special_defense": 17,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "sYOTScPo",
+  "level": 28,
+  "name": "ponyta",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    },
+    {
+      "id": 488,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 172,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ponyta": -83
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 134,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 64,
+    "Az7eBnWK": 30,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 41,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 23,
+    "Az7eBnWK": 6,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

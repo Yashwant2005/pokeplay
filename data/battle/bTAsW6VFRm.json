@@ -1,0 +1,47 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 21,
+  "ochp": -16,
+  "ohp": 20,
+  "ivs": {
+    "hp": 21,
+    "attack": 15,
+    "defense": 19,
+    "special_attack": 26,
+    "special_defense": 22,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "LRcNuliR",
+  "level": 5,
+  "name": "dratini",
+  "omoves": [
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dratini": -16
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 21,
+    "F5chvUKh": 48
+  },
+  "la": {
+    "jpIgbHmU": 13,
+    "F5chvUKh": 13
+  }
+}

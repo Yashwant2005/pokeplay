@@ -1,0 +1,60 @@
+{
+  "c": "YSv2n2Fh",
+  "org": "no",
+  "chp": 71,
+  "ochp": -27,
+  "ohp": 73,
+  "ivs": {
+    "hp": 16,
+    "attack": 18,
+    "defense": 9,
+    "special_attack": 10,
+    "special_defense": 15,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "fzIc4Jkr",
+  "level": 26,
+  "name": "tangela",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 22,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "tangela": -27
+  },
+  "symbol": "",
+  "team": {
+    "YSv2n2Fh": 71
+  },
+  "la": {
+    "YSv2n2Fh": 34
+  }
+}

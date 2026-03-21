@@ -1,0 +1,70 @@
+{
+  "c": "yJT8NrzJ",
+  "org": "no",
+  "chp": 0,
+  "ochp": -64,
+  "ohp": 69,
+  "ivs": {
+    "hp": 15,
+    "attack": 18,
+    "defense": 19,
+    "special_attack": 16,
+    "special_defense": 12,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "FMLf4NUU",
+  "level": 32,
+  "name": "omanyte",
+  "omoves": [
+    {
+      "id": 205,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 341,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "omanyte": -64
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 0,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 87,
+    "yJT8NrzJ": 0
+  },
+  "la": {
+    "xPNmpDgC": 31,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 21,
+    "yJT8NrzJ": 25
+  }
+}

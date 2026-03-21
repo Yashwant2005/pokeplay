@@ -1118,8 +1118,10 @@ function hasMultitypeFormEffect(options) {
   const { pokemonName, abilityName, heldItem, isTerastallized } = options || {};
   if (isTerastallized) return false;
   if (getBaseSpeciesName(pokemonName) !== 'arceus') return false;
-  if (normalizeAbilityName(abilityName) !== 'multitype') return false;
-  return !!getArceusPlateType(normalizeHeldItemName(heldItem));
+  if (!getArceusPlateType(normalizeHeldItemName(heldItem))) return false;
+  const normalizedAbility = normalizeAbilityName(abilityName);
+  if (!normalizedAbility) return true;
+  return normalizedAbility === 'multitype';
 }
 
 function isPowerConstructAbility(abilityName) {

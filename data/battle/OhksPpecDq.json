@@ -1,0 +1,70 @@
+{
+  "c": "cfBHIXq4",
+  "org": "no",
+  "chp": 112,
+  "ochp": 114,
+  "ohp": 114,
+  "ivs": {
+    "hp": 29,
+    "attack": 25,
+    "defense": 13,
+    "special_attack": 24,
+    "special_defense": 21,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "rUBJFOLB",
+  "level": 42,
+  "name": "kubfu",
+  "omoves": [
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 280,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 442,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    },
+    {
+      "id": 223,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kubfu": 114
+  },
+  "symbol": "",
+  "team": {
+    "cfBHIXq4": 112,
+    "By51g7on": 169,
+    "fc4Z3rKh": 92,
+    "djIFsPnu": 116,
+    "sUHb2dTI": 50,
+    "MXDVSfUC": 157
+  },
+  "la": {
+    "cfBHIXq4": 37,
+    "By51g7on": 48,
+    "fc4Z3rKh": 37,
+    "djIFsPnu": 38,
+    "sUHb2dTI": 21,
+    "MXDVSfUC": 55
+  }
+}

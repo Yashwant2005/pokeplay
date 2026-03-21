@@ -1,0 +1,70 @@
+{
+  "c": "QhOEmRvf",
+  "org": "no",
+  "chp": 321,
+  "ochp": -1756,
+  "ohp": 76,
+  "ivs": {
+    "hp": 14,
+    "attack": 13,
+    "defense": 16,
+    "special_attack": 12,
+    "special_defense": 16,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "V254Ejo2",
+  "level": 26,
+  "name": "scyther",
+  "omoves": [
+    {
+      "id": 206,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 17,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 458,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "scyther": -1756
+  },
+  "symbol": "",
+  "team": {
+    "QhOEmRvf": 321,
+    "kMZTz6gx": 376,
+    "3RCqSkfd": 277,
+    "H5HE1pKF": 13,
+    "AVGFV6Dt": 13,
+    "Unspc6ge": 13
+  },
+  "la": {
+    "QhOEmRvf": 100,
+    "kMZTz6gx": 100,
+    "3RCqSkfd": 100,
+    "H5HE1pKF": 1,
+    "AVGFV6Dt": 1,
+    "Unspc6ge": 1
+  }
+}

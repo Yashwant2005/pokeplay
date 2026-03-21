@@ -1,0 +1,65 @@
+{
+  "c": "cfBHIXq4",
+  "org": "no",
+  "chp": 112,
+  "ochp": 67,
+  "ohp": 67,
+  "ivs": {
+    "hp": 8,
+    "attack": 8,
+    "defense": 13,
+    "special_attack": 7,
+    "special_defense": 9,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "ZrSMVC2h",
+  "level": 20,
+  "name": "dracovish",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 693,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dracovish": 67
+  },
+  "symbol": "",
+  "team": {
+    "cfBHIXq4": 112,
+    "By51g7on": 169,
+    "fc4Z3rKh": 92,
+    "djIFsPnu": 116,
+    "sUHb2dTI": 50,
+    "MXDVSfUC": 157
+  },
+  "la": {
+    "cfBHIXq4": 37,
+    "By51g7on": 48,
+    "fc4Z3rKh": 37,
+    "djIFsPnu": 38,
+    "sUHb2dTI": 21,
+    "MXDVSfUC": 55
+  }
+}

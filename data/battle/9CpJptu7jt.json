@@ -1,0 +1,70 @@
+{
+  "c": "ka283FJN",
+  "org": "no",
+  "chp": 17,
+  "ochp": -85,
+  "ohp": 79,
+  "ivs": {
+    "hp": 12,
+    "attack": 14,
+    "defense": 13,
+    "special_attack": 15,
+    "special_defense": 13,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "PuCHm6pQ",
+  "level": 30,
+  "name": "braixen",
+  "omoves": [
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 488,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 83,
+      "learn_method": "level-up",
+      "level_learned_at": 22
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "braixen": -85
+  },
+  "symbol": "",
+  "team": {
+    "ka283FJN": 17,
+    "fe4s1SV4": 140,
+    "p6sCfffS": 153,
+    "HKmqM4sZ": 66,
+    "NwV4rdsE": 35,
+    "CcH25gY5": 13
+  },
+  "la": {
+    "ka283FJN": 31,
+    "fe4s1SV4": 51,
+    "p6sCfffS": 62,
+    "HKmqM4sZ": 14,
+    "NwV4rdsE": 7,
+    "CcH25gY5": 1
+  }
+}

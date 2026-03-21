@@ -1,0 +1,47 @@
+{
+  "c": "9eeViYIB",
+  "org": "no",
+  "chp": 45,
+  "ochp": -45,
+  "ohp": 23,
+  "ivs": {
+    "hp": 10,
+    "attack": 18,
+    "defense": 17,
+    "special_attack": 12,
+    "special_defense": 13,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "RubHzXMm",
+  "level": 7,
+  "name": "budew",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "budew": -45
+  },
+  "symbol": "",
+  "team": {
+    "9eeViYIB": 45,
+    "bRnR7Krx": 197
+  },
+  "la": {
+    "9eeViYIB": 17,
+    "bRnR7Krx": 54
+  }
+}

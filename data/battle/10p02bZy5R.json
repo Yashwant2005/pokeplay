@@ -1,0 +1,55 @@
+{
+  "c": "bAUBesJM",
+  "org": "no",
+  "chp": 330,
+  "ochp": -377,
+  "ohp": 28,
+  "ivs": {
+    "hp": 10,
+    "attack": 19,
+    "defense": 17,
+    "special_attack": 10,
+    "special_defense": 12,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "hj42DKid",
+  "level": 9,
+  "name": "metapod",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "metapod": -377
+  },
+  "symbol": "",
+  "team": {
+    "bAUBesJM": 330,
+    "Efnc0PUS": 373,
+    "uclThfWK": 332,
+    "CDIkqF92": 369,
+    "GgOR8D5A": 366,
+    "okkGwwjh": 370
+  },
+  "la": {
+    "bAUBesJM": 100,
+    "Efnc0PUS": 100,
+    "uclThfWK": 100,
+    "CDIkqF92": 100,
+    "GgOR8D5A": 100,
+    "okkGwwjh": 100
+  }
+}

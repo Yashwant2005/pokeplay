@@ -1,0 +1,62 @@
+{
+  "c": "XKeiQ3Dp",
+  "org": "no",
+  "chp": 21,
+  "ochp": 157,
+  "ohp": 157,
+  "ivs": {
+    "hp": 14,
+    "attack": 18,
+    "defense": 16,
+    "special_attack": 20,
+    "special_defense": 20,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "0DI8qdTU",
+  "level": 48,
+  "name": "necrozma-ultra",
+  "omoves": [
+    {
+      "id": 350,
+      "learn_method": "level-up",
+      "level_learned_at": 19
+    },
+    {
+      "id": 400,
+      "learn_method": "level-up",
+      "level_learned_at": 23
+    },
+    {
+      "id": 427,
+      "learn_method": "level-up",
+      "level_learned_at": 37
+    },
+    {
+      "id": 408,
+      "learn_method": "level-up",
+      "level_learned_at": 43
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "necrozma-ultra": 157
+  },
+  "symbol": "",
+  "team": {
+    "XKeiQ3Dp": 21,
+    "GIMqIpoc": 254
+  },
+  "la": {
+    "XKeiQ3Dp": 5,
+    "GIMqIpoc": 62
+  }
+}

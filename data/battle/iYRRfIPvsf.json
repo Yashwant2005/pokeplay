@@ -1,0 +1,70 @@
+{
+  "c": "gDXv98kD",
+  "org": "no",
+  "chp": 121,
+  "ochp": 133,
+  "ohp": 133,
+  "ivs": {
+    "hp": 10,
+    "attack": 18,
+    "defense": 14,
+    "special_attack": 11,
+    "special_defense": 17,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "0q82veZq",
+  "level": 38,
+  "name": "zygarde-50",
+  "omoves": [
+    {
+      "id": 615,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 687,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 91,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zygarde-50": 133
+  },
+  "symbol": "",
+  "team": {
+    "gDXv98kD": 121,
+    "k1PYGICf": 191,
+    "5aMBTgt9": 103,
+    "wXFdO3ZJ": 167,
+    "V0U7GxoB": 117,
+    "coZ7CueN": 112
+  },
+  "la": {
+    "gDXv98kD": 41,
+    "k1PYGICf": 63,
+    "5aMBTgt9": 37,
+    "wXFdO3ZJ": 53,
+    "V0U7GxoB": 42,
+    "coZ7CueN": 42
+  }
+}

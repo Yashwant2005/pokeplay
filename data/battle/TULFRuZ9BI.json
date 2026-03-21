@@ -1,0 +1,55 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 160,
+  "ochp": -134,
+  "ohp": 38,
+  "ivs": {
+    "hp": 9,
+    "attack": 18,
+    "defense": 13,
+    "special_attack": 7,
+    "special_defense": 6,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "8GPtUOmr",
+  "level": 13,
+  "name": "buneary",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "buneary": -134
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 160,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 44,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

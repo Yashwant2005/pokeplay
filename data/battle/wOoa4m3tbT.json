@@ -1,0 +1,64 @@
+{
+  "c": "BO3VNBUR",
+  "org": "no",
+  "chp": 88,
+  "ochp": 215,
+  "ohp": 215,
+  "ivs": {
+    "hp": 19,
+    "attack": 20,
+    "defense": 24,
+    "special_attack": 12,
+    "special_defense": 18,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "wzZETU2c",
+  "level": 62,
+  "name": "mewtwo",
+  "omoves": [
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 427,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 396,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 94,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mewtwo": 215
+  },
+  "symbol": "",
+  "team": {
+    "BO3VNBUR": 88,
+    "bmhgy5Ib": 13,
+    "i9ncUySE": 13
+  },
+  "la": {
+    "BO3VNBUR": 33,
+    "bmhgy5Ib": 1,
+    "i9ncUySE": 1
+  }
+}

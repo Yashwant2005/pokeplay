@@ -1,0 +1,106 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "8551864967": true,
+    "7577674783": true
+  },
+  "status": {},
+  "c": "1IPhMvBn",
+  "chp": 163,
+  "o": "nd0097xj",
+  "ohp": 217,
+  "cid": "7577674783",
+  "oid": "8551864967",
+  "tem": {
+    "1IPhMvBn": 163,
+    "7MCZA9Su": 261,
+    "4cCrIxsi": 315,
+    "ezUyeQl9": 410
+  },
+  "la": {
+    "1IPhMvBn": 100,
+    "7MCZA9Su": 100,
+    "4cCrIxsi": 100,
+    "ezUyeQl9": 100
+  },
+  "tem2": {
+    "nd0097xj": 217
+  },
+  "la2": {
+    "nd0097xj": 100
+  },
+  "ot": {
+    "undefined": 310
+  },
+  "usedMoves": {
+    "1IPhMvBn": [
+      "348"
+    ],
+    "nd0097xj": [
+      "344"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 1,
+  "bideState": {},
+  "statStages": {
+    "1IPhMvBn": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "nd0097xj": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "nd0097xj": {
+      "damage": 58,
+      "category": "physical",
+      "from": "1IPhMvBn",
+      "move": "leaf blade"
+    },
+    "1IPhMvBn": {
+      "damage": 106,
+      "category": "physical",
+      "from": "nd0097xj",
+      "move": "volt tackle"
+    }
+  },
+  "lastMoveByPass": {
+    "1IPhMvBn": "348",
+    "nd0097xj": "344"
+  },
+  "runs": [
+    8551864967,
+    7577674783
+  ]
+}

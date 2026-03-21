@@ -1,0 +1,60 @@
+{
+  "c": "0OsEWeZy",
+  "org": "no",
+  "chp": 0,
+  "ochp": 28,
+  "ohp": 56,
+  "ivs": {
+    "hp": 19,
+    "attack": 18,
+    "defense": 13,
+    "special_attack": 23,
+    "special_defense": 17,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "pe8gm6C4",
+  "level": 26,
+  "name": "krabby",
+  "omoves": [
+    {
+      "id": 232,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 341,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 61,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 23,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "krabby": 28
+  },
+  "symbol": "",
+  "team": {
+    "0OsEWeZy": 0
+  },
+  "la": {
+    "0OsEWeZy": 11
+  }
+}

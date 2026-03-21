@@ -1,0 +1,70 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 0,
+  "ochp": -38,
+  "ohp": 84,
+  "ivs": {
+    "hp": 17,
+    "attack": 30,
+    "defense": 22,
+    "special_attack": 21,
+    "special_defense": 12,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "PtxemDjW",
+  "level": 25,
+  "name": "slowpoke",
+  "omoves": [
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "slowpoke": -38
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 0,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 91,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 35,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 22,
+    "yJT8NrzJ": 25
+  }
+}

@@ -2,8 +2,6 @@ function registerHeldPanelCallbacks(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   const { getHeldItemDescription } = require('../../utils/held_item_shop');
 
-  const { normalizeStoneKey, normalizePokemonName, normalizeHeldStone } = require('../../utils/stone_alias');
-
   function normalizeHeldItemName(value) {
     return normalizeHeldStone(value);
   }
@@ -44,23 +42,27 @@ function registerHeldPanelCallbacks(bot, deps) {
   }
 
   function buildNavKeyboard(pass, id) {
+    const data = globalThis.__heldPanelNavPokemon;
+    const poke = data && data.poke;
+    const actionRow = [
+      { text: 'Evolve', callback_data: 'evolve_' + pass + '_' + id }
+    ];
+    if (!isRayquazaLockedFromHeldItems(poke)) {
+      actionRow.push({ text: 'Held Items', callback_data: 'heldpanel_' + pass + '_' + id });
+    }
+    actionRow.push({ text: 'Release', callback_data: 'release_' + pass + '_' + id });
     return [
       [
         { text: 'Stats', callback_data: 'ste_' + pass + '_' + id },
         { text: 'IVs/EVs', callback_data: 'pkisvs_' + pass + '_' + id },
         { text: 'Moveset', callback_data: 'moves_' + pass + '_' + id }
       ],
-      [
-        { text: 'Evolve', callback_data: 'evolve_' + pass + '_' + id },
-        { text: 'Held Items', callback_data: 'heldpanel_' + pass + '_' + id },
-        { text: 'Release', callback_data: 'release_' + pass + '_' + id }
-      ]
+      actionRow
     ];
   }
 
   function buildHeldPanel(data, poke) {
     const currentItem = normalizeHeldItemName(poke.held_item);
-    const pokeNameNorm = normalizePokemonName(poke.name);
     let msg = '*Held Item Manager*\n';
     msg += '*Pokemon:* ' + c(poke.nickname || poke.name) + '\n';
     msg += '*Current Held Item:* ' + c(titleCaseHeldItem(currentItem || 'none'));
@@ -98,7 +100,9 @@ function registerHeldPanelCallbacks(bot, deps) {
     }
     const entries = Array.from(combined.entries()).sort((a, b) => a[0].localeCompare(b[0]));
 
-    if (entries.length < 1) {
+    if (restricted) {
+      msg += '\n\n*Held items are disabled for this Rayquaza because it knows Dragon Ascent.*';
+    } else if (entries.length < 1) {
       msg += '\n\nYou do not have any *held items* in your bag.';
     } else {
       msg += '\n\n*Bag Held Items*';
@@ -117,7 +121,7 @@ function registerHeldPanelCallbacks(bot, deps) {
     }
 
     const rows = [];
-    const itemButtons = entries.map(([itemName, amount]) => {
+    const itemButtons = restricted ? [] : entries.map(([itemName, amount]) => {
       const equippedElsewhere = getEquippedHeldItemCount(data, itemName, poke.pass);
       const free = Math.max(0, Number(amount) - equippedElsewhere);
       return {
@@ -130,7 +134,7 @@ function registerHeldPanelCallbacks(bot, deps) {
       rows.push(itemButtons.slice(i, i + 2));
     }
 
-    if (currentItem && currentItem !== 'none') {
+    if (!restricted && currentItem && currentItem !== 'none') {
       rows.push([{ text: 'Remove Held Item', callback_data: 'heldremove_' + poke.pass + '_' + data.user_id }]);
     }
     rows.push([{ text: 'Back', callback_data: 'info_' + poke.pass + '_' + data.user_id }]);
@@ -146,11 +150,17 @@ function registerHeldPanelCallbacks(bot, deps) {
       await ctx.answerCbQuery('Poke not found');
       return;
     }
+    if (isRayquazaLockedFromHeldItems(poke) && normalizeHeldItemName(poke.held_item) !== 'none') {
+      poke.held_item = getSanitizedHeldItemForPokemon(poke, poke.held_item);
+      await saveUserData2(userId, data);
+    }
+    globalThis.__heldPanelNavPokemon = { poke };
     const panel = buildHeldPanel(data, poke);
     await editMessage('caption', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, panel.msg, {
       parse_mode: 'markdown',
       reply_markup: { inline_keyboard: panel.rows }
     });
+    delete globalThis.__heldPanelNavPokemon;
   }
 
   async function equipHeldItem(ctx, userId, pass, heldItem) {
@@ -177,6 +187,15 @@ function registerHeldPanelCallbacks(bot, deps) {
     const currentItem = normalizeHeldItemName(poke.held_item);
     if (currentItem === heldItem) {
       await ctx.answerCbQuery('This pokemon already holds that item.', { show_alert: true });
+      return;
+    }
+
+    const restrictionMessage = getPokemonHeldItemRestrictionMessage(poke);
+    if (restrictionMessage) {
+      poke.held_item = getSanitizedHeldItemForPokemon(poke, poke.held_item);
+      await saveUserData2(userId, data);
+      await showHeldPanel(ctx, pass, userId);
+      await ctx.answerCbQuery(restrictionMessage, { show_alert: true });
       return;
     }
 

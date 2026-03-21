@@ -1,0 +1,65 @@
+{
+  "c": "ZHAL8qZB",
+  "org": "no",
+  "chp": 116,
+  "ochp": -212,
+  "ohp": 65,
+  "ivs": {
+    "hp": 10,
+    "attack": 13,
+    "defense": 14,
+    "special_attack": 19,
+    "special_defense": 19,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "8MV4tW2H",
+  "level": 22,
+  "name": "nidorina",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "nidorina": -212
+  },
+  "symbol": "",
+  "team": {
+    "ZHAL8qZB": 116,
+    "bmhgy5Ib": 33,
+    "i9ncUySE": 13,
+    "GtZ6KmSH": 114,
+    "BO3VNBUR": 90,
+    "0dwCNEDH": 312
+  },
+  "la": {
+    "ZHAL8qZB": 54,
+    "bmhgy5Ib": 7,
+    "i9ncUySE": 1,
+    "GtZ6KmSH": 38,
+    "BO3VNBUR": 34,
+    "0dwCNEDH": 100
+  }
+}

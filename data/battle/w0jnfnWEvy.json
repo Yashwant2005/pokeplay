@@ -1,0 +1,65 @@
+{
+  "c": "XxmBb8ir",
+  "org": "no",
+  "chp": 187,
+  "ochp": 44,
+  "ohp": 44,
+  "ivs": {
+    "hp": 16,
+    "attack": 13,
+    "defense": 15,
+    "special_attack": 13,
+    "special_defense": 15,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "HCojZcYB",
+  "level": 18,
+  "name": "vulpix-alola",
+  "omoves": [
+    {
+      "id": 181,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 420,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 196,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "vulpix-alola": 44
+  },
+  "symbol": "",
+  "team": {
+    "XxmBb8ir": 187,
+    "BDoHP5wy": 122,
+    "z8uGifBR": 201,
+    "puss3zIS": 347,
+    "OchBd1I4": 249,
+    "bMyjfqev": 123
+  },
+  "la": {
+    "XxmBb8ir": 60,
+    "BDoHP5wy": 50,
+    "z8uGifBR": 55,
+    "puss3zIS": 59,
+    "OchBd1I4": 61,
+    "bMyjfqev": 47
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "VeGcM7g6",
+  "org": "no",
+  "chp": 374,
+  "ochp": 80,
+  "ohp": 80,
+  "ivs": {
+    "hp": 13,
+    "attack": 13,
+    "defense": 15,
+    "special_attack": 17,
+    "special_defense": 13,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "Am5AVk47",
+  "level": 24,
+  "name": "arctovish",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 181,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 196,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    },
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "arctovish": 80
+  },
+  "symbol": "",
+  "team": {
+    "VeGcM7g6": 374,
+    "U91qv9LN": 195,
+    "NoY7ouGb": 35,
+    "22SFkuYx": 29,
+    "lpqLNyhO": 91,
+    "pk8kyC5d": 92
+  },
+  "la": {
+    "VeGcM7g6": 100,
+    "U91qv9LN": 58,
+    "NoY7ouGb": 16,
+    "22SFkuYx": 10,
+    "lpqLNyhO": 30,
+    "pk8kyC5d": 35
+  }
+}

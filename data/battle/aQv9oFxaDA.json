@@ -1,0 +1,56 @@
+{
+  "c": "JLJnRWId",
+  "org": "no",
+  "chp": 21,
+  "ochp": 34,
+  "ohp": 34,
+  "ivs": {
+    "hp": 17,
+    "attack": 23,
+    "defense": 14,
+    "special_attack": 14,
+    "special_defense": 14,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "j0ilS0zb",
+  "level": 9,
+  "name": "aerodactyl",
+  "omoves": [
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "aerodactyl": 34
+  },
+  "symbol": "",
+  "team": {
+    "JLJnRWId": 21,
+    "KxGETL4x": 177,
+    "zDNPsPrF": 24,
+    "Nt5PNgsZ": 26
+  },
+  "la": {
+    "JLJnRWId": 5,
+    "KxGETL4x": 50,
+    "zDNPsPrF": 5,
+    "Nt5PNgsZ": 6
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 132,
+  "ochp": -353,
+  "ohp": 34,
+  "ivs": {
+    "hp": 26,
+    "attack": 23,
+    "defense": 17,
+    "special_attack": 14,
+    "special_defense": 15,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "rgBz933A",
+  "level": 14,
+  "name": "abra",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "abra": -353
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 132,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 64,
+    "SmX3uZcP": 219,
+    "Ih35m8uD": 158,
+    "Z86cfwaX": 215
+  },
+  "la": {
+    "ytrF7ks6": 39,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 23,
+    "SmX3uZcP": 34,
+    "Ih35m8uD": 24,
+    "Z86cfwaX": 33
+  }
+}

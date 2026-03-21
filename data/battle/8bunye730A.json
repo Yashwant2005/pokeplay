@@ -1,0 +1,70 @@
+{
+  "c": "C1czvzzB",
+  "org": "no",
+  "chp": 81,
+  "ochp": -154,
+  "ohp": 59,
+  "ivs": {
+    "hp": 16,
+    "attack": 19,
+    "defense": 14,
+    "special_attack": 17,
+    "special_defense": 17,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "g9C9OpUS",
+  "level": 22,
+  "name": "staravia",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 17,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "staravia": -154
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 0,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 81,
+    "xPNmpDgC": 117
+  },
+  "la": {
+    "hoTfaX8w": 21,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 41,
+    "xPNmpDgC": 40
+  }
+}

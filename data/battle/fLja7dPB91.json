@@ -1,0 +1,57 @@
+{
+  "c": "Bo6PaTm9",
+  "org": "no",
+  "chp": 0,
+  "ochp": 27,
+  "ohp": 68,
+  "ivs": {
+    "hp": 18,
+    "attack": 24,
+    "defense": 20,
+    "special_attack": 22,
+    "special_defense": 16,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "Q4al3NvG",
+  "level": 28,
+  "name": "haunter",
+  "omoves": [
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 371,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "haunter": 27
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 0,
+    "Bo6PaTm9": 0
+  },
+  "la": {
+    "xPNmpDgC": 11,
+    "Bo6PaTm9": 6
+  }
+}

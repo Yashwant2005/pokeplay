@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 61,
+  "ochp": -104,
+  "ohp": 114,
+  "ivs": {
+    "hp": 18,
+    "attack": 11,
+    "defense": 17,
+    "special_attack": 12,
+    "special_defense": 11,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "oHVjnDTd",
+  "level": 44,
+  "name": "roserade",
+  "omoves": [
+    {
+      "id": 80,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 202,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 345,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 572,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "roserade": -104
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 61,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 111,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 53,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 39,
+    "xPNmpDgC": 42
+  }
+}

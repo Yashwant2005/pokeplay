@@ -1,0 +1,57 @@
+{
+  "c": "9eeViYIB",
+  "org": "no",
+  "chp": 26,
+  "ochp": 226,
+  "ohp": 226,
+  "ivs": {
+    "hp": 21,
+    "attack": 25,
+    "defense": 21,
+    "special_attack": 18,
+    "special_defense": 13,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "n5JSLs1z",
+  "level": 60,
+  "name": "arceus-ice",
+  "omoves": [
+    {
+      "id": 414,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 304,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 245,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "arceus-ice": 226
+  },
+  "symbol": "",
+  "team": {
+    "9eeViYIB": 26,
+    "bRnR7Krx": 197
+  },
+  "la": {
+    "9eeViYIB": 8,
+    "bRnR7Krx": 54
+  }
+}

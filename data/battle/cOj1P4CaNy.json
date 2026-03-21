@@ -1,0 +1,45 @@
+{
+  "c": "YSv2n2Fh",
+  "org": "no",
+  "chp": 86,
+  "ochp": -97,
+  "ohp": 32,
+  "ivs": {
+    "hp": 15,
+    "attack": 21,
+    "defense": 19,
+    "special_attack": 15,
+    "special_defense": 22,
+    "speed": 30
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "aqc4aBLY",
+  "level": 10,
+  "name": "buneary",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "buneary": -97
+  },
+  "symbol": "",
+  "team": {
+    "YSv2n2Fh": 86
+  },
+  "la": {
+    "YSv2n2Fh": 36
+  }
+}

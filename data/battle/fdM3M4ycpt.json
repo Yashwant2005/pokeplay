@@ -1,0 +1,70 @@
+{
+  "c": "o8bIzfQG",
+  "org": "no",
+  "chp": 179,
+  "ochp": 238,
+  "ohp": 238,
+  "ivs": {
+    "hp": 28,
+    "attack": 21,
+    "defense": 25,
+    "special_attack": 26,
+    "special_defense": 23,
+    "speed": 30
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "zhJdFoPf",
+  "level": 62,
+  "name": "arceus-rock",
+  "omoves": [
+    {
+      "id": 414,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 304,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 245,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 248,
+      "learn_method": "level-up",
+      "level_learned_at": 60
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "arceus-rock": 238
+  },
+  "symbol": "",
+  "team": {
+    "o8bIzfQG": 179,
+    "Wd6ycAPc": 43,
+    "jgm1zhuJ": 136,
+    "BCqswbv3": 38,
+    "dkGccns9": 191,
+    "vqGNSLbz": 29
+  },
+  "la": {
+    "o8bIzfQG": 55,
+    "Wd6ycAPc": 9,
+    "jgm1zhuJ": 47,
+    "BCqswbv3": 14,
+    "dkGccns9": 53,
+    "vqGNSLbz": 7
+  }
+}

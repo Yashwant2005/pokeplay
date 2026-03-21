@@ -1,0 +1,70 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 17,
+  "ochp": -56,
+  "ohp": 41,
+  "ivs": {
+    "hp": 17,
+    "attack": 13,
+    "defense": 10,
+    "special_attack": 9,
+    "special_defense": 11,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "Hra6iMMT",
+  "level": 17,
+  "name": "doduo",
+  "omoves": [
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 99,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "doduo": -56
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 17,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 84,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 29,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 20,
+    "yJT8NrzJ": 25
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 346,
+  "ochp": -319,
+  "ohp": 27,
+  "ivs": {
+    "hp": 12,
+    "attack": 10,
+    "defense": 14,
+    "special_attack": 3,
+    "special_defense": 12,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "uTeRO4JT",
+  "level": 9,
+  "name": "starly",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "starly": -319
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 346,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

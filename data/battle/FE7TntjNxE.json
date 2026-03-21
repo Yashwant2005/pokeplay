@@ -1,0 +1,64 @@
+{
+  "c": "uJZ6NrvQ",
+  "org": "no",
+  "chp": 170,
+  "ochp": 192,
+  "ohp": 192,
+  "ivs": {
+    "hp": 19,
+    "attack": 24,
+    "defense": 20,
+    "special_attack": 14,
+    "special_defense": 14,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "r3c0cFTK",
+  "level": 61,
+  "name": "articuno",
+  "omoves": [
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 573,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 58,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 542,
+      "learn_method": "level-up",
+      "level_learned_at": 55
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "articuno": 192
+  },
+  "symbol": "",
+  "team": {
+    "uJZ6NrvQ": 170,
+    "SwLFAtN8": 122,
+    "KsagXYS3": 208
+  },
+  "la": {
+    "uJZ6NrvQ": 54,
+    "SwLFAtN8": 40,
+    "KsagXYS3": 45
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "c": "YcbNG7z1",
+  "org": "no",
+  "chp": 80,
+  "ochp": -71,
+  "ohp": 31,
+  "ivs": {
+    "hp": 16,
+    "attack": 20,
+    "defense": 21,
+    "special_attack": 13,
+    "special_defense": 12,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "KQS42H71",
+  "level": 10,
+  "name": "sandshrew",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    },
+    {
+      "id": 205,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sandshrew": -71
+  },
+  "symbol": "",
+  "team": {
+    "YcbNG7z1": 80,
+    "INnWVvZa": 70,
+    "hElvGj1W": 99,
+    "FwnmeApD": 136,
+    "zIc5R3QM": 83,
+    "4vHKM3tf": 49
+  },
+  "la": {
+    "YcbNG7z1": 30,
+    "INnWVvZa": 25,
+    "hElvGj1W": 24,
+    "FwnmeApD": 52,
+    "zIc5R3QM": 30,
+    "4vHKM3tf": 20
+  }
+}

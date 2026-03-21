@@ -1,0 +1,160 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "1335302812": true,
+    "7058516053": true
+  },
+  "tempTeams": {
+    "1335302812": [
+      "CPQ00Aur",
+      "D9NcKRBT",
+      "Qx0kAxxC",
+      "VhmoDLQV",
+      "XEFsBNc7",
+      "WD0aUcQl"
+    ],
+    "7058516053": [
+      "G3beYOLN",
+      "aWbJ8Zl4",
+      "S7AhiFHP",
+      "7poYZ715",
+      "Xrv7fQug",
+      "p9w3yAwJ"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "MmoxAOJ",
+  "status": {},
+  "c": "CPQ00Aur",
+  "chp": 0,
+  "o": "G3beYOLN",
+  "ohp": 277,
+  "cid": "1335302812",
+  "oid": "7058516053",
+  "tem": {
+    "CPQ00Aur": 0,
+    "D9NcKRBT": 319,
+    "Qx0kAxxC": 244,
+    "VhmoDLQV": 275,
+    "XEFsBNc7": 278,
+    "WD0aUcQl": 262
+  },
+  "la": {
+    "CPQ00Aur": 100,
+    "D9NcKRBT": 100,
+    "Qx0kAxxC": 100,
+    "VhmoDLQV": 100,
+    "XEFsBNc7": 100,
+    "WD0aUcQl": 100
+  },
+  "tem2": {
+    "G3beYOLN": 277,
+    "aWbJ8Zl4": 254,
+    "S7AhiFHP": 240,
+    "7poYZ715": 248,
+    "Xrv7fQug": 122,
+    "p9w3yAwJ": 0
+  },
+  "la2": {
+    "G3beYOLN": 100,
+    "aWbJ8Zl4": 100,
+    "S7AhiFHP": 100,
+    "7poYZ715": 100,
+    "Xrv7fQug": 100,
+    "p9w3yAwJ": 100
+  },
+  "ot": {
+    "undefined": 277
+  },
+  "usedMoves": {
+    "CPQ00Aur": [
+      "94",
+      "358",
+      "370"
+    ],
+    "G3beYOLN": [
+      "416",
+      "87"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 4,
+  "bideState": {},
+  "turnHits": {
+    "CPQ00Aur": {
+      "damage": 132,
+      "category": "special",
+      "from": "G3beYOLN",
+      "move": "thunder"
+    }
+  },
+  "lastMoveByPass": {
+    "CPQ00Aur": "370",
+    "G3beYOLN": "87"
+  },
+  "entryHazards": {
+    "1335302812": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "7058516053": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "statStages": {
+    "CPQ00Aur": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "p9w3yAwJ": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": -1,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "G3beYOLN": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  }
+}

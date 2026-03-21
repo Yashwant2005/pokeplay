@@ -1,0 +1,66 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 90,
+  "ochp": -29,
+  "ohp": 112,
+  "ivs": {
+    "hp": 19,
+    "attack": 21,
+    "defense": 22,
+    "special_attack": 16,
+    "special_defense": 13,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "BlpSf9lE",
+  "level": 41,
+  "name": "morgrem",
+  "omoves": [
+    {
+      "id": 252,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 389,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 399,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "morgrem": -29
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 90,
+    "J4F20ScC": 35,
+    "dnSoMyRy": 106,
+    "Miai3ctV": 36
+  },
+  "la": {
+    "Xb9OMUmh": 45,
+    "J4F20ScC": 10,
+    "dnSoMyRy": 37,
+    "Miai3ctV": 10
+  }
+}

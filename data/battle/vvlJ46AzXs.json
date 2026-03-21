@@ -1,0 +1,70 @@
+{
+  "c": "bAUBesJM",
+  "org": "no",
+  "chp": 331,
+  "ochp": -342,
+  "ohp": 34,
+  "ivs": {
+    "hp": 4,
+    "attack": 4,
+    "defense": 4,
+    "special_attack": 3,
+    "special_defense": 5,
+    "speed": 4
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "ntEm5tLo",
+  "level": 20,
+  "name": "diglett",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 189,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 523,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "diglett": -342
+  },
+  "symbol": "",
+  "team": {
+    "bAUBesJM": 331,
+    "Efnc0PUS": 373,
+    "uclThfWK": 332,
+    "CDIkqF92": 369,
+    "GgOR8D5A": 366,
+    "okkGwwjh": 370
+  },
+  "la": {
+    "bAUBesJM": 100,
+    "Efnc0PUS": 100,
+    "uclThfWK": 100,
+    "CDIkqF92": 100,
+    "GgOR8D5A": 100,
+    "okkGwwjh": 100
+  }
+}

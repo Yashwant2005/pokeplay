@@ -1,0 +1,65 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 16,
+  "ochp": -67,
+  "ohp": 34,
+  "ivs": {
+    "hp": 20,
+    "attack": 19,
+    "defense": 20,
+    "special_attack": 24,
+    "special_defense": 13,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "nMyBrrVH",
+  "level": 12,
+  "name": "spearow",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "spearow": -67
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 16,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120
+  },
+  "la": {
+    "hoTfaX8w": 29,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "c": "ZHAL8qZB",
+  "org": "no",
+  "chp": 151,
+  "ochp": -342,
+  "ohp": 30,
+  "ivs": {
+    "hp": 13,
+    "attack": 15,
+    "defense": 23,
+    "special_attack": 17,
+    "special_defense": 21,
+    "speed": 24
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "KUNSo6mB",
+  "level": 11,
+  "name": "ekans",
+  "omoves": [
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ekans": -342
+  },
+  "symbol": "",
+  "team": {
+    "ZHAL8qZB": 151,
+    "bmhgy5Ib": 33,
+    "i9ncUySE": 13,
+    "GtZ6KmSH": 114,
+    "BO3VNBUR": 90,
+    "0dwCNEDH": 312
+  },
+  "la": {
+    "ZHAL8qZB": 54,
+    "bmhgy5Ib": 7,
+    "i9ncUySE": 1,
+    "GtZ6KmSH": 38,
+    "BO3VNBUR": 34,
+    "0dwCNEDH": 100
+  }
+}

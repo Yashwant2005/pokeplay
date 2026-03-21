@@ -1,0 +1,52 @@
+{
+  "c": "QU99PvjF",
+  "org": "no",
+  "chp": 166,
+  "ochp": -233,
+  "ohp": 20,
+  "ivs": {
+    "hp": 13,
+    "attack": 20,
+    "defense": 17,
+    "special_attack": 16,
+    "special_defense": 14,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "4XFpbB3K",
+  "level": 5,
+  "name": "goomy",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "goomy": -233
+  },
+  "symbol": "",
+  "team": {
+    "QU99PvjF": 166,
+    "3zK8PVU5": 208
+  },
+  "la": {
+    "QU99PvjF": 44,
+    "3zK8PVU5": 60
+  }
+}

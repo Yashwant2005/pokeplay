@@ -1,0 +1,70 @@
+{
+  "c": "ZZds2WM5",
+  "org": "no",
+  "chp": 26,
+  "ochp": -26,
+  "ohp": 43,
+  "ivs": {
+    "hp": 19,
+    "attack": 17,
+    "defense": 24,
+    "special_attack": 15,
+    "special_defense": 20,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "1mMNRiEI",
+  "level": 14,
+  "name": "teddiursa",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "teddiursa": -26
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 0,
+    "USP6eG1Z": 50,
+    "i3Zbowkn": 65,
+    "ZZds2WM5": 26,
+    "dYk06Ntb": 49,
+    "YXw2z1Y1": 37
+  },
+  "la": {
+    "AfrJyFT3": 15,
+    "USP6eG1Z": 17,
+    "i3Zbowkn": 22,
+    "ZZds2WM5": 15,
+    "dYk06Ntb": 19,
+    "YXw2z1Y1": 9
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "HB9CWb2r",
+  "org": "no",
+  "chp": 31,
+  "ochp": 89,
+  "ohp": 89,
+  "ivs": {
+    "hp": 24,
+    "attack": 17,
+    "defense": 19,
+    "special_attack": 14,
+    "special_defense": 22,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "Hd7JYIpd",
+  "level": 31,
+  "name": "poipole",
+  "omoves": [
+    {
+      "id": 406,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 565,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    },
+    {
+      "id": 474,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "poipole": 89
+  },
+  "symbol": "",
+  "team": {
+    "HB9CWb2r": 31,
+    "XOazMcFw": 13,
+    "1LfnGN0z": 172,
+    "dyFMvUzr": 154,
+    "lMzQCtR5": 151,
+    "ZczsrG3q": 252
+  },
+  "la": {
+    "HB9CWb2r": 11,
+    "XOazMcFw": 1,
+    "1LfnGN0z": 53,
+    "dyFMvUzr": 55,
+    "lMzQCtR5": 54,
+    "ZczsrG3q": 61
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 179,
+  "ochp": -162,
+  "ohp": 117,
+  "ivs": {
+    "hp": 16,
+    "attack": 18,
+    "defense": 21,
+    "special_attack": 16,
+    "special_defense": 17,
+    "speed": 9
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "6eNDHBUV",
+  "level": 39,
+  "name": "ludicolo",
+  "omoves": [
+    {
+      "id": 282,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 412,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ludicolo": -162
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 179,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 54,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 426,
+  "ochp": -285,
+  "ohp": 33,
+  "ivs": {
+    "hp": 14,
+    "attack": 15,
+    "defense": 14,
+    "special_attack": 18,
+    "special_defense": 13,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "PA6OADc7",
+  "level": 14,
+  "name": "ralts",
+  "omoves": [
+    {
+      "id": 574,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 577,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ralts": -285
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 426,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36,
+    "torhqPbg": 38,
+    "ZoPY7v6L": 208,
+    "qmVPBK5k": 27
+  },
+  "la": {
+    "ZpYcR2c0": 100,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10,
+    "torhqPbg": 13,
+    "ZoPY7v6L": 62,
+    "qmVPBK5k": 8
+  }
+}

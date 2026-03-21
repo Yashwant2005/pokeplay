@@ -1,0 +1,70 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 301,
+  "ochp": -286,
+  "ohp": 58,
+  "ivs": {
+    "hp": 19,
+    "attack": 25,
+    "defense": 10,
+    "special_attack": 6,
+    "special_defense": 17,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "85D9qhix",
+  "level": 22,
+  "name": "larvitar",
+  "omoves": [
+    {
+      "id": 371,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 157,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 707,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "larvitar": -286
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 301,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

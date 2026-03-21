@@ -1,0 +1,70 @@
+{
+  "c": "yx4Mz6GJ",
+  "org": "no",
+  "chp": 95,
+  "ochp": 53,
+  "ohp": 53,
+  "ivs": {
+    "hp": 16,
+    "attack": 21,
+    "defense": 19,
+    "special_attack": 21,
+    "special_defense": 17,
+    "speed": 26
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "vlrRQSuD",
+  "level": 16,
+  "name": "druddigon",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 525,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    },
+    {
+      "id": 232,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "druddigon": 53
+  },
+  "symbol": "",
+  "team": {
+    "yx4Mz6GJ": 95,
+    "u0wRDkpV": 94,
+    "UtfDaQTH": 109,
+    "RTXYaCR3": 91,
+    "iceEdRvu": 100,
+    "bywYVs7a": 36
+  },
+  "la": {
+    "yx4Mz6GJ": 32,
+    "u0wRDkpV": 35,
+    "UtfDaQTH": 33,
+    "RTXYaCR3": 32,
+    "iceEdRvu": 40,
+    "bywYVs7a": 13
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "c": "dHs7AQr7",
+  "org": "no",
+  "chp": 215,
+  "ochp": 117,
+  "ohp": 117,
+  "ivs": {
+    "hp": 15,
+    "attack": 18,
+    "defense": 22,
+    "special_attack": 18,
+    "special_defense": 16,
+    "speed": 25
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "aNajJwtf",
+  "level": 34,
+  "name": "calyrex-ice",
+  "omoves": [
+    {
+      "id": 419,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 556,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 202,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 473,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "calyrex-ice": 117
+  },
+  "symbol": "",
+  "team": {
+    "dHs7AQr7": 215,
+    "PUy9RXAv": 170,
+    "JL38YbwE": 199,
+    "dDgVx6wT": 27,
+    "scLnWOOz": 185
+  },
+  "la": {
+    "dHs7AQr7": 55,
+    "PUy9RXAv": 54,
+    "JL38YbwE": 59,
+    "dDgVx6wT": 5,
+    "scLnWOOz": 54
+  }
+}

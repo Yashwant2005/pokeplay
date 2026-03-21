@@ -1,0 +1,55 @@
+{
+  "c": "ALb1cDQf",
+  "org": "no",
+  "chp": 0,
+  "ochp": 49,
+  "ohp": 65,
+  "ivs": {
+    "hp": 14,
+    "attack": 17,
+    "defense": 14,
+    "special_attack": 15,
+    "special_defense": 19,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "cPPZOKC8",
+  "level": 22,
+  "name": "nidorina",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "nidorina": 49
+  },
+  "symbol": "",
+  "team": {
+    "ALb1cDQf": 0
+  },
+  "la": {
+    "ALb1cDQf": 5
+  }
+}

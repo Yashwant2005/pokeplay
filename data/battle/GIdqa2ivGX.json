@@ -1,0 +1,65 @@
+{
+  "c": "8s3qQqRk",
+  "org": "no",
+  "chp": 161,
+  "ochp": -195,
+  "ohp": 49,
+  "ivs": {
+    "hp": 17,
+    "attack": 20,
+    "defense": 27,
+    "special_attack": 25,
+    "special_defense": 21,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "e7JtuYBy",
+  "level": 15,
+  "name": "stantler",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 23,
+      "learn_method": "level-up",
+      "level_learned_at": 13
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "stantler": -195
+  },
+  "symbol": "",
+  "team": {
+    "8s3qQqRk": 161,
+    "7qvFAXaU": 149,
+    "UmyfORGQ": 198,
+    "96T1ggy5": 158,
+    "CuGtMWDv": 227,
+    "TVIJQdd9": 167
+  },
+  "la": {
+    "8s3qQqRk": 60,
+    "7qvFAXaU": 54,
+    "UmyfORGQ": 59,
+    "96T1ggy5": 50,
+    "CuGtMWDv": 65,
+    "TVIJQdd9": 56
+  }
+}

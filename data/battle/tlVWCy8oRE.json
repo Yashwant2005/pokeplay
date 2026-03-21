@@ -1,0 +1,70 @@
+{
+  "c": "gDXv98kD",
+  "org": "no",
+  "chp": 121,
+  "ochp": 127,
+  "ohp": 127,
+  "ivs": {
+    "hp": 13,
+    "attack": 20,
+    "defense": 20,
+    "special_attack": 14,
+    "special_defense": 24,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "KObPdlgN",
+  "level": 43,
+  "name": "hoopa",
+  "omoves": [
+    {
+      "id": 593,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 19
+    },
+    {
+      "id": 566,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "hoopa": 127
+  },
+  "symbol": "",
+  "team": {
+    "gDXv98kD": 121,
+    "k1PYGICf": 191,
+    "5aMBTgt9": 103,
+    "wXFdO3ZJ": 167,
+    "V0U7GxoB": 117,
+    "coZ7CueN": 112
+  },
+  "la": {
+    "gDXv98kD": 41,
+    "k1PYGICf": 63,
+    "5aMBTgt9": 37,
+    "wXFdO3ZJ": 53,
+    "V0U7GxoB": 42,
+    "coZ7CueN": 42
+  }
+}

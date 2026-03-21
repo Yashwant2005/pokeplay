@@ -1,0 +1,55 @@
+{
+  "c": "kOymg0ik",
+  "org": "no",
+  "chp": 45,
+  "ochp": -48,
+  "ohp": 26,
+  "ivs": {
+    "hp": 15,
+    "attack": 15,
+    "defense": 18,
+    "special_attack": 20,
+    "special_defense": 12,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "iXwt7LV6",
+  "level": 7,
+  "name": "murkrow",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "murkrow": -48
+  },
+  "symbol": "",
+  "team": {
+    "kOymg0ik": 45
+  },
+  "la": {
+    "kOymg0ik": 16
+  }
+}

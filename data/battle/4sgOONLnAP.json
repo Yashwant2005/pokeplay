@@ -1,0 +1,70 @@
+{
+  "c": "vCre5lBj",
+  "org": "no",
+  "chp": 138,
+  "ochp": 169,
+  "ohp": 169,
+  "ivs": {
+    "hp": 25,
+    "attack": 26,
+    "defense": 25,
+    "special_attack": 18,
+    "special_defense": 25,
+    "speed": 25
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "b28nF7Oe",
+  "level": 60,
+  "name": "tapu-bulu",
+  "omoves": [
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 30,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 532,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "tapu-bulu": 169
+  },
+  "symbol": "",
+  "team": {
+    "vCre5lBj": 138,
+    "H8Bl42iC": 122,
+    "NjUKJJ77": 70,
+    "2tV5OwNS": 79,
+    "GOCau2XF": 81,
+    "DByCFqv8": 185
+  },
+  "la": {
+    "vCre5lBj": 47,
+    "H8Bl42iC": 41,
+    "NjUKJJ77": 27,
+    "2tV5OwNS": 27,
+    "GOCau2XF": 25,
+    "DByCFqv8": 47
+  }
+}

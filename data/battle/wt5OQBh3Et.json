@@ -1,0 +1,70 @@
+{
+  "c": "dC9jW0x4",
+  "org": "no",
+  "chp": 84,
+  "ochp": -18,
+  "ohp": 87,
+  "ivs": {
+    "hp": 12,
+    "attack": 17,
+    "defense": 15,
+    "special_attack": 17,
+    "special_defense": 9,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "OMk4THEU",
+  "level": 36,
+  "name": "farfetchd",
+  "omoves": [
+    {
+      "id": 332,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 314,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 282,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 206,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "farfetchd": -18
+  },
+  "symbol": "",
+  "team": {
+    "wddhIz3b": 0,
+    "dC9jW0x4": 84,
+    "07qBEog3": 377,
+    "saofW0Kt": 307,
+    "wmzoASLK": 369,
+    "uQhxBwQC": 285
+  },
+  "la": {
+    "wddhIz3b": 15,
+    "dC9jW0x4": 31,
+    "07qBEog3": 100,
+    "saofW0Kt": 100,
+    "wmzoASLK": 100,
+    "uQhxBwQC": 100
+  }
+}

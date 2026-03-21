@@ -1,0 +1,70 @@
+{
+  "c": "DY5xusUV",
+  "org": "no",
+  "chp": 97,
+  "ochp": 168,
+  "ohp": 168,
+  "ivs": {
+    "hp": 23,
+    "attack": 23,
+    "defense": 28,
+    "special_attack": 17,
+    "special_defense": 23,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "HujBopAZ",
+  "level": 56,
+  "name": "regirock",
+  "omoves": [
+    {
+      "id": 157,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 359,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 444,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    },
+    {
+      "id": 276,
+      "learn_method": "level-up",
+      "level_learned_at": 54
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "regirock": 168
+  },
+  "symbol": "",
+  "team": {
+    "DY5xusUV": 97,
+    "er2BGMZK": 103,
+    "hK3IxtEj": 159,
+    "MoqdSLB0": 152,
+    "pIjB75RY": 186,
+    "TrpLrvEK": 187
+  },
+  "la": {
+    "DY5xusUV": 21,
+    "er2BGMZK": 37,
+    "hK3IxtEj": 50,
+    "MoqdSLB0": 66,
+    "pIjB75RY": 58,
+    "TrpLrvEK": 55
+  }
+}

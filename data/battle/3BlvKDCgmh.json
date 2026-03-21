@@ -1,0 +1,65 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 178,
+  "ochp": -136,
+  "ohp": 45,
+  "ivs": {
+    "hp": 11,
+    "attack": 12,
+    "defense": 15,
+    "special_attack": 15,
+    "special_defense": 16,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "Us3Yq3mj",
+  "level": 16,
+  "name": "turtwig",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 75,
+      "learn_method": "level-up",
+      "level_learned_at": 13
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "turtwig": -136
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 178,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 46,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

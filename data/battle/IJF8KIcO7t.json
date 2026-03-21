@@ -1,0 +1,65 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 353,
+  "ochp": 33,
+  "ohp": 33,
+  "ivs": {
+    "hp": 17,
+    "attack": 16,
+    "defense": 20,
+    "special_attack": 21,
+    "special_defense": 11,
+    "speed": 26
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "3VC2LI9W",
+  "level": 12,
+  "name": "charcadet",
+  "omoves": [
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 499,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "charcadet": 33
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 353,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

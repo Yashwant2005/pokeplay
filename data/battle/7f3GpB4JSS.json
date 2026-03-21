@@ -1,0 +1,70 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 345,
+  "ochp": -245,
+  "ohp": 73,
+  "ivs": {
+    "hp": 9,
+    "attack": 17,
+    "defense": 11,
+    "special_attack": 9,
+    "special_defense": 21,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "HR7e7DFU",
+  "level": 22,
+  "name": "pignite",
+  "omoves": [
+    {
+      "id": 292,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 488,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 123,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pignite": -245
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 345,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

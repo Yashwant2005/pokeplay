@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 149,
+  "ochp": -3,
+  "ohp": 128,
+  "ivs": {
+    "hp": 12,
+    "attack": 18,
+    "defense": 18,
+    "special_attack": 17,
+    "special_defense": 12,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "mSuQCApC",
+  "level": 49,
+  "name": "espeon",
+  "omoves": [
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    },
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 94,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "espeon": -3
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 149,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 111,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 58,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 39,
+    "xPNmpDgC": 42
+  }
+}

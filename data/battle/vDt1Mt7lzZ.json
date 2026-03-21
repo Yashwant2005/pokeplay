@@ -1,0 +1,70 @@
+{
+  "c": "Rm4RUlTM",
+  "org": "no",
+  "chp": 250,
+  "ochp": 167,
+  "ohp": 167,
+  "ivs": {
+    "hp": 15,
+    "attack": 8,
+    "defense": 14,
+    "special_attack": 10,
+    "special_defense": 16,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "Bv4bxmj5",
+  "level": 52,
+  "name": "iron-jugulis",
+  "omoves": [
+    {
+      "id": 225,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 555,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 304,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "iron-jugulis": 167
+  },
+  "symbol": "",
+  "team": {
+    "Rm4RUlTM": 250,
+    "knB5UKsA": 135,
+    "QYLvfHJR": 94,
+    "bIPO2fdy": 138,
+    "uMBi3j2C": 151,
+    "4JKJDskM": 139
+  },
+  "la": {
+    "Rm4RUlTM": 100,
+    "knB5UKsA": 49,
+    "QYLvfHJR": 31,
+    "bIPO2fdy": 39,
+    "uMBi3j2C": 42,
+    "4JKJDskM": 49
+  }
+}

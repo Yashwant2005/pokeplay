@@ -1,0 +1,164 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "1253339353": true,
+    "5242138546": true
+  },
+  "status": {},
+  "c": "7ec8BLAg",
+  "chp": 0,
+  "o": "7oWX0gHd",
+  "ohp": 199,
+  "cid": "5242138546",
+  "oid": "1253339353",
+  "tem": {
+    "7ec8BLAg": 0,
+    "FSMxgVfE": 348,
+    "BhfloQjr": 362,
+    "qfQm5lQN": 354,
+    "JMZRkOQh": 304,
+    "DSnxaWfe": 421
+  },
+  "la": {
+    "7ec8BLAg": 100,
+    "FSMxgVfE": 100,
+    "BhfloQjr": 100,
+    "qfQm5lQN": 100,
+    "JMZRkOQh": 100,
+    "DSnxaWfe": 100
+  },
+  "tem2": {
+    "Zk0uUgKy": 0,
+    "XO6qeZ2o": 0,
+    "7oWX0gHd": 199,
+    "psj2Bvuf": 317,
+    "emJt2aMY": 307,
+    "irChEF9Z": 359
+  },
+  "la2": {
+    "Zk0uUgKy": 100,
+    "XO6qeZ2o": 100,
+    "7oWX0gHd": 100,
+    "psj2Bvuf": 100,
+    "emJt2aMY": 100,
+    "irChEF9Z": 100
+  },
+  "ot": {
+    "undefined": 414
+  },
+  "usedMoves": {
+    "7ec8BLAg": [
+      "248",
+      "427",
+      "396"
+    ],
+    "Zk0uUgKy": [
+      "795"
+    ],
+    "XO6qeZ2o": [
+      "200",
+      "59"
+    ],
+    "7oWX0gHd": [
+      "323"
+    ]
+  },
+  "megas": {
+    "7ec8BLAg": "mewtwo"
+  },
+  "entryHazards": {
+    "1253339353": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "5242138546": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "queuedActions": [],
+  "lastMoveByPass": {
+    "7ec8BLAg": "248",
+    "Zk0uUgKy": "795",
+    "XO6qeZ2o": "59",
+    "7oWX0gHd": "323"
+  },
+  "bideCycle": 6,
+  "bideState": {},
+  "statStages": {
+    "7ec8BLAg": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "Zk0uUgKy": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "XO6qeZ2o": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "7oWX0gHd": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "7oWX0gHd": {
+      "damage": 130,
+      "category": "special",
+      "from": "7ec8BLAg",
+      "move": "future sight"
+    },
+    "7ec8BLAg": {
+      "damage": 4,
+      "category": "special",
+      "from": "7oWX0gHd",
+      "move": "water spout"
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "AfrJyFT3",
+  "org": "no",
+  "chp": 56,
+  "ochp": 202,
+  "ohp": 202,
+  "ivs": {
+    "hp": 18,
+    "attack": 9,
+    "defense": 18,
+    "special_attack": 15,
+    "special_defense": 13,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "Cjx0etNn",
+  "level": 61,
+  "name": "walking-wake",
+  "omoves": [
+    {
+      "id": 225,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 784,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 407,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 876,
+      "learn_method": "level-up",
+      "level_learned_at": 56
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "walking-wake": 202
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 56,
+    "USP6eG1Z": 52,
+    "i3Zbowkn": 75,
+    "YXw2z1Y1": 79,
+    "9jvifJC5": 89,
+    "E7dXyYp1": 54
+  },
+  "la": {
+    "AfrJyFT3": 23,
+    "USP6eG1Z": 18,
+    "i3Zbowkn": 26,
+    "YXw2z1Y1": 23,
+    "9jvifJC5": 33,
+    "E7dXyYp1": 16
+  }
+}

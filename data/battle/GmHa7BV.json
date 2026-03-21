@@ -1,0 +1,179 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "8483107299": true,
+    "6891578700": true
+  },
+  "tempTeams": {
+    "8483107299": [
+      "zRmdJCRX",
+      "Y5zglg9y",
+      "Y3Io0BLu",
+      "GwzPfAWM",
+      "YbTj9WEa",
+      "AtjFnkKn"
+    ],
+    "6891578700": [
+      "cQM7J8Je",
+      "fGahY9JJ",
+      "KdC2gYQS",
+      "H5uttGPe",
+      "y5l94YVX",
+      "EGXA8XkB"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "GmHa7BV",
+  "status": {},
+  "c": "zRmdJCRX",
+  "chp": 39,
+  "o": "H5uttGPe",
+  "ohp": 25,
+  "cid": "8483107299",
+  "oid": "6891578700",
+  "tem": {
+    "zRmdJCRX": 39,
+    "Y5zglg9y": 241,
+    "Y3Io0BLu": 246,
+    "GwzPfAWM": 293,
+    "YbTj9WEa": 291,
+    "AtjFnkKn": 295
+  },
+  "la": {
+    "zRmdJCRX": 100,
+    "Y5zglg9y": 100,
+    "Y3Io0BLu": 100,
+    "GwzPfAWM": 100,
+    "YbTj9WEa": 100,
+    "AtjFnkKn": 100
+  },
+  "tem2": {
+    "cQM7J8Je": 0,
+    "fGahY9JJ": 249,
+    "KdC2gYQS": 0,
+    "H5uttGPe": 25,
+    "y5l94YVX": 0,
+    "EGXA8XkB": 219
+  },
+  "la2": {
+    "cQM7J8Je": 100,
+    "fGahY9JJ": 100,
+    "KdC2gYQS": 100,
+    "H5uttGPe": 100,
+    "y5l94YVX": 100,
+    "EGXA8XkB": 100
+  },
+  "ot": {
+    "undefined": 357
+  },
+  "usedMoves": {
+    "zRmdJCRX": [
+      "562",
+      "414"
+    ],
+    "H5uttGPe": [
+      "315"
+    ],
+    "y5l94YVX": [
+      "89"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 8,
+  "bideState": {},
+  "turnHits": {
+    "y5l94YVX": {
+      "damage": 137,
+      "category": "special",
+      "from": "zRmdJCRX",
+      "move": "earth power"
+    }
+  },
+  "lastMoveByPass": {
+    "zRmdJCRX": "414",
+    "y5l94YVX": "89"
+  },
+  "entryHazards": {
+    "6891578700": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "8483107299": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "statStages": {
+    "zRmdJCRX": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "y5l94YVX": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "KdC2gYQS": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": -1,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "H5uttGPe": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": -2,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "cQM7J8Je": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  }
+}

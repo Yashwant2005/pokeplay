@@ -1,0 +1,59 @@
+{
+  "c": "Qg0neG4d",
+  "org": "no",
+  "chp": 75,
+  "ochp": -36,
+  "ohp": 37,
+  "ivs": {
+    "hp": 17,
+    "attack": 16,
+    "defense": 9,
+    "special_attack": 11,
+    "special_defense": 13,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "BwgLr2C6",
+  "level": 14,
+  "name": "riolu",
+  "omoves": [
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 232,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "riolu": -36
+  },
+  "symbol": "",
+  "team": {
+    "Qg0neG4d": 75,
+    "gr12PJa6": 187,
+    "0ezspPPo": 107
+  },
+  "la": {
+    "Qg0neG4d": 32,
+    "gr12PJa6": 50,
+    "0ezspPPo": 38
+  }
+}

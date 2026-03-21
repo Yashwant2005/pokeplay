@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 156,
+  "ochp": -55,
+  "ohp": 78,
+  "ivs": {
+    "hp": 23,
+    "attack": 23,
+    "defense": 16,
+    "special_attack": 29,
+    "special_defense": 21,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "GqTMPeI1",
+  "level": 28,
+  "name": "snover",
+  "omoves": [
+    {
+      "id": 670,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 420,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 75,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 196,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "snover": -55
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 156,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 44,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

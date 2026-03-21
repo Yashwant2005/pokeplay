@@ -1,0 +1,70 @@
+{
+  "c": "HB9CWb2r",
+  "org": "no",
+  "chp": 31,
+  "ochp": 167,
+  "ohp": 167,
+  "ivs": {
+    "hp": 16,
+    "attack": 11,
+    "defense": 13,
+    "special_attack": 14,
+    "special_defense": 17,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "wzb6Eua0",
+  "level": 56,
+  "name": "xurkitree",
+  "omoves": [
+    {
+      "id": 351,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 9,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 85,
+      "learn_method": "level-up",
+      "level_learned_at": 55
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "xurkitree": 167
+  },
+  "symbol": "",
+  "team": {
+    "HB9CWb2r": 31,
+    "XOazMcFw": 13,
+    "1LfnGN0z": 172,
+    "dyFMvUzr": 154,
+    "lMzQCtR5": 151,
+    "ZczsrG3q": 252
+  },
+  "la": {
+    "HB9CWb2r": 11,
+    "XOazMcFw": 1,
+    "1LfnGN0z": 53,
+    "dyFMvUzr": 55,
+    "lMzQCtR5": 54,
+    "ZczsrG3q": 61
+  }
+}

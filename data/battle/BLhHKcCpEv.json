@@ -1,0 +1,70 @@
+{
+  "c": "jrSKvJQa",
+  "org": "no",
+  "chp": 120,
+  "ochp": 170,
+  "ohp": 170,
+  "ivs": {
+    "hp": 20,
+    "attack": 11,
+    "defense": 18,
+    "special_attack": 14,
+    "special_defense": 11,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "F5xbcu1A",
+  "level": 50,
+  "name": "zekrom",
+  "omoves": [
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 85,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 559,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zekrom": 170
+  },
+  "symbol": "",
+  "team": {
+    "jrSKvJQa": 120,
+    "CuGtMWDv": 227,
+    "UmyfORGQ": 198,
+    "lmjdKxgm": 133,
+    "Kfajk3g4": 161,
+    "50uITbfe": 173
+  },
+  "la": {
+    "jrSKvJQa": 41,
+    "CuGtMWDv": 65,
+    "UmyfORGQ": 59,
+    "lmjdKxgm": 33,
+    "Kfajk3g4": 53,
+    "50uITbfe": 49
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "c": "QnXq8TIw",
+  "org": "no",
+  "chp": 57,
+  "ochp": -13,
+  "ohp": 56,
+  "ivs": {
+    "hp": 17,
+    "attack": 16,
+    "defense": 19,
+    "special_attack": 28,
+    "special_defense": 18,
+    "speed": 28
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "27THy9GM",
+  "level": 26,
+  "name": "shieldon",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "shieldon": -13
+  },
+  "symbol": "",
+  "team": {
+    "QnXq8TIw": 57,
+    "W3exZd5k": 58,
+    "OWUQ86Li": 36,
+    "oJYApvHa": 222,
+    "3zK8PVU5": 208,
+    "M22B9MwZ": 75
+  },
+  "la": {
+    "QnXq8TIw": 46,
+    "W3exZd5k": 18,
+    "OWUQ86Li": 8,
+    "oJYApvHa": 64,
+    "3zK8PVU5": 60,
+    "M22B9MwZ": 26
+  }
+}

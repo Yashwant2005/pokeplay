@@ -1,0 +1,70 @@
+{
+  "c": "yx4Mz6GJ",
+  "org": "no",
+  "chp": 87,
+  "ochp": 80,
+  "ohp": 80,
+  "ivs": {
+    "hp": 10,
+    "attack": 21,
+    "defense": 20,
+    "special_attack": 12,
+    "special_defense": 14,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "clHKinoV",
+  "level": 28,
+  "name": "lucario",
+  "omoves": [
+    {
+      "id": 249,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 395,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 612,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "lucario": 80
+  },
+  "symbol": "",
+  "team": {
+    "yx4Mz6GJ": 87,
+    "u0wRDkpV": 89,
+    "UtfDaQTH": 109,
+    "RTXYaCR3": 91,
+    "iceEdRvu": 100,
+    "bywYVs7a": 36
+  },
+  "la": {
+    "yx4Mz6GJ": 29,
+    "u0wRDkpV": 33,
+    "UtfDaQTH": 33,
+    "RTXYaCR3": 32,
+    "iceEdRvu": 40,
+    "bywYVs7a": 13
+  }
+}

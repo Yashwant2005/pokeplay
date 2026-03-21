@@ -1,0 +1,60 @@
+{
+  "c": "ZHAL8qZB",
+  "org": "no",
+  "chp": 141,
+  "ochp": -236,
+  "ohp": 60,
+  "ivs": {
+    "hp": 15,
+    "attack": 13,
+    "defense": 20,
+    "special_attack": 18,
+    "special_defense": 13,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "iwsNck6S",
+  "level": 17,
+  "name": "lickitung",
+  "omoves": [
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 205,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "lickitung": -236
+  },
+  "symbol": "",
+  "team": {
+    "ZHAL8qZB": 141,
+    "bmhgy5Ib": 33,
+    "i9ncUySE": 13,
+    "GtZ6KmSH": 114,
+    "BO3VNBUR": 90,
+    "0dwCNEDH": 312
+  },
+  "la": {
+    "ZHAL8qZB": 54,
+    "bmhgy5Ib": 7,
+    "i9ncUySE": 1,
+    "GtZ6KmSH": 38,
+    "BO3VNBUR": 34,
+    "0dwCNEDH": 100
+  }
+}

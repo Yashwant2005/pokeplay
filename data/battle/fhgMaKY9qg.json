@@ -1,0 +1,65 @@
+{
+  "c": "AfrJyFT3",
+  "org": "no",
+  "chp": 19,
+  "ochp": -38,
+  "ohp": 31,
+  "ivs": {
+    "hp": 18,
+    "attack": 18,
+    "defense": 17,
+    "special_attack": 11,
+    "special_defense": 18,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "iwoHs3hg",
+  "level": 11,
+  "name": "toedscool",
+  "omoves": [
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 189,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "toedscool": -38
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 19,
+    "USP6eG1Z": 50,
+    "i3Zbowkn": 73,
+    "ZZds2WM5": 52,
+    "dYk06Ntb": 49,
+    "YXw2z1Y1": 46
+  },
+  "la": {
+    "AfrJyFT3": 18,
+    "USP6eG1Z": 17,
+    "i3Zbowkn": 25,
+    "ZZds2WM5": 16,
+    "dYk06Ntb": 19,
+    "YXw2z1Y1": 12
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 353,
+  "ochp": 102,
+  "ohp": 102,
+  "ivs": {
+    "hp": 7,
+    "attack": 9,
+    "defense": 14,
+    "special_attack": 22,
+    "special_defense": 21,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "G3gOD5lN",
+  "level": 38,
+  "name": "gabite",
+  "omoves": [
+    {
+      "id": 530,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 523,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 27
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 34
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "gabite": 102
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 353,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 129,
+  "ochp": -129,
+  "ohp": 81,
+  "ivs": {
+    "hp": 16,
+    "attack": 24,
+    "defense": 26,
+    "special_attack": 21,
+    "special_defense": 20,
+    "speed": 27
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "aci5IbYv",
+  "level": 25,
+  "name": "loudred",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 497,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 23,
+      "learn_method": "level-up",
+      "level_learned_at": 23
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "loudred": -129
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 129
+  },
+  "la": {
+    "ZpYcR2c0": 40
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 34,
+  "ochp": -16,
+  "ohp": 29,
+  "ivs": {
+    "hp": 18,
+    "attack": 18,
+    "defense": 19,
+    "special_attack": 11,
+    "special_defense": 21,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "MEK3gsR7",
+  "level": 9,
+  "name": "farfetchd",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "farfetchd": -16
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 34,
+    "F5chvUKh": 69,
+    "LG4mTUpP": 63
+  },
+  "la": {
+    "jpIgbHmU": 19,
+    "F5chvUKh": 20,
+    "LG4mTUpP": 21
+  }
+}

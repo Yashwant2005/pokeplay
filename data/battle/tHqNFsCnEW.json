@@ -1,0 +1,66 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 122,
+  "ochp": -127,
+  "ohp": 74,
+  "ivs": {
+    "hp": 20,
+    "attack": 19,
+    "defense": 17,
+    "special_attack": 14,
+    "special_defense": 11,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "Q0faRzzd",
+  "level": 25,
+  "name": "corvisquire",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 681,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 365,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "corvisquire": -127
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 122,
+    "J4F20ScC": 55,
+    "dnSoMyRy": 106,
+    "Miai3ctV": 71
+  },
+  "la": {
+    "Xb9OMUmh": 49,
+    "J4F20ScC": 16,
+    "dnSoMyRy": 37,
+    "Miai3ctV": 23
+  }
+}

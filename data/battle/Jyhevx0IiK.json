@@ -1,0 +1,60 @@
+{
+  "c": "ofNBxSsf",
+  "org": "no",
+  "chp": 232,
+  "ochp": -311,
+  "ohp": 42,
+  "ivs": {
+    "hp": 24,
+    "attack": 16,
+    "defense": 13,
+    "special_attack": 16,
+    "special_defense": 14,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "F6mY3xb5",
+  "level": 14,
+  "name": "sneasel",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sneasel": -311
+  },
+  "symbol": "",
+  "team": {
+    "ofNBxSsf": 232,
+    "sGoT9d9S": 49,
+    "ugba3Au1": 197,
+    "y3rOVeVe": 53,
+    "5ZGqYPX6": 126,
+    "h2nNdaoR": 317
+  },
+  "la": {
+    "ofNBxSsf": 65,
+    "sGoT9d9S": 24,
+    "ugba3Au1": 58,
+    "y3rOVeVe": 22,
+    "5ZGqYPX6": 48,
+    "h2nNdaoR": 100
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 62,
+  "ochp": -118,
+  "ohp": 35,
+  "ivs": {
+    "hp": 16,
+    "attack": 26,
+    "defense": 23,
+    "special_attack": 10,
+    "special_defense": 18,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "OREmgA7D",
+  "level": 10,
+  "name": "machop",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 279,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "machop": -118
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 62,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 91,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 33,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 22,
+    "yJT8NrzJ": 25
+  }
+}

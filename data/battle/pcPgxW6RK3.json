@@ -1,0 +1,60 @@
+{
+  "c": "VleYJjHn",
+  "org": "no",
+  "chp": 340,
+  "ochp": -343,
+  "ohp": 47,
+  "ivs": {
+    "hp": 21,
+    "attack": 9,
+    "defense": 16,
+    "special_attack": 12,
+    "special_defense": 11,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "OIROkUuT",
+  "level": 13,
+  "name": "lycanroc-midnight",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 88,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "lycanroc-midnight": -343
+  },
+  "symbol": "",
+  "team": {
+    "VleYJjHn": 340,
+    "0A5UgSra": 111,
+    "zUQaYRSu": 134,
+    "Q6TZkKhK": 141,
+    "4CrstxgZ": 112,
+    "1dc9MgNS": 313
+  },
+  "la": {
+    "VleYJjHn": 100,
+    "0A5UgSra": 37,
+    "zUQaYRSu": 45,
+    "Q6TZkKhK": 48,
+    "4CrstxgZ": 44,
+    "1dc9MgNS": 100
+  }
+}

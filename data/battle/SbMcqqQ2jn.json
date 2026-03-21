@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 150,
+  "ochp": -105,
+  "ohp": 147,
+  "ivs": {
+    "hp": 11,
+    "attack": 16,
+    "defense": 21,
+    "special_attack": 11,
+    "special_defense": 14,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "aHPABj6Z",
+  "level": 38,
+  "name": "lanturn",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 61,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "lanturn": -105
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 150
+  },
+  "la": {
+    "ZpYcR2c0": 42
+  }
+}

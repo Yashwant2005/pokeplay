@@ -1,0 +1,70 @@
+{
+  "c": "DY5xusUV",
+  "org": "no",
+  "chp": 93,
+  "ochp": 131,
+  "ohp": 131,
+  "ivs": {
+    "hp": 17,
+    "attack": 15,
+    "defense": 19,
+    "special_attack": 11,
+    "special_defense": 21,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "d2hx1mXQ",
+  "level": 44,
+  "name": "mesprit",
+  "omoves": [
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 326,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mesprit": 131
+  },
+  "symbol": "",
+  "team": {
+    "DY5xusUV": 93,
+    "er2BGMZK": 101,
+    "hK3IxtEj": 159,
+    "A9jA9xzc": 153,
+    "9Dk31Dce": 141,
+    "ughHx7Kc": 200
+  },
+  "la": {
+    "DY5xusUV": 20,
+    "er2BGMZK": 36,
+    "hK3IxtEj": 50,
+    "A9jA9xzc": 47,
+    "9Dk31Dce": 61,
+    "ughHx7Kc": 62
+  }
+}

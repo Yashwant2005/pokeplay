@@ -1,0 +1,60 @@
+{
+  "c": "BO3VNBUR",
+  "org": "no",
+  "chp": 83,
+  "ochp": -77,
+  "ohp": 28,
+  "ivs": {
+    "hp": 18,
+    "attack": 16,
+    "defense": 12,
+    "special_attack": 16,
+    "special_defense": 21,
+    "speed": 25
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "yXt4UqSI",
+  "level": 8,
+  "name": "nidoran-f",
+  "omoves": [
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "nidoran-f": -77
+  },
+  "symbol": "",
+  "team": {
+    "BO3VNBUR": 83,
+    "bmhgy5Ib": 13,
+    "i9ncUySE": 13,
+    "GtZ6KmSH": 114,
+    "ZHAL8qZB": 168,
+    "0dwCNEDH": 312
+  },
+  "la": {
+    "BO3VNBUR": 33,
+    "bmhgy5Ib": 1,
+    "i9ncUySE": 1,
+    "GtZ6KmSH": 38,
+    "ZHAL8qZB": 54,
+    "0dwCNEDH": 100
+  }
+}

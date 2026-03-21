@@ -1,0 +1,62 @@
+{
+  "c": "XKeiQ3Dp",
+  "org": "no",
+  "chp": 21,
+  "ochp": 136,
+  "ohp": 136,
+  "ivs": {
+    "hp": 21,
+    "attack": 23,
+    "defense": 14,
+    "special_attack": 17,
+    "special_defense": 18,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "RxeECkwG",
+  "level": 53,
+  "name": "kartana",
+  "omoves": [
+    {
+      "id": 15,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 314,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 332,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 400,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kartana": 136
+  },
+  "symbol": "",
+  "team": {
+    "XKeiQ3Dp": 21,
+    "GIMqIpoc": 254
+  },
+  "la": {
+    "XKeiQ3Dp": 5,
+    "GIMqIpoc": 62
+  }
+}

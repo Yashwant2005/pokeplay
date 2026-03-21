@@ -1,0 +1,70 @@
+{
+  "c": "ka283FJN",
+  "org": "no",
+  "chp": 68,
+  "ochp": -39,
+  "ohp": 122,
+  "ivs": {
+    "hp": 11,
+    "attack": 15,
+    "defense": 18,
+    "special_attack": 14,
+    "special_defense": 17,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "gJDIkW0V",
+  "level": 40,
+  "name": "sandy-shocks",
+  "omoves": [
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 523,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    },
+    {
+      "id": 451,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    },
+    {
+      "id": 161,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sandy-shocks": -39
+  },
+  "symbol": "",
+  "team": {
+    "HKmqM4sZ": 0,
+    "fe4s1SV4": 140,
+    "p6sCfffS": 153,
+    "ka283FJN": 68,
+    "NwV4rdsE": 35,
+    "CcH25gY5": 13
+  },
+  "la": {
+    "HKmqM4sZ": 20,
+    "fe4s1SV4": 51,
+    "p6sCfffS": 62,
+    "ka283FJN": 36,
+    "NwV4rdsE": 7,
+    "CcH25gY5": 1
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "c": "USP6eG1Z",
+  "org": "no",
+  "chp": 0,
+  "ochp": 19,
+  "ohp": 25,
+  "ivs": {
+    "hp": 29,
+    "attack": 21,
+    "defense": 23,
+    "special_attack": 18,
+    "special_defense": 17,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "byioHIJ8",
+  "level": 7,
+  "name": "kakuna",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kakuna": 19
+  },
+  "symbol": "",
+  "team": {
+    "USP6eG1Z": 0
+  },
+  "la": {
+    "USP6eG1Z": 7
+  }
+}

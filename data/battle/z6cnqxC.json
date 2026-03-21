@@ -1,0 +1,142 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "1335302812": true,
+    "8393905391": true
+  },
+  "status": {},
+  "c": "xWVoBUsF",
+  "chp": 78,
+  "o": "Fgg8MDfR",
+  "ohp": 41,
+  "cid": "1335302812",
+  "oid": "8393905391",
+  "tem": {
+    "xWVoBUsF": 78,
+    "X9zAZB5V": 364,
+    "bljOQUsH": 336,
+    "O4lfvQNf": 364,
+    "l6ZgUuWk": 383,
+    "DDF81qpZ": 81
+  },
+  "la": {
+    "xWVoBUsF": 22,
+    "X9zAZB5V": 100,
+    "bljOQUsH": 100,
+    "O4lfvQNf": 100,
+    "l6ZgUuWk": 100,
+    "DDF81qpZ": 22
+  },
+  "tem2": {
+    "mgGrdb5X": 0,
+    "3O4nrK4z": 0,
+    "TSM5HKDD": 0,
+    "MX7OLZFk": 0,
+    "Fgg8MDfR": 41,
+    "f1v3x5md": 38
+  },
+  "la2": {
+    "mgGrdb5X": 15,
+    "3O4nrK4z": 16,
+    "TSM5HKDD": 15,
+    "MX7OLZFk": 15,
+    "Fgg8MDfR": 14,
+    "f1v3x5md": 12
+  },
+  "ot": {
+    "undefined": 44
+  },
+  "usedMoves": {
+    "xWVoBUsF": [
+      "44"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 4,
+  "bideState": {},
+  "statStages": {
+    "xWVoBUsF": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "mgGrdb5X": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "3O4nrK4z": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "TSM5HKDD": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "MX7OLZFk": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "MX7OLZFk": {
+      "damage": 43,
+      "category": "physical",
+      "from": "xWVoBUsF",
+      "move": "bite"
+    }
+  },
+  "entryHazards": {
+    "8393905391": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "lastMoveByPass": {
+    "xWVoBUsF": "44"
+  }
+}

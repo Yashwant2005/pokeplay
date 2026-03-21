@@ -1,0 +1,70 @@
+{
+  "c": "MQTRLHSp",
+  "org": "no",
+  "chp": 139,
+  "ochp": -76,
+  "ohp": 62,
+  "ivs": {
+    "hp": 15,
+    "attack": 21,
+    "defense": 23,
+    "special_attack": 11,
+    "special_defense": 14,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "wQy0XoHS",
+  "level": 27,
+  "name": "baltoy",
+  "omoves": [
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 317,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "baltoy": -76
+  },
+  "symbol": "",
+  "team": {
+    "MQTRLHSp": 139,
+    "HZZy8ghZ": 32,
+    "xNJurU1c": 44,
+    "heCUyNdb": 149,
+    "t0gGUuMj": 86,
+    "5mOTmKN0": 60
+  },
+  "la": {
+    "MQTRLHSp": 51,
+    "HZZy8ghZ": 18,
+    "xNJurU1c": 19,
+    "heCUyNdb": 44,
+    "t0gGUuMj": 29,
+    "5mOTmKN0": 29
+  }
+}

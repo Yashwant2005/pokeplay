@@ -1,0 +1,64 @@
+{
+  "c": "F5chvUKh",
+  "org": "no",
+  "chp": 0,
+  "ochp": -158,
+  "ohp": 72,
+  "ivs": {
+    "hp": 21,
+    "attack": 26,
+    "defense": 23,
+    "special_attack": 19,
+    "special_defense": 19,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "2xbfxWAg",
+  "level": 27,
+  "name": "graveler",
+  "omoves": [
+    {
+      "id": 88,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 479,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 523,
+      "learn_method": "level-up",
+      "level_learned_at": 22
+    },
+    {
+      "id": 120,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "graveler": -158
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 0,
+    "F5chvUKh": 0,
+    "LG4mTUpP": 63
+  },
+  "la": {
+    "jpIgbHmU": 19,
+    "F5chvUKh": 19,
+    "LG4mTUpP": 21
+  }
+}

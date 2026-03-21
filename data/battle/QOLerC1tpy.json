@@ -1,0 +1,60 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 25,
+  "ochp": -28,
+  "ohp": 24,
+  "ivs": {
+    "hp": 21,
+    "attack": 15,
+    "defense": 24,
+    "special_attack": 10,
+    "special_defense": 15,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "0Kb7aqL4",
+  "level": 5,
+  "name": "aerodactyl",
+  "omoves": [
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "aerodactyl": -28
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 25,
+    "F5chvUKh": 87,
+    "LG4mTUpP": 71,
+    "UiiozQZj": 77,
+    "XhF014r3": 81,
+    "XQu3Dlrw": 55
+  },
+  "la": {
+    "jpIgbHmU": 26,
+    "F5chvUKh": 26,
+    "LG4mTUpP": 24,
+    "UiiozQZj": 18,
+    "XhF014r3": 28,
+    "XQu3Dlrw": 24
+  }
+}

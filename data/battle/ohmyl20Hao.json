@@ -1,0 +1,55 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 156,
+  "ochp": -323,
+  "ohp": 36,
+  "ivs": {
+    "hp": 25,
+    "attack": 17,
+    "defense": 22,
+    "special_attack": 20,
+    "special_defense": 20,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "3X0E0gK1",
+  "level": 15,
+  "name": "abra",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "abra": -323
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 156,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 45,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

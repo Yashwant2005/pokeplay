@@ -1,0 +1,70 @@
+{
+  "c": "QnXq8TIw",
+  "org": "no",
+  "chp": 111,
+  "ochp": 183,
+  "ohp": 183,
+  "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 14,
+    "special_attack": 30,
+    "special_defense": 18,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "JRLFxek4",
+  "level": 53,
+  "name": "zarude-dada",
+  "omoves": [
+    {
+      "id": 22,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 369,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zarude-dada": 183
+  },
+  "symbol": "",
+  "team": {
+    "QnXq8TIw": 111,
+    "W3exZd5k": 58,
+    "OWUQ86Li": 13,
+    "oJYApvHa": 222,
+    "3zK8PVU5": 208,
+    "M22B9MwZ": 75
+  },
+  "la": {
+    "QnXq8TIw": 44,
+    "W3exZd5k": 18,
+    "OWUQ86Li": 1,
+    "oJYApvHa": 64,
+    "3zK8PVU5": 60,
+    "M22B9MwZ": 26
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 116,
+  "ochp": -80,
+  "ohp": 125,
+  "ivs": {
+    "hp": 21,
+    "attack": 8,
+    "defense": 11,
+    "special_attack": 18,
+    "special_defense": 4,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "JyMrsQLs",
+  "level": 40,
+  "name": "empoleon",
+  "omoves": [
+    {
+      "id": 61,
+      "learn_method": "level-up",
+      "level_learned_at": 19
+    },
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 362,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    },
+    {
+      "id": 250,
+      "learn_method": "level-up",
+      "level_learned_at": 39
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "empoleon": -80
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 116,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 111,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 57,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 39,
+    "xPNmpDgC": 42
+  }
+}

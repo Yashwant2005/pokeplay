@@ -1,0 +1,65 @@
+{
+  "c": "cfBHIXq4",
+  "org": "no",
+  "chp": 112,
+  "ochp": 63,
+  "ohp": 63,
+  "ivs": {
+    "hp": 19,
+    "attack": 15,
+    "defense": 22,
+    "special_attack": 14,
+    "special_defense": 21,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "O0SECYOi",
+  "level": 18,
+  "name": "dracozolt",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 332,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dracozolt": 63
+  },
+  "symbol": "",
+  "team": {
+    "cfBHIXq4": 112,
+    "By51g7on": 169,
+    "fc4Z3rKh": 92,
+    "djIFsPnu": 116,
+    "sUHb2dTI": 50,
+    "MXDVSfUC": 157
+  },
+  "la": {
+    "cfBHIXq4": 37,
+    "By51g7on": 48,
+    "fc4Z3rKh": 37,
+    "djIFsPnu": 38,
+    "sUHb2dTI": 21,
+    "MXDVSfUC": 55
+  }
+}

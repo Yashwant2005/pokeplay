@@ -1,0 +1,70 @@
+{
+  "c": "Z86cfwaX",
+  "org": "no",
+  "chp": 0,
+  "ochp": -57,
+  "ohp": 127,
+  "ivs": {
+    "hp": 7,
+    "attack": 6,
+    "defense": 6,
+    "special_attack": 6,
+    "special_defense": 6,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "JQycNKxv",
+  "level": 47,
+  "name": "purugly",
+  "omoves": [
+    {
+      "id": 185,
+      "learn_method": "level-up",
+      "level_learned_at": 17
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 37
+    },
+    {
+      "id": 34,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "purugly": -57
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 181,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 0,
+    "Az7eBnWK": 0,
+    "Z86cfwaX": 0,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 47,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 26,
+    "Az7eBnWK": 23,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

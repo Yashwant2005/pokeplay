@@ -1,0 +1,54 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 35,
+  "ochp": -36,
+  "ohp": 43,
+  "ivs": {
+    "hp": 15,
+    "attack": 19,
+    "defense": 14,
+    "special_attack": 21,
+    "special_defense": 20,
+    "speed": 24
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "o87YRDgL",
+  "level": 12,
+  "name": "grimer",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 189,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "grimer": -36
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 35,
+    "F5chvUKh": 81,
+    "LG4mTUpP": 71
+  },
+  "la": {
+    "jpIgbHmU": 22,
+    "F5chvUKh": 24,
+    "LG4mTUpP": 24
+  }
+}

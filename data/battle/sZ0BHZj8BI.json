@@ -1,0 +1,55 @@
+{
+  "c": "CbuLy5HY",
+  "org": "no",
+  "chp": 38,
+  "ochp": 25,
+  "ohp": 25,
+  "ivs": {
+    "hp": 24,
+    "attack": 17,
+    "defense": 17,
+    "special_attack": 12,
+    "special_defense": 14,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "vtq4CLrF",
+  "level": 7,
+  "name": "metapod",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "metapod": 25
+  },
+  "symbol": "",
+  "team": {
+    "CbuLy5HY": 38,
+    "5bE8yRbp": 39,
+    "PAY3vjit": 28,
+    "tBTDssfk": 35,
+    "Vxg36dT9": 53,
+    "AVvJFpcl": 21
+  },
+  "la": {
+    "CbuLy5HY": 14,
+    "5bE8yRbp": 15,
+    "PAY3vjit": 9,
+    "tBTDssfk": 9,
+    "Vxg36dT9": 18,
+    "AVvJFpcl": 6
+  }
+}

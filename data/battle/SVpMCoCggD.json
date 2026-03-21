@@ -1,0 +1,70 @@
+{
+  "c": "yx4Mz6GJ",
+  "org": "no",
+  "chp": 87,
+  "ochp": 228,
+  "ohp": 228,
+  "ivs": {
+    "hp": 18,
+    "attack": 20,
+    "defense": 16,
+    "special_attack": 21,
+    "special_defense": 24,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "N5gmIYLh",
+  "level": 61,
+  "name": "arceus",
+  "omoves": [
+    {
+      "id": 414,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 304,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 245,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 248,
+      "learn_method": "level-up",
+      "level_learned_at": 60
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "arceus": 228
+  },
+  "symbol": "",
+  "team": {
+    "yx4Mz6GJ": 87,
+    "u0wRDkpV": 89,
+    "UtfDaQTH": 109,
+    "RTXYaCR3": 91,
+    "iceEdRvu": 100,
+    "bywYVs7a": 36
+  },
+  "la": {
+    "yx4Mz6GJ": 29,
+    "u0wRDkpV": 33,
+    "UtfDaQTH": 33,
+    "RTXYaCR3": 32,
+    "iceEdRvu": 40,
+    "bywYVs7a": 13
+  }
+}

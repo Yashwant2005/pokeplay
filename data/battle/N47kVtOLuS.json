@@ -1,0 +1,70 @@
+{
+  "c": "OUTQeDXY",
+  "org": "no",
+  "chp": 0,
+  "ochp": -22,
+  "ohp": 104,
+  "ivs": {
+    "hp": 26,
+    "attack": 21,
+    "defense": 24,
+    "special_attack": 26,
+    "special_defense": 17,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "X3k4Acci",
+  "level": 40,
+  "name": "hakamo-o",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 525,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "hakamo-o": -22
+  },
+  "symbol": "",
+  "team": {
+    "3Suqua9f": 0,
+    "w9s3hYBw": 60,
+    "9UPD72Ih": 0,
+    "OUTQeDXY": 0,
+    "OEv5j9Ej": 72,
+    "liCLJSCe": 65
+  },
+  "la": {
+    "3Suqua9f": 33,
+    "w9s3hYBw": 21,
+    "9UPD72Ih": 33,
+    "OUTQeDXY": 25,
+    "OEv5j9Ej": 34,
+    "liCLJSCe": 26
+  }
+}

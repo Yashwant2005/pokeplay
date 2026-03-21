@@ -1,0 +1,60 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 140,
+  "ochp": -129,
+  "ohp": 32,
+  "ivs": {
+    "hp": 16,
+    "attack": 12,
+    "defense": 16,
+    "special_attack": 21,
+    "special_defense": 13,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "Trqit3TK",
+  "level": 11,
+  "name": "bulbasaur",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 22,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "bulbasaur": -129
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 140,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 39,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

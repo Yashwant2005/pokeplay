@@ -1,0 +1,55 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 56,
+  "ochp": -78,
+  "ohp": 23,
+  "ivs": {
+    "hp": 31,
+    "attack": 12,
+    "defense": 13,
+    "special_attack": 23,
+    "special_defense": 25,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "0u9DVHz5",
+  "level": 6,
+  "name": "caterpie",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "caterpie": -78
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 56,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 107,
+    "xPNmpDgC": 120
+  },
+  "la": {
+    "hoTfaX8w": 26,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 42,
+    "xPNmpDgC": 41
+  }
+}

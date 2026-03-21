@@ -1,0 +1,57 @@
+{
+  "c": "9eeViYIB",
+  "org": "no",
+  "chp": 30,
+  "ochp": -35,
+  "ohp": 43,
+  "ivs": {
+    "hp": 21,
+    "attack": 21,
+    "defense": 23,
+    "special_attack": 16,
+    "special_defense": 13,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "nOnyuDT7",
+  "level": 14,
+  "name": "murkrow",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "murkrow": -35
+  },
+  "symbol": "",
+  "team": {
+    "9eeViYIB": 30,
+    "bRnR7Krx": 197
+  },
+  "la": {
+    "9eeViYIB": 20,
+    "bRnR7Krx": 54
+  }
+}

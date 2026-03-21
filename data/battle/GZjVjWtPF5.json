@@ -1,0 +1,55 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 32,
+  "ochp": -96,
+  "ohp": 24,
+  "ivs": {
+    "hp": 19,
+    "attack": 12,
+    "defense": 14,
+    "special_attack": 10,
+    "special_defense": 21,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "7HsX0HPw",
+  "level": 8,
+  "name": "horsea",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "horsea": -96
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 32,
+    "F5chvUKh": 87,
+    "LG4mTUpP": 71,
+    "UiiozQZj": 77,
+    "XhF014r3": 81,
+    "XQu3Dlrw": 55
+  },
+  "la": {
+    "jpIgbHmU": 26,
+    "F5chvUKh": 26,
+    "LG4mTUpP": 24,
+    "UiiozQZj": 18,
+    "XhF014r3": 28,
+    "XQu3Dlrw": 24
+  }
+}

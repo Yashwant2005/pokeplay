@@ -1,0 +1,70 @@
+{
+  "c": "XxmBb8ir",
+  "org": "no",
+  "chp": 187,
+  "ochp": 42,
+  "ohp": 42,
+  "ivs": {
+    "hp": 22,
+    "attack": 25,
+    "defense": 13,
+    "special_attack": 23,
+    "special_defense": 16,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "FVaAhOfW",
+  "level": 16,
+  "name": "meowth",
+  "omoves": [
+    {
+      "id": 252,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 6,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "meowth": 42
+  },
+  "symbol": "",
+  "team": {
+    "XxmBb8ir": 187,
+    "BDoHP5wy": 122,
+    "z8uGifBR": 201,
+    "puss3zIS": 347,
+    "OchBd1I4": 249,
+    "bMyjfqev": 123
+  },
+  "la": {
+    "XxmBb8ir": 60,
+    "BDoHP5wy": 50,
+    "z8uGifBR": 55,
+    "puss3zIS": 59,
+    "OchBd1I4": 61,
+    "bMyjfqev": 47
+  }
+}

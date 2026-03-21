@@ -1,0 +1,57 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 0,
+  "ochp": -21,
+  "ohp": 37,
+  "ivs": {
+    "hp": 10,
+    "attack": 10,
+    "defense": 20,
+    "special_attack": 18,
+    "special_defense": 11,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "Icel350Q",
+  "level": 16,
+  "name": "staryu",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 229,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "staryu": -21
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 0,
+    "F5chvUKh": 57
+  },
+  "la": {
+    "jpIgbHmU": 15,
+    "F5chvUKh": 16
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "c": "MRg3VA6C",
+  "org": "no",
+  "chp": 20,
+  "ochp": 70,
+  "ohp": 70,
+  "ivs": {
+    "hp": 13,
+    "attack": 20,
+    "defense": 11,
+    "special_attack": 13,
+    "special_defense": 15,
+    "speed": 8
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "U3LHDtJe",
+  "level": 18,
+  "name": "brute-bonnet",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 14
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "brute-bonnet": 70
+  },
+  "symbol": "",
+  "team": {
+    "MRg3VA6C": 20,
+    "SW26GIcU": 153,
+    "0epnbV5g": 245,
+    "UOdZ0Oud": 135,
+    "ey4GFAmA": 244,
+    "VkHI2YWh": 112
+  },
+  "la": {
+    "MRg3VA6C": 5,
+    "SW26GIcU": 50,
+    "0epnbV5g": 55,
+    "UOdZ0Oud": 47,
+    "ey4GFAmA": 56,
+    "VkHI2YWh": 36
+  }
+}

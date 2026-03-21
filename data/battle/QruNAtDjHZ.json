@@ -1,0 +1,55 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 65,
+  "ochp": -36,
+  "ohp": 22,
+  "ivs": {
+    "hp": 15,
+    "attack": 19,
+    "defense": 21,
+    "special_attack": 22,
+    "special_defense": 10,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "sLs9TCG4",
+  "level": 5,
+  "name": "seel",
+  "omoves": [
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "seel": -36
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 65,
+    "Bo6PaTm9": 31,
+    "4vHKM3tf": 49,
+    "INnWVvZa": 70,
+    "hElvGj1W": 87,
+    "yJT8NrzJ": 56
+  },
+  "la": {
+    "xPNmpDgC": 33,
+    "Bo6PaTm9": 11,
+    "4vHKM3tf": 20,
+    "INnWVvZa": 25,
+    "hElvGj1W": 21,
+    "yJT8NrzJ": 25
+  }
+}

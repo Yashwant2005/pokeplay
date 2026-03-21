@@ -1,0 +1,65 @@
+{
+  "c": "AfrJyFT3",
+  "org": "no",
+  "chp": 15,
+  "ochp": -19,
+  "ohp": 32,
+  "ivs": {
+    "hp": 16,
+    "attack": 9,
+    "defense": 13,
+    "special_attack": 4,
+    "special_defense": 13,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "z0PRo0Nf",
+  "level": 9,
+  "name": "fuecoco",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 496,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "fuecoco": -19
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 15,
+    "USP6eG1Z": 50,
+    "i3Zbowkn": 65,
+    "ZZds2WM5": 49,
+    "dYk06Ntb": 49,
+    "YXw2z1Y1": 34
+  },
+  "la": {
+    "AfrJyFT3": 15,
+    "USP6eG1Z": 17,
+    "i3Zbowkn": 22,
+    "ZZds2WM5": 15,
+    "dYk06Ntb": 19,
+    "YXw2z1Y1": 8
+  }
+}

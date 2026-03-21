@@ -1,0 +1,50 @@
+{
+  "c": "z3Mf7TxJ",
+  "org": "no",
+  "chp": 12,
+  "ochp": 46,
+  "ohp": 54,
+  "ivs": {
+    "hp": 20,
+    "attack": 21,
+    "defense": 23,
+    "special_attack": 13,
+    "special_defense": 14,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "b21qTgYs",
+  "level": 22,
+  "name": "zorua",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zorua": 46
+  },
+  "symbol": "",
+  "team": {
+    "z3Mf7TxJ": 12
+  },
+  "la": {
+    "z3Mf7TxJ": 1
+  }
+}

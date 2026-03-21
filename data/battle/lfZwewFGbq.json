@@ -1,0 +1,70 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 136,
+  "ochp": -226,
+  "ohp": 72,
+  "ivs": {
+    "hp": 21,
+    "attack": 10,
+    "defense": 14,
+    "special_attack": 9,
+    "special_defense": 15,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "DYFzStT4",
+  "level": 26,
+  "name": "pachirisu",
+  "omoves": [
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 13
+    },
+    {
+      "id": 609,
+      "learn_method": "level-up",
+      "level_learned_at": 19
+    },
+    {
+      "id": 129,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pachirisu": -226
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 136,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 67,
+    "Az7eBnWK": 30,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 41,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 24,
+    "Az7eBnWK": 6,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

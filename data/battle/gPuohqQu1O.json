@@ -1,0 +1,65 @@
+{
+  "c": "AfrJyFT3",
+  "org": "no",
+  "chp": 14,
+  "ochp": -4,
+  "ohp": 32,
+  "ivs": {
+    "hp": 12,
+    "attack": 16,
+    "defense": 14,
+    "special_attack": 12,
+    "special_defense": 14,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "rXtAgim8",
+  "level": 11,
+  "name": "pawmi",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pawmi": -4
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 14,
+    "USP6eG1Z": 50,
+    "i3Zbowkn": 70,
+    "ZZds2WM5": 52,
+    "dYk06Ntb": 49,
+    "YXw2z1Y1": 46
+  },
+  "la": {
+    "AfrJyFT3": 16,
+    "USP6eG1Z": 17,
+    "i3Zbowkn": 24,
+    "ZZds2WM5": 16,
+    "dYk06Ntb": 19,
+    "YXw2z1Y1": 12
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "c": "ka283FJN",
+  "org": "no",
+  "chp": 26,
+  "ochp": -6,
+  "ohp": 65,
+  "ivs": {
+    "hp": 22,
+    "attack": 13,
+    "defense": 19,
+    "special_attack": 20,
+    "special_defense": 23,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "F3cI1i4C",
+  "level": 22,
+  "name": "illumise",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 522,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "illumise": -6
+  },
+  "symbol": "",
+  "team": {
+    "ka283FJN": 26,
+    "fe4s1SV4": 140,
+    "p6sCfffS": 153,
+    "HKmqM4sZ": 50,
+    "NwV4rdsE": 35,
+    "CcH25gY5": 13
+  },
+  "la": {
+    "ka283FJN": 15,
+    "fe4s1SV4": 51,
+    "p6sCfffS": 62,
+    "HKmqM4sZ": 10,
+    "NwV4rdsE": 7,
+    "CcH25gY5": 1
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "c": "2DSVGA7V",
+  "org": "no",
+  "chp": 365,
+  "ochp": 214,
+  "ohp": 214,
+  "ivs": {
+    "hp": 30,
+    "attack": 20,
+    "defense": 27,
+    "special_attack": 22,
+    "special_defense": 30,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "LKrgJ4gx",
+  "level": 62,
+  "name": "dialga",
+  "omoves": [
+    {
+      "id": 430,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 396,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    },
+    {
+      "id": 408,
+      "learn_method": "level-up",
+      "level_learned_at": 56
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dialga": 214
+  },
+  "symbol": "",
+  "team": {
+    "2DSVGA7V": 365,
+    "7Dg8CX7Y": 197
+  },
+  "la": {
+    "2DSVGA7V": 100,
+    "7Dg8CX7Y": 58
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 61,
+  "ochp": -138,
+  "ohp": 149,
+  "ivs": {
+    "hp": 15,
+    "attack": 16,
+    "defense": 8,
+    "special_attack": 12,
+    "special_defense": 16,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "ubK8CoR0",
+  "level": 49,
+  "name": "togekiss",
+  "omoves": [
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 387,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 396,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 584,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "togekiss": -138
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 61,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 111,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 55,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 39,
+    "xPNmpDgC": 42
+  }
+}

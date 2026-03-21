@@ -1,0 +1,55 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 150,
+  "ochp": -178,
+  "ohp": 25,
+  "ivs": {
+    "hp": 26,
+    "attack": 20,
+    "defense": 10,
+    "special_attack": 26,
+    "special_defense": 21,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "x7rYXJTm",
+  "level": 7,
+  "name": "cascoon",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "cascoon": -178
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 150,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 41,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

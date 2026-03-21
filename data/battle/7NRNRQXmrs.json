@@ -1,0 +1,54 @@
+{
+  "c": "LG4mTUpP",
+  "org": "no",
+  "chp": 41,
+  "ochp": -81,
+  "ohp": 58,
+  "ivs": {
+    "hp": 21,
+    "attack": 19,
+    "defense": 24,
+    "special_attack": 23,
+    "special_defense": 20,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "S7wkyt7M",
+  "level": 16,
+  "name": "lickitung",
+  "omoves": [
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 205,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "lickitung": -81
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 0,
+    "F5chvUKh": 63,
+    "LG4mTUpP": 41
+  },
+  "la": {
+    "jpIgbHmU": 18,
+    "F5chvUKh": 18,
+    "LG4mTUpP": 21
+  }
+}

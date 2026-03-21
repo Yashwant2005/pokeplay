@@ -1,0 +1,56 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 50,
+  "ochp": -80,
+  "ohp": 28,
+  "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 20,
+    "special_attack": 10,
+    "special_defense": 16,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "m4h6WjJj",
+  "level": 9,
+  "name": "bulbasaur",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 22,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "bulbasaur": -80
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 50,
+    "F5chvUKh": 81,
+    "LG4mTUpP": 71,
+    "UiiozQZj": 77
+  },
+  "la": {
+    "jpIgbHmU": 23,
+    "F5chvUKh": 24,
+    "LG4mTUpP": 24,
+    "UiiozQZj": 18
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "cfBHIXq4",
+  "org": "no",
+  "chp": 112,
+  "ochp": 136,
+  "ohp": 136,
+  "ivs": {
+    "hp": 20,
+    "attack": 14,
+    "defense": 13,
+    "special_attack": 19,
+    "special_defense": 12,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "ktnLv3xD",
+  "level": 47,
+  "name": "delphox",
+  "omoves": [
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 83,
+      "learn_method": "level-up",
+      "level_learned_at": 22
+    },
+    {
+      "id": 473,
+      "learn_method": "level-up",
+      "level_learned_at": 38
+    },
+    {
+      "id": 53,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "delphox": 136
+  },
+  "symbol": "",
+  "team": {
+    "cfBHIXq4": 112,
+    "By51g7on": 169,
+    "fc4Z3rKh": 92,
+    "djIFsPnu": 116,
+    "sUHb2dTI": 50,
+    "MXDVSfUC": 157
+  },
+  "la": {
+    "cfBHIXq4": 37,
+    "By51g7on": 48,
+    "fc4Z3rKh": 37,
+    "djIFsPnu": 38,
+    "sUHb2dTI": 21,
+    "MXDVSfUC": 55
+  }
+}

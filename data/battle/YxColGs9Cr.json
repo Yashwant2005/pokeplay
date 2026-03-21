@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 97,
+  "ochp": -220,
+  "ohp": 40,
+  "ivs": {
+    "hp": 15,
+    "attack": 15,
+    "defense": 8,
+    "special_attack": 17,
+    "special_defense": 17,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "qmXq6px8",
+  "level": 12,
+  "name": "marill",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 205,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 61,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "marill": -220
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 97
+  },
+  "la": {
+    "ZpYcR2c0": 24
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "YXw2z1Y1",
+  "org": "no",
+  "chp": 0,
+  "ochp": -27,
+  "ohp": 80,
+  "ivs": {
+    "hp": 16,
+    "attack": 18,
+    "defense": 8,
+    "special_attack": 14,
+    "special_defense": 18,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "PQOCJoWM",
+  "level": 25,
+  "name": "flamigo",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 24,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 17,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "flamigo": -27
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 0,
+    "USP6eG1Z": 52,
+    "i3Zbowkn": 75,
+    "ZZds2WM5": 52,
+    "YXw2z1Y1": 0,
+    "9jvifJC5": 89
+  },
+  "la": {
+    "AfrJyFT3": 20,
+    "USP6eG1Z": 18,
+    "i3Zbowkn": 26,
+    "ZZds2WM5": 16,
+    "YXw2z1Y1": 18,
+    "9jvifJC5": 33
+  }
+}

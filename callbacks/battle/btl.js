@@ -1,4 +1,5 @@
 const { getBattleHeldItemName, getEffectiveMoveType, getPinchAbilityInfo } = require('../../utils/battle_abilities');
+const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
 
 function register_016_btl(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -24,6 +25,13 @@ let battleData = {};
     }
 const data = await getUserData(ctx.from.id)
 const p = data.pokes.filter((poke)=>poke.pass==battleData.c)[0]
+if(!battleData || !battleData.c || !battleData.name || !p || !pokestats[p.name] || !pokes[battleData.name]){
+  await ctx.answerCbQuery('Battle desynced. Reopen battle.', { show_alert: true })
+  return
+}
+if (p) {
+syncBattleFormAndAbility({ battleData, pokemon: p, pass: p.pass, pokestats })
+}
 const uname = he.encode(ctx.from.first_name)
 const clevel = plevel(p.name,p.exp)
 const op = pokes[battleData.name]
@@ -41,16 +49,22 @@ msg += '\n\n<b>Moves :</b>'
 const moves = []
 for(const move2 of p.moves){
 let move = dmoves[move2]
+if(!move) continue
 const rawPower = Number(move && move.power)
 const pinchInfo = getPinchAbilityInfo({ abilityName: p.ability, moveType: move && move.type, currentHp: battleData.chp, maxHp: stats.hp })
 const shownPower = Number.isFinite(rawPower) && rawPower > 0 && pinchInfo.active
   ? rawPower + ' (x' + pinchInfo.multiplier + ' ' + pinchInfo.abilityLabel + ')'
   : move.power
-msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
+const shownType = getEffectiveMoveType({ battleData, pokemonName: p.name, abilityName: p.ability, heldItem: p.held_item, moveName: move.name, moveType: move.type }) || move.type
+msg += '\n• <b>'+c(move.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }
 msg += '\n\n<i>Choose Your Next Move:</i>'
 const buttons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'atk_'+word+'_'+bword+'' }));
+if(!buttons.length){
+  await ctx.answerCbQuery('No valid moves found.', { show_alert: true })
+  return
+}
 while(buttons.length < 4){
 buttons.push({text:'  ',callback_data:'empty'})
 }

@@ -1,0 +1,64 @@
+{
+  "c": "bRnR7Krx",
+  "org": "no",
+  "chp": 89,
+  "ochp": -78,
+  "ohp": 170,
+  "ivs": {
+    "hp": 17,
+    "attack": 17,
+    "defense": 17,
+    "special_attack": 15,
+    "special_defense": 9,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "ptUJJpkY",
+  "level": 49,
+  "name": "rhydon",
+  "omoves": [
+    {
+      "id": 350,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 529,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 89,
+      "learn_method": "level-up",
+      "level_learned_at": 47
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "rhydon": -78
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 0,
+    "bRnR7Krx": 89,
+    "9eeViYIB": 57
+  },
+  "la": {
+    "ytrF7ks6": 12,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 20
+  }
+}

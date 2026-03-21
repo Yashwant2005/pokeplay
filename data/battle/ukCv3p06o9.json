@@ -1,0 +1,55 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 334,
+  "ochp": -633,
+  "ohp": 41,
+  "ivs": {
+    "hp": 16,
+    "attack": 18,
+    "defense": 14,
+    "special_attack": 16,
+    "special_defense": 13,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "3x6Eqfnj",
+  "level": 16,
+  "name": "kadabra",
+  "omoves": [
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kadabra": -633
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 334,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

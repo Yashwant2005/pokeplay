@@ -1,0 +1,65 @@
+{
+  "c": "i3Zbowkn",
+  "org": "no",
+  "chp": 0,
+  "ochp": -7,
+  "ohp": 118,
+  "ivs": {
+    "hp": 18,
+    "attack": 15,
+    "defense": 14,
+    "special_attack": 16,
+    "special_defense": 10,
+    "speed": 8
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "O9CDxjok",
+  "level": 26,
+  "name": "dondozo",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 291,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dondozo": -7
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 0,
+    "USP6eG1Z": 50,
+    "i3Zbowkn": 0,
+    "ZZds2WM5": 52,
+    "dYk06Ntb": 49,
+    "YXw2z1Y1": 46
+  },
+  "la": {
+    "AfrJyFT3": 16,
+    "USP6eG1Z": 17,
+    "i3Zbowkn": 24,
+    "ZZds2WM5": 16,
+    "dYk06Ntb": 19,
+    "YXw2z1Y1": 12
+  }
+}

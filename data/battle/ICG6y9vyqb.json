@@ -1,0 +1,62 @@
+{
+  "c": "kunjtho9",
+  "org": "no",
+  "chp": 28,
+  "ochp": 135,
+  "ohp": 135,
+  "ivs": {
+    "hp": 23,
+    "attack": 30,
+    "defense": 30,
+    "special_attack": 23,
+    "special_defense": 19,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "S4UIt5iq",
+  "level": 39,
+  "name": "calyrex-ice",
+  "omoves": [
+    {
+      "id": 419,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 556,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 202,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 473,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "calyrex-ice": 135
+  },
+  "symbol": "",
+  "team": {
+    "kunjtho9": 28,
+    "SG6Axr1x": 182
+  },
+  "la": {
+    "kunjtho9": 7,
+    "SG6Axr1x": 53
+  }
+}

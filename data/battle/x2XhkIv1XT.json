@@ -1,0 +1,70 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 347,
+  "ochp": -357,
+  "ohp": 36,
+  "ivs": {
+    "hp": 12,
+    "attack": 16,
+    "defense": 7,
+    "special_attack": 17,
+    "special_defense": 18,
+    "speed": 26
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "s8QVBXia",
+  "level": 14,
+  "name": "skorupi",
+  "omoves": [
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 565,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 305,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "skorupi": -357
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 347,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

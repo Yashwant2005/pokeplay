@@ -1,0 +1,70 @@
+{
+  "c": "RmAfRbQ0",
+  "org": "no",
+  "chp": 400,
+  "ochp": 173,
+  "ohp": 173,
+  "ivs": {
+    "hp": 20,
+    "attack": 18,
+    "defense": 15,
+    "special_attack": 25,
+    "special_defense": 16,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "VqBWJ91D",
+  "level": 54,
+  "name": "keldeo-ordinary",
+  "omoves": [
+    {
+      "id": 514,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 401,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 533,
+      "learn_method": "level-up",
+      "level_learned_at": 49
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "keldeo-ordinary": 173
+  },
+  "symbol": "",
+  "team": {
+    "RmAfRbQ0": 400,
+    "kHXdgByh": 139,
+    "GazDdiPV": 175,
+    "hPTkP4fC": 138,
+    "iBIAqMa8": 303,
+    "29dmbqBS": 207
+  },
+  "la": {
+    "RmAfRbQ0": 68,
+    "kHXdgByh": 47,
+    "GazDdiPV": 55,
+    "hPTkP4fC": 49,
+    "iBIAqMa8": 90,
+    "29dmbqBS": 64
+  }
+}

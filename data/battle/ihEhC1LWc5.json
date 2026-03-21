@@ -1,0 +1,56 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 81,
+  "ochp": -192,
+  "ohp": 44,
+  "ivs": {
+    "hp": 12,
+    "attack": 18,
+    "defense": 18,
+    "special_attack": 21,
+    "special_defense": 21,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "B1CZFaZU",
+  "level": 17,
+  "name": "cherubi",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 670,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "cherubi": -192
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 81,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 60,
+    "SmX3uZcP": 219
+  },
+  "la": {
+    "ytrF7ks6": 25,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 21,
+    "SmX3uZcP": 34
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "c": "Q5EkNEkh",
+  "org": "no",
+  "chp": 26,
+  "ochp": 28,
+  "ohp": 28,
+  "ivs": {
+    "hp": 26,
+    "attack": 21,
+    "defense": 16,
+    "special_attack": 17,
+    "special_defense": 21,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "eXwRO3ut",
+  "level": 8,
+  "name": "silcoon",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "silcoon": 28
+  },
+  "symbol": "",
+  "team": {
+    "Q5EkNEkh": 26,
+    "07OL7b8r": 56,
+    "KTx0Jmv5": 24,
+    "6IjY0t5A": 43,
+    "DxctgyxD": 25,
+    "EfVjHAse": 25
+  },
+  "la": {
+    "Q5EkNEkh": 10,
+    "07OL7b8r": 14,
+    "KTx0Jmv5": 7,
+    "6IjY0t5A": 14,
+    "DxctgyxD": 7,
+    "EfVjHAse": 7
+  }
+}

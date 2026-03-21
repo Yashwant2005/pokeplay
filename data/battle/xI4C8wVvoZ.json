@@ -1,0 +1,65 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 151,
+  "ochp": -79,
+  "ohp": 50,
+  "ivs": {
+    "hp": 14,
+    "attack": 15,
+    "defense": 18,
+    "special_attack": 15,
+    "special_defense": 14,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "VzhzAqi7",
+  "level": 16,
+  "name": "nidorina",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "nidorina": -79
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 151,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 40,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 237,
+  "ochp": 93,
+  "ohp": 93,
+  "ivs": {
+    "hp": 17,
+    "attack": 12,
+    "defense": 16,
+    "special_attack": 23,
+    "special_defense": 15,
+    "speed": 9
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "dhpRZZdB",
+  "level": 29,
+  "name": "mantine",
+  "omoves": [
+    {
+      "id": 331,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 61,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "mantine": 93
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 237,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 54,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 103,
+  "ochp": -494,
+  "ohp": 129,
+  "ivs": {
+    "hp": 13,
+    "attack": 8,
+    "defense": 11,
+    "special_attack": 18,
+    "special_defense": 17,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "d35W5Frj",
+  "level": 29,
+  "name": "drifblim",
+  "omoves": [
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 371,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 247,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "drifblim": -494
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 103
+  },
+  "la": {
+    "ZpYcR2c0": 41
+  }
+}

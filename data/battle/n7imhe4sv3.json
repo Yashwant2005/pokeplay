@@ -1,0 +1,55 @@
+{
+  "c": "yx4Mz6GJ",
+  "org": "no",
+  "chp": 70,
+  "ochp": 55,
+  "ohp": 55,
+  "ivs": {
+    "hp": 17,
+    "attack": 11,
+    "defense": 14,
+    "special_attack": 15,
+    "special_defense": 19,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "ynZVCFep",
+  "level": 12,
+  "name": "lapras",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "lapras": 55
+  },
+  "symbol": "",
+  "team": {
+    "yx4Mz6GJ": 70,
+    "4bawFDBE": 133,
+    "u0wRDkpV": 84,
+    "UtfDaQTH": 109,
+    "RTXYaCR3": 91,
+    "xeoViAW8": 27
+  },
+  "la": {
+    "yx4Mz6GJ": 23,
+    "4bawFDBE": 38,
+    "u0wRDkpV": 31,
+    "UtfDaQTH": 33,
+    "RTXYaCR3": 32,
+    "xeoViAW8": 10
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "c": "cwViJHTq",
+  "org": "no",
+  "chp": 128,
+  "ochp": 158,
+  "ohp": 158,
+  "ivs": {
+    "hp": 14,
+    "attack": 12,
+    "defense": 17,
+    "special_attack": 16,
+    "special_defense": 21,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "9FaAGvH4",
+  "level": 50,
+  "name": "dragonite",
+  "omoves": [
+    {
+      "id": 21,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 401,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    },
+    {
+      "id": 407,
+      "learn_method": "level-up",
+      "level_learned_at": 39
+    },
+    {
+      "id": 200,
+      "learn_method": "level-up",
+      "level_learned_at": 41
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dragonite": 158
+  },
+  "symbol": "",
+  "team": {
+    "cwViJHTq": 128,
+    "ymkXGZ82": 114,
+    "dV44J3xa": 163
+  },
+  "la": {
+    "cwViJHTq": 43,
+    "ymkXGZ82": 39,
+    "dV44J3xa": 52
+  }
+}

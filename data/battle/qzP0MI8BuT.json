@@ -1,0 +1,60 @@
+{
+  "c": "QhOEmRvf",
+  "org": "no",
+  "chp": 326,
+  "ochp": -1093,
+  "ohp": 47,
+  "ivs": {
+    "hp": 27,
+    "attack": 29,
+    "defense": 23,
+    "special_attack": 16,
+    "special_defense": 13,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "N6pWncjG",
+  "level": 16,
+  "name": "sneasel",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sneasel": -1093
+  },
+  "symbol": "",
+  "team": {
+    "QhOEmRvf": 326,
+    "kMZTz6gx": 376,
+    "3RCqSkfd": 277,
+    "H5HE1pKF": 13,
+    "AVGFV6Dt": 13,
+    "Unspc6ge": 13
+  },
+  "la": {
+    "QhOEmRvf": 100,
+    "kMZTz6gx": 100,
+    "3RCqSkfd": 100,
+    "H5HE1pKF": 1,
+    "AVGFV6Dt": 1,
+    "Unspc6ge": 1
+  }
+}

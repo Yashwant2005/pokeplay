@@ -1,0 +1,64 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 0,
+  "ochp": -115,
+  "ohp": 123,
+  "ivs": {
+    "hp": 17,
+    "attack": 12,
+    "defense": 13,
+    "special_attack": 19,
+    "special_defense": 20,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "TDJnPucP",
+  "level": 41,
+  "name": "machoke",
+  "omoves": [
+    {
+      "id": 282,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 233,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 70,
+      "learn_method": "level-up",
+      "level_learned_at": 31
+    },
+    {
+      "id": 530,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "machoke": -115
+  },
+  "symbol": "",
+  "team": {
+    "J4F20ScC": 33,
+    "Xb9OMUmh": 0,
+    "dnSoMyRy": 106
+  },
+  "la": {
+    "J4F20ScC": 9,
+    "Xb9OMUmh": 43,
+    "dnSoMyRy": 37
+  }
+}

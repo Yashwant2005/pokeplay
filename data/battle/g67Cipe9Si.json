@@ -1,0 +1,65 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 150,
+  "ochp": -836,
+  "ohp": 33,
+  "ivs": {
+    "hp": 17,
+    "attack": 23,
+    "defense": 24,
+    "special_attack": 19,
+    "special_defense": 21,
+    "speed": 25
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "cUDVaxSY",
+  "level": 10,
+  "name": "murkrow",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "murkrow": -836
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 150,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 64,
+    "Az7eBnWK": 30,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 41,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 23,
+    "Az7eBnWK": 6,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

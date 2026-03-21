@@ -1,0 +1,70 @@
+{
+  "c": "UtfDaQTH",
+  "org": "no",
+  "chp": 109,
+  "ochp": 60,
+  "ohp": 147,
+  "ivs": {
+    "hp": 18,
+    "attack": 21,
+    "defense": 19,
+    "special_attack": 20,
+    "special_defense": 20,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "dSINWKoE",
+  "level": 42,
+  "name": "darmanitan-galar-standard",
+  "omoves": [
+    {
+      "id": 423,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 8,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 253,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "darmanitan-galar-standard": 60
+  },
+  "symbol": "",
+  "team": {
+    "yx4Mz6GJ": 0,
+    "u0wRDkpV": 94,
+    "UtfDaQTH": 109,
+    "RTXYaCR3": 91,
+    "iceEdRvu": 100,
+    "bywYVs7a": 36
+  },
+  "la": {
+    "yx4Mz6GJ": 32,
+    "u0wRDkpV": 35,
+    "UtfDaQTH": 33,
+    "RTXYaCR3": 32,
+    "iceEdRvu": 40,
+    "bywYVs7a": 13
+  }
+}

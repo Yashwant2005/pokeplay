@@ -1,0 +1,65 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 155,
+  "ochp": -252,
+  "ohp": 78,
+  "ivs": {
+    "hp": 16,
+    "attack": 20,
+    "defense": 16,
+    "special_attack": 16,
+    "special_defense": 17,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "i9zckZkt",
+  "level": 24,
+  "name": "crobat",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 305,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "crobat": -252
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 155,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 108,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 50,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 38,
+    "xPNmpDgC": 42
+  }
+}

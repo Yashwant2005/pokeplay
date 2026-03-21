@@ -1,0 +1,142 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "7058516053": true,
+    "7124084086": true
+  },
+  "status": {},
+  "c": "sEE2AkEk",
+  "chp": 184,
+  "o": "KE6zbWdZ",
+  "ohp": 222,
+  "cid": "7124084086",
+  "oid": "7058516053",
+  "tem": {
+    "sEE2AkEk": 184,
+    "PUy9RXAv": 170,
+    "scLnWOOz": 185,
+    "dHs7AQr7": 215,
+    "XeDskEEp": 349,
+    "SG6Axr1x": 182
+  },
+  "la": {
+    "sEE2AkEk": 100,
+    "PUy9RXAv": 54,
+    "scLnWOOz": 54,
+    "dHs7AQr7": 55,
+    "XeDskEEp": 100,
+    "SG6Axr1x": 53
+  },
+  "tem2": {
+    "KE6zbWdZ": 222,
+    "b8tDewTn": 296,
+    "NKztvgnG": 293,
+    "8HAnFBbX": 284,
+    "kBbvwA1l": 379,
+    "dp9wUkNP": 356
+  },
+  "la2": {
+    "KE6zbWdZ": 100,
+    "b8tDewTn": 100,
+    "NKztvgnG": 100,
+    "8HAnFBbX": 100,
+    "kBbvwA1l": 100,
+    "dp9wUkNP": 100
+  },
+  "ot": {
+    "undefined": 323
+  },
+  "usedMoves": {
+    "KE6zbWdZ": [
+      "56"
+    ],
+    "sEE2AkEk": [
+      "350"
+    ]
+  },
+  "megas": {
+    "KE6zbWdZ": "gyarados"
+  },
+  "entryHazards": {
+    "7058516053": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "7124084086": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "queuedActions": [
+    {
+      "cid": 7058516053,
+      "c": "KE6zbWdZ",
+      "type": "move",
+      "id": "56"
+    }
+  ],
+  "bideCycle": 1,
+  "bideState": {},
+  "statStages": {
+    "KE6zbWdZ": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "sEE2AkEk": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "sEE2AkEk": {
+      "damage": 139,
+      "category": "special",
+      "from": "KE6zbWdZ",
+      "move": "hydro pump"
+    },
+    "KE6zbWdZ": {
+      "damage": 121,
+      "category": "physical",
+      "from": "sEE2AkEk",
+      "move": "rock blast"
+    }
+  },
+  "lastMoveByPass": {
+    "KE6zbWdZ": "56",
+    "sEE2AkEk": "350"
+  }
+}

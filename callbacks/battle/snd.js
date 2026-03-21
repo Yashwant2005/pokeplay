@@ -1,4 +1,5 @@
-const { applyEntryAbility, getBattleMovePower, getDisplayedWeatherState, getPinchAbilityInfo, getWeatherDisplayName, setBattleWeatherNegationState } = require('../../utils/battle_abilities');
+const { applyEntryAbility, getBattleMovePower, getDisplayedWeatherState, getEffectiveMoveType, getPinchAbilityInfo, getWeatherDisplayName, setBattleWeatherNegationState } = require('../../utils/battle_abilities');
+const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
 
 function register_018_snd(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -24,6 +25,10 @@ let battleData = {};
     }
 const data = await getUserData(ctx.from.id)
 const ps = ctx.callbackQuery.data.split('_')[1]
+if(!battleData || !battleData.team || !battleData.name || !pokes[battleData.name]){
+ctx.answerCbQuery('Battle desynced. Reopen battle.', { show_alert: true })
+return
+}
 if(battleData.team[ps] < 1){
 ctx.answerCbQuery('This Poke Has Died')
 return
@@ -33,6 +38,11 @@ if(!p){
 ctx.answerCbQuery('Poke Not Found In Database')
 return
 }
+if(!pokestats[p.name]){
+ctx.answerCbQuery('Pokemon data missing.', { show_alert: true })
+return
+}
+syncBattleFormAndAbility({ battleData, pokemon: p, pass: p.pass, pokestats })
 
 battleData.c = ps
 battleData.chp = battleData.team[ps]
@@ -90,12 +100,14 @@ msg += '\n\n<b>Moves :</b>'
 const moves = []
 for(const move2 of p.moves){
 let move = dmoves[move2]
+if(!move) continue
 const rawPower = getBattleMovePower({ battleData, pass: p.pass, pokemonName: p.name, moveName: move && move.name, movePower: move && move.power })
+const shownType = getEffectiveMoveType({ battleData, pokemonName: p.name, abilityName: p.ability, heldItem: p.held_item, moveName: move && move.name, moveType: move && move.type }) || move.type
 const pinchInfo = getPinchAbilityInfo({ abilityName: p.ability, moveType: move && move.type, currentHp: battleData.chp, maxHp: stats.hp })
 const shownPower = Number.isFinite(rawPower) && rawPower > 0 && pinchInfo.active
   ? rawPower + ' (x' + pinchInfo.multiplier + ' ' + pinchInfo.abilityLabel + ')'
   : move.power
-msg += '\n<b>'+c(move.name)+'</b>['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
+msg += '\n<b>'+c(move.name)+'</b>['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }
 msg += '\n\n<i>Choose Your Next Move:</i>'

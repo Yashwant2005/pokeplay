@@ -1,0 +1,70 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 159,
+  "ochp": 49,
+  "ohp": 49,
+  "ivs": {
+    "hp": 17,
+    "attack": 18,
+    "defense": 11,
+    "special_attack": 12,
+    "special_defense": 18,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "yYaa2fLs",
+  "level": 16,
+  "name": "prinplup",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 145,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 145,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "prinplup": 49
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 159,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 67,
+    "Az7eBnWK": 30,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 41,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 24,
+    "Az7eBnWK": 6,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

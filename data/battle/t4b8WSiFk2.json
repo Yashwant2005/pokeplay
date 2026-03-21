@@ -1,0 +1,65 @@
+{
+  "c": "a307nv5C",
+  "org": "no",
+  "chp": 219,
+  "ochp": 229,
+  "ohp": 229,
+  "ivs": {
+    "hp": 26,
+    "attack": 19,
+    "defense": 27,
+    "special_attack": 15,
+    "special_defense": 26,
+    "speed": 24
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "ejyKjrLK",
+  "level": 60,
+  "name": "arceus-ghost",
+  "omoves": [
+    {
+      "id": 414,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 304,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 245,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "arceus-ghost": 229
+  },
+  "symbol": "",
+  "team": {
+    "a307nv5C": 219,
+    "faxJzqpi": 218,
+    "rFHVPRdJ": 13,
+    "QcTHt2rl": 220,
+    "H8MFGvUI": 13,
+    "8HMb6sOO": 192
+  },
+  "la": {
+    "a307nv5C": 58,
+    "faxJzqpi": 59,
+    "rFHVPRdJ": 1,
+    "QcTHt2rl": 60,
+    "H8MFGvUI": 1,
+    "8HMb6sOO": 56
+  }
+}

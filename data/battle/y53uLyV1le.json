@@ -1,0 +1,61 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 117,
+  "ochp": -99,
+  "ohp": 38,
+  "ivs": {
+    "hp": 7,
+    "attack": 11,
+    "defense": 22,
+    "special_attack": 16,
+    "special_defense": 11,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Jolly",
+  "cpass": "xjnALs7k",
+  "level": 14,
+  "name": "clobbopus",
+  "omoves": [
+    {
+      "id": 249,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 20,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "clobbopus": -99
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 117,
+    "J4F20ScC": 35,
+    "dnSoMyRy": 106,
+    "Miai3ctV": 36
+  },
+  "la": {
+    "Xb9OMUmh": 44,
+    "J4F20ScC": 10,
+    "dnSoMyRy": 37,
+    "Miai3ctV": 10
+  }
+}

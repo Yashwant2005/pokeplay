@@ -1,0 +1,70 @@
+{
+  "c": "QhOEmRvf",
+  "org": "no",
+  "chp": 307,
+  "ochp": -246,
+  "ohp": 136,
+  "ivs": {
+    "hp": 24,
+    "attack": 15,
+    "defense": 17,
+    "special_attack": 22,
+    "special_defense": 21,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "3HQn3b84",
+  "level": 38,
+  "name": "darmanitan-zen",
+  "omoves": [
+    {
+      "id": 424,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 7,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 253,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "darmanitan-zen": -246
+  },
+  "symbol": "",
+  "team": {
+    "QhOEmRvf": 307,
+    "kMZTz6gx": 376,
+    "3RCqSkfd": 277,
+    "H5HE1pKF": 13,
+    "AVGFV6Dt": 13,
+    "Unspc6ge": 13
+  },
+  "la": {
+    "QhOEmRvf": 100,
+    "kMZTz6gx": 100,
+    "3RCqSkfd": 100,
+    "H5HE1pKF": 1,
+    "AVGFV6Dt": 1,
+    "Unspc6ge": 1
+  }
+}

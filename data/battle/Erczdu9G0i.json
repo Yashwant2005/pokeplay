@@ -1,0 +1,64 @@
+{
+  "c": "Mw2VufPM",
+  "org": "no",
+  "chp": 363,
+  "ochp": 230,
+  "ohp": 230,
+  "ivs": {
+    "hp": 22,
+    "attack": 21,
+    "defense": 24,
+    "special_attack": 28,
+    "special_defense": 26,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "ZUMC9xcF",
+  "level": 61,
+  "name": "arceus-psychic",
+  "omoves": [
+    {
+      "id": 414,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 304,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 245,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 248,
+      "learn_method": "level-up",
+      "level_learned_at": 60
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "arceus-psychic": 230
+  },
+  "symbol": "",
+  "team": {
+    "Mw2VufPM": 363,
+    "G4nEQcmU": 330,
+    "jxVhX0GC": 232
+  },
+  "la": {
+    "Mw2VufPM": 100,
+    "G4nEQcmU": 100,
+    "jxVhX0GC": 62
+  }
+}

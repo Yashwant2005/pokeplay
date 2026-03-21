@@ -1,0 +1,70 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 315,
+  "ochp": -11,
+  "ohp": 142,
+  "ivs": {
+    "hp": 18,
+    "attack": 15,
+    "defense": 17,
+    "special_attack": 15,
+    "special_defense": 19,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "WojJx05f",
+  "level": 58,
+  "name": "larvesta",
+  "omoves": [
+    {
+      "id": 450,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 141,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    },
+    {
+      "id": 405,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "larvesta": -11
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 315,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

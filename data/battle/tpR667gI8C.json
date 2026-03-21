@@ -1,0 +1,55 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 64,
+  "ochp": -28,
+  "ohp": 25,
+  "ivs": {
+    "hp": 19,
+    "attack": 26,
+    "defense": 10,
+    "special_attack": 13,
+    "special_defense": 12,
+    "speed": 9
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "kMCOxnSm",
+  "level": 6,
+  "name": "machop",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "machop": -28
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 64,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120
+  },
+  "la": {
+    "hoTfaX8w": 30,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41
+  }
+}

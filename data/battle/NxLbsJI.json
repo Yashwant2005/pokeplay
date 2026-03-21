@@ -1,0 +1,83 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "6265981509": true,
+    "8578706920": true
+  },
+  "status": {},
+  "c": "q1MmfUoj",
+  "chp": 50,
+  "o": "oz11nsms",
+  "ohp": 310,
+  "cid": "6265981509",
+  "oid": "8578706920",
+  "tem": {
+    "Tsxr5AMS": 470,
+    "BiLqcvCr": 172,
+    "lTTgD8x0": 118,
+    "Aw7KRyyT": 174,
+    "tIBtUAc4": 56,
+    "q1MmfUoj": 50
+  },
+  "la": {
+    "Tsxr5AMS": 100,
+    "BiLqcvCr": 52,
+    "lTTgD8x0": 40,
+    "Aw7KRyyT": 37,
+    "tIBtUAc4": 23,
+    "q1MmfUoj": 19
+  },
+  "tem2": {
+    "kzrkLbjn": 316,
+    "EzgxjA8x": 316,
+    "O4ZYsljw": 321,
+    "oz11nsms": 310,
+    "JXIthlbQ": 311,
+    "vyCIqDgz": 312
+  },
+  "la2": {
+    "kzrkLbjn": 100,
+    "EzgxjA8x": 100,
+    "O4ZYsljw": 100,
+    "oz11nsms": 100,
+    "JXIthlbQ": 100,
+    "vyCIqDgz": 100
+  },
+  "ot": {
+    "undefined": 470
+  },
+  "usedMoves": {},
+  "queuedActions": [
+    {
+      "cid": 8578706920,
+      "c": "oz11nsms",
+      "type": "switch",
+      "pass": "JXIthlbQ"
+    }
+  ],
+  "turnHits": {},
+  "switchPending": {
+    "8578706920": {
+      "pass": "JXIthlbQ",
+      "c": "oz11nsms"
+    }
+  }
+}

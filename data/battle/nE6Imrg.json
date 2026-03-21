@@ -1,0 +1,68 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "1335302812": true,
+    "8393905391": true
+  },
+  "status": {},
+  "c": "9Dt8mmXo",
+  "chp": 286,
+  "o": "eSQX3MR7",
+  "ohp": 650,
+  "cid": "1335302812",
+  "oid": "8393905391",
+  "tem": {
+    "9Dt8mmXo": 286,
+    "sGoT9d9S": 49,
+    "ugba3Au1": 197,
+    "5ZGqYPX6": 126,
+    "h2nNdaoR": 317,
+    "ofNBxSsf": 245
+  },
+  "la": {
+    "9Dt8mmXo": 72,
+    "sGoT9d9S": 24,
+    "ugba3Au1": 58,
+    "5ZGqYPX6": 48,
+    "h2nNdaoR": 100,
+    "ofNBxSsf": 65
+  },
+  "tem2": {
+    "eSQX3MR7": 650,
+    "Vqfqd9Yh": 637,
+    "gvLIjK5K": 630,
+    "53QEW7Hb": 642,
+    "FaXWt8ul": 636,
+    "ldl3ceZl": 642
+  },
+  "la2": {
+    "eSQX3MR7": 100,
+    "Vqfqd9Yh": 100,
+    "gvLIjK5K": 100,
+    "53QEW7Hb": 100,
+    "FaXWt8ul": 100,
+    "ldl3ceZl": 100
+  },
+  "ot": {
+    "undefined": 650
+  },
+  "usedMoves": {}
+}

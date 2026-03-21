@@ -1,0 +1,63 @@
+{
+  "c": "i7LaUu1x",
+  "org": "no",
+  "chp": 62,
+  "ochp": -33,
+  "ohp": 68,
+  "ivs": {
+    "hp": 19,
+    "attack": 19,
+    "defense": 18,
+    "special_attack": 18,
+    "special_defense": 13,
+    "speed": 9
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Modest",
+  "cpass": "mbGzTVMt",
+  "level": 28,
+  "name": "goldeen",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    },
+    {
+      "id": 30,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "goldeen": -33
+  },
+  "symbol": "",
+  "team": {
+    "i7LaUu1x": 62,
+    "CUjuRmvK": 131,
+    "hPhvdCbe": 116,
+    "vKBfWrqL": 21,
+    "hzLVLriw": 13
+  },
+  "la": {
+    "i7LaUu1x": 39,
+    "CUjuRmvK": 45,
+    "hPhvdCbe": 40,
+    "vKBfWrqL": 3,
+    "hzLVLriw": 1
+  }
+}

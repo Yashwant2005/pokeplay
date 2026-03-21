@@ -1,0 +1,45 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 216,
+  "ochp": 24,
+  "ohp": 24,
+  "ivs": {
+    "hp": 7,
+    "attack": 2,
+    "defense": 4,
+    "special_attack": 5,
+    "special_defense": 7,
+    "speed": 7
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "uSYaFkrd",
+  "level": 6,
+  "name": "duraludon",
+  "omoves": [
+    {
+      "id": 232,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "duraludon": 24
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 216
+  },
+  "la": {
+    "ZpYcR2c0": 49
+  }
+}

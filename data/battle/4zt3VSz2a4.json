@@ -1,0 +1,70 @@
+{
+  "c": "MRg3VA6C",
+  "org": "no",
+  "chp": 20,
+  "ochp": 132,
+  "ohp": 132,
+  "ivs": {
+    "hp": 21,
+    "attack": 21,
+    "defense": 23,
+    "special_attack": 16,
+    "special_defense": 28,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "77ETq580",
+  "level": 53,
+  "name": "chi-yu",
+  "omoves": [
+    {
+      "id": 510,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 399,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 436,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    },
+    {
+      "id": 877,
+      "learn_method": "level-up",
+      "level_learned_at": 50
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "chi-yu": 132
+  },
+  "symbol": "",
+  "team": {
+    "MRg3VA6C": 20,
+    "SW26GIcU": 153,
+    "0epnbV5g": 245,
+    "UOdZ0Oud": 135,
+    "ey4GFAmA": 244,
+    "VkHI2YWh": 112
+  },
+  "la": {
+    "MRg3VA6C": 5,
+    "SW26GIcU": 50,
+    "0epnbV5g": 55,
+    "UOdZ0Oud": 47,
+    "ey4GFAmA": 56,
+    "VkHI2YWh": 36
+  }
+}

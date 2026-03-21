@@ -1,0 +1,58 @@
+{
+  "c": "i7LaUu1x",
+  "org": "no",
+  "chp": 92,
+  "ochp": -96,
+  "ohp": 34,
+  "ivs": {
+    "hp": 14,
+    "attack": 17,
+    "defense": 16,
+    "special_attack": 13,
+    "special_defense": 12,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "gcqR0b8s",
+  "level": 16,
+  "name": "magikarp",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magikarp": -96
+  },
+  "symbol": "",
+  "team": {
+    "i7LaUu1x": 92,
+    "CUjuRmvK": 131,
+    "hPhvdCbe": 116,
+    "vKBfWrqL": 21,
+    "hzLVLriw": 13
+  },
+  "la": {
+    "i7LaUu1x": 39,
+    "CUjuRmvK": 45,
+    "hPhvdCbe": 40,
+    "vKBfWrqL": 3,
+    "hzLVLriw": 1
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "c": "QU99PvjF",
+  "org": "no",
+  "chp": 92,
+  "ochp": -192,
+  "ohp": 108,
+  "ivs": {
+    "hp": 21,
+    "attack": 24,
+    "defense": 22,
+    "special_attack": 15,
+    "special_defense": 13,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "dXUd5rZo",
+  "level": 41,
+  "name": "probopass",
+  "omoves": [
+    {
+      "id": 350,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 31
+    },
+    {
+      "id": 414,
+      "learn_method": "level-up",
+      "level_learned_at": 37
+    },
+    {
+      "id": 444,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "probopass": -192
+  },
+  "symbol": "",
+  "team": {
+    "QU99PvjF": 92,
+    "3zK8PVU5": 208
+  },
+  "la": {
+    "QU99PvjF": 41,
+    "3zK8PVU5": 60
+  }
+}

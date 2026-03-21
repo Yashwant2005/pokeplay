@@ -1,0 +1,64 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 98,
+  "ochp": -129,
+  "ohp": 162,
+  "ivs": {
+    "hp": 24,
+    "attack": 23,
+    "defense": 19,
+    "special_attack": 18,
+    "special_defense": 24,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "7O7UNOo3",
+  "level": 50,
+  "name": "goodra",
+  "omoves": [
+    {
+      "id": 491,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 406,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 34,
+      "learn_method": "level-up",
+      "level_learned_at": 49
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "goodra": -129
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 98,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 51,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

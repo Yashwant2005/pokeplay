@@ -1,0 +1,70 @@
+{
+  "c": "MRg3VA6C",
+  "org": "no",
+  "chp": 20,
+  "ochp": 122,
+  "ohp": 122,
+  "ivs": {
+    "hp": 19,
+    "attack": 15,
+    "defense": 16,
+    "special_attack": 20,
+    "special_defense": 26,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "9XY0wxRb",
+  "level": 42,
+  "name": "ceruledge",
+  "omoves": [
+    {
+      "id": 83,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 488,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 510,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 436,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ceruledge": 122
+  },
+  "symbol": "",
+  "team": {
+    "MRg3VA6C": 20,
+    "SW26GIcU": 153,
+    "0epnbV5g": 245,
+    "UOdZ0Oud": 135,
+    "ey4GFAmA": 244,
+    "VkHI2YWh": 112
+  },
+  "la": {
+    "MRg3VA6C": 5,
+    "SW26GIcU": 50,
+    "0epnbV5g": 55,
+    "UOdZ0Oud": 47,
+    "ey4GFAmA": 56,
+    "VkHI2YWh": 36
+  }
+}

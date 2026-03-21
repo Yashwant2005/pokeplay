@@ -1,0 +1,70 @@
+{
+  "c": "GyptShX6",
+  "org": "no",
+  "chp": 104,
+  "ochp": -26,
+  "ohp": 105,
+  "ivs": {
+    "hp": 19,
+    "attack": 20,
+    "defense": 26,
+    "special_attack": 21,
+    "special_defense": 15,
+    "speed": 28
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "Sx1EPJQ0",
+  "level": 40,
+  "name": "zoroark",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 369,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 282,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zoroark": -26
+  },
+  "symbol": "",
+  "team": {
+    "GyptShX6": 104,
+    "qprXez3B": 168,
+    "nzrnd7Gh": 167,
+    "YhzNyYZC": 145,
+    "EMnVbXEj": 79,
+    "YzmR2Ig5": 113
+  },
+  "la": {
+    "GyptShX6": 41,
+    "qprXez3B": 54,
+    "nzrnd7Gh": 36,
+    "YhzNyYZC": 52,
+    "EMnVbXEj": 28,
+    "YzmR2Ig5": 35
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 167,
+  "ochp": -48,
+  "ohp": 44,
+  "ivs": {
+    "hp": 19,
+    "attack": 12,
+    "defense": 13,
+    "special_attack": 18,
+    "special_defense": 18,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "Xg3HTU2a",
+  "level": 14,
+  "name": "stunky",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    },
+    {
+      "id": 491,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "stunky": -48
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 167,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 46,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "c": "MRg3VA6C",
+  "org": "no",
+  "chp": 20,
+  "ochp": 115,
+  "ohp": 115,
+  "ivs": {
+    "hp": 24,
+    "attack": 18,
+    "defense": 15,
+    "special_attack": 16,
+    "special_defense": 14,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "YuLxJfY3",
+  "level": 35,
+  "name": "okidogi",
+  "omoves": [
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 305,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 395,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "okidogi": 115
+  },
+  "symbol": "",
+  "team": {
+    "MRg3VA6C": 20,
+    "SW26GIcU": 153,
+    "0epnbV5g": 245,
+    "UOdZ0Oud": 135,
+    "ey4GFAmA": 244
+  },
+  "la": {
+    "MRg3VA6C": 5,
+    "SW26GIcU": 50,
+    "0epnbV5g": 55,
+    "UOdZ0Oud": 47,
+    "ey4GFAmA": 56
+  }
+}

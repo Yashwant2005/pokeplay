@@ -1,0 +1,57 @@
+{
+  "c": "bRnR7Krx",
+  "org": "no",
+  "chp": 197,
+  "ochp": 77,
+  "ohp": 85,
+  "ivs": {
+    "hp": 22,
+    "attack": 15,
+    "defense": 12,
+    "special_attack": 12,
+    "special_defense": 16,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "TfIg5o6N",
+  "level": 34,
+  "name": "magneton",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magneton": 77
+  },
+  "symbol": "",
+  "team": {
+    "9eeViYIB": 0,
+    "bRnR7Krx": 197
+  },
+  "la": {
+    "9eeViYIB": 11,
+    "bRnR7Krx": 54
+  }
+}

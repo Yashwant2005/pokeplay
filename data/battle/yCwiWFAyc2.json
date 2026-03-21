@@ -1,0 +1,45 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 0,
+  "ochp": 6,
+  "ohp": 30,
+  "ivs": {
+    "hp": 15,
+    "attack": 25,
+    "defense": 14,
+    "special_attack": 22,
+    "special_defense": 26,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "I8WiMkJr",
+  "level": 8,
+  "name": "machop",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "machop": 6
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 0
+  },
+  "la": {
+    "jpIgbHmU": 6
+  }
+}

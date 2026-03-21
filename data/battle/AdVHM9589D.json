@@ -1,0 +1,60 @@
+{
+  "c": "oogYaWCp",
+  "org": "no",
+  "chp": 185,
+  "ochp": -473,
+  "ohp": 25,
+  "ivs": {
+    "hp": 25,
+    "attack": 15,
+    "defense": 13,
+    "special_attack": 17,
+    "special_defense": 18,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "pguLueF8",
+  "level": 7,
+  "name": "shinx",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "shinx": -473
+  },
+  "symbol": "",
+  "team": {
+    "oogYaWCp": 185,
+    "xPNmpDgC": 122,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 95,
+    "Bo6PaTm9": 33
+  },
+  "la": {
+    "oogYaWCp": 50,
+    "xPNmpDgC": 42,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 33,
+    "Bo6PaTm9": 12
+  }
+}

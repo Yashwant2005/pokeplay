@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 105,
+  "ochp": -125,
+  "ohp": 102,
+  "ivs": {
+    "hp": 19,
+    "attack": 19,
+    "defense": 13,
+    "special_attack": 26,
+    "special_defense": 15,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "3wtQBnd6",
+  "level": 37,
+  "name": "magmar",
+  "omoves": [
+    {
+      "id": 499,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 172,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 7,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 436,
+      "learn_method": "level-up",
+      "level_learned_at": 34
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magmar": -125
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 105,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 111,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 56,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 39,
+    "xPNmpDgC": 42
+  }
+}

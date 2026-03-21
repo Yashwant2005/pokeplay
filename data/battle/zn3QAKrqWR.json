@@ -1,0 +1,64 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 0,
+  "ochp": 13,
+  "ohp": 44,
+  "ivs": {
+    "hp": 21,
+    "attack": 21,
+    "defense": 13,
+    "special_attack": 22,
+    "special_defense": 15,
+    "speed": 27
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "KNLRVQQN",
+  "level": 18,
+  "name": "onix",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 88,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 479,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 225,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "onix": 13
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 0,
+    "Bo6PaTm9": 0,
+    "4vHKM3tf": 0
+  },
+  "la": {
+    "xPNmpDgC": 12,
+    "Bo6PaTm9": 8,
+    "4vHKM3tf": 15
+  }
+}

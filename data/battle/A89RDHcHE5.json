@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 203,
+  "ochp": -18,
+  "ohp": 145,
+  "ivs": {
+    "hp": 15,
+    "attack": 13,
+    "defense": 13,
+    "special_attack": 12,
+    "special_defense": 16,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "sjqs0mBX",
+  "level": 42,
+  "name": "exploud",
+  "omoves": [
+    {
+      "id": 423,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 424,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 497,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 23,
+      "learn_method": "level-up",
+      "level_learned_at": 23
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "exploud": -18
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 203
+  },
+  "la": {
+    "ZpYcR2c0": 46
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "c": "BITkWGSQ",
+  "org": "no",
+  "chp": 206,
+  "ochp": -78,
+  "ohp": 41,
+  "ivs": {
+    "hp": 18,
+    "attack": 16,
+    "defense": 19,
+    "special_attack": 22,
+    "special_defense": 17,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "AQAN2sav",
+  "level": 16,
+  "name": "kadabra",
+  "omoves": [
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kadabra": -78
+  },
+  "symbol": "",
+  "team": {
+    "BITkWGSQ": 206,
+    "dhxSqHxG": 133,
+    "9dw7gTDC": 149,
+    "nB8Go2yY": 127,
+    "gDJovrqy": 137,
+    "L8uiAqIb": 135
+  },
+  "la": {
+    "BITkWGSQ": 61,
+    "dhxSqHxG": 48,
+    "9dw7gTDC": 48,
+    "nB8Go2yY": 32,
+    "gDJovrqy": 54,
+    "L8uiAqIb": 49
+  }
+}

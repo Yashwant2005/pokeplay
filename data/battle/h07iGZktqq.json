@@ -1,0 +1,70 @@
+{
+  "c": "YcbNG7z1",
+  "org": "no",
+  "chp": 60,
+  "ochp": -30,
+  "ohp": 44,
+  "ivs": {
+    "hp": 5,
+    "attack": 5,
+    "defense": 7,
+    "special_attack": 7,
+    "special_defense": 6,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "gpO7mfMb",
+  "level": 17,
+  "name": "sandshrew",
+  "omoves": [
+    {
+      "id": 40,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    },
+    {
+      "id": 205,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 210,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 229,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sandshrew": -30
+  },
+  "symbol": "",
+  "team": {
+    "YcbNG7z1": 60,
+    "INnWVvZa": 70,
+    "hElvGj1W": 99,
+    "FwnmeApD": 136,
+    "zIc5R3QM": 83,
+    "4vHKM3tf": 49
+  },
+  "la": {
+    "YcbNG7z1": 30,
+    "INnWVvZa": 25,
+    "hElvGj1W": 24,
+    "FwnmeApD": 52,
+    "zIc5R3QM": 30,
+    "4vHKM3tf": 20
+  }
+}

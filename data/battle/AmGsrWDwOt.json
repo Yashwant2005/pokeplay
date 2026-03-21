@@ -1,0 +1,70 @@
+{
+  "c": "yx4Mz6GJ",
+  "org": "no",
+  "chp": 70,
+  "ochp": 104,
+  "ohp": 104,
+  "ivs": {
+    "hp": 25,
+    "attack": 14,
+    "defense": 17,
+    "special_attack": 24,
+    "special_defense": 15,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "fTDhwRbL",
+  "level": 30,
+  "name": "silvally-steel",
+  "omoves": [
+    {
+      "id": 424,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 442,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 458,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 306,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "silvally-steel": 104
+  },
+  "symbol": "",
+  "team": {
+    "yx4Mz6GJ": 70,
+    "4bawFDBE": 133,
+    "u0wRDkpV": 84,
+    "UtfDaQTH": 109,
+    "RTXYaCR3": 91,
+    "xeoViAW8": 27
+  },
+  "la": {
+    "yx4Mz6GJ": 23,
+    "4bawFDBE": 38,
+    "u0wRDkpV": 31,
+    "UtfDaQTH": 33,
+    "RTXYaCR3": 32,
+    "xeoViAW8": 10
+  }
+}

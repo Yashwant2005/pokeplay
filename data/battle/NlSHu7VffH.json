@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 46,
+  "ochp": -55,
+  "ohp": 134,
+  "ivs": {
+    "hp": 13,
+    "attack": 9,
+    "defense": 14,
+    "special_attack": 10,
+    "special_defense": 19,
+    "speed": 27
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "wch5xuzn",
+  "level": 44,
+  "name": "porygon-z",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "porygon-z": -55
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 46,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 111,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 54,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 39,
+    "xPNmpDgC": 42
+  }
+}

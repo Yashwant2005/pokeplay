@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 11,
+  "ochp": -45,
+  "ohp": 132,
+  "ivs": {
+    "hp": 21,
+    "attack": 14,
+    "defense": 13,
+    "special_attack": 19,
+    "special_defense": 9,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "8iNTsGIK",
+  "level": 49,
+  "name": "rapidash",
+  "omoves": [
+    {
+      "id": 172,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 23,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 83,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 43
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "rapidash": -45
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 11,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 108,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 42,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 38,
+    "xPNmpDgC": 42
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "C6mPJkDH",
+  "org": "no",
+  "chp": 97,
+  "ochp": -80,
+  "ohp": 71,
+  "ivs": {
+    "hp": 8,
+    "attack": 15,
+    "defense": 10,
+    "special_attack": 5,
+    "special_defense": 4,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "VkTfoIjS",
+  "level": 23,
+  "name": "grimer",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 189,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 124,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 426,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "grimer": -80
+  },
+  "symbol": "",
+  "team": {
+    "C6mPJkDH": 97,
+    "MQTRLHSp": 156,
+    "wIskIkq2": 147,
+    "irp1hwET": 163,
+    "HZZy8ghZ": 32,
+    "5mOTmKN0": 60
+  },
+  "la": {
+    "C6mPJkDH": 56,
+    "MQTRLHSp": 52,
+    "wIskIkq2": 43,
+    "irp1hwET": 50,
+    "HZZy8ghZ": 18,
+    "5mOTmKN0": 29
+  }
+}

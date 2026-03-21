@@ -1,0 +1,61 @@
+{
+  "c": "USP6eG1Z",
+  "org": "no",
+  "chp": 35,
+  "ochp": 51,
+  "ohp": 51,
+  "ivs": {
+    "hp": 12,
+    "attack": 18,
+    "defense": 6,
+    "special_attack": 18,
+    "special_defense": 15,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "ZAfmz175",
+  "level": 16,
+  "name": "oricorio-pom-pom",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 314,
+      "learn_method": "level-up",
+      "level_learned_at": 13
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "oricorio-pom-pom": 51
+  },
+  "symbol": "",
+  "team": {
+    "USP6eG1Z": 35,
+    "AfrJyFT3": 29,
+    "i3Zbowkn": 60,
+    "ZZds2WM5": 49
+  },
+  "la": {
+    "USP6eG1Z": 13,
+    "AfrJyFT3": 10,
+    "i3Zbowkn": 20,
+    "ZZds2WM5": 15
+  }
+}

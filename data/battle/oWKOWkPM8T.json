@@ -1,0 +1,59 @@
+{
+  "c": "7bXaJOX4",
+  "org": "no",
+  "chp": 14,
+  "ochp": -27,
+  "ohp": 27,
+  "ivs": {
+    "hp": 12,
+    "attack": 16,
+    "defense": 26,
+    "special_attack": 15,
+    "special_defense": 20,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "3j7TVKbz",
+  "level": 9,
+  "name": "froakie",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 145,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "froakie": -27
+  },
+  "symbol": "",
+  "team": {
+    "BOoICgpn": 64,
+    "7bXaJOX4": 14,
+    "YzEsRp1A": 73
+  },
+  "la": {
+    "BOoICgpn": 23,
+    "7bXaJOX4": 20,
+    "YzEsRp1A": 27
+  }
+}

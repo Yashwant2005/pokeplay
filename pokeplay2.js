@@ -1,6 +1,6 @@
 ﻿let msgsent = []
 const appr = [1072659486,6265981509]
-//const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //main bot
+//const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' //main bot
 //const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //backup bot
 const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // test bot
 const { Telegraf } = require('telegraf')
@@ -190,6 +190,32 @@ function removeGroupIds(ids){
 function getGroupIds(){
   return Array.from(groupIds)
 }
+
+async function retryTelegramEditMessageText(telegram, chatId, messageId, text, extra = {}, attempts = 3) {
+  let lastError = null;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await telegram.editMessageText(chatId, messageId, null, text, extra);
+    } catch (error) {
+      lastError = error;
+      const code = String(error && error.code || '').toUpperCase();
+      const errno = String(error && error.errno || '').toUpperCase();
+      const desc = String(error && error.response && error.response.description || '').toLowerCase();
+      const transient =
+        code === 'ECONNRESET'
+        || errno === 'ECONNRESET'
+        || code === 'ETIMEDOUT'
+        || errno === 'ETIMEDOUT'
+        || desc.includes('timeout');
+      if (!transient || attempt >= attempts) {
+        throw error;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+    }
+  }
+  throw lastError;
+}
+
 function readJsonFile(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -1065,6 +1091,7 @@ const groupCommands = [
 {command:'/ivlock',description:'Lock one IV stat during IV boost event'},
 {command:'/claimplate',description:'Claim one Arceus Plate once'},
     {command:'/daily',description:'Claim commemorative daily rewards'},
+{command:'/reset',description:'Reset data for yourself or a replied user'},
 {command:'/claim_safari_pass',description:'Claim your daily safari event pass'},
 {command:'/challenge',description:'Battle With Other Players'},
 {command:'/mybag',description:'Check Your Bag'},
@@ -1208,7 +1235,7 @@ await saveMessageData(messageData)
                     delete messageData[chatId];
 await saveMessageData(messageData);
                     try {
-                      await bot.telegram.editMessageText(userMessageData.chat, userMessageData.mid, null, newMessage, {
+                      await retryTelegramEditMessageText(bot.telegram, userMessageData.chat, userMessageData.mid, newMessage, {
                         parse_mode: 'HTML'
                       })
                     } catch (error) {
@@ -1228,7 +1255,7 @@ const dr = await getUserData(chatId)
                     delete messageData[chatId];
                 await saveMessageData(messageData);
                 try {
-                  await bot.telegram.editMessageText(chatId, userMessageData.mid, null, newMessage, {
+                  await retryTelegramEditMessageText(bot.telegram, chatId, userMessageData.mid, newMessage, {
                     parse_mode: 'markdown'
                   })
                 } catch (error) {

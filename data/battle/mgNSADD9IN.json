@@ -1,0 +1,60 @@
+{
+  "c": "ClVmhk2X",
+  "org": "no",
+  "chp": 0,
+  "ochp": 118,
+  "ohp": 133,
+  "ivs": {
+    "hp": 15,
+    "attack": 24,
+    "defense": 18,
+    "special_attack": 11,
+    "special_defense": 21,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "Sm8ofDzA",
+  "level": 20,
+  "name": "chansey",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 343,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 574,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 497,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "chansey": 118
+  },
+  "symbol": "",
+  "team": {
+    "ClVmhk2X": 0
+  },
+  "la": {
+    "ClVmhk2X": 6
+  }
+}

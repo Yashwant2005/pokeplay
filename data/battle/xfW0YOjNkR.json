@@ -1,0 +1,65 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 96,
+  "ochp": -158,
+  "ohp": 67,
+  "ivs": {
+    "hp": 11,
+    "attack": 17,
+    "defense": 18,
+    "special_attack": 17,
+    "special_defense": 19,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "tMryI9lU",
+  "level": 22,
+  "name": "golbat",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 305,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "golbat": -158
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 96,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 106,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 32,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 37,
+    "xPNmpDgC": 42
+  }
+}

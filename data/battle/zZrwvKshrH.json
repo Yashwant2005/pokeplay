@@ -1,0 +1,70 @@
+{
+  "c": "DY5xusUV",
+  "org": "no",
+  "chp": 97,
+  "ochp": 138,
+  "ohp": 138,
+  "ivs": {
+    "hp": 29,
+    "attack": 25,
+    "defense": 14,
+    "special_attack": 15,
+    "special_defense": 13,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "sfqj8Elp",
+  "level": 56,
+  "name": "deoxys-defense",
+  "omoves": [
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 282,
+      "learn_method": "level-up",
+      "level_learned_at": 19
+    },
+    {
+      "id": 94,
+      "learn_method": "level-up",
+      "level_learned_at": 31
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 49
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "deoxys-defense": 138
+  },
+  "symbol": "",
+  "team": {
+    "DY5xusUV": 97,
+    "er2BGMZK": 103,
+    "hK3IxtEj": 159,
+    "MoqdSLB0": 152,
+    "pIjB75RY": 186,
+    "TrpLrvEK": 187
+  },
+  "la": {
+    "DY5xusUV": 21,
+    "er2BGMZK": 37,
+    "hK3IxtEj": 50,
+    "MoqdSLB0": 66,
+    "pIjB75RY": 58,
+    "TrpLrvEK": 55
+  }
+}

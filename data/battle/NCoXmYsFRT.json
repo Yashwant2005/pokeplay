@@ -1,0 +1,45 @@
+{
+  "c": "0EPYTqmt",
+  "org": "no",
+  "chp": 6,
+  "ochp": -27,
+  "ohp": 26,
+  "ivs": {
+    "hp": 15,
+    "attack": 29,
+    "defense": 18,
+    "special_attack": 25,
+    "special_defense": 24,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "RXpHFS36",
+  "level": 7,
+  "name": "exeggcute",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "exeggcute": -27
+  },
+  "symbol": "",
+  "team": {
+    "0EPYTqmt": 6
+  },
+  "la": {
+    "0EPYTqmt": 12
+  }
+}

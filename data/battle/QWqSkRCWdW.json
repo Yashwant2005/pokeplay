@@ -1,0 +1,49 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 20,
+  "ochp": -11,
+  "ohp": 47,
+  "ivs": {
+    "hp": 17,
+    "attack": 16,
+    "defense": 12,
+    "special_attack": 13,
+    "special_defense": 18,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "w1WeDYrW",
+  "level": 15,
+  "name": "porygon",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "porygon": -11
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 20,
+    "F5chvUKh": 66,
+    "LG4mTUpP": 63
+  },
+  "la": {
+    "jpIgbHmU": 18,
+    "F5chvUKh": 19,
+    "LG4mTUpP": 21
+  }
+}

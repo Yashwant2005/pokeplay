@@ -1,0 +1,70 @@
+{
+  "c": "Az7eBnWK",
+  "org": "no",
+  "chp": 0,
+  "ochp": -13,
+  "ohp": 132,
+  "ivs": {
+    "hp": 15,
+    "attack": 20,
+    "defense": 17,
+    "special_attack": 17,
+    "special_defense": 22,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "TASMm1s6",
+  "level": 48,
+  "name": "froslass",
+  "omoves": [
+    {
+      "id": 420,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 577,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 196,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 524,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "froslass": -13
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 181,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 17,
+    "Az7eBnWK": 0,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 47,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 26,
+    "Az7eBnWK": 24,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

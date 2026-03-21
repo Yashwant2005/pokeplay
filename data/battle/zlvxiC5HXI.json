@@ -1,0 +1,55 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 106,
+  "ochp": -104,
+  "ohp": 41,
+  "ivs": {
+    "hp": 17,
+    "attack": 16,
+    "defense": 8,
+    "special_attack": 16,
+    "special_defense": 17,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "VOSXID1v",
+  "level": 16,
+  "name": "kadabra",
+  "omoves": [
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kadabra": -104
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 106,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 60,
+    "SmX3uZcP": 219,
+    "Ih35m8uD": 158,
+    "Z86cfwaX": 215
+  },
+  "la": {
+    "ytrF7ks6": 35,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 21,
+    "SmX3uZcP": 34,
+    "Ih35m8uD": 24,
+    "Z86cfwaX": 33
+  }
+}

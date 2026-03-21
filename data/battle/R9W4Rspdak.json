@@ -1,0 +1,70 @@
+{
+  "c": "DY5xusUV",
+  "org": "no",
+  "chp": 97,
+  "ochp": 170,
+  "ohp": 170,
+  "ivs": {
+    "hp": 26,
+    "attack": 17,
+    "defense": 22,
+    "special_attack": 22,
+    "special_defense": 11,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "W2wfmZIK",
+  "level": 56,
+  "name": "latias",
+  "omoves": [
+    {
+      "id": 225,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 296,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 428,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 406,
+      "learn_method": "level-up",
+      "level_learned_at": 45
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "latias": 170
+  },
+  "symbol": "",
+  "team": {
+    "DY5xusUV": 97,
+    "er2BGMZK": 103,
+    "hK3IxtEj": 159,
+    "MoqdSLB0": 152,
+    "pIjB75RY": 186,
+    "TrpLrvEK": 187
+  },
+  "la": {
+    "DY5xusUV": 21,
+    "er2BGMZK": 37,
+    "hK3IxtEj": 50,
+    "MoqdSLB0": 66,
+    "pIjB75RY": 58,
+    "TrpLrvEK": 55
+  }
+}

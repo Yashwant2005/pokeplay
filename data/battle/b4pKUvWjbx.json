@@ -1,0 +1,55 @@
+{
+  "c": "rcJRTEBD",
+  "org": "no",
+  "chp": 0,
+  "ochp": -58,
+  "ohp": 34,
+  "ivs": {
+    "hp": 12,
+    "attack": 11,
+    "defense": 18,
+    "special_attack": 14,
+    "special_defense": 13,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "RvsZNjwN",
+  "level": 13,
+  "name": "spearow",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 228,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 11
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "spearow": -58
+  },
+  "symbol": "",
+  "team": {
+    "rcJRTEBD": 0
+  },
+  "la": {
+    "rcJRTEBD": 28
+  }
+}

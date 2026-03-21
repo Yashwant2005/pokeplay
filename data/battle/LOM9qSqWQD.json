@@ -1,0 +1,70 @@
+{
+  "c": "oogYaWCp",
+  "org": "no",
+  "chp": 187,
+  "ochp": -163,
+  "ohp": 43,
+  "ivs": {
+    "hp": 6,
+    "attack": 12,
+    "defense": 12,
+    "special_attack": 13,
+    "special_defense": 20,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "9QIQV9dC",
+  "level": 17,
+  "name": "chingling",
+  "omoves": [
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 7
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    },
+    {
+      "id": 387,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "chingling": -163
+  },
+  "symbol": "",
+  "team": {
+    "oogYaWCp": 187,
+    "xPNmpDgC": 122,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 95,
+    "Bo6PaTm9": 33
+  },
+  "la": {
+    "oogYaWCp": 50,
+    "xPNmpDgC": 42,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 33,
+    "Bo6PaTm9": 12
+  }
+}

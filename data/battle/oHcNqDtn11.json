@@ -1,0 +1,55 @@
+{
+  "c": "hoTfaX8w",
+  "org": "no",
+  "chp": 66,
+  "ochp": -176,
+  "ohp": 22,
+  "ivs": {
+    "hp": 4,
+    "attack": 8,
+    "defense": 5,
+    "special_attack": 6,
+    "special_defense": 6,
+    "speed": 4
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Careful",
+  "cpass": "tI9UEjfT",
+  "level": 7,
+  "name": "geodude",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "geodude": -176
+  },
+  "symbol": "",
+  "team": {
+    "hoTfaX8w": 66,
+    "V585CIwf": 114,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120
+  },
+  "la": {
+    "hoTfaX8w": 30,
+    "V585CIwf": 38,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41
+  }
+}

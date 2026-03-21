@@ -1,0 +1,70 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 301,
+  "ochp": -112,
+  "ohp": 101,
+  "ivs": {
+    "hp": 16,
+    "attack": 22,
+    "defense": 17,
+    "special_attack": 23,
+    "special_defense": 13,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "KLebRZER",
+  "level": 32,
+  "name": "gurdurr",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 88,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 157,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 21,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "gurdurr": -112
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 301,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

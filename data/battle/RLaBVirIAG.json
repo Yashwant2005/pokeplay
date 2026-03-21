@@ -1,0 +1,55 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 42,
+  "ochp": -32,
+  "ohp": 87,
+  "ivs": {
+    "hp": 18,
+    "attack": 15,
+    "defense": 11,
+    "special_attack": 22,
+    "special_defense": 18,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "AxTcRugZ",
+  "level": 26,
+  "name": "lickitung",
+  "omoves": [
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 205,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "lickitung": -32
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 42
+  },
+  "la": {
+    "ZpYcR2c0": 23
+  }
+}

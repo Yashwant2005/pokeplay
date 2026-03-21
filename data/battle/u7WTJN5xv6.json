@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 0,
+  "ochp": -15,
+  "ohp": 122,
+  "ivs": {
+    "hp": 19,
+    "attack": 17,
+    "defense": 11,
+    "special_attack": 16,
+    "special_defense": 15,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "HdTBc27c",
+  "level": 45,
+  "name": "jolteon",
+  "omoves": [
+    {
+      "id": 24,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 422,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 42,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "jolteon": -15
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 0,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 106,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 34,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 37,
+    "xPNmpDgC": 42
+  }
+}

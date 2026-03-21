@@ -1,0 +1,66 @@
+{
+  "c": "BjnaCP3R",
+  "org": "no",
+  "chp": 106,
+  "ochp": 22,
+  "ohp": 142,
+  "ivs": {
+    "hp": 23,
+    "attack": 14,
+    "defense": 25,
+    "special_attack": 19,
+    "special_defense": 22,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "EUIEEik7",
+  "level": 54,
+  "name": "dragonair",
+  "omoves": [
+    {
+      "id": 525,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 21,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 401,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    },
+    {
+      "id": 407,
+      "learn_method": "level-up",
+      "level_learned_at": 39
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dragonair": 22
+  },
+  "symbol": "",
+  "team": {
+    "vUSVE8kA": 0,
+    "mjg3bO2U": 71,
+    "BjnaCP3R": 106,
+    "TyZh456N": 0
+  },
+  "la": {
+    "vUSVE8kA": 24,
+    "mjg3bO2U": 26,
+    "BjnaCP3R": 40,
+    "TyZh456N": 37
+  }
+}

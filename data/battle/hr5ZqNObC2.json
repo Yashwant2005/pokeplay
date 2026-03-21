@@ -1,0 +1,60 @@
+{
+  "c": "j9Q3GBae",
+  "org": "no",
+  "chp": 193,
+  "ochp": 31,
+  "ohp": 31,
+  "ivs": {
+    "hp": 20,
+    "attack": 18,
+    "defense": 15,
+    "special_attack": 12,
+    "special_defense": 13,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "wEVRUvNN",
+  "level": 12,
+  "name": "nincada",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 206,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "nincada": 31
+  },
+  "symbol": "",
+  "team": {
+    "j9Q3GBae": 193,
+    "dPoRZ9Pw": 110,
+    "IXFR5Y3z": 113,
+    "f3VV0KDX": 75,
+    "XxmBb8ir": 187,
+    "n8Erff7G": 243
+  },
+  "la": {
+    "j9Q3GBae": 58,
+    "dPoRZ9Pw": 45,
+    "IXFR5Y3z": 49,
+    "f3VV0KDX": 27,
+    "XxmBb8ir": 60,
+    "n8Erff7G": 59
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "6265981509": true,
+    "8551864967": true
+  },
+  "tempTeams": {
+    "6265981509": [
+      "3z1QLsr9",
+      "ocXbKJlc",
+      "NWctMuus",
+      "oISLhRTh",
+      "zjjGtRbJ",
+      "ADb6QdIv"
+    ],
+    "8551864967": [
+      "NneOxMX4",
+      "1GpHRP4E",
+      "B8vwCIBI",
+      "lOqWcj8j",
+      "NJwjXNjz",
+      "N6LMTF0r"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "zYpmfM1",
+  "status": {},
+  "c": "N6LMTF0r",
+  "chp": 0,
+  "o": "ADb6QdIv",
+  "ohp": 197,
+  "cid": "8551864967",
+  "oid": "6265981509",
+  "tem": {
+    "NneOxMX4": 0,
+    "1GpHRP4E": 0,
+    "B8vwCIBI": 0,
+    "lOqWcj8j": 0,
+    "NJwjXNjz": 0,
+    "N6LMTF0r": 0
+  },
+  "la": {
+    "NneOxMX4": 100,
+    "1GpHRP4E": 100,
+    "B8vwCIBI": 100,
+    "lOqWcj8j": 100,
+    "NJwjXNjz": 100,
+    "N6LMTF0r": 100
+  },
+  "tem2": {
+    "3z1QLsr9": 0,
+    "ocXbKJlc": 268,
+    "NWctMuus": 272,
+    "oISLhRTh": 0,
+    "zjjGtRbJ": 276,
+    "ADb6QdIv": 197
+  },
+  "la2": {
+    "3z1QLsr9": 100,
+    "ocXbKJlc": 100,
+    "NWctMuus": 100,
+    "oISLhRTh": 100,
+    "zjjGtRbJ": 100,
+    "ADb6QdIv": 100
+  },
+  "ot": {
+    "undefined": 305
+  }
+}

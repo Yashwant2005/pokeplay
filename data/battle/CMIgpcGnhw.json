@@ -1,0 +1,55 @@
+{
+  "c": "bAUBesJM",
+  "org": "no",
+  "chp": 336,
+  "ochp": 23,
+  "ohp": 23,
+  "ivs": {
+    "hp": 15,
+    "attack": 16,
+    "defense": 7,
+    "special_attack": 12,
+    "special_defense": 23,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "GH9G7yEV",
+  "level": 6,
+  "name": "growlithe",
+  "omoves": [
+    {
+      "id": 52,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "growlithe": 23
+  },
+  "symbol": "",
+  "team": {
+    "bAUBesJM": 336,
+    "Efnc0PUS": 373,
+    "uclThfWK": 332,
+    "CDIkqF92": 369,
+    "GgOR8D5A": 366,
+    "okkGwwjh": 370
+  },
+  "la": {
+    "bAUBesJM": 100,
+    "Efnc0PUS": 100,
+    "uclThfWK": 100,
+    "CDIkqF92": 100,
+    "GgOR8D5A": 100,
+    "okkGwwjh": 100
+  }
+}

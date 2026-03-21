@@ -1,0 +1,70 @@
+{
+  "c": "9eeViYIB",
+  "org": "no",
+  "chp": 0,
+  "ochp": 19,
+  "ohp": 62,
+  "ivs": {
+    "hp": 16,
+    "attack": 16,
+    "defense": 11,
+    "special_attack": 15,
+    "special_defense": 14,
+    "speed": 23
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "FK7p6r0c",
+  "level": 28,
+  "name": "pikachu",
+  "omoves": [
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 609,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pikachu": 19
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 159,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 0,
+    "Az7eBnWK": 30,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 41,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 23,
+    "Az7eBnWK": 6,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

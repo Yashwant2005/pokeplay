@@ -1,0 +1,70 @@
+{
+  "c": "gDXv98kD",
+  "org": "no",
+  "chp": 0,
+  "ochp": -84,
+  "ohp": 156,
+  "ivs": {
+    "hp": 14,
+    "attack": 11,
+    "defense": 18,
+    "special_attack": 19,
+    "special_defense": 17,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "QjSecbR8",
+  "level": 60,
+  "name": "bisharp",
+  "omoves": [
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 400,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 442,
+      "learn_method": "level-up",
+      "level_learned_at": 57
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "bisharp": -84
+  },
+  "symbol": "",
+  "team": {
+    "gDXv98kD": 0,
+    "k1PYGICf": 191,
+    "5aMBTgt9": 103,
+    "wXFdO3ZJ": 167,
+    "V0U7GxoB": 117,
+    "coZ7CueN": 112
+  },
+  "la": {
+    "gDXv98kD": 39,
+    "k1PYGICf": 63,
+    "5aMBTgt9": 37,
+    "wXFdO3ZJ": 53,
+    "V0U7GxoB": 42,
+    "coZ7CueN": 42
+  }
+}

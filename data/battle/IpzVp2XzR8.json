@@ -1,0 +1,60 @@
+{
+  "c": "oogYaWCp",
+  "org": "no",
+  "chp": 180,
+  "ochp": -172,
+  "ohp": 50,
+  "ivs": {
+    "hp": 21,
+    "attack": 14,
+    "defense": 12,
+    "special_attack": 13,
+    "special_defense": 12,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "GQ75o0wg",
+  "level": 16,
+  "name": "yanma",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "yanma": -172
+  },
+  "symbol": "",
+  "team": {
+    "oogYaWCp": 180,
+    "xPNmpDgC": 122,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 95,
+    "Bo6PaTm9": 33
+  },
+  "la": {
+    "oogYaWCp": 50,
+    "xPNmpDgC": 42,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 33,
+    "Bo6PaTm9": 12
+  }
+}

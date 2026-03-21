@@ -1,0 +1,55 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 154,
+  "ochp": -169,
+  "ohp": 29,
+  "ivs": {
+    "hp": 15,
+    "attack": 19,
+    "defense": 22,
+    "special_attack": 8,
+    "special_defense": 12,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Hasty",
+  "cpass": "MmQSCrfE",
+  "level": 8,
+  "name": "cranidos",
+  "omoves": [
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "cranidos": -169
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 154,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 44,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

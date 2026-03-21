@@ -161,7 +161,7 @@ const clevel = plevel(pk[0].name,pk[0].exp)
 const stats = await Stats(base,pk[0].ivs,pk[0].evs,c(pk[0].nature),clevel)
 la[pk[0].pass] = clevel
 tem[pk[0].pass] = stats.hp
-heldItems[pk[0].pass] = pk[0].held_item || 'none'
+heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], pk[0].held_item)
 }
 }
 battleData.team = tem
@@ -181,3 +181,4 @@ module.exports = register_010_exrtbt;
 
 
 
+const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rules');

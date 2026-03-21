@@ -1,0 +1,62 @@
+{
+  "c": "QU99PvjF",
+  "org": "no",
+  "chp": 139,
+  "ochp": -315,
+  "ohp": 51,
+  "ivs": {
+    "hp": 11,
+    "attack": 16,
+    "defense": 25,
+    "special_attack": 16,
+    "special_defense": 20,
+    "speed": 25
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "BfqsvDiE",
+  "level": 23,
+  "name": "pikachu",
+  "omoves": [
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 609,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pikachu": -315
+  },
+  "symbol": "",
+  "team": {
+    "QU99PvjF": 139,
+    "3zK8PVU5": 208
+  },
+  "la": {
+    "QU99PvjF": 44,
+    "3zK8PVU5": 60
+  }
+}

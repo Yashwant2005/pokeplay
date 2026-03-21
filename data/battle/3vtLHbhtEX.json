@@ -1,0 +1,70 @@
+{
+  "c": "fe4s1SV4",
+  "org": "no",
+  "chp": 66,
+  "ochp": -30,
+  "ohp": 82,
+  "ivs": {
+    "hp": 14,
+    "attack": 6,
+    "defense": 4,
+    "special_attack": 4,
+    "special_defense": 7,
+    "speed": 7
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "XmrEZSkC",
+  "level": 36,
+  "name": "ferroseed",
+  "omoves": [
+    {
+      "id": 42,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    },
+    {
+      "id": 430,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 442,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 120,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ferroseed": -30
+  },
+  "symbol": "",
+  "team": {
+    "HKmqM4sZ": 0,
+    "fe4s1SV4": 66,
+    "p6sCfffS": 153,
+    "ka283FJN": 123,
+    "NwV4rdsE": 35,
+    "CcH25gY5": 13
+  },
+  "la": {
+    "HKmqM4sZ": 18,
+    "fe4s1SV4": 51,
+    "p6sCfffS": 62,
+    "ka283FJN": 36,
+    "NwV4rdsE": 7,
+    "CcH25gY5": 1
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "c": "j9Q3GBae",
+  "org": "no",
+  "chp": 193,
+  "ochp": 48,
+  "ohp": 48,
+  "ivs": {
+    "hp": 14,
+    "attack": 16,
+    "defense": 10,
+    "special_attack": 17,
+    "special_defense": 13,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "OcjkRqu0",
+  "level": 20,
+  "name": "zubat",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 310,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 305,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "zubat": 48
+  },
+  "symbol": "",
+  "team": {
+    "j9Q3GBae": 193,
+    "dPoRZ9Pw": 110,
+    "IXFR5Y3z": 113,
+    "f3VV0KDX": 75,
+    "XxmBb8ir": 187,
+    "n8Erff7G": 243
+  },
+  "la": {
+    "j9Q3GBae": 58,
+    "dPoRZ9Pw": 45,
+    "IXFR5Y3z": 49,
+    "f3VV0KDX": 27,
+    "XxmBb8ir": 60,
+    "n8Erff7G": 59
+  }
+}

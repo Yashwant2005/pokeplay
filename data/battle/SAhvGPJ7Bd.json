@@ -1,0 +1,70 @@
+{
+  "c": "Az7eBnWK",
+  "org": "no",
+  "chp": 7,
+  "ochp": -31,
+  "ohp": 107,
+  "ivs": {
+    "hp": 24,
+    "attack": 25,
+    "defense": 21,
+    "special_attack": 18,
+    "special_defense": 12,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "FfXGbIMJ",
+  "level": 40,
+  "name": "raichu",
+  "omoves": [
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 364,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 609,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "raichu": -31
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 181,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 41,
+    "Az7eBnWK": 7,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 47,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 27,
+    "Az7eBnWK": 27,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

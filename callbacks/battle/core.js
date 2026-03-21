@@ -54,6 +54,15 @@
   applyKoAbility: applyAbilityKo,
   applyOnDamageTakenAbilities: applyAbilityOnDamageTaken
 } = require('../../utils/battle_abilities');
+const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rules');
+
+const ABILITY_BY_FORM = (() => {
+  try {
+    return require('../../data/pokemon_abilities_cache.json') || {};
+  } catch (error) {
+    return {};
+  }
+})();
 
 function registerBattleCallbacks(bot, deps) {
   const {
@@ -153,6 +162,14 @@ function registerBattleCallbacks(bot, deps) {
       .join(' ');
   }
 
+  function pokemonKnowsMoveByName(pokemon, moveName) {
+    const target = normalizeMoveName(moveName);
+    return Array.isArray(pokemon && pokemon.moves) && pokemon.moves.some((moveId) => {
+      const move = dmoves[moveId];
+      return move && normalizeMoveName(move.name) === target;
+    });
+  }
+
   function getAbilityActivationMessage(pokemonName, abilityLabel) {
     return '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + abilityLabel + '</b> activated!';
   }
@@ -188,6 +205,7 @@ function registerBattleCallbacks(bot, deps) {
     const effectiveMoveType = getEffectiveMoveType({
       battleData: battleDataArg,
       pokemonName,
+      abilityName,
       heldItem: getBattleHeldItemName({ battleData: battleDataArg, pass }),
       moveName: effectiveMoveName || (move && move.name),
       moveType: move && move.type
@@ -220,35 +238,6 @@ function registerBattleCallbacks(bot, deps) {
     if (technicianInfo.active) labels.push('x' + technicianInfo.multiplier + ' ' + technicianInfo.abilityLabel);
     if (pinchInfo.active) labels.push('x' + pinchInfo.multiplier + ' ' + pinchInfo.abilityLabel);
     return Math.max(1, Math.floor(weatherAdjustedPower * totalMultiplier)) + ' (' + labels.join(', ') + ')';
-  }
-
-  function getBattleHeldItemForPokemon(pokemon, battleDataArg, pass) {
-    return getBattleHeldItemName({ battleData: battleDataArg, pass, heldItem: pokemon && pokemon.held_item });
-  }
-
-  function getBattleEffectiveName(pokemon, battleDataArg, pass) {
-    if (!pokemon) return '';
-    const heldItem = getBattleHeldItemForPokemon(pokemon, battleDataArg, pass);
-    const effectiveName = getEffectivePokemonDisplayName({
-      pokemonName: pokemon.name,
-      abilityName: pokemon.ability,
-      heldItem
-    });
-    return effectiveName || pokemon.name;
-  }
-
-  function getBattleBaseStats(pokemon, battleDataArg, pass) {
-    const effectiveName = getBattleEffectiveName(pokemon, battleDataArg, pass);
-    return pokestats[effectiveName] || pokestats[pokemon && pokemon.name];
-  }
-
-  function getBattleMoveLabel(move, pokemon, battleDataArg, pass) {
-    const heldItem = getBattleHeldItemForPokemon(pokemon, battleDataArg, pass);
-    return getEffectiveMoveName({
-      pokemonName: pokemon && pokemon.name,
-      heldItem,
-      moveName: move && move.name
-    }) || (move && move.name) || '';
   }
 
   async function applyPowerConstructEndTurn(options) {
@@ -302,6 +291,26 @@ function registerBattleCallbacks(bot, deps) {
       const poke = userData.pokes.find((entry) => String(entry.pass) === String(pass));
       if (poke) {
         poke.name = originalName;
+      }
+    }
+  }
+
+  function revertTrackedFormsOnBattleEnd(battleData, userData) {
+    if (!battleData || !battleData.formState || !userData || !Array.isArray(userData.pokes)) return;
+    const state = battleData.formState;
+    const originalName = state.originalName || {};
+    const originalAbility = state.originalAbility || {};
+    const passKeys = new Set([...Object.keys(originalName), ...Object.keys(originalAbility)]);
+    for (const pass of passKeys) {
+      const poke = userData.pokes.find((entry) => String(entry.pass) === String(pass));
+      if (!poke) continue;
+      if (originalName[pass]) poke.name = originalName[pass];
+      if (originalAbility[pass]) poke.ability = originalAbility[pass];
+    }
+
+    for (const poke of userData.pokes) {
+      if (String(poke && poke.name || '').toLowerCase() === 'zygarde-complete') {
+        poke.name = 'zygarde';
       }
     }
   }
@@ -793,8 +802,8 @@ function registerBattleCallbacks(bot, deps) {
           moveName: move && move.name
         }) || (move && move.name);
         const shownPower = getDisplayedMovePower(move, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name);
-        const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: displayMoveName, moveType: move.type }) || move.type;
-        msg += '\n- <b>'+c(displayMoveName)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')';
+        const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: move.name, moveType: move.type }) || move.type;
+        msg += '\n- <b>'+c(move.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')';
       }
     } else if (isGroup && p1UsedMoves.length > 0 && !hideTurn) {
       msg += '\n\n<b>Revealed Moves :</b>';
@@ -802,8 +811,7 @@ function registerBattleCallbacks(bot, deps) {
         const mv = dmoves[mid];
         if (mv) {
           const shownPower = getDisplayedMovePower(mv, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name);
-          const displayMoveName = getBattleMoveLabel(mv, p1, battleData, p1.pass);
-          msg += '\n- <b>'+c(displayMoveName)+'</b> ['+c(mv.type)+' '+emojis[mv.type]+'] <b>Power:</b> '+shownPower+' <b>Acc:</b> '+mv.accuracy+' ('+c(mv.category.charAt(0))+')';
+          msg += '\n- <b>'+c(mv.name)+'</b> ['+c(mv.type)+' '+emojis[mv.type]+'] <b>Power:</b> '+shownPower+' <b>Acc:</b> '+mv.accuracy+' ('+c(mv.category.charAt(0))+')';
         }
       }
     }
@@ -864,16 +872,18 @@ function registerBattleCallbacks(bot, deps) {
       { text: 'View Team', callback_data: 'viewteam_'+bword+'_'+battleData.cid+'' }
     ]);
 
-    const pendingMega = battleData.pendingMega && battleData.pendingMega[String(battleData.cid)];
-    const megaUsed = battleData.megaUsedByCid && battleData.megaUsedByCid[String(battleData.cid)];
-    const keyItemEnabled = (battleData.set && typeof battleData.set.key_item === 'boolean') ? battleData.set.key_item : true;
-    const heldStoneRaw = p1 && p1.held_item ? String(p1.held_item) : '';
-    const { normalizeStoneKey, normalizePokemonName, normalizeHeldStone } = require('../../utils/stone_alias');
-    const heldStone = normalizeStoneKey(heldStoneRaw, stones);
-    const heldStoneInfo = heldStone && stones[heldStone] ? stones[heldStone] : null;
-    const canMegaWithHeld = heldStoneInfo && normalizePokemonName(heldStoneInfo.pokemon) === normalizePokemonName(p1.name);
-    if (keyItemEnabled && !pendingMega && !megaUsed && canMegaWithHeld) {
-      rows.push([{text:'Use '+c(heldStone)+'',callback_data:'megtst_'+heldStone+'_'+bword+''}]);
+    if (!attacker.inv.stones) attacker.inv.stones = [];
+    const isstone = [...new Set(attacker.inv.stones)].filter(stone => stones[stone]?.pokemon === p1.name);
+    if (battleData.set.key_item && isstone.length > 0 && attacker.extra && Object.keys(attacker.extra.megas||{}).length == 0 && (attacker.inv.omniring || attacker.inv.ring)) {
+      const rows5 = isstone.map(i => ({text:'Use '+c(i)+'',callback_data:'megtst_'+i+'_'+bword+''}));
+      rows.push(rows5);
+    }
+    const canMegaRayquaza = p1
+      && String(p1.name || '').toLowerCase() === 'rayquaza'
+      && pokemonKnowsMoveByName(p1, 'dragon ascent')
+      && (!attacker.extra || !attacker.extra.megas || Object.keys(attacker.extra.megas).length === 0);
+    if (canMegaRayquaza) {
+      rows.push([{ text: 'Mega Evolve', callback_data: 'megtst_rayquaza-dragon-ascent_' + bword }]);
     }
 
     // Bag/Pokemon buttons removed per new UI layout
@@ -1801,6 +1811,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       const defender = await getUserData(battleData.oid);
       const p12 = attacker.pokes.filter((poke)=>poke.pass==act.pass)[0];
       const opposingPokemon = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
+      if (p12) {
+        syncBattleFormAndAbility({ battleData, pokemon: p12, pass: act.pass });
+      }
       battleData.c = act.pass;
       battleData.chp = battleData.tem[act.pass];
       ensureTurnAbilityState(battleData).skipSpeedBoost[String(act.pass)] = true;
@@ -1895,14 +1908,16 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       let stats1 = await Stats(base1, p.ivs, p.evs, c(p.nature), level1);
       let stats2 = await Stats(base2, op.ivs, op.evs, c(op.nature), level2);
 
-      const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: attackerHeldItemName, moveName: moveLabel, moveType: move.type });
+      const attackerHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item });
+      const defenderHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item });
+      const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
       const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name].types || [], heldItem: defenderHeldItemName });
 
       // Check type effectiveness
       const type3 = defenderTypes[0];
       const type4 = defenderTypes[1] ? c(defenderTypes[1]) : null;
       let eff1 = 1;
-      if (battleData.set.type_effects) { eff1 = await eff(c(move.type), c(type3), type4); }
+      if (battleData.set.type_effects) { eff1 = await eff(c(effectiveMoveType), c(type3), type4); }
       const defenderLevitateInfo = getLevitateInfo({ abilityName: defenderAbility });
       const defenderAirBalloonInfo = getAirBalloonInfo({ battleData, pass: battleData.o, heldItem: op.held_item });
       const groundBlockedMove = (defenderLevitateInfo.active || defenderAirBalloonInfo.active) && String(effectiveMoveType || '').toLowerCase() === 'ground';
@@ -2954,6 +2969,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         }
         revertPowerConstructFormsOnBattleEnd(battleData, attacker)
         revertPowerConstructFormsOnBattleEnd(battleData, defender)
+        revertTrackedFormsOnBattleEnd(battleData, attacker)
+        revertTrackedFormsOnBattleEnd(battleData, defender)
         await saveUserData2(battleData.cid,attacker)
         await saveUserData2(battleData.oid,defender)
         const messageData = await loadMessageData();
@@ -3776,7 +3793,7 @@ const stats = await Stats(base,pk[0].ivs,pk[0].evs,c(pk[0].nature),clevel)
 la[pk[0].pass] = clevel
 tem[pk[0].pass] = stats.hp
 spe[pk[0].pass] = stats.speed
-heldItems[pk[0].pass] = pk[0].held_item || 'none'
+heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], pk[0].held_item)
 }
 }
 var la2 = {}
@@ -3791,7 +3808,7 @@ const stats = await Stats(base,pk[0].ivs,pk[0].evs,c(pk[0].nature),clevel)
 la2[pk[0].pass] = clevel
 tem2[pk[0].pass] = stats.hp
 spe2[pk[0].pass] = stats.speed
-heldItems[pk[0].pass] = pk[0].held_item || 'none'
+heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], pk[0].held_item)
 }
 }
 const user1poke = data.pokes.filter((poke)=>poke.pass==pokes1[0])[0]
@@ -3849,6 +3866,12 @@ const attacker = await getUserData(battleData.cid)
 const defender = await getUserData(battleData.oid)
 const p = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
 const p2 = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0]
+if (p) {
+syncBattleFormAndAbility({ battleData, pokemon: p, pass: p.pass })
+}
+if (p2) {
+syncBattleFormAndAbility({ battleData, pokemon: p2, pass: p2.pass })
+}
 const pp = pokes[p.name]
 const pp2 = pokes[p2.name]
 if (!battleData.usedMoves) battleData.usedMoves = {};
@@ -4807,7 +4830,9 @@ async function executeStandardMove(act) {
     let stats1 = await Stats(base1, p.ivs, p.evs, c(p.nature), level1);
     let stats2 = await Stats(base2, op.ivs, op.evs, c(op.nature), level2);
     
-    const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: attackerHeldItemName, moveName: moveLabel, moveType: move.type });
+    const attackerHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item });
+    const defenderHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item });
+    const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
     const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name].types || [], heldItem: defenderHeldItemName });
 
     // Check type effectiveness
@@ -5733,6 +5758,8 @@ defender.inv.win += 1
   }
   revertPowerConstructFormsOnBattleEnd(battleData, attacker)
   revertPowerConstructFormsOnBattleEnd(battleData, defender)
+  revertTrackedFormsOnBattleEnd(battleData, attacker)
+  revertTrackedFormsOnBattleEnd(battleData, defender)
   await saveUserData2(battleData.cid,attacker)
   await saveUserData2(battleData.oid,defender)
 const messageData = await loadMessageData();
@@ -5895,50 +5922,87 @@ if(ctx.from.id!=battleData.cid){
 ctx.answerCbQuery('Not Your Turn')
 return
 }
-  const stone = stones[stone5]
-  const d2b = await getUserData(battleData.cid)
-  const pke = d2b.pokes.filter((pk)=>pk.pass == battleData.c)[0]
-  const n = pke.name
-  if(!stone){
-  return
-  }
-  const { normalizeStoneKey, normalizePokemonName, normalizeHeldStone } = require('../../utils/stone_alias');
-  if(normalizeStoneKey(pke.held_item || '', stones) !== normalizeStoneKey(stone5, stones)){
-    ctx.answerCbQuery('Your Pokemon is not holding that Mega Stone.');
-    return
-  }
-  if(normalizePokemonName(stone.pokemon) != normalizePokemonName(pke.name)){
-  ctx.answerCbQuery('This Mega Stone does not match your Pokemon.');
-  return
-  }
-  if (!battleData.pendingMega) battleData.pendingMega = {};
-  battleData.pendingMega[String(ctx.from.id)] = { pass: battleData.c, stone: stone5 };
-  await saveBattleData(bword, battleData);
-  const megaInfo = pokes[stone.mega] || {};
-  const baseInfo = pokes[pke.name] || {};
-  const megaImg = megaInfo.front_default_image || baseInfo.front_default_image || '';
-  if (megaImg) {
-    await sendMessage(
-      ctx,
-      ctx.chat.id,
-      megaImg,
-      { caption: '*'+c(pke.name)+'* mega evolved into *'+c(stone.mega)+'*.', parse_mode: 'markdown', reply_to_message_id: ctx.callbackQuery.message.message_id }
-    );
-  }
-  const attacker = await getUserData(battleData.cid);
-  const defender = await getUserData(battleData.oid);
-  const p1 = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
-  const p2 = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0]
-  const base1 = getBattleBaseStats(p2, battleData, p2.pass)
-  const base2 = getBattleBaseStats(p1, battleData, p1.pass)
-  const level1 = plevel(p2.name,p2.exp)
-  const level2 = plevel(p1.name,p1.exp)
-  const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
-  const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
-  const isGroupMeg = ctx.chat.type !== 'private';
-  const note = '<i>Mega ready. Choose your next action.</i>';
-  const pvpMeg = buildPvpMsg(note, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMeg);
-  await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMeg.msg,{parse_mode:'HTML',reply_markup:pvpMeg.keyboard,...pvpMeg.ext})
+const stone = stones[stone5]
+const d2b = await getUserData(battleData.cid)
+const pke = d2b.pokes.filter((pk)=>pk.pass == battleData.c)[0]
+const n = pke.name
+if(stone.pokemon!=pke.name){
+return
+}
+if(!d2b.extra.megas){
+d2b.extra.megas = {}
+}
+if(!battleData.megas){
+battleData.megas = {}
+}
+battleData.megas[pke.pass] = pke.name
+d2b.extra.megas[pke.pass] = pke.name
+pke.name = stone.mega
+await saveUserData2(ctx.from.id,d2b)
+const pass = battleData.c
+const atta = await getUserData(battleData.cid)
+const deffa = await getUserData(battleData.oid)
+const p12 = atta.pokes.filter((poke)=>poke.pass==pass)[0]
+let msg = '<b>'+c(p12.name)+'</b> has transformed into <b>'+c(stone.mega)+'</b>'
+const p22 = deffa.pokes.filter((poke)=>poke.pass==battleData.o)[0]
+const base12 = pokestats[p22.name]
+const base22 = pokestats[p12.name]
+const level12 = plevel(p22.name,p22.exp)
+const level22 = plevel(p12.name,p12.exp)
+const stats12 = await Stats(base12,p22.ivs,p22.evs,c(p22.nature),level12) 
+const stats22 = await Stats(base22,p12.ivs,p12.evs,c(p12.nature),level22)
+msg += await applyEntryHazardsOnSwitch({
+  battleData,
+  sideId: battleData.cid,
+  pass: pass,
+  pokemonName: p12.name,
+  abilityName: p12.ability,
+  maxHp: stats22.hp
+})
+const speed12 = getEffectiveSpeed(stats12.speed, battleData, p22.pass, p22 && p22.ability)
+const speed22 = getEffectiveSpeed(stats22.speed, battleData, p12.pass, p12 && p12.ability)
+const result = speed12 > speed22 ? p22.pass : p12.pass
+if(result in battleData.tem2){
+const cc = battleData.c
+const cc2 = battleData.chp
+const cc3 = battleData.cid
+const cc4 = battleData.tem
+const cc5 = battleData.la
+battleData.c = battleData.o
+battleData.chp = battleData.ohp
+battleData.cid = battleData.oid
+battleData.tem = battleData.tem2
+battleData.la = battleData.la2
+battleData.o = cc
+battleData.ohp = cc2
+battleData.oid = cc3
+battleData.tem2 = cc4
+battleData.la2 = cc5
+}
+const dl = await getUserData(battleData.cid)
+const p169 = dl.pokes.filter((poke)=>poke.pass==battleData.c)[0]
+msg += '\n<b>'+c(p169.name)+'</b> <i>speed advantage allows to move first</i>'
+await saveBattleData(bword, battleData);
+const attacker = await getUserData(battleData.cid)
+const defender = await getUserData(battleData.oid)
+const p1 = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0]
+const p2 = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0]
+const base1 = pokestats[p2.name]
+const base2 = pokestats[p1.name]
+const level1 = plevel(p2.name,p2.exp)
+const level2 = plevel(p1.name,p1.exp)
+const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
+const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
+const isGroupMeg = ctx.chat.type !== 'private';
+const pvpMeg = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMeg);
+const pk = pokes[stone.mega]
+let img2 = pokes[p12.name].front_default_image
+const im2 = shiny.filter((poke)=>poke.name==p12.name)[0]
+if(im2 && p12.symbol=='✨'){
+img2=im2.shiny_url
+}
+await sendMessage(ctx,ctx.chat.id,img2,{caption:'*'+c(n)+'* has transformed into *'+c(pke.name)+'*.',parse_mode:'markdown',reply_to_message_id:ctx.callbackQuery.message.message_id})
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMeg.msg,{parse_mode:'HTML',reply_markup:pvpMeg.keyboard,...pvpMeg.ext})
 })
 
 bot.action(/multidne_/,async ctx => {
@@ -6028,6 +6092,9 @@ delete battleData.choiceLockedMoves[String(pass)];
 const atta = await getUserData(battleData.cid)
 const deffa = await getUserData(battleData.oid)
 const p12 = atta.pokes.filter((poke)=>poke.pass==pass)[0]
+if (p12) {
+syncBattleFormAndAbility({ battleData, pokemon: p12, pass: p12.pass })
+}
 let msg = '<b>'+c(p12.name)+'</b> came for battle'
 if (prop == 'change') {
   msg = '<b>A Pokemon was switched in.</b>'
@@ -6140,8 +6207,7 @@ for (const mid of p1v.moves) {
   if (mv) {
     const power = mv.power ?? '?'
     const acc = mv.accuracy ?? '?'
-    const displayMoveName = getBattleMoveLabel(mv, p1v, battleData2, p1v.pass)
-    popupText += '\n• ' + c(displayMoveName) + ' [' + c(mv.type) + '] P:' + power + ' A:' + acc
+    popupText += '\n• ' + c(mv.name) + ' [' + c(mv.type) + '] P:' + power + ' A:' + acc
   }
 }
 if (popupText.length > 195) popupText = popupText.substring(0, 195) + '...';

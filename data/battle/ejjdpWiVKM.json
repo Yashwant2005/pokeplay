@@ -1,0 +1,70 @@
+{
+  "c": "xPNmpDgC",
+  "org": "no",
+  "chp": 87,
+  "ochp": -32,
+  "ohp": 79,
+  "ivs": {
+    "hp": 17,
+    "attack": 11,
+    "defense": 17,
+    "special_attack": 15,
+    "special_defense": 9,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "OFmP3xV6",
+  "level": 26,
+  "name": "grotle",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 75,
+      "learn_method": "level-up",
+      "level_learned_at": 13
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 22
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "grotle": -32
+  },
+  "symbol": "",
+  "team": {
+    "xPNmpDgC": 87,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "V585CIwf": 114,
+    "zIc5R3QM": 83,
+    "hElvGj1W": 106
+  },
+  "la": {
+    "xPNmpDgC": 37,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "V585CIwf": 38,
+    "zIc5R3QM": 30,
+    "hElvGj1W": 26
+  }
+}

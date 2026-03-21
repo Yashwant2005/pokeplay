@@ -1,0 +1,70 @@
+{
+  "c": "6eVdGqdR",
+  "org": "no",
+  "chp": 137,
+  "ochp": 53,
+  "ohp": 53,
+  "ivs": {
+    "hp": 13,
+    "attack": 16,
+    "defense": 17,
+    "special_attack": 15,
+    "special_defense": 16,
+    "speed": 9
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "dmCNcMsc",
+  "level": 22,
+  "name": "luvdisc",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 577,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 352,
+      "learn_method": "level-up",
+      "level_learned_at": 17
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "luvdisc": 53
+  },
+  "symbol": "",
+  "team": {
+    "6eVdGqdR": 137,
+    "PzS8LwHX": 116,
+    "pY1EJRcp": 30,
+    "5RWVyitD": 175,
+    "oINhfz6I": 34,
+    "LN8ihIqk": 200
+  },
+  "la": {
+    "6eVdGqdR": 47,
+    "PzS8LwHX": 39,
+    "pY1EJRcp": 10,
+    "5RWVyitD": 54,
+    "oINhfz6I": 13,
+    "LN8ihIqk": 58
+  }
+}

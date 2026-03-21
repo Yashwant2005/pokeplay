@@ -1,0 +1,70 @@
+{
+  "c": "MQTRLHSp",
+  "org": "no",
+  "chp": 119,
+  "ochp": -67,
+  "ohp": 133,
+  "ivs": {
+    "hp": 14,
+    "attack": 22,
+    "defense": 16,
+    "special_attack": 17,
+    "special_defense": 17,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "KoUItZGN",
+  "level": 42,
+  "name": "sealeo",
+  "omoves": [
+    {
+      "id": 173,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 362,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 62,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 34,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sealeo": -67
+  },
+  "symbol": "",
+  "team": {
+    "MQTRLHSp": 119,
+    "HZZy8ghZ": 32,
+    "xNJurU1c": 44,
+    "heCUyNdb": 149,
+    "t0gGUuMj": 86,
+    "5mOTmKN0": 60
+  },
+  "la": {
+    "MQTRLHSp": 51,
+    "HZZy8ghZ": 18,
+    "xNJurU1c": 19,
+    "heCUyNdb": 44,
+    "t0gGUuMj": 29,
+    "5mOTmKN0": 29
+  }
+}

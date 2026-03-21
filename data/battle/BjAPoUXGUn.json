@@ -1,0 +1,55 @@
+{
+  "c": "QnXq8TIw",
+  "org": "no",
+  "chp": 102,
+  "ochp": -218,
+  "ohp": 22,
+  "ivs": {
+    "hp": 7,
+    "attack": 8,
+    "defense": 6,
+    "special_attack": 7,
+    "special_defense": 9,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "gJ9QSsDg",
+  "level": 6,
+  "name": "cleffa",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "cleffa": -218
+  },
+  "symbol": "",
+  "team": {
+    "QnXq8TIw": 102,
+    "W3exZd5k": 58,
+    "OWUQ86Li": 36,
+    "oJYApvHa": 222,
+    "3zK8PVU5": 208,
+    "M22B9MwZ": 75
+  },
+  "la": {
+    "QnXq8TIw": 44,
+    "W3exZd5k": 18,
+    "OWUQ86Li": 8,
+    "oJYApvHa": 64,
+    "3zK8PVU5": 60,
+    "M22B9MwZ": 26
+  }
+}

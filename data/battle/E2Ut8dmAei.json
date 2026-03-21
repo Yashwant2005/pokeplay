@@ -1,0 +1,60 @@
+{
+  "c": "8s3qQqRk",
+  "org": "no",
+  "chp": 160,
+  "ochp": -476,
+  "ohp": 41,
+  "ivs": {
+    "hp": 19,
+    "attack": 24,
+    "defense": 19,
+    "special_attack": 12,
+    "special_defense": 19,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "A3mfhlL3",
+  "level": 14,
+  "name": "piplup",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 145,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "piplup": -476
+  },
+  "symbol": "",
+  "team": {
+    "8s3qQqRk": 160,
+    "7qvFAXaU": 149,
+    "UmyfORGQ": 198,
+    "96T1ggy5": 158,
+    "CuGtMWDv": 227,
+    "TVIJQdd9": 167
+  },
+  "la": {
+    "8s3qQqRk": 60,
+    "7qvFAXaU": 54,
+    "UmyfORGQ": 59,
+    "96T1ggy5": 50,
+    "CuGtMWDv": 65,
+    "TVIJQdd9": 56
+  }
+}

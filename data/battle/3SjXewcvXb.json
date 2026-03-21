@@ -1,0 +1,55 @@
+{
+  "c": "dC9jW0x4",
+  "org": "no",
+  "chp": 53,
+  "ochp": 26,
+  "ohp": 26,
+  "ivs": {
+    "hp": 18,
+    "attack": 9,
+    "defense": 23,
+    "special_attack": 13,
+    "special_defense": 21,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "cRR1T2bK",
+  "level": 10,
+  "name": "abra",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "abra": 26
+  },
+  "symbol": "",
+  "team": {
+    "dC9jW0x4": 53,
+    "07qBEog3": 377,
+    "saofW0Kt": 307,
+    "uQhxBwQC": 285,
+    "EUhDeUKM": 263,
+    "wmzoASLK": 369
+  },
+  "la": {
+    "dC9jW0x4": 10,
+    "07qBEog3": 100,
+    "saofW0Kt": 100,
+    "uQhxBwQC": 100,
+    "EUhDeUKM": 100,
+    "wmzoASLK": 100
+  }
+}

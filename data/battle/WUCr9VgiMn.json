@@ -1,0 +1,61 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 61,
+  "ochp": -56,
+  "ohp": 42,
+  "ivs": {
+    "hp": 3,
+    "attack": 8,
+    "defense": 6,
+    "special_attack": 3,
+    "special_defense": 5,
+    "speed": 6
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "UABTPEm8",
+  "level": 21,
+  "name": "magnemite",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 209,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magnemite": -56
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 61,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 60,
+    "SmX3uZcP": 219
+  },
+  "la": {
+    "ytrF7ks6": 25,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 21,
+    "SmX3uZcP": 34
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "c": "QhOEmRvf",
+  "org": "no",
+  "chp": 246,
+  "ochp": -165,
+  "ohp": 111,
+  "ivs": {
+    "hp": 10,
+    "attack": 15,
+    "defense": 24,
+    "special_attack": 16,
+    "special_defense": 14,
+    "speed": 20
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "3ctrvre3",
+  "level": 42,
+  "name": "fraxure",
+  "omoves": [
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 530,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 406,
+      "learn_method": "level-up",
+      "level_learned_at": 36
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "fraxure": -165
+  },
+  "symbol": "",
+  "team": {
+    "QhOEmRvf": 246,
+    "kMZTz6gx": 376,
+    "3RCqSkfd": 277,
+    "H5HE1pKF": 13,
+    "AVGFV6Dt": 13,
+    "Unspc6ge": 13
+  },
+  "la": {
+    "QhOEmRvf": 100,
+    "kMZTz6gx": 100,
+    "3RCqSkfd": 100,
+    "H5HE1pKF": 1,
+    "AVGFV6Dt": 1,
+    "Unspc6ge": 1
+  }
+}

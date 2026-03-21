@@ -1,0 +1,60 @@
+{
+  "c": "HKmqM4sZ",
+  "org": "no",
+  "chp": 0,
+  "ochp": -37,
+  "ohp": 56,
+  "ivs": {
+    "hp": 16,
+    "attack": 19,
+    "defense": 14,
+    "special_attack": 28,
+    "special_defense": 17,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "FQqOIudR",
+  "level": 18,
+  "name": "skwovet",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "skwovet": -37
+  },
+  "symbol": "",
+  "team": {
+    "HKmqM4sZ": 0,
+    "fe4s1SV4": 140,
+    "p6sCfffS": 153,
+    "ka283FJN": 123,
+    "NwV4rdsE": 35,
+    "CcH25gY5": 13
+  },
+  "la": {
+    "HKmqM4sZ": 14,
+    "fe4s1SV4": 51,
+    "p6sCfffS": 62,
+    "ka283FJN": 36,
+    "NwV4rdsE": 7,
+    "CcH25gY5": 1
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "1335302812": true,
+    "8393905391": true
+  },
+  "status": {},
+  "c": "9Dt8mmXo",
+  "chp": 275,
+  "o": "3O4nrK4z",
+  "ohp": 88,
+  "cid": "1335302812",
+  "oid": "8393905391",
+  "tem": {
+    "9Dt8mmXo": 275,
+    "sGoT9d9S": 49,
+    "ugba3Au1": 197,
+    "5ZGqYPX6": 126,
+    "h2nNdaoR": 317,
+    "ofNBxSsf": 245
+  },
+  "la": {
+    "9Dt8mmXo": 80,
+    "sGoT9d9S": 24,
+    "ugba3Au1": 58,
+    "5ZGqYPX6": 48,
+    "h2nNdaoR": 100,
+    "ofNBxSsf": 65
+  },
+  "tem2": {
+    "mgGrdb5X": 0,
+    "3O4nrK4z": 88,
+    "TSM5HKDD": 93,
+    "MX7OLZFk": 85,
+    "Fgg8MDfR": 87,
+    "f1v3x5md": 86
+  },
+  "la2": {
+    "mgGrdb5X": 35,
+    "3O4nrK4z": 35,
+    "TSM5HKDD": 35,
+    "MX7OLZFk": 34,
+    "Fgg8MDfR": 34,
+    "f1v3x5md": 32
+  },
+  "ot": {
+    "undefined": 89
+  },
+  "usedMoves": {
+    "9Dt8mmXo": [
+      "200"
+    ],
+    "mgGrdb5X": [
+      "21"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 2,
+  "bideState": {},
+  "statStages": {
+    "9Dt8mmXo": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "mgGrdb5X": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "mgGrdb5X": {
+      "damage": 89,
+      "category": "physical",
+      "from": "9Dt8mmXo",
+      "move": "outrage"
+    }
+  },
+  "lastMoveByPass": {
+    "9Dt8mmXo": "200",
+    "mgGrdb5X": "21"
+  },
+  "entryHazards": {
+    "1335302812": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "8393905391": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "runs": [
+    1335302812,
+    8393905391
+  ]
+}

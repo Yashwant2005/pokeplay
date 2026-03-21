@@ -1,0 +1,70 @@
+{
+  "c": "DY5xusUV",
+  "org": "no",
+  "chp": 93,
+  "ochp": 187,
+  "ohp": 187,
+  "ivs": {
+    "hp": 22,
+    "attack": 23,
+    "defense": 21,
+    "special_attack": 28,
+    "special_defense": 25,
+    "speed": 25
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "4qkEDm2D",
+  "level": 55,
+  "name": "dialga",
+  "omoves": [
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 430,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    },
+    {
+      "id": 396,
+      "learn_method": "level-up",
+      "level_learned_at": 48
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "dialga": 187
+  },
+  "symbol": "",
+  "team": {
+    "DY5xusUV": 93,
+    "er2BGMZK": 101,
+    "hK3IxtEj": 159,
+    "A9jA9xzc": 153,
+    "9Dk31Dce": 141,
+    "ughHx7Kc": 200
+  },
+  "la": {
+    "DY5xusUV": 20,
+    "er2BGMZK": 36,
+    "hK3IxtEj": 50,
+    "A9jA9xzc": 47,
+    "9Dk31Dce": 61,
+    "ughHx7Kc": 62
+  }
+}

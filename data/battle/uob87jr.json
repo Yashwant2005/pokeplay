@@ -1,0 +1,144 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "5344294772": true,
+    "6951917855": true
+  },
+  "status": {},
+  "c": "biTuTEWM",
+  "chp": 0,
+  "o": "NwJTfM5m",
+  "ohp": 323,
+  "cid": "6951917855",
+  "oid": "5344294772",
+  "tem": {
+    "cGyU6Cy2": 299,
+    "aX1Wjtdz": 337,
+    "gJwGEO4v": 381,
+    "C3V0E4xw": 263,
+    "biTuTEWM": 0,
+    "y6A8ELIo": 192
+  },
+  "la": {
+    "cGyU6Cy2": 100,
+    "aX1Wjtdz": 100,
+    "gJwGEO4v": 100,
+    "C3V0E4xw": 100,
+    "biTuTEWM": 100,
+    "y6A8ELIo": 100
+  },
+  "tem2": {
+    "ChA5eDTE": 316,
+    "vaq9VMGk": 323,
+    "TQRhfkgG": 309,
+    "D67XQciZ": 406,
+    "NwJTfM5m": 323,
+    "qyjsdRAV": 276
+  },
+  "la2": {
+    "ChA5eDTE": 100,
+    "vaq9VMGk": 100,
+    "TQRhfkgG": 100,
+    "D67XQciZ": 100,
+    "NwJTfM5m": 100,
+    "qyjsdRAV": 100
+  },
+  "ot": {
+    "undefined": 316
+  },
+  "usedMoves": {
+    "ChA5eDTE": [
+      "370"
+    ],
+    "NwJTfM5m": [
+      "451",
+      "722"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 4,
+  "bideState": {},
+  "turnHits": {
+    "biTuTEWM": {
+      "damage": 161,
+      "category": "special",
+      "from": "NwJTfM5m",
+      "move": "photon geyser"
+    }
+  },
+  "lastMoveByPass": {
+    "NwJTfM5m": "722"
+  },
+  "entryHazards": {
+    "6951917855": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "5344294772": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "statStages": {
+    "ChA5eDTE": {
+      "attack": 0,
+      "defense": -1,
+      "special_attack": 0,
+      "special_defense": -1,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "y6A8ELIo": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "NwJTfM5m": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 1,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "biTuTEWM": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  }
+}

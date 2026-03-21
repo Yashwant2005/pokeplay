@@ -1,0 +1,70 @@
+{
+  "c": "MRg3VA6C",
+  "org": "no",
+  "chp": 20,
+  "ochp": 152,
+  "ohp": 152,
+  "ivs": {
+    "hp": 28,
+    "attack": 14,
+    "defense": 17,
+    "special_attack": 22,
+    "special_defense": 27,
+    "speed": 21
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "FOTd6DoF",
+  "level": 41,
+  "name": "annihilape",
+  "omoves": [
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 26
+    },
+    {
+      "id": 37,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 889,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 370,
+      "learn_method": "level-up",
+      "level_learned_at": 39
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "annihilape": 152
+  },
+  "symbol": "",
+  "team": {
+    "MRg3VA6C": 20,
+    "SW26GIcU": 153,
+    "0epnbV5g": 245,
+    "UOdZ0Oud": 135,
+    "ey4GFAmA": 244,
+    "VkHI2YWh": 112
+  },
+  "la": {
+    "MRg3VA6C": 5,
+    "SW26GIcU": 50,
+    "0epnbV5g": 55,
+    "UOdZ0Oud": 47,
+    "ey4GFAmA": 56,
+    "VkHI2YWh": 36
+  }
+}

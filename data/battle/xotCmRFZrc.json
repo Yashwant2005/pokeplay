@@ -1,0 +1,70 @@
+{
+  "c": "3zK8PVU5",
+  "org": "no",
+  "chp": 208,
+  "ochp": 25,
+  "ohp": 112,
+  "ivs": {
+    "hp": 19,
+    "attack": 19,
+    "defense": 25,
+    "special_attack": 19,
+    "special_defense": 14,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "0tQTkTgD",
+  "level": 41,
+  "name": "morgrem",
+  "omoves": [
+    {
+      "id": 252,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 389,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 399,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "morgrem": 25
+  },
+  "symbol": "",
+  "team": {
+    "QnXq8TIw": 0,
+    "W3exZd5k": 0,
+    "OWUQ86Li": 0,
+    "oJYApvHa": 222,
+    "3zK8PVU5": 208,
+    "M22B9MwZ": 0
+  },
+  "la": {
+    "QnXq8TIw": 44,
+    "W3exZd5k": 18,
+    "OWUQ86Li": 1,
+    "oJYApvHa": 64,
+    "3zK8PVU5": 60,
+    "M22B9MwZ": 26
+  }
+}

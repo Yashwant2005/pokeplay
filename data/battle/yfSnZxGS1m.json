@@ -1,0 +1,55 @@
+{
+  "c": "gPXkwjbS",
+  "org": "no",
+  "chp": 353,
+  "ochp": 32,
+  "ohp": 32,
+  "ivs": {
+    "hp": 13,
+    "attack": 13,
+    "defense": 17,
+    "special_attack": 17,
+    "special_defense": 17,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "Qf4AMmID",
+  "level": 14,
+  "name": "abra",
+  "omoves": [
+    {
+      "id": 165,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "abra": 32
+  },
+  "symbol": "",
+  "team": {
+    "gPXkwjbS": 353,
+    "btniy6hT": 188,
+    "8hJBLSpN": 202,
+    "4IpZk2T4": 218,
+    "rj1tASgO": 202,
+    "UmKOagak": 186
+  },
+  "la": {
+    "gPXkwjbS": 100,
+    "btniy6hT": 59,
+    "8hJBLSpN": 63,
+    "4IpZk2T4": 62,
+    "rj1tASgO": 58,
+    "UmKOagak": 52
+  }
+}

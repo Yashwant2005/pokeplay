@@ -1,0 +1,134 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "7058516053": true,
+    "5935984615": true
+  },
+  "status": {},
+  "c": "KE6zbWdZ",
+  "chp": 343,
+  "o": "dywy4tBo",
+  "ohp": 220,
+  "cid": "7058516053",
+  "oid": "5935984615",
+  "tem": {
+    "KE6zbWdZ": 343,
+    "b8tDewTn": 296,
+    "NKztvgnG": 293,
+    "8HAnFBbX": 284,
+    "kBbvwA1l": 379,
+    "dp9wUkNP": 356
+  },
+  "la": {
+    "KE6zbWdZ": 100,
+    "b8tDewTn": 100,
+    "NKztvgnG": 100,
+    "8HAnFBbX": 100,
+    "kBbvwA1l": 100,
+    "dp9wUkNP": 100
+  },
+  "tem2": {
+    "CEj9lCP4": 0,
+    "QZ8J9qLh": 207,
+    "SUnG6AC0": 126,
+    "dywy4tBo": 220,
+    "JUIJ8RwT": 139,
+    "A4qEVh4E": 13
+  },
+  "la2": {
+    "CEj9lCP4": 1,
+    "QZ8J9qLh": 53,
+    "SUnG6AC0": 31,
+    "dywy4tBo": 57,
+    "JUIJ8RwT": 35,
+    "A4qEVh4E": 1
+  },
+  "ot": {
+    "undefined": 13
+  },
+  "usedMoves": {
+    "KE6zbWdZ": [
+      "401",
+      "56"
+    ],
+    "CEj9lCP4": [
+      "93"
+    ]
+  },
+  "megas": {
+    "KE6zbWdZ": "gyarados"
+  },
+  "entryHazards": {
+    "7058516053": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "5935984615": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "queuedActions": [],
+  "bideCycle": 2,
+  "bideState": {},
+  "statStages": {
+    "KE6zbWdZ": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "CEj9lCP4": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  },
+  "turnHits": {
+    "CEj9lCP4": {
+      "damage": 13,
+      "category": "special",
+      "from": "KE6zbWdZ",
+      "move": "hydro pump"
+    }
+  },
+  "lastMoveByPass": {
+    "KE6zbWdZ": "56",
+    "CEj9lCP4": "93"
+  },
+  "runs": [
+    5935984615,
+    7058516053
+  ]
+}

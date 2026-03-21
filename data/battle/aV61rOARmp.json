@@ -1,0 +1,70 @@
+{
+  "c": "cfBHIXq4",
+  "org": "no",
+  "chp": 112,
+  "ochp": 136,
+  "ohp": 136,
+  "ivs": {
+    "hp": 12,
+    "attack": 26,
+    "defense": 12,
+    "special_attack": 20,
+    "special_defense": 10,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "aLQwqQS1",
+  "level": 36,
+  "name": "basculegion-female",
+  "omoves": [
+    {
+      "id": 453,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 242,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "basculegion-female": 136
+  },
+  "symbol": "",
+  "team": {
+    "cfBHIXq4": 112,
+    "By51g7on": 169,
+    "fc4Z3rKh": 92,
+    "djIFsPnu": 116,
+    "sUHb2dTI": 50,
+    "lknTQtK4": 77
+  },
+  "la": {
+    "cfBHIXq4": 37,
+    "By51g7on": 48,
+    "fc4Z3rKh": 37,
+    "djIFsPnu": 38,
+    "sUHb2dTI": 21,
+    "lknTQtK4": 32
+  }
+}

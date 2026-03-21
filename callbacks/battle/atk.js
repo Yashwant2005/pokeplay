@@ -48,6 +48,10 @@ const {
   claimTrainerRankRewards,
   getTrainerLevel
 } = require('../../utils/trainer_rank_rewards');
+const {
+  syncBattleFormAndAbility,
+  revertTrackedFormsOnBattleEnd
+} = require('../../utils/battle_forms');
 
 function register_012_atk(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -318,6 +322,8 @@ if(!move1 || !p){
   ctx.answerCbQuery('Battle desynced. Use /reset_battle.')
   return
 }
+const base = pokestats[battleData.name]
+const base2 = pokestats[p.name]
 const uname = he.encode(ctx.from.first_name)
 const opponentPass = battleData.opass || 'wild-opponent'
 battleData.opass = opponentPass
@@ -396,8 +402,8 @@ if (wildUnawareModifiers.attackerActivated) {
 if (wildUnawareModifiers.defenderActivated) {
   wildUnawareMessage += '\n<b>✶ '+c(p.name)+'</b>\'s <b>Unaware</b> activated!'
 }
-const playerMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: playerHeldItemName, moveName: playerMoveLabel, moveType: move1.type })
-const wildMoveType = getEffectiveMoveType({ battleData, pokemonName: battleData.name, heldItem: wildHeldItemName, moveName: wildMoveLabel, moveType: move2.type })
+const playerMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: playerHeldItemName, moveName: move1.name, moveType: move1.type })
+const wildMoveType = getEffectiveMoveType({ battleData, pokemonName: battleData.name, heldItem: wildHeldItemName, moveName: move2.name, moveType: move2.type })
 const wildTypes = getEffectivePokemonTypes({ pokemonName: battleData.name, pokemonTypes: pokes[battleData.name]?.types || [], heldItem: wildHeldItemName, abilityName: wildAbility })
 const playerTypes = getEffectivePokemonTypes({ pokemonName: p.name, pokemonTypes: pokes[p.name]?.types || [], heldItem: playerHeldItemName, abilityName: playerAbility })
 const wildDisplayName = getEffectivePokemonDisplayName({ pokemonName: battleData.name, abilityName: wildAbility, heldItem: wildHeldItemName })
@@ -1222,6 +1228,7 @@ if(newTrainerLevel > oldTrainerLevel){
 }
 data.extra.hunting = false
 revertPowerConstructFormsOnBattleEnd(battleData, data)
+revertTrackedFormsOnBattleEnd(battleData, data)
 await saveUserData2(ctx.from.id,data)
 const messageData = await loadMessageData();
 if(messageData[ctx.from.id]) {
@@ -1370,6 +1377,7 @@ await saveMessageData(messageData)
 }
 data.extra.hunting = false
 revertPowerConstructFormsOnBattleEnd(battleData, data)
+revertTrackedFormsOnBattleEnd(battleData, data)
 await saveUserData2(ctx.from.id,data)
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(wildDisplayName)+'</b> Used <b>'+c(wildMoveLabel)+'</b> And Dealt <b>'+c(playerDisplayName)+'</b> <code>'+damage2+'</code> HP.'+enemyAttackAbilityMsg+'\n\n- <b>'+c(playerDisplayName)+'</b> has fainted And You Got <b>Defeated</b>.',{parse_mode:'html'})
 return
@@ -1480,17 +1488,12 @@ msg += '\n<b>Level :</b> '+clevel+' | <b>HP :</b> '+battleData.chp+'/'+postPlaye
 msg += '\n<code>'+Bar(postPlayerStats.hp,battleData.chp)+'</code>'
 msg += '\n\n<b>Moves :</b>'
 const moves = []
- for(const move2 of p.moves){
- let move = dmoves[move2]
- const displayMoveName = getEffectiveMoveName({
-   pokemonName: p.name,
-   heldItem: getBattleHeldItemName({ battleData, pass: p.pass }),
-   moveName: move && move.name
- }) || (move && move.name);
- const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name)
- msg += '\n• <b>'+c(displayMoveName)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
- moves.push(''+move2+'')
- }
+for(const move2 of p.moves){
+let move = dmoves[move2]
+const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name)
+msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
+moves.push(''+move2+'')
+}
 msg += '\n\n<i>Choose Your Next Move:</i>'
   const buttons = moves.map((word) => {
     const moveInfo = dmoves[word];

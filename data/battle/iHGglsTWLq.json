@@ -1,0 +1,55 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 145,
+  "ochp": -385,
+  "ohp": 24,
+  "ivs": {
+    "hp": 17,
+    "attack": 16,
+    "defense": 11,
+    "special_attack": 14,
+    "special_defense": 23,
+    "speed": 7
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "f5sZzrkV",
+  "level": 9,
+  "name": "pichu",
+  "omoves": [
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "pichu": -385
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 145,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 64,
+    "SmX3uZcP": 219,
+    "Ih35m8uD": 158,
+    "Z86cfwaX": 215
+  },
+  "la": {
+    "ytrF7ks6": 40,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 23,
+    "SmX3uZcP": 34,
+    "Ih35m8uD": 24,
+    "Z86cfwaX": 33
+  }
+}

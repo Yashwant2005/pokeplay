@@ -1,0 +1,61 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 254,
+  "ochp": -922,
+  "ohp": 61,
+  "ivs": {
+    "hp": 15,
+    "attack": 19,
+    "defense": 10,
+    "special_attack": 14,
+    "special_defense": 12,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "7wDcmEvv",
+  "level": 24,
+  "name": "roselia",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 5
+    },
+    {
+      "id": 345,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "roselia": -922
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 254,
+    "J4F20ScC": 64,
+    "dnSoMyRy": 111,
+    "Miai3ctV": 71
+  },
+  "la": {
+    "Xb9OMUmh": 91,
+    "J4F20ScC": 19,
+    "dnSoMyRy": 39,
+    "Miai3ctV": 23
+  }
+}

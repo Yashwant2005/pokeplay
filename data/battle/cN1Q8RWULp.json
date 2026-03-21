@@ -1,0 +1,70 @@
+{
+  "c": "XxmBb8ir",
+  "org": "no",
+  "chp": 187,
+  "ochp": 63,
+  "ohp": 63,
+  "ivs": {
+    "hp": 22,
+    "attack": 15,
+    "defense": 20,
+    "special_attack": 20,
+    "special_defense": 20,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "A5WYNHuA",
+  "level": 22,
+  "name": "kecleon",
+  "omoves": [
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 13
+    },
+    {
+      "id": 185,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 60,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 21
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "kecleon": 63
+  },
+  "symbol": "",
+  "team": {
+    "XxmBb8ir": 187,
+    "BDoHP5wy": 122,
+    "z8uGifBR": 201,
+    "puss3zIS": 347,
+    "OchBd1I4": 249,
+    "bMyjfqev": 123
+  },
+  "la": {
+    "XxmBb8ir": 60,
+    "BDoHP5wy": 50,
+    "z8uGifBR": 55,
+    "puss3zIS": 59,
+    "OchBd1I4": 61,
+    "bMyjfqev": 47
+  }
+}

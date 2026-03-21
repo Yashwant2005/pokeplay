@@ -1,0 +1,70 @@
+{
+  "c": "jrSKvJQa",
+  "org": "no",
+  "chp": 114,
+  "ochp": -96,
+  "ohp": 36,
+  "ivs": {
+    "hp": 22,
+    "attack": 18,
+    "defense": 24,
+    "special_attack": 23,
+    "special_defense": 21,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "s6q7ShAG",
+  "level": 10,
+  "name": "seviper",
+  "omoves": [
+    {
+      "id": 35,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 122,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    },
+    {
+      "id": 342,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "seviper": -96
+  },
+  "symbol": "",
+  "team": {
+    "jrSKvJQa": 114,
+    "CuGtMWDv": 227,
+    "UmyfORGQ": 198,
+    "lmjdKxgm": 133,
+    "Kfajk3g4": 161,
+    "50uITbfe": 173
+  },
+  "la": {
+    "jrSKvJQa": 41,
+    "CuGtMWDv": 65,
+    "UmyfORGQ": 59,
+    "lmjdKxgm": 33,
+    "Kfajk3g4": 53,
+    "50uITbfe": 49
+  }
+}

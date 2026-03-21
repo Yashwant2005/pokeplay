@@ -1,0 +1,56 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 124,
+  "ochp": -444,
+  "ohp": 21,
+  "ivs": {
+    "hp": 11,
+    "attack": 13,
+    "defense": 15,
+    "special_attack": 20,
+    "special_defense": 18,
+    "speed": 29
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "9AO2DFIr",
+  "level": 6,
+  "name": "cottonee",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 584,
+      "learn_method": "level-up",
+      "level_learned_at": 3
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "cottonee": -444
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 124,
+    "J4F20ScC": 35,
+    "dnSoMyRy": 106,
+    "Miai3ctV": 36
+  },
+  "la": {
+    "Xb9OMUmh": 44,
+    "J4F20ScC": 10,
+    "dnSoMyRy": 37,
+    "Miai3ctV": 10
+  }
+}

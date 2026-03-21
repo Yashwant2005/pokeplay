@@ -1,0 +1,70 @@
+{
+  "c": "5BeHDj2C",
+  "org": "no",
+  "chp": 39,
+  "ochp": -73,
+  "ohp": 87,
+  "ivs": {
+    "hp": 18,
+    "attack": 12,
+    "defense": 15,
+    "special_attack": 16,
+    "special_defense": 19,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Impish",
+  "cpass": "2pGbLTWH",
+  "level": 29,
+  "name": "houndoom",
+  "omoves": [
+    {
+      "id": 422,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 517,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 123,
+      "learn_method": "level-up",
+      "level_learned_at": 8
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "houndoom": -73
+  },
+  "symbol": "",
+  "team": {
+    "5BeHDj2C": 39,
+    "oogYaWCp": 193,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "oADdEEoS": 111,
+    "xPNmpDgC": 122
+  },
+  "la": {
+    "5BeHDj2C": 53,
+    "oogYaWCp": 50,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "oADdEEoS": 39,
+    "xPNmpDgC": 42
+  }
+}

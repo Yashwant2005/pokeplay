@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 128,
+  "ochp": -85,
+  "ohp": 150,
+  "ivs": {
+    "hp": 14,
+    "attack": 15,
+    "defense": 9,
+    "special_attack": 18,
+    "special_defense": 11,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "ZOblMKI2",
+  "level": 42,
+  "name": "appletun",
+  "omoves": [
+    {
+      "id": 331,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 787,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 34,
+      "learn_method": "level-up",
+      "level_learned_at": 32
+    },
+    {
+      "id": 406,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "appletun": -85
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 128
+  },
+  "la": {
+    "ZpYcR2c0": 46
+  }
+}

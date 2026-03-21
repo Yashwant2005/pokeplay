@@ -1,0 +1,68 @@
+{
+  "c": "3zK8PVU5",
+  "org": "no",
+  "chp": 123,
+  "ochp": -220,
+  "ohp": 94,
+  "ivs": {
+    "hp": 19,
+    "attack": 16,
+    "defense": 16,
+    "special_attack": 17,
+    "special_defense": 14,
+    "speed": 24
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "4FEZHvmn",
+  "level": 34,
+  "name": "persian",
+  "omoves": [
+    {
+      "id": 6,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 44,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 372,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 31
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "persian": -220
+  },
+  "symbol": "",
+  "team": {
+    "3zK8PVU5": 123,
+    "QnXq8TIw": 111,
+    "W3exZd5k": 58,
+    "OWUQ86Li": 13,
+    "oJYApvHa": 222
+  },
+  "la": {
+    "3zK8PVU5": 59,
+    "QnXq8TIw": 44,
+    "W3exZd5k": 18,
+    "OWUQ86Li": 1,
+    "oJYApvHa": 64
+  }
+}

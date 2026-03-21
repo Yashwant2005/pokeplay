@@ -1,0 +1,70 @@
+{
+  "c": "ka283FJN",
+  "org": "no",
+  "chp": 88,
+  "ochp": -70,
+  "ohp": 54,
+  "ivs": {
+    "hp": 11,
+    "attack": 14,
+    "defense": 15,
+    "special_attack": 14,
+    "special_defense": 20,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "IFMeUFzR",
+  "level": 22,
+  "name": "honedge",
+  "omoves": [
+    {
+      "id": 210,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 425,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    },
+    {
+      "id": 332,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "honedge": -70
+  },
+  "symbol": "",
+  "team": {
+    "ka283FJN": 88,
+    "fe4s1SV4": 140,
+    "p6sCfffS": 153,
+    "HKmqM4sZ": 66,
+    "NwV4rdsE": 35,
+    "CcH25gY5": 13
+  },
+  "la": {
+    "ka283FJN": 27,
+    "fe4s1SV4": 51,
+    "p6sCfffS": 62,
+    "HKmqM4sZ": 14,
+    "NwV4rdsE": 7,
+    "CcH25gY5": 1
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "c": "J4F20ScC",
+  "org": "no",
+  "chp": 22,
+  "ochp": 277,
+  "ohp": 277,
+  "ivs": {
+    "hp": 18,
+    "attack": 19,
+    "defense": 19,
+    "special_attack": 16,
+    "special_defense": 15,
+    "speed": 7
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naughty",
+  "cpass": "Bz63nDZy",
+  "level": 64,
+  "name": "giratina-altered",
+  "omoves": [
+    {
+      "id": 163,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    },
+    {
+      "id": 421,
+      "learn_method": "level-up",
+      "level_learned_at": 42
+    },
+    {
+      "id": 396,
+      "learn_method": "level-up",
+      "level_learned_at": 56
+    },
+    {
+      "id": 337,
+      "learn_method": "level-up",
+      "level_learned_at": 63
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "giratina-altered": 277
+  },
+  "symbol": "",
+  "team": {
+    "J4F20ScC": 22,
+    "Xb9OMUmh": 126
+  },
+  "la": {
+    "J4F20ScC": 5,
+    "Xb9OMUmh": 43
+  }
+}

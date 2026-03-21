@@ -1,0 +1,54 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 28,
+  "ochp": -50,
+  "ohp": 23,
+  "ivs": {
+    "hp": 14,
+    "attack": 19,
+    "defense": 18,
+    "special_attack": 21,
+    "special_defense": 15,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Calm",
+  "cpass": "Zz8ufPP2",
+  "level": 8,
+  "name": "staryu",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "staryu": -50
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 28,
+    "F5chvUKh": 63,
+    "LG4mTUpP": 63
+  },
+  "la": {
+    "jpIgbHmU": 18,
+    "F5chvUKh": 18,
+    "LG4mTUpP": 21
+  }
+}

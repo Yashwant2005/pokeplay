@@ -1,0 +1,60 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 124,
+  "ochp": -131,
+  "ohp": 109,
+  "ivs": {
+    "hp": 10,
+    "attack": 17,
+    "defense": 10,
+    "special_attack": 21,
+    "special_defense": 10,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Relaxed",
+  "cpass": "OrE3c3RV",
+  "level": 33,
+  "name": "quagsire",
+  "omoves": [
+    {
+      "id": 55,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 341,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 21,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 401,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "quagsire": -131
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 124
+  },
+  "la": {
+    "ZpYcR2c0": 39
+  }
+}

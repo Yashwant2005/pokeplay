@@ -1,0 +1,64 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 217,
+  "ochp": -135,
+  "ohp": 114,
+  "ivs": {
+    "hp": 17,
+    "attack": 21,
+    "defense": 21,
+    "special_attack": 24,
+    "special_defense": 21,
+    "speed": 22
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "XlOestdP",
+  "level": 39,
+  "name": "bellossom",
+  "omoves": [
+    {
+      "id": 72,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 80,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 202,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 585,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "bellossom": -135
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 217,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 55,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

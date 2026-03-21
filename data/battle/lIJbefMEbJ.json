@@ -1,0 +1,60 @@
+{
+  "c": "jpIgbHmU",
+  "org": "no",
+  "chp": 60,
+  "ochp": -283,
+  "ohp": 30,
+  "ivs": {
+    "hp": 12,
+    "attack": 19,
+    "defense": 24,
+    "special_attack": 22,
+    "special_defense": 16,
+    "speed": 19
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Naive",
+  "cpass": "gOwP5uVp",
+  "level": 10,
+  "name": "oddish",
+  "omoves": [
+    {
+      "id": 71,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 51,
+      "learn_method": "level-up",
+      "level_learned_at": 4
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "oddish": -283
+  },
+  "symbol": "",
+  "team": {
+    "jpIgbHmU": 60,
+    "F5chvUKh": 87,
+    "LG4mTUpP": 71,
+    "UiiozQZj": 77,
+    "XhF014r3": 81,
+    "XQu3Dlrw": 57
+  },
+  "la": {
+    "jpIgbHmU": 31,
+    "F5chvUKh": 26,
+    "LG4mTUpP": 24,
+    "UiiozQZj": 18,
+    "XhF014r3": 28,
+    "XQu3Dlrw": 25
+  }
+}

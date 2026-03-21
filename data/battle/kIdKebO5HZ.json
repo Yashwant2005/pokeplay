@@ -1,0 +1,70 @@
+{
+  "c": "o42xJA7T",
+  "org": "no",
+  "chp": 104,
+  "ochp": 127,
+  "ohp": 127,
+  "ivs": {
+    "hp": 13,
+    "attack": 13,
+    "defense": 19,
+    "special_attack": 15,
+    "special_defense": 14,
+    "speed": 12
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Rash",
+  "cpass": "efqaBrRy",
+  "level": 38,
+  "name": "corviknight",
+  "omoves": [
+    {
+      "id": 681,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 31,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 365,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 65,
+      "learn_method": "level-up",
+      "level_learned_at": 34
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "corviknight": 127
+  },
+  "symbol": "",
+  "team": {
+    "o42xJA7T": 104,
+    "NIWJNju8": 203,
+    "LUmPxcjc": 181,
+    "qYWX0hsn": 76,
+    "mDMhE2I9": 47,
+    "tBtaYLMw": 202
+  },
+  "la": {
+    "o42xJA7T": 36,
+    "NIWJNju8": 64,
+    "LUmPxcjc": 57,
+    "qYWX0hsn": 31,
+    "mDMhE2I9": 17,
+    "tBtaYLMw": 61
+  }
+}

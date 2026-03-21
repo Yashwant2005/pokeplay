@@ -1,0 +1,70 @@
+{
+  "c": "YXw2z1Y1",
+  "org": "no",
+  "chp": 46,
+  "ochp": -14,
+  "ohp": 105,
+  "ivs": {
+    "hp": 16,
+    "attack": 10,
+    "defense": 13,
+    "special_attack": 14,
+    "special_defense": 17,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "qF1j1NIV",
+  "level": 39,
+  "name": "eelektrik",
+  "omoves": [
+    {
+      "id": 451,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 20,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 51,
+      "learn_method": "level-up",
+      "level_learned_at": 19
+    },
+    {
+      "id": 435,
+      "learn_method": "level-up",
+      "level_learned_at": 29
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "eelektrik": -14
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 0,
+    "USP6eG1Z": 52,
+    "i3Zbowkn": 75,
+    "ZZds2WM5": 52,
+    "YXw2z1Y1": 46,
+    "9jvifJC5": 89
+  },
+  "la": {
+    "AfrJyFT3": 20,
+    "USP6eG1Z": 18,
+    "i3Zbowkn": 26,
+    "ZZds2WM5": 16,
+    "YXw2z1Y1": 12,
+    "9jvifJC5": 33
+  }
+}

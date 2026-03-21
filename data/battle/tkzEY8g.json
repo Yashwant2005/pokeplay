@@ -1,0 +1,142 @@
+{
+  "set": {
+    "max_poke": 6,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": true,
+    "preview": "no",
+    "pin": false,
+    "type_effects": true,
+    "dual_type": true,
+    "allow_regions": [],
+    "ban_regions": [],
+    "allow_types": [],
+    "ban_types": [],
+    "allow_legendary": true,
+    "allow_non_legendary": true
+  },
+  "users": {
+    "8551864967": true,
+    "7577674783": true
+  },
+  "tempTeams": {
+    "8551864967": [
+      "xqCpPTJS",
+      "zDWmzo6r",
+      "if7Mbojb",
+      "F0ZXBRIx",
+      "MsVUvHOO",
+      "0IPzEJAu"
+    ],
+    "7577674783": [
+      "8kaUQuZx",
+      "1IPhMvBn",
+      "7MCZA9Su",
+      "ysVwtg5D",
+      "8HJ6iV5k",
+      "4cCrIxsi"
+    ]
+  },
+  "tempBattle": true,
+  "bword": "tkzEY8g",
+  "status": {},
+  "c": "xqCpPTJS",
+  "chp": 374,
+  "o": "4cCrIxsi",
+  "ohp": 194,
+  "cid": "8551864967",
+  "oid": "7577674783",
+  "tem": {
+    "xqCpPTJS": 374,
+    "zDWmzo6r": 233,
+    "if7Mbojb": 300,
+    "F0ZXBRIx": 248,
+    "MsVUvHOO": 241,
+    "0IPzEJAu": 243
+  },
+  "la": {
+    "xqCpPTJS": 100,
+    "zDWmzo6r": 100,
+    "if7Mbojb": 100,
+    "F0ZXBRIx": 100,
+    "MsVUvHOO": 100,
+    "0IPzEJAu": 100
+  },
+  "tem2": {
+    "8kaUQuZx": 468,
+    "1IPhMvBn": 269,
+    "7MCZA9Su": 261,
+    "ysVwtg5D": 320,
+    "8HJ6iV5k": 217,
+    "4cCrIxsi": 194
+  },
+  "la2": {
+    "8kaUQuZx": 100,
+    "1IPhMvBn": 100,
+    "7MCZA9Su": 100,
+    "ysVwtg5D": 100,
+    "8HJ6iV5k": 100,
+    "4cCrIxsi": 100
+  },
+  "ot": {
+    "undefined": 468
+  },
+  "usedMoves": {
+    "xqCpPTJS": [
+      "38",
+      "566"
+    ]
+  },
+  "queuedActions": [
+    {
+      "cid": 7577674783,
+      "c": "4cCrIxsi",
+      "type": "move",
+      "id": "200"
+    }
+  ],
+  "bideCycle": 2,
+  "bideState": {},
+  "turnHits": {
+    "4cCrIxsi": {
+      "damage": 121,
+      "category": "physical",
+      "from": "xqCpPTJS",
+      "move": "phantom force"
+    }
+  },
+  "statStages": {
+    "xqCpPTJS": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "8HJ6iV5k": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "4cCrIxsi": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  }
+}

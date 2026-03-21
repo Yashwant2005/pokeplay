@@ -1,0 +1,50 @@
+{
+  "c": "YSv2n2Fh",
+  "org": "no",
+  "chp": 81,
+  "ochp": -64,
+  "ohp": 42,
+  "ivs": {
+    "hp": 14,
+    "attack": 15,
+    "defense": 12,
+    "special_attack": 12,
+    "special_defense": 11,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Gentle",
+  "cpass": "ZLK50XXT",
+  "level": 20,
+  "name": "magnemite",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 84,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "magnemite": -64
+  },
+  "symbol": "",
+  "team": {
+    "YSv2n2Fh": 81
+  },
+  "la": {
+    "YSv2n2Fh": 34
+  }
+}

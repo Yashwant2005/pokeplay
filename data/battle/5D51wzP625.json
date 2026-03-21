@@ -1,0 +1,70 @@
+{
+  "c": "ka283FJN",
+  "org": "no",
+  "chp": 8,
+  "ochp": 0,
+  "ohp": 73,
+  "ivs": {
+    "hp": 14,
+    "attack": 28,
+    "defense": 15,
+    "special_attack": 17,
+    "special_defense": 13,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Adamant",
+  "cpass": "DGhF8psl",
+  "level": 27,
+  "name": "wormadam-sandy",
+  "omoves": [
+    {
+      "id": 450,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 237,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 23
+    },
+    {
+      "id": 350,
+      "learn_method": "level-up",
+      "level_learned_at": 26
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "wormadam-sandy": 0
+  },
+  "symbol": "",
+  "team": {
+    "ka283FJN": 8,
+    "fe4s1SV4": 140,
+    "p6sCfffS": 153,
+    "HKmqM4sZ": 66,
+    "NwV4rdsE": 35,
+    "CcH25gY5": 13
+  },
+  "la": {
+    "ka283FJN": 17,
+    "fe4s1SV4": 51,
+    "p6sCfffS": 62,
+    "HKmqM4sZ": 14,
+    "NwV4rdsE": 7,
+    "CcH25gY5": 1
+  }
+}

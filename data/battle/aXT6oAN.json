@@ -1,0 +1,125 @@
+{
+  "set": {
+    "max_poke": 6,
+    "dual_type": true,
+    "min_6l": 0,
+    "max_6l": 6,
+    "min_level": 1,
+    "max_level": 100,
+    "switch": true,
+    "key_item": true,
+    "sandbox": false,
+    "random": false,
+    "preview": "no",
+    "pin": false,
+    "ban_types": [],
+    "allow_types": [],
+    "ban_regions": [],
+    "allow_regions": [],
+    "type_effects": true
+  },
+  "users": {
+    "7058516053": true,
+    "7074080974": true
+  },
+  "status": {},
+  "c": "xKhM6TwN",
+  "chp": 0,
+  "o": "NKztvgnG",
+  "ohp": 138,
+  "cid": "7074080974",
+  "oid": "7058516053",
+  "tem": {
+    "xKhM6TwN": 0
+  },
+  "la": {
+    "xKhM6TwN": 5
+  },
+  "tem2": {
+    "b8tDewTn": 271,
+    "rgGXc2wr": 170,
+    "A64HJ0Bh": 13,
+    "NKztvgnG": 138,
+    "8HAnFBbX": 147,
+    "dp9wUkNP": 356
+  },
+  "la2": {
+    "b8tDewTn": 100,
+    "rgGXc2wr": 59,
+    "A64HJ0Bh": 1,
+    "NKztvgnG": 49,
+    "8HAnFBbX": 50,
+    "dp9wUkNP": 100
+  },
+  "ot": {
+    "undefined": 19
+  },
+  "usedMoves": {
+    "xKhM6TwN": [
+      "10"
+    ],
+    "NKztvgnG": [
+      "83"
+    ]
+  },
+  "queuedActions": [],
+  "bideCycle": 3,
+  "bideState": {},
+  "turnHits": {
+    "xKhM6TwN": {
+      "damage": 19,
+      "category": "special",
+      "from": "NKztvgnG",
+      "move": "fire spin"
+    }
+  },
+  "lastMoveByPass": {
+    "xKhM6TwN": "10",
+    "NKztvgnG": "83"
+  },
+  "entryHazards": {
+    "7058516053": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    },
+    "7074080974": {
+      "spikes": 0,
+      "toxicSpikes": 0,
+      "stealthRock": false,
+      "stickyWeb": false,
+      "steelSurge": false
+    }
+  },
+  "statStages": {
+    "xKhM6TwN": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "rgGXc2wr": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    },
+    "NKztvgnG": {
+      "attack": 0,
+      "defense": 0,
+      "special_attack": 0,
+      "special_defense": 0,
+      "speed": 0,
+      "accuracy": 0,
+      "evasion": 0
+    }
+  }
+}

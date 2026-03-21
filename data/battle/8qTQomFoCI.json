@@ -1,0 +1,70 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 135,
+  "ochp": -517,
+  "ohp": 79,
+  "ivs": {
+    "hp": 20,
+    "attack": 13,
+    "defense": 16,
+    "special_attack": 9,
+    "special_defense": 20,
+    "speed": 10
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quiet",
+  "cpass": "77zlnZCr",
+  "level": 30,
+  "name": "sneasel",
+  "omoves": [
+    {
+      "id": 10,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 98,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 232,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 196,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "sneasel": -517
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 135,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 64,
+    "Az7eBnWK": 13,
+    "Z86cfwaX": 215,
+    "Ih35m8uD": 158
+  },
+  "la": {
+    "ytrF7ks6": 41,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 23,
+    "Az7eBnWK": 1,
+    "Z86cfwaX": 33,
+    "Ih35m8uD": 24
+  }
+}

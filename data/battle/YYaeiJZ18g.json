@@ -1,0 +1,60 @@
+{
+  "c": "AfrJyFT3",
+  "org": "no",
+  "chp": 11,
+  "ochp": -3,
+  "ohp": 39,
+  "ivs": {
+    "hp": 14,
+    "attack": 12,
+    "defense": 9,
+    "special_attack": 19,
+    "special_defense": 19,
+    "speed": 18
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "qj6JC6wO",
+  "level": 11,
+  "name": "oricorio-baile",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 6
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "oricorio-baile": -3
+  },
+  "symbol": "",
+  "team": {
+    "AfrJyFT3": 11,
+    "USP6eG1Z": 50,
+    "i3Zbowkn": 65,
+    "ZZds2WM5": 49,
+    "dYk06Ntb": 49,
+    "YXw2z1Y1": 34
+  },
+  "la": {
+    "AfrJyFT3": 15,
+    "USP6eG1Z": 17,
+    "i3Zbowkn": 22,
+    "ZZds2WM5": 15,
+    "dYk06Ntb": 19,
+    "YXw2z1Y1": 8
+  }
+}

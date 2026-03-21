@@ -1,0 +1,50 @@
+{
+  "c": "xKhM6TwN",
+  "org": "no",
+  "chp": 0,
+  "ochp": 24,
+  "ohp": 41,
+  "ivs": {
+    "hp": 24,
+    "attack": 22,
+    "defense": 26,
+    "special_attack": 21,
+    "special_defense": 15,
+    "speed": 16
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Bold",
+  "cpass": "vCEFqrXL",
+  "level": 14,
+  "name": "farfetchd",
+  "omoves": [
+    {
+      "id": 64,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 210,
+      "learn_method": "level-up",
+      "level_learned_at": 10
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "farfetchd": 24
+  },
+  "symbol": "",
+  "team": {
+    "xKhM6TwN": 0
+  },
+  "la": {
+    "xKhM6TwN": 5
+  }
+}

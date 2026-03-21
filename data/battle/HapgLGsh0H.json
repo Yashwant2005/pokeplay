@@ -1,0 +1,60 @@
+{
+  "c": "kOymg0ik",
+  "org": "no",
+  "chp": 0,
+  "ochp": 91,
+  "ohp": 103,
+  "ivs": {
+    "hp": 14,
+    "attack": 15,
+    "defense": 15,
+    "special_attack": 11,
+    "special_defense": 11,
+    "speed": 14
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Timid",
+  "cpass": "qjUJgOyi",
+  "level": 33,
+  "name": "gurdurr",
+  "omoves": [
+    {
+      "id": 1,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 88,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 157,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 21,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "gurdurr": 91
+  },
+  "symbol": "",
+  "team": {
+    "kOymg0ik": 0
+  },
+  "la": {
+    "kOymg0ik": 1
+  }
+}

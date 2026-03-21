@@ -1,0 +1,66 @@
+{
+  "c": "Xb9OMUmh",
+  "org": "no",
+  "chp": 70,
+  "ochp": -59,
+  "ohp": 95,
+  "ivs": {
+    "hp": 20,
+    "attack": 22,
+    "defense": 6,
+    "special_attack": 10,
+    "special_defense": 16,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Sassy",
+  "cpass": "hU2qFSfe",
+  "level": 31,
+  "name": "linoone-galar",
+  "omoves": [
+    {
+      "id": 555,
+      "learn_method": "level-up",
+      "level_learned_at": 9
+    },
+    {
+      "id": 29,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 154,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 28
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "linoone-galar": -59
+  },
+  "symbol": "",
+  "team": {
+    "Xb9OMUmh": 70,
+    "J4F20ScC": 35,
+    "dnSoMyRy": 106,
+    "Miai3ctV": 36
+  },
+  "la": {
+    "Xb9OMUmh": 47,
+    "J4F20ScC": 10,
+    "dnSoMyRy": 37,
+    "Miai3ctV": 10
+  }
+}

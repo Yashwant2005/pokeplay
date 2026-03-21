@@ -1,0 +1,59 @@
+{
+  "c": "ytrF7ks6",
+  "org": "no",
+  "chp": 57,
+  "ochp": -180,
+  "ohp": 32,
+  "ivs": {
+    "hp": 14,
+    "attack": 15,
+    "defense": 17,
+    "special_attack": 12,
+    "special_defense": 19,
+    "speed": 17
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Serious",
+  "cpass": "xYVKWnAE",
+  "level": 13,
+  "name": "combee",
+  "omoves": [
+    {
+      "id": 16,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 450,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 522,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "combee": -180
+  },
+  "symbol": "",
+  "team": {
+    "ytrF7ks6": 57,
+    "bRnR7Krx": 197,
+    "9eeViYIB": 57
+  },
+  "la": {
+    "ytrF7ks6": 21,
+    "bRnR7Krx": 54,
+    "9eeViYIB": 20
+  }
+}

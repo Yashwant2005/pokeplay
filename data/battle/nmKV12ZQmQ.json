@@ -1,0 +1,70 @@
+{
+  "c": "rdxaq1mP",
+  "org": "no",
+  "chp": 87,
+  "ochp": -122,
+  "ohp": 79,
+  "ivs": {
+    "hp": 10,
+    "attack": 3,
+    "defense": 8,
+    "special_attack": 9,
+    "special_defense": 7,
+    "speed": 4
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lax",
+  "cpass": "NUpZA17v",
+  "level": 30,
+  "name": "wormadam-trash",
+  "omoves": [
+    {
+      "id": 450,
+      "learn_method": "level-up",
+      "level_learned_at": 15
+    },
+    {
+      "id": 237,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 93,
+      "learn_method": "level-up",
+      "level_learned_at": 23
+    },
+    {
+      "id": 429,
+      "learn_method": "level-up",
+      "level_learned_at": 26
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "wormadam-trash": -122
+  },
+  "symbol": "",
+  "team": {
+    "rdxaq1mP": 87,
+    "5klmJG1W": 124,
+    "SnJZzGbw": 161,
+    "C1czvzzB": 111,
+    "xPNmpDgC": 120,
+    "V585CIwf": 114
+  },
+  "la": {
+    "rdxaq1mP": 45,
+    "5klmJG1W": 42,
+    "SnJZzGbw": 50,
+    "C1czvzzB": 44,
+    "xPNmpDgC": 41,
+    "V585CIwf": 38
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "c": "ZpYcR2c0",
+  "org": "no",
+  "chp": 220,
+  "ochp": -353,
+  "ohp": 105,
+  "ivs": {
+    "hp": 14,
+    "attack": 15,
+    "defense": 19,
+    "special_attack": 18,
+    "special_defense": 14,
+    "speed": 13
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Lonely",
+  "cpass": "XIAZIGeo",
+  "level": 41,
+  "name": "claydol",
+  "omoves": [
+    {
+      "id": 246,
+      "learn_method": "level-up",
+      "level_learned_at": 18
+    },
+    {
+      "id": 326,
+      "learn_method": "level-up",
+      "level_learned_at": 27
+    },
+    {
+      "id": 414,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 120,
+      "learn_method": "level-up",
+      "level_learned_at": 33
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "claydol": -353
+  },
+  "symbol": "",
+  "team": {
+    "ZpYcR2c0": 220,
+    "HdebZPm6": 195,
+    "PU5y1yLN": 36
+  },
+  "la": {
+    "ZpYcR2c0": 50,
+    "HdebZPm6": 56,
+    "PU5y1yLN": 10
+  }
+}

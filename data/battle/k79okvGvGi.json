@@ -1,0 +1,70 @@
+{
+  "c": "ZHAL8qZB",
+  "org": "no",
+  "chp": 145,
+  "ochp": -179,
+  "ohp": 71,
+  "ivs": {
+    "hp": 16,
+    "attack": 15,
+    "defense": 14,
+    "special_attack": 13,
+    "special_defense": 14,
+    "speed": 11
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Quirky",
+  "cpass": "ZveQybjq",
+  "level": 26,
+  "name": "ivysaur",
+  "omoves": [
+    {
+      "id": 33,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 75,
+      "learn_method": "level-up",
+      "level_learned_at": 12
+    },
+    {
+      "id": 402,
+      "learn_method": "level-up",
+      "level_learned_at": 20
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "ivysaur": -179
+  },
+  "symbol": "",
+  "team": {
+    "ZHAL8qZB": 145,
+    "bmhgy5Ib": 33,
+    "i9ncUySE": 13,
+    "GtZ6KmSH": 114,
+    "BO3VNBUR": 90,
+    "0dwCNEDH": 312
+  },
+  "la": {
+    "ZHAL8qZB": 54,
+    "bmhgy5Ib": 7,
+    "i9ncUySE": 1,
+    "GtZ6KmSH": 38,
+    "BO3VNBUR": 34,
+    "0dwCNEDH": 100
+  }
+}

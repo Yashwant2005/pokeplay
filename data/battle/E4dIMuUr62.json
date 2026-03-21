@@ -1,0 +1,70 @@
+{
+  "c": "07qBEog3",
+  "org": "no",
+  "chp": 327,
+  "ochp": -300,
+  "ohp": 158,
+  "ivs": {
+    "hp": 12,
+    "attack": 18,
+    "defense": 20,
+    "special_attack": 14,
+    "special_defense": 12,
+    "speed": 15
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Mild",
+  "cpass": "r4MX3u58",
+  "level": 46,
+  "name": "rhydon",
+  "omoves": [
+    {
+      "id": 23,
+      "learn_method": "level-up",
+      "level_learned_at": 25
+    },
+    {
+      "id": 350,
+      "learn_method": "level-up",
+      "level_learned_at": 30
+    },
+    {
+      "id": 529,
+      "learn_method": "level-up",
+      "level_learned_at": 35
+    },
+    {
+      "id": 36,
+      "learn_method": "level-up",
+      "level_learned_at": 40
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "rhydon": -300
+  },
+  "symbol": "",
+  "team": {
+    "07qBEog3": 327,
+    "28OYkx4k": 370,
+    "saofW0Kt": 307,
+    "wmzoASLK": 369,
+    "DcxHeDLz": 268,
+    "fN62EOGX": 207
+  },
+  "la": {
+    "07qBEog3": 100,
+    "28OYkx4k": 100,
+    "saofW0Kt": 100,
+    "wmzoASLK": 100,
+    "DcxHeDLz": 100,
+    "fN62EOGX": 100
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "c": "kunjtho9",
+  "org": "no",
+  "chp": 28,
+  "ochp": 136,
+  "ohp": 136,
+  "ivs": {
+    "hp": 17,
+    "attack": 26,
+    "defense": 17,
+    "special_attack": 17,
+    "special_defense": 17,
+    "speed": 29
+  },
+  "evs": {
+    "hp": 0,
+    "attack": 0,
+    "defense": 0,
+    "special_attack": 0,
+    "special_defense": 0,
+    "speed": 0
+  },
+  "nat": "Brave",
+  "cpass": "OPf93EMr",
+  "level": 40,
+  "name": "calyrex-shadow",
+  "omoves": [
+    {
+      "id": 247,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 506,
+      "learn_method": "level-up",
+      "level_learned_at": 1
+    },
+    {
+      "id": 202,
+      "learn_method": "level-up",
+      "level_learned_at": 16
+    },
+    {
+      "id": 473,
+      "learn_method": "level-up",
+      "level_learned_at": 24
+    }
+  ],
+  "ded": [],
+  "ot": {
+    "calyrex-shadow": 136
+  },
+  "symbol": "",
+  "team": {
+    "kunjtho9": 28,
+    "SG6Axr1x": 182
+  },
+  "la": {
+    "kunjtho9": 7,
+    "SG6Axr1x": 53
+  }
+}

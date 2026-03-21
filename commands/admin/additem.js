@@ -181,6 +181,10 @@ function registerAddItemCommand(bot, deps) {
       }
       result = 'Added *' + amount + '* Jade Orb item(s).';
     } else if (['stone', 'stones', 'mega', 'megastone', 'mega-stone'].includes(item)) {
+      // To add new mega stones, make sure they are present in data/stones.json
+      // Example: /additem stone raichuite-x 1
+      // The following stones can ONLY be added via /additem, not via random rewards:
+      const ADDITEM_ONLY_STONES = ['zygardite','floetteite','zeraoraite','darkraiite','heatranite'];
       const parsed = parseNameAndAmount(args.slice(1));
       const stoneRaw = toKey(parsed.name).replace(/\s+/g, '-');
       const amount = parsed.amount;

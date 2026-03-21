@@ -73,6 +73,13 @@ function register_011_catch(bot, deps) {
       atUtc: new Date().toISOString()
     };
 
+    const bword = word(10);
+    let battleData = {};
+    try {
+      battleData = loadBattleData(bword);
+    } catch (error) {
+      battleData = {};
+    }
     const ev = {
       hp: 0,
       attack: 0,
@@ -130,13 +137,6 @@ function register_011_catch(bot, deps) {
       }
     }
     const moves = [];
-    const bword = word(10);
-    let battleData = {};
-    try {
-      battleData = loadBattleData(bword);
-    } catch (error) {
-      battleData = {};
-    }
     for (const move2 of p.moves) {
       const move = dmoves[move2];
       if (!move) continue;

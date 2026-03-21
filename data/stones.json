@@ -314,11 +314,6 @@
     "pokemon": "crabominable",
     "mega": "crabominable-mega"
   },
-  "darkraiite": {
-    "image": "https://files.catbox.moe/u15yr2.png",
-    "pokemon": "darkrai",
-    "mega": "darkrai-mega"
-  },
   "delphoxite": {
     "image": "https://files.catbox.moe/t08tt7.png",
     "pokemon": "delphox",
@@ -364,11 +359,6 @@
     "pokemon": "feraligatr",
     "mega": "feraligatr-mega"
   },
-  "floetteite": {
-    "image": "https://files.catbox.moe/vvp2ag.png",
-    "pokemon": "floette",
-    "mega": "floette-mega"
-  },
   "froslassite": {
     "image": "https://files.catbox.moe/7jd6kg.png",
     "pokemon": "froslass",
@@ -403,16 +393,6 @@
     "image": "https://files.catbox.moe/u4ofxw.png",
     "pokemon": "hawlucha",
     "mega": "hawlucha-mega"
-  },
-  "heatranite": {
-    "image": "https://files.catbox.moe/ovx10d.png",
-    "pokemon": "heatran",
-    "mega": "heatran-mega"
-  },
-  "lucarioite-z": {
-    "image": "https://files.catbox.moe/m3mllz.png",
-    "pokemon": "lucario",
-    "mega": "lucario-mega-z"
   },
   "magearnaite": {
     "image": "https://files.catbox.moe/xzlcv4.png",
@@ -488,15 +468,5 @@
     "image": "https://files.catbox.moe/ghh2cx.png",
     "pokemon": "victreebel",
     "mega": "victreebel-mega"
-  },
-  "zeraoraite": {
-    "image": "https://files.catbox.moe/rr6bi8.png",
-    "pokemon": "zeraora",
-    "mega": "zeraora-mega"
-  },
-  "zygardeite": {
-    "image": "https://files.catbox.moe/022k87.png",
-    "pokemon": "zygarde",
-    "mega": "zygarde-mega"
   }
 }

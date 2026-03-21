@@ -21,22 +21,35 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,ms
 return
 }
 if(item=='tms'){
-let msg = '*TMs ⚙*\n\n'
-if(!data.tms){
-data.tms = {}
-}
-for(const tm in data.tms){
-if(data.tms[tm] >0){
-let h = ''
-if(data.tms[tm] > 1){
-h = '('+data.tms[tm]+')'
-}
-const t = tms.tmnumber[String(tm)]
-msg += '• */TM'+tm+' -* '+c(dmoves[t].name)+' '+h+'\n'
-}
-}
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'markdown',reply_markup:{inline_keyboard:[rows]}})
-return
+  let msg = '*TMs ⚙*\n\n'
+  if(!data.tms){
+    data.tms = {}
+  }
+  // Pagination logic
+  const tmList = Object.keys(data.tms).filter(tm => data.tms[tm] > 0);
+  const page = ctx.callbackQuery.data.split('_')[3]*1 || 1;
+  const pageSize = 30;
+  const startIdx = (page - 1) * pageSize;
+  const endIdx = startIdx + pageSize;
+  if(page < 1 || startIdx > tmList.length) return;
+  const pageTMs = tmList.slice(startIdx, endIdx);
+  for(const tm of pageTMs){
+    let h = '';
+    if(data.tms[tm] > 1){
+      h = '('+data.tms[tm]+')';
+    }
+    const t = tms.tmnumber[String(tm)];
+    msg += '• */TM'+tm+' -* '+c(dmoves[t].name)+' '+h+'\n';
+  }
+  // Navigation buttons
+  const nav = [];
+  if(page > 1) nav.push({text:'<',callback_data:'poag_tms_'+ctx.from.id+'_'+(page-1)});
+  nav.push({text:'Page '+page,callback_data:'nouse'});
+  if(endIdx < tmList.length) nav.push({text:'>',callback_data:'poag_tms_'+ctx.from.id+'_'+(page+1)});
+  const allRows = [nav];
+  allRows.push(rows);
+  await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'markdown',reply_markup:{inline_keyboard:allRows}});
+  return;
 }
 if(item=='special'){
 const its = []
@@ -72,37 +85,40 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,me
 return
 }
 if(item=='transformational'){
-const sts = [...new Set(data.inv.stones)]
-const bt = [{text:'Back',callback_data:'poag_items_'+ctx.from.id+''}]
-if(sts.length < 1){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You does not have any *Transformational Item*',{parse_mode:'markdown',reply_markup:{inline_keyboard:[bt]}})
-return
-}
-const ore = []
-let message = 'You Have Following *Transformational Items* :-'
-const page = ctx.callbackQuery.data.split('_')[3]*1 || 1
-const pageSize = 15
-const startIdx = (page - 1) * pageSize;
-const endIdx = startIdx + pageSize;
-if(ctx.callbackQuery.data.split('_')[3]*1 < 1 || startIdx > sts.length){
-return
-}
-const stn = sts.slice(startIdx,endIdx)
-let b = startIdx
-for(const p of stn){
-ore.push({text:c(p),callback_data:'vyast:'+b+':'+ctx.from.id+''})
-b++;
-}
+  const sts = [...new Set(data.inv.stones)]
+  const bt = [{text:'Back',callback_data:'poag_items_'+ctx.from.id+''}]
+  if(sts.length < 1){
+    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You does not have any *Transformational Item*',{parse_mode:'markdown',reply_markup:{inline_keyboard:[bt]}})
+    return
+  }
+  const ore = []
+  let message = 'You Have Following *Mega Stones* (Transformational Items):\n\n'
+  const page = ctx.callbackQuery.data.split('_')[3]*1 || 1
+  const pageSize = 15
+  const startIdx = (page - 1) * pageSize;
+  const endIdx = startIdx + pageSize;
+  if(ctx.callbackQuery.data.split('_')[3]*1 < 1 || startIdx > sts.length){
+    return
+  }
+  const stn = sts.slice(startIdx,endIdx)
+  for(const p of stn){
+    let info = '';
+    if(stones && stones[p]){
+      info = ' (for '+c(stones[p].pokemon)+' → '+c(stones[p].mega)+')';
+    }
+    message += '• *'+c(p)+'*'+info+'\n';
+    ore.push({text:c(p),callback_data:'vyast:'+p+':'+ctx.from.id+''})
+  }
   const rows = [];
   for (let i = 0; i < ore.length; i += 3) {
     rows.push(ore.slice(i, i + 3));
-}
-if(sts.length > 15){
-rows.push([{text:'<',callback_data:'poag_transformational_'+ctx.from.id+'_'+(page-1)+''},{text:'>',callback_data:'poag_transformational_'+ctx.from.id+'_'+(page+1)+''}])
-}
-rows.push(bt)
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,message,{reply_markup:{inline_keyboard:rows},parse_mode:'markdown'})
-return
+  }
+  if(sts.length > 15){
+    rows.push([{text:'<',callback_data:'poag_transformational_'+ctx.from.id+'_'+(page-1)+''},{text:'>',callback_data:'poag_transformational_'+ctx.from.id+'_'+(page+1)+''}])
+  }
+  rows.push(bt)
+  await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,message,{reply_markup:{inline_keyboard:rows},parse_mode:'markdown'})
+  return
 }
 if(item=='evolution'){
 const sts = [...new Set(data.inv.evostones)]

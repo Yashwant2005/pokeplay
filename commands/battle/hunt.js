@@ -170,24 +170,21 @@ function registerHuntCommand(bot, deps) {
   
   
   if(Math.random()<0.00005){
-  
-  const st = Object.keys(stones)
-  
-  const stone = st[Math.floor(Math.random()*st.length)]
-  
-  await sendMessage(ctx,ctx.chat.id,stones[stone].image,{caption:'You found a *'+c(stone)+'*',parse_mode:'markdown'})
-  
-  if(!data.inv.stones){
-  
-  data.inv.stones = []
-  
+    // Only old stones (exclude new stones)
+    const NEW_STONES = [
+      'raichuite-x','raichuite-y','clefableite','victreebelite','starmieite','dragoniteite','meganiumite','feraligatrite','skarmoryite','chimechoite','absolite-z','staraptorite','garchompite-z','lucarioite-z','froslassite','emboarite','excadrillite','scolipedeite','scraftyite','eelektrossite','chandelureite','golurkite','chesnaughtite','delphoxite','greninjaite','pyroarite','meowsticite','malamarite','barbaracleite','dragalgeite','hawluchaite','crabominableite','golisopodite','drampaite','magearnaite','falinksite','scovillainite','glimmoraite','tatsugiriite','baxcaliburite'
+    ];
+    const st = Object.keys(stones).filter(s => !NEW_STONES.includes(s));
+    if (!st.length) return;
+    const stone = st[Math.floor(Math.random()*st.length)];
+    await sendMessage(ctx,ctx.chat.id,stones[stone].image,{caption:'You found a *'+c(stone)+'*',parse_mode:'markdown'});
+    if(!data.inv.stones){
+      data.inv.stones = [];
+    }
+    data.inv.stones.push(stone);
+    await saveUserData2(ctx.from.id,data);
+    return;
   }
-  
-  data.inv.stones.push(stone)
-  
-  await saveUserData2(ctx.from.id,data)
-  
-  return}
   
   if(Math.random() < 0){
   
@@ -229,7 +226,14 @@ function registerHuntCommand(bot, deps) {
   
   }
   
-  if(data.balls.safari && data.balls.safari > 0){
+  let org = 'no'
+  
+  const list2 = rdata[region]
+  const playerRegion = typeof data.inv.region === 'string' ? data.inv.region.toLowerCase() : ''
+  const safariRegion = typeof data?.extra?.saf === 'string' ? data.extra.saf.toLowerCase() : ''
+  const isActiveSafari = Boolean(data.balls.safari && data.balls.safari > 0 && safariRegion && safari[safariRegion])
+
+  if(isActiveSafari){
   
   ar = ['legendry','legendary']
   
@@ -241,34 +245,31 @@ function registerHuntCommand(bot, deps) {
   
   }
   
-  let org = 'no'
-  
-  const list2 = rdata[region]
-  
   let rg = data.inv.region
   
-  if(['alola', 'melmele', 'akala', 'ulaula', 'poni'].includes(data.inv.region.toLowerCase()) || (data.balls.safari && data.balls.safari > 0 && data.extra.saf.toLowerCase() == 'alola') ){
-  
-  rg = 'alola'
-  
+  if(
+    ['alola', 'melmele', 'akala', 'ulaula', 'poni'].includes(playerRegion) ||
+    (isActiveSafari && safariRegion == 'alola')
+  ){
+    rg = 'alola'
   }
-  
-  if(['galar', 'isle-of-armor', 'crown-tundra'].includes(data.inv.region.toLowerCase()) || (data.balls.safari && data.balls.safari > 0 && data.extra.saf.toLowerCase() == 'galar') ){
-  
-  rg = 'galar'
-  
+
+  if(
+    ['galar', 'isle-of-armor', 'crown-tundra'].includes(playerRegion) ||
+    (isActiveSafari && safariRegion == 'galar')
+  ){
+    rg = 'galar'
   }
-  
-  if(data.inv.region.toLowerCase()=='hisui' || (data.balls.safari && data.balls.safari > 0 && data.extra.saf.toLowerCase() == 'hisui') ){
-  
-  rg = 'hisui'
-  
+
+  if(
+    (playerRegion == 'hisui') ||
+    (isActiveSafari && safariRegion == 'hisui')
+  ){
+    rg = 'hisui'
   }
-  
-  if(['paldea', 'kitakami', 'blueberry'].includes(data.inv.region.toLowerCase())){
-  
-  rg = 'paldea'
-  
+
+  if(['paldea', 'kitakami', 'blueberry'].includes(playerRegion)){
+    rg = 'paldea'
   }
   
   const regionList = (rdata && rdata[region]) ? rdata[region] : null;
@@ -285,9 +286,9 @@ function registerHuntCommand(bot, deps) {
   
   });
   
-  }else if(data.balls.safari && data.balls.safari > 0){
+  }else if(isActiveSafari){
   
-  var list = (safari[data.extra.saf.toLowerCase()] || []).filter((pk) => !isBlockedStarterHuntPokemon(pk))
+  var list = (safari[safariRegion] || []).filter((pk) => !isBlockedStarterHuntPokemon(pk))
   
   }else{
   
@@ -315,13 +316,16 @@ function registerHuntCommand(bot, deps) {
   
   });
   
-  }else if(data.balls.safari && data.balls.safari > 0){
+  }else if(isActiveSafari){
   
   var fr = forms[name5].filter(pk=> !isBlockedStarterHuntPokemon(pk.identifier) && !nut.some((pk2)=> pk.identifier.includes(pk2)) && !isBlockedWildArceusForm(pk.identifier))
   
   }else{
   
-  var fr = forms[name5].filter(pk=> !isBlockedStarterHuntPokemon(pk.identifier) && !nut.some((pk2)=> pk.identifier.includes(pk2)) && ar.includes(spawn[pk.identifier].toLowerCase()))
+  var fr = forms[name5].filter(pk=> {
+    const spawnClass = typeof spawn[pk.identifier] === 'string' ? spawn[pk.identifier].toLowerCase() : null
+    return !isBlockedStarterHuntPokemon(pk.identifier) && !nut.some((pk2)=> pk.identifier.includes(pk2)) && spawnClass && ar.includes(spawnClass)
+  })
   
   }
   

@@ -33,14 +33,14 @@ const IV_STAT_ALIASES = {
 function getDefaultIvBoostConfig() {
   return {
     enabled: true,
-    startAtUtc: '2026-03-20T00:00:00Z',
-    endAtUtc: '2026-03-22T07:00:00Z',
-    regularMinPerStat: 16,
-    legendaryMinPerStat: 16,
+    startAtUtc: '2024-03-20T00:00:00Z', // Updated to start March 20, 2024
+    endAtUtc: '2024-03-26T23:59:59Z',   // Updated to end March 26, 2024
+    regularMinPerStat: 20,              // Minimum IV per stat for regulars
+    legendaryMinPerStat: 20,            // Minimum IV per stat for legendaries
     regularMinTotal: 100,
     legendaryMinTotal: 130,
     lockHunts: 40,
-    lockMinValue: 14,
+    lockMinValue: 31,                   // Always lock 31 IV during event
     lockSetsPerDay: 3
   };
 }
@@ -258,22 +258,29 @@ function setIvLock(userData, statInput) {
       daily: dailyUsage
     };
   }
-  const eventMinValue = Math.max(
-    clampIvValue(config.regularMinPerStat),
-    clampIvValue(config.legendaryMinPerStat)
-  );
-  const minValue = Math.max(clampIvValue(config.lockMinValue), eventMinValue, 1);
-  const snapshotPick = getLastKnownLockValue(userData, stat);
-  const fetchedValue = snapshotPick.value;
-  const value = fetchedValue !== null
-    ? Math.max(minValue, clampIvValue(fetchedValue))
-    : (Math.floor(Math.random() * (31 - minValue + 1)) + minValue);
+  let value;
+  if (status === 'active') {
+    // During the event, roll a random IV between 25 and 31 (inclusive)
+    value = Math.floor(Math.random() * (31 - 25 + 1)) + 25;
+  } else {
+    // If not during event, fallback to previous logic
+    const eventMinValue = Math.max(
+      clampIvValue(config.regularMinPerStat),
+      clampIvValue(config.legendaryMinPerStat)
+    );
+    const minValue = Math.max(clampIvValue(config.lockMinValue), eventMinValue, 1);
+    const snapshotPick = getLastKnownLockValue(userData, stat);
+    const fetchedValue = snapshotPick.value;
+    value = fetchedValue !== null
+      ? Math.max(minValue, clampIvValue(fetchedValue))
+      : (Math.floor(Math.random() * (31 - minValue + 1)) + minValue);
+  }
   userData.extra.ivLock = {
     stat,
     value,
     remainingHunts: Math.max(1, Math.floor(Number(config.lockHunts) || 1)),
     createdAtUtc: new Date().toISOString(),
-    source: fetchedValue !== null ? snapshotPick.source : 'random'
+    source: status === 'active' ? 'event_lock_25_31' : 'random'
   };
   daily.used += 1;
   return {

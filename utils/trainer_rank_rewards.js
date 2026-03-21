@@ -128,8 +128,21 @@ function randomTmNumber(tms) {
   return ids[Math.floor(Math.random() * ids.length)];
 }
 
+
 function randomStone(stones) {
   const ids = Object.keys(stones || {});
+  if (!ids.length) return null;
+  return ids[Math.floor(Math.random() * ids.length)];
+}
+
+
+// Stones that should NOT be in hunt rewards (the new stones)
+const NEW_STONES = [
+  'raichuite-x','raichuite-y','clefableite','victreebelite','starmieite','dragoniteite','meganiumite','feraligatrite','skarmoryite','chimechoite','absolite-z','staraptorite','garchompite-z','lucarioite-z','froslassite','emboarite','excadrillite','scolipedeite','scraftyite','eelektrossite','chandelureite','golurkite','chesnaughtite','delphoxite','greninjaite','pyroarite','meowsticite','malamarite','barbaracleite','dragalgeite','hawluchaite','crabominableite','golisopodite','drampaite','magearnaite','falinksite','scovillainite','glimmoraite','tatsugiriite','baxcaliburite'
+];
+
+function randomOldStone(stones) {
+  const ids = Object.keys(stones || {}).filter(s => !NEW_STONES.includes(s));
   if (!ids.length) return null;
   return ids[Math.floor(Math.random() * ids.length)];
 }
@@ -209,7 +222,7 @@ function applyBattleBox(data, summary, deps) {
   }
 
   if (boxRoll === 'stone1') {
-    const st = randomStone(stones);
+    const st = randomStone(stones); // all stones (old + new)
     if (st) {
       addStone(data, st);
       summary.stonesAdded += 1;

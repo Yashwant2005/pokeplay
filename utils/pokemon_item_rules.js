@@ -1,4 +1,13 @@
 const dmoves = require('../data/moves_info.json');
+const { normalizeStoneKey, normalizePokemonName } = require('./stone_alias');
+
+const STONES = (() => {
+  try {
+    return require('../data/stones.json') || {};
+  } catch (error) {
+    return {};
+  }
+})();
 
 function normalizeMoveName(value) {
   return String(value || '')
@@ -29,15 +38,48 @@ function isRayquazaLockedFromHeldItems(pokemon) {
   return false;
 }
 
-function getPokemonHeldItemRestrictionMessage(pokemon) {
+function matchesPokemon(pokemonName, requiredName) {
+  const p = normalizePokemonName(pokemonName);
+  const r = normalizePokemonName(requiredName);
+  if (!p || !r) return false;
+  return p === r || p.startsWith(r + '-');
+}
+
+function isHeldItemCompatibleWithPokemon(pokemon, heldItem) {
+  if (!pokemon || !heldItem) return true;
+  const stoneKey = normalizeStoneKey(heldItem, STONES);
+  const stone = STONES && STONES[stoneKey];
+  if (stone && stone.pokemon) {
+    return matchesPokemon(pokemon.name, stone.pokemon);
+  }
+  return true;
+}
+
+function getPokemonHeldItemRestrictionMessage(pokemon, heldItem) {
+  if (isRayquazaLockedFromHeldItems(pokemon)) {
+    return 'Held items are disabled for this Pokemon.';
+  }
+  if (!heldItem || String(heldItem).toLowerCase() === 'none') {
+    return '';
+  }
+  if (!isHeldItemCompatibleWithPokemon(pokemon, heldItem)) {
+    return 'That item does not match this Pokemon.';
+  }
   return '';
 }
 
 function getSanitizedHeldItemForPokemon(pokemon, fallbackHeldItem) {
+  const item = String(fallbackHeldItem || (pokemon && pokemon.held_item) || 'none');
   if (isRayquazaLockedFromHeldItems(pokemon)) {
     return 'none';
   }
-  return String(fallbackHeldItem || (pokemon && pokemon.held_item) || 'none');
+  if (item.toLowerCase() === 'none') {
+    return 'none';
+  }
+  if (!isHeldItemCompatibleWithPokemon(pokemon, item)) {
+    return 'none';
+  }
+  return item;
 }
 
 module.exports = {

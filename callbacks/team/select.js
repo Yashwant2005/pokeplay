@@ -1,7 +1,7 @@
 function register_029_select(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action(/select_/,check2q, async (ctx) => {
-    const pass = ctx.callbackQuery.data.split('_')[1];
+    const pass = String(ctx.callbackQuery.data.split('_')[1]);
     const team = ctx.callbackQuery.data.split('_')[2];
 
     const userId = ctx.from.id;
@@ -18,22 +18,21 @@ function register_029_select(bot, deps) {
     if (!userData.teams[team]) {
         userData.teams[team] = [];
     }
-
-    let io = [];
-    for (const t of userData.teams[team]) {
-        for (const poke of userData.pokes) {
-            if (poke.pass == t) {
-                io.push(poke);
-            }
-        }
+    const rawTeamPasses = userData.teams[team].map((p) => String(p));
+    const allTeamPasses = [...new Set(rawTeamPasses)];
+    const ownedPasses = new Set((userData.pokes || []).map((p) => String(p.pass)));
+    const validTeamPasses = allTeamPasses.filter((p) => ownedPasses.has(p));
+    userData.teams[team] = validTeamPasses;
+    if (JSON.stringify(rawTeamPasses) !== JSON.stringify(validTeamPasses)) {
+        await saveUserData2(userId, userData);
     }
 
-    if (io.length >= 6) {
+    if (validTeamPasses.length >= 6) {
         ctx.answerCbQuery(userData.inv[team] ? userData.inv[team] : 'Team ' + team + ' already has 6 pokes.', { show_alert: true });
         return;
     }
 
-    const pok = userData.pokes.find((poke) => poke.pass === pass);
+    const pok = userData.pokes.find((poke) => String(poke.pass) === pass);
 
     if (!pok) {
         ctx.answerCbQuery('Poke not found.', { show_alert: true });
@@ -55,7 +54,7 @@ if (!userData.teams || !userData.teams[team]) {
     const matchings = [];
 let b = 1
     for (const pass of pokes) {
-        const matching = userData.pokes.find((poke) => poke.pass === pass);
+        const matching = userData.pokes.find((poke) => String(poke.pass) === String(pass));
         if (matching) {
             matchings.push(pass)
          b++;

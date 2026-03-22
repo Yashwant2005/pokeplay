@@ -30,8 +30,14 @@ function registerHeldPanelCallbacks(bot, deps) {
   }
 
   function getOwnedHeldItemCount(data, itemName) {
+    const name = normalizeHeldItemName(itemName);
     const heldItems = ensureHeldItemBox(data);
-    return Number(heldItems[itemName]) || 0;
+    const stoneKey = normalizeStoneKey(name, stones);
+    if (stones && stones[stoneKey]) {
+      const invStones = (data && data.inv && Array.isArray(data.inv.stones)) ? data.inv.stones : [];
+      return invStones.filter((s) => normalizeStoneKey(s, stones) === stoneKey).length;
+    }
+    return Number(heldItems[name]) || 0;
   }
 
   function getEquippedHeldItemCount(data, itemName, ignorePass = '') {
@@ -68,14 +74,39 @@ function registerHeldPanelCallbacks(bot, deps) {
       msg += '\n*Current Effect:* ' + c(getHeldItemDescription(currentItem));
     }
 
-    const entries = Object.entries(ensureHeldItemBox(data))
+    const heldEntries = Object.entries(ensureHeldItemBox(data))
+      .filter(([, amount]) => Number(amount) > 0)
+      .map(([itemName, amount]) => [normalizeHeldItemName(itemName), Number(amount)]);
+
+    const stoneCounts = {};
+    const invStones = (data && data.inv && Array.isArray(data.inv.stones)) ? data.inv.stones : [];
+    for (const raw of invStones) {
+      const stoneKey = normalizeStoneKey(raw, stones);
+      if (stones && stones[stoneKey]) {
+        stoneCounts[stoneKey] = Number(stoneCounts[stoneKey] || 0) + 1;
+      }
+    }
+    const stoneEntries = Object.entries(stoneCounts).map(([itemName, amount]) => [itemName, Number(amount)]);
+
+    const combined = {};
+    for (const [itemName, amount] of [...heldEntries, ...stoneEntries]) {
+      combined[itemName] = Number(combined[itemName] || 0) + Number(amount || 0);
+    }
+    const allEntries = Object.entries(combined)
       .filter(([, amount]) => Number(amount) > 0)
       .sort((a, b) => a[0].localeCompare(b[0]));
+    const entries = restricted
+      ? []
+      : allEntries.filter(([itemName]) => !getPokemonHeldItemRestrictionMessage(poke, itemName));
 
     if (restricted) {
       msg += '\n\n*Held items are disabled for this Pokemon.*';
     } else if (entries.length < 1) {
-      msg += '\n\nYou do not have any *held items* in your bag.';
+      if (allEntries.length < 1) {
+        msg += '\n\nYou do not have any *held items* in your bag.';
+      } else {
+        msg += '\n\nYou do not have any *compatible held items* for this Pokemon.';
+      }
     } else {
       msg += '\n\n*Bag Held Items*';
       for (const [itemName, amount] of entries) {
@@ -117,8 +148,9 @@ function registerHeldPanelCallbacks(bot, deps) {
       await ctx.answerCbQuery('Poke not found');
       return;
     }
-    if (isRayquazaLockedFromHeldItems(poke) && normalizeHeldItemName(poke.held_item) !== 'none') {
-      poke.held_item = getSanitizedHeldItemForPokemon(poke, poke.held_item);
+    const sanitizedHeld = getSanitizedHeldItemForPokemon(poke, poke.held_item);
+    if (normalizeHeldItemName(poke.held_item) !== normalizeHeldItemName(sanitizedHeld)) {
+      poke.held_item = sanitizedHeld;
       await saveUserData2(userId, data);
     }
     globalThis.__heldPanelNavPokemon = { poke };
@@ -141,7 +173,7 @@ function registerHeldPanelCallbacks(bot, deps) {
 
     const heldStoneKey = normalizeStoneKey(heldItem, stones);
     if (stones && stones[heldStoneKey] && stones[heldStoneKey].pokemon && normalizePokemonName(stones[heldStoneKey].pokemon) !== normalizePokemonName(poke.name)) {
-      await ctx.answerCbQuery('That Mega Stone does not match this Pokemon.', { show_alert: true });
+      await ctx.answerCbQuery('That item does not match this Pokemon.', { show_alert: true });
       return;
     }
 
@@ -157,7 +189,7 @@ function registerHeldPanelCallbacks(bot, deps) {
       return;
     }
 
-    const restrictionMessage = getPokemonHeldItemRestrictionMessage(poke);
+    const restrictionMessage = getPokemonHeldItemRestrictionMessage(poke, heldItem);
     if (restrictionMessage) {
       poke.held_item = getSanitizedHeldItemForPokemon(poke, poke.held_item);
       await saveUserData2(userId, data);

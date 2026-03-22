@@ -28,7 +28,7 @@ if (!userData.teams || !userData.teams[team]) {
     const matchings = [];
 let b = 1
     for (const pass of pokes) {
-        const matching = userData.pokes.find((poke) => poke.pass === pass);
+        const matching = userData.pokes.find((poke) => String(poke.pass) === String(pass));
         if (matching) {
             matchings.push(pass)
          b++;

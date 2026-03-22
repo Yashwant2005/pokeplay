@@ -1,7 +1,7 @@
 function register_031_rjem(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action(/rjem_/,check2q, async (ctx) => {
-    const pass = ctx.callbackQuery.data.split('_')[1];
+    const pass = String(ctx.callbackQuery.data.split('_')[1]);
     const team = ctx.callbackQuery.data.split('_')[2];
     const userId = ctx.from.id;
     const userData = await getUserData(ctx.from.id);
@@ -14,7 +14,7 @@ function register_031_rjem(bot, deps) {
     if (!userData.teams[team]) {
         userData.teams[team] = [];
     }
-        userData.teams[team] = userData.teams[team].filter(p => p !== pass);
+        userData.teams[team] = [...new Set(userData.teams[team].map((p) => String(p)))].filter(p => p !== pass);
         await saveUserData2(userId, userData);
 const pokes = userData.teams[team];
     const matchings = [];

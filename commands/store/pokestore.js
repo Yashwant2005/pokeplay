@@ -13,8 +13,17 @@ function registerPokestoreCommand(bot, deps) {
       rows.push(buttons.slice(i, i + 2));
     }
 
-    // Mega Stones section
-    const megaStoneList = Object.keys(globalThis.stones || {}).filter(k => (globalThis.stones[k]?.mega)).map(k => `• ${k} (${globalThis.stones[k].pokemon} → ${globalThis.stones[k].mega})`).join('\n');
+    // Mega Stones section (preview only to avoid Telegram message length limits)
+    const megaStoneKeys = Object.keys(globalThis.stones || {}).filter(k => (globalThis.stones[k]?.mega));
+    const megaPreviewCount = 10;
+    const megaStonePreview = megaStoneKeys
+      .slice(0, megaPreviewCount)
+      .map(k => `• ${k} (${globalThis.stones[k].pokemon} → ${globalThis.stones[k].mega})`)
+      .join('\n');
+    const megaStoneList = megaStoneKeys.length
+      ? `${megaStonePreview}${megaStoneKeys.length > megaPreviewCount ? `\n...and ${megaStoneKeys.length - megaPreviewCount} more.` : ''}`
+      : 'No Mega Stones available.';
+
     await sendMessage(
       ctx,
       ctx.chat.id,
@@ -40,7 +49,8 @@ function registerPokestoreCommand(bot, deps) {
 • Ability Patch - 50000 💷
 
 *Mega Stones*
-${megaStoneList || 'No Mega Stones available.'}
+${megaStoneList}
+_Preview only. Use /mybag to view your owned Mega Stones._
 
 *Held Items*
 • Open *Held* to buy held items with League Points only
@@ -70,3 +80,4 @@ Open it from the *Tms* button.`,
 }
 
 module.exports = registerPokestoreCommand;
+

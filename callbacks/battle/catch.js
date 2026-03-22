@@ -50,13 +50,41 @@ function register_011_catch(bot, deps) {
     let msg = '<b>âœ¦ The Pokomon battle commences!</b>';
     const op = pokes[name];
     const data = await getUserData(ctx.from.id);
-    if (data.teams[data.inv.team].length < 1) {
+    if (!data || !Array.isArray(data.pokes)) {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Start your journey now*');
+      return;
+    }
+    if (!data.inv || typeof data.inv !== 'object') data.inv = {};
+    if (!data.inv.team) data.inv.team = '1';
+    if (!data.teams || typeof data.teams !== 'object') data.teams = {};
+    if (!Array.isArray(data.teams[data.inv.team])) data.teams[data.inv.team] = [];
+    if (!data.extra || typeof data.extra !== 'object') data.extra = {};
+    if (!data.balls || typeof data.balls !== 'object') data.balls = {};
+    if (!op || !spawn[name]) {
+      ctx.answerCbQuery('This Pokemon data is missing. Try /hunt again.');
+      return;
+    }
+    const ownedPasses = new Set((data.pokes || []).map((poke) => String(poke && poke.pass)));
+    const cleanedTeam = [...new Set((data.teams[data.inv.team] || []).map((p) => String(p)))].filter((p) => ownedPasses.has(p));
+    if (cleanedTeam.length !== data.teams[data.inv.team].length) {
+      data.teams[data.inv.team] = cleanedTeam;
+      await saveUserData2(ctx.from.id, data);
+    }
+    if (cleanedTeam.length < 1) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, ' Add Some *Pokes* In Main Team.');
       return;
     }
-    const ss = data.teams[data.inv.team][0];
-    const p = data.pokes.filter((poke) => poke.pass == ss)[0];
+    const ss = cleanedTeam[0];
+    const p = data.pokes.find((poke) => String(poke.pass) === String(ss));
+    if (!p) {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, ' Add Some *Pokes* In Main Team.');
+      return;
+    }
     const p2 = pokes[p.name];
+    if (!p2) {
+      ctx.answerCbQuery('Your Pokemon data is missing. Use /reset_battle.');
+      return;
+    }
     k = 0;
     if (spawn[name].toLowerCase() == 'legendry' || spawn[name].toLowerCase() == 'legendary') {
       k = 15;
@@ -92,6 +120,10 @@ function register_011_catch(bot, deps) {
     const playerImpersonateTarget = activateImpersonateForPass({ battleData, pass: p.pass, pokemonName: p.name, abilityName: p.ability });
     const base = pokestats[name];
     const base2 = getBattleBaseStats({ battleData, pass: p.pass, pokemonName: p.name, abilityName: p.ability, pokestats });
+    if (!base || !base2) {
+      ctx.answerCbQuery('Pokemon stats are missing. Try /hunt again.');
+      return;
+    }
     const uname = he.encode(ctx.from.first_name);
     const stats2 = await Stats(base, iv, ev, c(nat), level);
     const hp2 = stats2.hp;

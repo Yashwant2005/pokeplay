@@ -87,12 +87,16 @@ function mergePokemonLists(latestList, incomingList) {
 }
 
 function mergeTeams(latestTeams, incomingTeams, validPasses) {
-  const mergedTeams = { ...(latestTeams || {}), ...(incomingTeams || {}) };
+  const latest = latestTeams && typeof latestTeams === 'object' ? latestTeams : {};
+  const incoming = incomingTeams && typeof incomingTeams === 'object' ? incomingTeams : {};
+  const mergedTeams = { ...latest };
+  for (const key of Object.keys(incoming)) {
+    const list = Array.isArray(incoming[key]) ? incoming[key] : [];
+    mergedTeams[key] = [...new Set(list.map((pass) => String(pass)))].filter((pass) => validPasses.has(String(pass)));
+  }
   for (const key of Object.keys(mergedTeams)) {
-    mergedTeams[key] = mergeUniquePrimitiveArrays(
-      latestTeams && latestTeams[key],
-      incomingTeams && incomingTeams[key]
-    ).filter((pass) => validPasses.has(pass));
+    if (!Array.isArray(mergedTeams[key])) mergedTeams[key] = [];
+    mergedTeams[key] = [...new Set(mergedTeams[key].map((pass) => String(pass)))].filter((pass) => validPasses.has(String(pass)));
   }
   return mergedTeams;
 }

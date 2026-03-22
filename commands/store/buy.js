@@ -19,6 +19,14 @@ function registerBuyCommand(bot, deps) {
   bot.command('buy',check,check2,async ctx => {
   
   const messageData = await loadMessageData();
+
+  const data = await getUserData(ctx.from.id);
+  if(!data.inv || typeof data.inv !== 'object'){
+  data.inv = {};
+  }
+  if(!Number.isFinite(data.inv.pc)){
+  data.inv.pc = 0;
+  }
   
   if(messageData.battle.includes(ctx.from.id)) {
   

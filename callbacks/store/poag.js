@@ -88,18 +88,19 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,me
 return
 }
 if(item=='transformational'){
-  const sts = [...new Set(data.inv.stones)].filter((stoneKey) => {
+  const ownedStones = Array.isArray(data.inv.stones) ? data.inv.stones : [];
+  const sts = [...new Set(ownedStones)].filter((stoneKey) => {
     const stoneInfo = stones && stones[stoneKey];
     const megaTarget = String(stoneInfo && stoneInfo.mega || '').toLowerCase();
     return megaTarget.includes('-mega');
   })
   const bt = [{text:'Back',callback_data:'poag_items_'+ctx.from.id+''}]
   if(sts.length < 1){
-    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You does not have any *Transformational Item*',{parse_mode:'markdown',reply_markup:{inline_keyboard:[bt]}})
+    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You do not have any *Key Items* yet.',{parse_mode:'markdown',reply_markup:{inline_keyboard:[bt]}})
     return
   }
   const ore = []
-  let message = 'You Have Following *Mega Stones* (Transformational Items):\n\n'
+  let message = '*Key Items (Mega Stones)*\n\nSelect a stone to view details.'
   const page = ctx.callbackQuery.data.split('_')[3]*1 || 1
   const pageSize = 15
   const startIdx = (page - 1) * pageSize;
@@ -109,11 +110,6 @@ if(item=='transformational'){
   }
   const stn = sts.slice(startIdx,endIdx)
   for(const p of stn){
-    let info = '';
-    if(stones && stones[p]){
-      info = ' (for '+c(stones[p].pokemon)+' → '+c(stones[p].mega)+')';
-    }
-    message += '• *'+c(p)+'*'+info+'\n';
     ore.push({text:c(p),callback_data:'vyast:'+p+':'+ctx.from.id+''})
   }
   const rows = [];
@@ -161,9 +157,12 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,me
 return
 }
 if(item=='items'){
-const key = [[{text:'Enhance Items',callback_data:'poag_enhance_'+ctx.from.id+''},{text:'Held Items',callback_data:'poag_held_'+ctx.from.id+''}]]
+const key = [
+  [{text:'Key Items',callback_data:'poag_transformational_'+ctx.from.id+''},{text:'Held Items',callback_data:'poag_held_'+ctx.from.id+''}],
+  [{text:'Enhance Items',callback_data:'poag_enhance_'+ctx.from.id+''}]
+]
 key.push(rows)
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Only *Held Items* and enhancement items are shown here.',{parse_mode:'markdown',reply_markup:{inline_keyboard:key}})
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Select an item category.',{parse_mode:'markdown',reply_markup:{inline_keyboard:key}})
 return
 }
 if(item=='held'){
@@ -280,3 +279,4 @@ return
 }
 
 module.exports = register_037_poag;
+

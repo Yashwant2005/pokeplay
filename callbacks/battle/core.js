@@ -3935,9 +3935,25 @@ return
 }
   const data = await getUserData(id1);
   const data2 = await getUserData(id2);
+  if(!data || !Array.isArray(data.pokes) || !data.inv || !data.teams){
+  ctx.answerCbQuery('One of the players has no battle data. Ask them to /start and set a team.',{show_alert:true})
+  return
+  }
+  if(!data2 || !Array.isArray(data2.pokes) || !data2.inv || !data2.teams){
+  ctx.answerCbQuery('One of the players has no battle data. Ask them to /start and set a team.',{show_alert:true})
+  return
+  }
   let pokes1 = []
   let pokes2 = []
   const useTempTeams = battleData.tempTeams && battleData.tempTeams[id1] && battleData.tempTeams[id2];
+  if(!useTempTeams && !battleData.set.random){
+  const team1 = data.teams[data.inv.team]
+  const team2 = data2.teams[data2.inv.team]
+  if(!Array.isArray(team1) || team1.length < 1 || !Array.isArray(team2) || team2.length < 1){
+  ctx.answerCbQuery('Both players must have a valid team selected to accept the battle.',{show_alert:true})
+  return
+  }
+  }
   if(useTempTeams){
   pokes1 = battleData.tempTeams[id1]
   pokes2 = battleData.tempTeams[id2]

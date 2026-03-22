@@ -1,1 +1,3317 @@
-[{"user_id":"7577674783","data":{"pokes":[{"name":"urshifu-rapid-strike","id":892,"nature":"jolly","exp":10197,"pass":"hgUbPEHX","ivs":{"hp":18,"attack":23,"defense":26,"special_attack":23,"special_defense":22,"speed":27},"symbol":"","evs":{"hp":0,"attack":0,"defense":3,"special_attack":1,"special_defense":0,"speed":0},"moves":[249,453,332,818],"ability":"unseen-fist"},{"name":"calyrex-shadow","id":898,"nature":"timid","exp":0,"pass":"pXYYdeWn","ivs":{"hp":20,"attack":16,"defense":15,"special_attack":20,"special_defense":24,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[1],"ability":"as-one-spectrier"},{"name":"eternatus","id":890,"nature":"naive","exp":0,"pass":"fVBpSWSt","ivs":{"hp":22,"attack":18,"defense":24,"special_attack":14,"special_defense":23,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[342],"ability":"pressure"},{"name":"zacian","id":888,"nature":"hasty","exp":0,"pass":"bqYhHoHC","ivs":{"hp":27,"attack":28,"defense":31,"special_attack":3,"special_defense":21,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[44],"ability":"intrepid-sword"},{"name":"wartortle","id":8,"nature":"bold","exp":0,"pass":"kpI5zSEk","ivs":{"hp":30,"attack":28,"defense":30,"special_attack":26,"special_defense":25,"speed":28},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"torrent"},{"name":"blastoise","id":9,"nature":"bold","exp":0,"pass":"4LA9CAs2","ivs":{"hp":30,"attack":28,"defense":30,"special_attack":26,"special_defense":25,"speed":28},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"rain-dish"},{"name":"charmeleon","id":5,"nature":"modest","exp":0,"pass":"UGUxp8P7","ivs":{"hp":27,"attack":23,"defense":28,"special_attack":30,"special_defense":29,"speed":27},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[10],"ability":"blaze"},{"name":"charizard","id":6,"nature":"modest","exp":0,"pass":"FVDx989F","ivs":{"hp":27,"attack":23,"defense":28,"special_attack":30,"special_defense":29,"speed":27},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[10],"ability":"solar-power"},{"name":"marshadow","id":802,"nature":"adamant","exp":0,"pass":"3lJmvjJN","ivs":{"hp":30,"attack":21,"defense":27,"special_attack":22,"special_defense":31,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[7],"ability":"technician"},{"name":"ursaluna-bloodmoon","id":901,"nature":"timid","exp":0,"pass":"JNtwPmli","ivs":{"hp":27,"attack":16,"defense":17,"special_attack":28,"special_defense":23,"speed":27},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[10],"ability":"minds-eye"},{"name":"zacian","id":888,"nature":"adamant","exp":0,"pass":"EStX5Ch8","ivs":{"hp":14,"attack":26,"defense":28,"special_attack":19,"special_defense":15,"speed":22},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[44],"ability":"intrepid-sword"},{"name":"cosmoem","id":790,"nature":"adamant","exp":0,"pass":"83x6W3li","ivs":{"hp":30,"attack":22,"defense":24,"special_attack":29,"special_defense":24,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[165],"ability":"sturdy"},{"name":"solgaleo","id":791,"nature":"adamant","exp":0,"pass":"fLPNakMs","ivs":{"hp":30,"attack":22,"defense":24,"special_attack":29,"special_defense":24,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[232],"ability":"full-metal-body"},{"name":"mewtwo","id":150,"nature":"timid","exp":0,"pass":"SFdkwZaR","ivs":{"hp":26,"attack":13,"defense":25,"special_attack":31,"special_defense":22,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[93],"ability":"unnerve"},{"name":"phanpy","id":231,"nature":"naughty","exp":0,"pass":"OSEqXg4K","ivs":{"hp":27,"attack":29,"defense":25,"special_attack":20,"special_defense":24,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"sand-veil"},{"name":"darmanitan-galar-standard","id":555,"nature":"jolly","exp":0,"pass":"7ff0I4SF","ivs":{"hp":22,"attack":16,"defense":24,"special_attack":30,"special_defense":28,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"zen-mode"},{"name":"lairon","id":305,"nature":"adamant","exp":0,"pass":"goj6P1w8","ivs":{"hp":29,"attack":31,"defense":30,"special_attack":29,"special_defense":18,"speed":27},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"rock-head"},{"name":"aggron","id":306,"nature":"adamant","exp":0,"pass":"hEPrkxYH","ivs":{"hp":29,"attack":31,"defense":30,"special_attack":29,"special_defense":18,"speed":27},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"heavy-metal"},{"name":"lairon","id":305,"nature":"impish","exp":0,"pass":"d32vmMyi","ivs":{"hp":29,"attack":30,"defense":30,"special_attack":29,"special_defense":18,"speed":26},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"heavy-metal"},{"name":"aggron","id":306,"nature":"impish","exp":0,"pass":"7qM31KLX","ivs":{"hp":29,"attack":30,"defense":30,"special_attack":29,"special_defense":18,"speed":26},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"heavy-metal"},{"name":"necrozma-dusk","id":800,"nature":"brave","exp":0,"pass":"m6a6RFA7","ivs":{"hp":14,"attack":26,"defense":24,"special_attack":10,"special_defense":30,"speed":14},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[93],"ability":"prism-armor"},{"name":"eternatus","id":890,"nature":"timid","exp":0,"pass":"A9CMwbqg","ivs":{"hp":29,"attack":15,"defense":15,"special_attack":17,"special_defense":26,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[342],"ability":"pressure"},{"name":"dondozo","id":977,"nature":"impish","exp":0,"pass":"nLwuIUBx","ivs":{"hp":20,"attack":23,"defense":28,"special_attack":26,"special_defense":25,"speed":17},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"oblivious"},{"name":"drakloak","id":886,"nature":"jolly","exp":0,"pass":"LCSdfKgn","ivs":{"hp":26,"attack":24,"defense":12,"special_attack":13,"special_defense":19,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[44],"ability":"clear-body"},{"name":"dragapult","id":887,"nature":"jolly","exp":0,"pass":"j1XmsxGE","ivs":{"hp":26,"attack":24,"defense":12,"special_attack":13,"special_defense":19,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[44],"ability":"infiltrator"},{"name":"poipole","id":803,"nature":"timid","exp":0,"pass":"e7qOk8j0","ivs":{"hp":31,"attack":29,"defense":26,"special_attack":31,"special_defense":15,"speed":29},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[51],"ability":"beast-boost"},{"name":"fletchling","id":661,"nature":"naughty","exp":0,"pass":"dt3RBzzq","ivs":{"hp":31,"attack":27,"defense":30,"special_attack":24,"special_defense":26,"speed":28},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[64],"ability":"gale-wings"},{"name":"fletchinder","id":662,"nature":"naughty","exp":0,"pass":"RO6Km7Nv","ivs":{"hp":31,"attack":27,"defense":30,"special_attack":24,"special_defense":26,"speed":28},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[52],"ability":"flame-body"},{"name":"charcadet","id":935,"nature":"adamant","exp":0,"pass":"WOb5B9CH","ivs":{"hp":29,"attack":27,"defense":18,"special_attack":29,"special_defense":22,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[52],"ability":"flash-fire"},{"name":"ceruledge","id":937,"nature":"adamant","exp":0,"pass":"60eCnzg4","ivs":{"hp":29,"attack":27,"defense":18,"special_attack":29,"special_defense":22,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[52],"ability":"weak-armor"},{"name":"squirtle","id":7,"nature":"adamant","exp":0,"pass":"zLmmewfR","ivs":{"hp":31,"attack":23,"defense":28,"special_attack":29,"special_defense":28,"speed":29},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"torrent"},{"name":"magikarp","id":129,"nature":"careful","exp":0,"pass":"c1dmNa49","ivs":{"hp":21,"attack":31,"defense":29,"special_attack":27,"special_defense":26,"speed":25},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[165],"ability":"rattled"},{"name":"ralts","id":280,"nature":"adamant","exp":0,"pass":"pcRutx7Q","ivs":{"hp":30,"attack":31,"defense":21,"special_attack":24,"special_defense":26,"speed":24},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[574],"ability":"synchronize"},{"name":"charcadet","id":935,"nature":"modest","exp":0,"pass":"ay4BoHoa","ivs":{"hp":28,"attack":29,"defense":26,"special_attack":29,"special_defense":21,"speed":21},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[52],"ability":"flame-body"},{"name":"iron-hands","id":992,"nature":"impish","exp":0,"pass":"tpFzGOEh","ivs":{"hp":31,"attack":27,"defense":31,"special_attack":6,"special_defense":30,"speed":25},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"quark-drive"},{"name":"frigibax","id":996,"nature":"adamant","exp":0,"pass":"CF1CHj0O","ivs":{"hp":26,"attack":24,"defense":30,"special_attack":25,"special_defense":16,"speed":26},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"thermal-exchange"},{"name":"croconaw","id":159,"nature":"jolly","exp":0,"pass":"4IwC8p8k","ivs":{"hp":24,"attack":20,"defense":17,"special_attack":18,"special_defense":26,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[10],"ability":"sheer-force"},{"name":"eternatus","id":890,"nature":"quirky","exp":1250000,"pass":"TNnncZ1x","ivs":{"hp":10,"attack":10,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[53,744,63,795],"ability":"pressure"},{"name":"slaking","id":289,"nature":"naive","exp":1250000,"pass":"nk3RvuLe","ivs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[185,343,498,359],"ability":"truant"},{"name":"gengar","id":94,"nature":"naive","exp":1059860,"pass":"lWfKywwz","ivs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[389,399,247,138],"ability":"cursed-body"},{"name":"raichu","id":26,"nature":"jolly","exp":1000000,"pass":"GSVa1zEG","ivs":{"hp":31,"attack":31,"defense":31,"special_attack":31,"special_defense":31,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":["729","731","344","349"],"ability":"lightning-rod"},{"name":"pikachu","id":25,"nature":"adamant","exp":1000000,"pass":"aFFAlGAW","ivs":{"hp":31,"attack":31,"defense":31,"special_attack":31,"special_defense":31,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[21,435,85,87],"ability":"lightning-rod"},{"name":"mewtwo","id":150,"nature":"timid","exp":1250000,"pass":"a4Ln9DY7","ivs":{"hp":31,"attack":31,"defense":31,"special_attack":31,"special_defense":31,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[248,427,94,396],"ability":"insomnia"},{"name":"arceus","id":493,"nature":"calm","exp":9770,"pass":"MI6ul0BH","ivs":{"hp":17,"attack":15,"defense":21,"special_attack":13,"special_defense":22,"speed":22},"symbol":"","evs":{"hp":2,"attack":5,"defense":1,"special_attack":1,"special_defense":0,"speed":3},"moves":[669,885,479,331],"ability":"multitype"},{"name":"terapagos","id":1024,"nature":"modest","exp":0,"pass":"2Nip4Yd5","ivs":{"hp":22,"attack":19,"defense":12,"special_attack":27,"special_defense":21,"speed":17},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[],"ability":"tera-shift"},{"name":"urshifu-rapid-strike","id":892,"nature":"impish","exp":0,"pass":"6R2N5nFk","ivs":{"hp":13,"attack":21,"defense":20,"special_attack":20,"special_defense":19,"speed":19},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[249,453],"ability":"unseen-fist"},{"name":"urshifu-single-strike","id":892,"nature":"jolly","ability":"unseen-fist","exp":10,"pass":"dAbZybgP","ivs":{"hp":22,"attack":28,"defense":15,"special_attack":25,"special_defense":30,"speed":17},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[249,389]},{"name":"larvitar","id":246,"nature":"adamant","exp":0,"pass":"kXMeKWXO","ivs":{"hp":29,"attack":22,"defense":21,"special_attack":23,"special_defense":27,"speed":28},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"guts"},{"name":"duraludon","id":884,"nature":"timid","exp":0,"pass":"D9LWsx3y","ivs":{"hp":24,"attack":23,"defense":28,"special_attack":23,"special_defense":31,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[232],"ability":"stalwart"},{"name":"dialga","id":483,"nature":"quiet","ability":"telepathy","exp":0,"pass":"PxerQ8hD","ivs":{"hp":21,"attack":24,"defense":21,"special_attack":29,"special_defense":23,"speed":18},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[843,467,688,828]},{"name":"buzzwole","id":794,"nature":"jolly","ability":"beast-boost","exp":1250000,"pass":"K31ENPLb","ivs":{"hp":31,"attack":10,"defense":10,"special_attack":0,"special_defense":31,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[359,565,612,679]},{"name":"grimmsnarl","id":861,"nature":"adamant","ability":"frisk","exp":1000000,"pass":"6hzAG2rm","ivs":{"hp":31,"attack":31,"defense":28,"special_attack":20,"special_defense":28,"speed":31},"symbol":"✨","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[492,583,789,793]},{"name":"dondozo","id":977,"nature":"adamant","ability":"oblivious","exp":1250000,"pass":"uAkm4FS3","ivs":{"hp":31,"attack":31,"defense":28,"special_attack":20,"special_defense":28,"speed":31},"symbol":"✨","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[291,401,834,856],"held_item":"tatsugiri-lunchbox"},{"name":"buzzwole","id":794,"nature":"jolly","ability":"beast-boost","exp":1250000,"pass":"Li1tHaQs","ivs":{"hp":31,"attack":20,"defense":20,"special_attack":20,"special_defense":29,"speed":31},"symbol":"✨","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[359,565,612,679]},{"name":"simipour","id":516,"nature":"Relaxed","exp":1000000,"pass":"HG3CUdCE","ivs":{"hp":18,"attack":15,"defense":23,"special_attack":16,"special_defense":11,"speed":16},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[43,122,154,886],"temp_battle":true,"ability":"torrent"},{"name":"audino","id":531,"nature":"Naive","exp":800000,"pass":"5XvhUCi6","ivs":{"hp":24,"attack":23,"defense":12,"special_attack":21,"special_defense":19,"speed":15},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[574,589,608,791],"temp_battle":true,"ability":"healer"},{"name":"revavroom","id":966,"nature":"Serious","exp":1000000,"pass":"p7JqIZDH","ivs":{"hp":23,"attack":21,"defense":23,"special_attack":22,"special_defense":19,"speed":18},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[441,442,508,859],"temp_battle":true,"ability":"filter"},{"name":"terapagos","id":1024,"nature":"Hasty","exp":1250000,"pass":"VULhgXrz","ivs":{"hp":19,"attack":20,"defense":22,"special_attack":16,"special_defense":14,"speed":19},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[397,414,484,906],"temp_battle":true,"ability":"tera-shift"},{"name":"golurk","id":623,"nature":"Naughty","exp":1000000,"pass":"mgSIB0Sd","ivs":{"hp":17,"attack":26,"defense":17,"special_attack":18,"special_defense":15,"speed":12},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[484,566,667,707],"temp_battle":true,"ability":"klutz"},{"name":"meganium","id":154,"nature":"Naughty","exp":1059860,"pass":"Fk0OlJZO","ivs":{"hp":22,"attack":9,"defense":15,"special_attack":15,"special_defense":12,"speed":8},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[230,235,345,572],"temp_battle":true,"ability":"overgrow"},{"name":"ampharos","id":181,"nature":"modest","exp":0,"pass":"fkKOM6gZ","ivs":{"hp":23,"attack":30,"defense":25,"special_attack":22,"special_defense":16,"speed":21},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[7],"ability":"plus"},{"name":"lairon","nature":"Relaxed","ability":"rock-head","held_item":"none","ivs":{"hp":17,"attack":16,"defense":20,"special_attack":16,"special_defense":16,"speed":22},"evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33,189,232,442],"exp":49130,"id":305,"pass":"kIEB3cry","cpass":"bixsN9Vt","symbol":""},{"name":"snorunt","nature":"Naughty","ability":"inner-focus","held_item":"none","ivs":{"hp":16,"attack":19,"defense":16,"special_attack":20,"special_defense":19,"speed":22},"evs":{"hp":0,"attack":1,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[196,310,420,524],"exp":40280,"id":361,"pass":"lMNkCTqo","cpass":"6hNnd85d","symbol":""},{"name":"scolipede","id":545,"nature":"jolly","exp":0,"pass":"nYdEUwho","ivs":{"hp":28,"attack":14,"defense":30,"special_attack":21,"special_defense":30,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[40],"ability":"swarm"},{"name":"gholdengo","id":1000,"nature":"bold","exp":0,"pass":"evi8bUn2","ivs":{"hp":16,"attack":30,"defense":20,"special_attack":25,"special_defense":30,"speed":16},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"good-as-gold"},{"name":"gholdengo","id":1000,"nature":"sassy","exp":0,"pass":"GwiSVxJW","ivs":{"hp":28,"attack":16,"defense":18,"special_attack":26,"special_defense":24,"speed":24},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33],"ability":"levitate"},{"name":"larvesta","id":636,"nature":"mild","exp":0,"pass":"1htCW83C","ivs":{"hp":22,"attack":18,"defense":22,"special_attack":25,"special_defense":30,"speed":24},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[52],"ability":"swarm"},{"name":"krookodile","id":553,"nature":"hasty","exp":0,"pass":"T4WFGkAC","ivs":{"hp":19,"attack":23,"defense":19,"special_attack":20,"special_defense":26,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[681],"ability":"intimidate"},{"name":"sceptile","id":254,"nature":"jolly","exp":0,"pass":"xxxzGuRB","ivs":{"hp":20,"attack":28,"defense":17,"special_attack":21,"special_defense":26,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[1],"ability":"unburden"},{"name":"pawmot","id":923,"nature":"jolly","exp":0,"pass":"iLmZd2Sc","ivs":{"hp":19,"attack":29,"defense":26,"special_attack":24,"special_defense":22,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[10],"ability":"natural-cure"},{"name":"yveltal","id":717,"nature":"jolly","exp":0,"pass":"McgYdlLC","ivs":{"hp":20,"attack":31,"defense":18,"special_attack":27,"special_defense":17,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[16],"ability":"dark-aura"},{"name":"groudon","id":383,"nature":"adamant","exp":0,"pass":"rR7NwycG","ivs":{"hp":21,"attack":28,"defense":24,"special_attack":30,"special_defense":11,"speed":25},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[246],"ability":"drought"},{"name":"iron-bundle","id":991,"nature":"hasty","exp":0,"pass":"tv5TpqRY","ivs":{"hp":13,"attack":11,"defense":5,"special_attack":25,"special_defense":21,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[181],"ability":"quark-drive"},{"name":"flutter-mane","id":987,"nature":"timid","exp":0,"pass":"A3T340qY","ivs":{"hp":15,"attack":3,"defense":25,"special_attack":24,"special_defense":18,"speed":30},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[310]},{"name":"miraidon","id":1008,"nature":"timid","exp":0,"pass":"robasLOH","ivs":{"hp":20,"attack":22,"defense":31,"special_attack":27,"special_defense":18,"speed":27},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[84]},{"name":"cinderace","id":815,"nature":"jolly","exp":0,"pass":"oS8d0Mok","ivs":{"hp":29,"attack":18,"defense":12,"special_attack":22,"special_defense":19,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33]},{"name":"iron-valiant","id":1006,"nature":"jolly","exp":0,"pass":"XAkrVjY4","ivs":{"hp":28,"attack":21,"defense":19,"special_attack":29,"special_defense":19,"speed":20},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[425]},{"name":"arcanine","id":59,"nature":"hasty","exp":0,"pass":"h6GezVMC","ivs":{"hp":26,"attack":20,"defense":20,"special_attack":15,"special_defense":30,"speed":30},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[36]},{"name":"koraidon","id":1007,"nature":"hasty","exp":0,"pass":"TRHO3Ai1","ivs":{"hp":17,"attack":12,"defense":10,"special_attack":12,"special_defense":25,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[784]},{"name":"blastoise","id":9,"nature":"modest","exp":0,"pass":"cCXU408a","ivs":{"hp":22,"attack":20,"defense":21,"special_attack":28,"special_defense":27,"speed":20},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33]},{"name":"calyrex-ice","id":898,"nature":"adamant","exp":0,"pass":"xD3hLhWi","ivs":{"hp":31,"attack":31,"defense":17,"special_attack":24,"special_defense":22,"speed":18},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[1]},{"name":"kyurem-white","id":646,"nature":"quiet","exp":0,"pass":"LaExqz1q","ivs":{"hp":31,"attack":23,"defense":30,"special_attack":29,"special_defense":31,"speed":27},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[225]},{"name":"carbink","id":703,"nature":"impish","exp":0,"pass":"9FcmxGiy","ivs":{"hp":23,"attack":21,"defense":22,"special_attack":26,"special_defense":16,"speed":26},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33]},{"name":"magikarp","id":129,"nature":"careful","exp":0,"pass":"gmdOLGjc","ivs":{"hp":21,"attack":31,"defense":29,"special_attack":27,"special_defense":26,"speed":25},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[165]},{"name":"ralts","id":280,"nature":"adamant","exp":0,"pass":"KWAq3ErT","ivs":{"hp":30,"attack":31,"defense":21,"special_attack":24,"special_defense":26,"speed":24},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[574]},{"name":"forretress","id":205,"nature":"brave","exp":0,"pass":"PW1uKShv","ivs":{"hp":29,"attack":21,"defense":25,"special_attack":20,"special_defense":30,"speed":26},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33]},{"name":"snivy","id":495,"nature":"timid","exp":0,"pass":"DBjatvrM","ivs":{"hp":30,"attack":31,"defense":21,"special_attack":31,"special_defense":17,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[33]},{"name":"zacian","id":888,"nature":"naive","exp":0,"pass":"NjL7XbSH","ivs":{"hp":27,"attack":27,"defense":11,"special_attack":27,"special_defense":31,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[44]},{"name":"zamazenta","id":889,"nature":"jolly","exp":0,"pass":"WLnw9SMn","ivs":{"hp":24,"attack":15,"defense":26,"special_attack":30,"special_defense":28,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[44]},{"name":"zamazenta","id":889,"nature":"naive","exp":0,"pass":"jkajb7d6","ivs":{"hp":15,"attack":17,"defense":14,"special_attack":25,"special_defense":26,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[44]},{"name":"groudon","id":383,"nature":"jolly","exp":0,"pass":"Nk85GVyJ","ivs":{"hp":19,"attack":29,"defense":27,"special_attack":16,"special_defense":28,"speed":31},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[246]},{"name":"mankey","id":56,"nature":"quirky","exp":0,"pass":"unbMlpwV","ivs":{"hp":21,"attack":30,"defense":29,"special_attack":29,"special_defense":31,"speed":22},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[10]},{"name":"ralts","id":280,"nature":"lonely","exp":0,"pass":"2W7wY6LL","ivs":{"hp":26,"attack":30,"defense":28,"special_attack":31,"special_defense":29,"speed":29},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[574]},{"name":"eevee-starter","id":133,"nature":"Naughty","ability":"impersonate","held_item":"none","exp":1000000,"pass":"4yLjtqNr","ivs":{"hp":17,"attack":15,"defense":19,"special_attack":10,"special_defense":24,"speed":11},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[38,44,98,129]},{"name":"eevee-starter","id":133,"nature":"jolly","ability":"impersonate","held_item":"none","exp":1000000,"pass":"0lwPFOTW","ivs":{"hp":31,"attack":31,"defense":31,"special_attack":31,"special_defense":31,"speed":31},"symbol":"✨","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[38,44,98,129]},{"name":"mawile","id":303,"nature":"jolly","ability":"huge-power","held_item":"mawilite","exp":800000,"pass":"NUZNxV15","ivs":{"hp":31,"attack":31,"defense":31,"special_attack":31,"special_defense":31,"speed":31},"symbol":"✨","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[310,442,583,584]},{"name":"kirlia","id":281,"nature":"jolly","ability":"trace","held_item":"none","exp":33750,"pass":"bx9iUwTx","ivs":{"hp":31,"attack":31,"defense":31,"special_attack":31,"special_defense":31,"speed":31},"symbol":"✨","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[60,93,574,577]},{"name":"lucario","id":448,"nature":"Lax","ability":"steadfast","held_item":"none","exp":1059860,"pass":"1lJ3mIAa","ivs":{"hp":17,"attack":16,"defense":6,"special_attack":13,"special_defense":14,"speed":15},"symbol":"","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[395,396,406,410]},{"name":"lucario","id":448,"nature":"timid","ability":"inner-focus","held_item":"none","exp":1059860,"pass":"N7YvStT2","ivs":{"hp":31,"attack":31,"defense":31,"special_attack":31,"special_defense":31,"speed":31},"symbol":"✨","evs":{"hp":0,"attack":0,"defense":0,"special_attack":0,"special_defense":0,"speed":0},"moves":[395,396,406,410]}],"inv":{"pc":104615,"region":"conquest-gallery","exp":42313,"avtar":"1","template":"1","id":"grey","data":"black","hometown":"Paldea","team":"5","name":"Yash","stones":["red-orb","latiosite","mewtwonite-y","sharpedonite","tyranitarite","aerodactylite","banettite","galladite","gardevoirite","lopunnite","blue-orb","kangaskhanite","manectite","slowbronite","gengarite","garchompite","abomasite","lucarionite","jade-orb","diancite","scizorite","audinite","mewtwonite-x","beedrillite","sceptilite","charizardite-x","absolite","mewtwonite-x","mawilite","lucarionite-z","pinsirite","charizardite-x","chandelureite","glimmoraite","scolipedeite","scraftyite","sharpedonite","rusted-sword","feraligatrite","excadrillite","tyranitarite"],"win":2,"ring":true,"pass":3,"league_points":990,"holowear_tickets":276,"battle":0,"lose":0,"battle_boxes":0,"daycare_candy":10,"vitamin":1,"candy":1},"balls":{"regular":75,"great":24,"ultra":33,"quick":45,"park":45,"moon":60,"origin":60,"luxury":30,"net":60,"safari":15,"level":30,"premier":15,"beast":30,"nest":30,"sport":30},"extra":{"date":"06/03/2026","huntd":"2026-03-20","hunts":57,"megas":{},"evhunt":0,"evh":"hp","temp_battle":{"jl43FmE":["HG3CUdCE","5XvhUCi6","p7JqIZDH","VULhgXrz","mgSIB0Sd","Fk0OlJZO"]},"sort_order":"desc","spinEvent":{"date":"2026-03-20","remaining":10,"candidate":null,"selectedName":null,"awaitingName":true},"events":{"safariCommemorative":{"lastClaimDate":"2026-03-20","lastClaimAtUtc":"2026-03-20T03:33:54.363Z"},"commemorativeDaily":{"lastClaimDate":"2026-03-20","lastClaimAtUtc":"2026-03-20T03:28:42.754Z"}},"hunting":false,"rankRewards":{"claimedLevel":20,"lastClaimAtUtc":"2026-03-20T15:38:12.013Z"},"itembox":{"bottleCaps":0,"goldBottleCaps":0,"mints":{"careful mint":1,"sassy mint":1,"timid mint":1,"quiet mint":1,"bold mint":1,"impish mint":1},"heldItems":{"tatsugiri-lunchbox":1,"eviolite":1},"abilityCapsules":0,"abilityPatches":0,"dynamaxCandy":0,"maxSoup":0,"zCrystals":{}},"rankLevel":1,"daycare":{"jobs":[],"draft":null,"starterClaimed":1,"claimedCount":0},"tmshop":{"weekKey":"2933","refreshNonce":0,"selection":["48","24","81","84","76","95","74","80","77","0"],"purchasedWeekKey":"2933","purchasedSlots":[]},"ivEventLastEncounter":{"name":"timburr","ivs":{"hp":18,"attack":16,"defense":17,"special_attack":16,"special_defense":20,"speed":22},"atUtc":"2026-03-20T15:39:50.079Z"},"ivLockDaily":{"date":"2026-03-20","used":1},"ivLock":{"stat":"speed","value":22,"remainingHunts":20,"createdAtUtc":"2026-03-20T15:24:52.762Z","source":"last_encounter"},"ivEventLastCaught":{"name":"snorunt","ivs":{"hp":16,"attack":19,"defense":16,"special_attack":20,"special_defense":19,"speed":22},"atUtc":"2026-03-20T15:34:24.457Z"}},"teams":{"1":["aFFAlGAW","a4Ln9DY7","GSVa1zEG","MI6ul0BH","hgUbPEHX","kIEB3cry"],"2":[],"3":["uAkm4FS3","a4Ln9DY7","GSVa1zEG","D9LWsx3y","K31ENPLb","Li1tHaQs"],"4":["TNnncZ1x"],"5":["N7YvStT2","hgUbPEHX","lMNkCTqo","MI6ul0BH","NUZNxV15"],"6":[]},"settings":{"max_poke":6,"dual_type":true,"min_6l":0,"max_6l":6,"min_level":1,"max_level":100,"switch":true,"key_item":true,"sandbox":false,"random":false,"preview":"no","pin":false,"ban_types":[],"allow_types":[],"ban_regions":[],"allow_regions":[],"type_effects":true},"pokecaught":["fuecoco","arctovish","archaludon","boltund","golisopod","decidueye-hisui","wishiwashi-solo","calyrex-shadow","eternatus","zacian-crowned","wartortle","blastoise","charmeleon","charizard","marshadow","ursaluna-bloodmoon","cosmoem","solgaleo","mewtwo","blacephalon","oricorio-pom-pom","shuckle","furfrou","linoone-galar","dudunsparce","phanpy","darmanitan-galar-zen","lairon","aggron","necrozma-dusk","dondozo","drakloak","dragapult","poipole","fletchling","fletchinder","staraptor","escavalier","seviper","spectrier","houndoom-mega","unown-c","skarmory","tornadus-incarnate","polteageist","beautifly","kyurem-white","gardevoir","gyarados","silvally-psychic","aromatisse","electivire","brute-bonnet","charcadet","ceruledge","pumpkaboo-average","goodra","florges-white","shiftry","scizor","squawkabilly-white-plumage","squirtle","magikarp","ralts","iron-hands","frigibax","croconaw","minun","poliwrath","pikachu-starter","victreebel","articuno","typhlosion-hisui","yanmega","omastar","floette-eternal","noivern","slaking","gengar","mewtwo-mega-y","gengar-mega","arceus-ghost","palossand","salazzle","rampardos","tatsugiri-droopy","meowth-alola","deerling-spring","dragalge","pikachu-unova-cap","skuntank","watchog","mantine","vivillon-marine","bruxish","unown-r","koraidon-sprinting-build","guzzlord","alcremie","arctozolt","furfrou-kabuki","hawlucha","melmetal-gmax","braviary-hisui","basculegion-male","marowak","terapagos","urshifu-rapid-strike","zacian","pikachu","melmetal","urshifu-single-strike","snorlax-gmax","vivillon-modern","latias-mega","unown-i","scrafty","castform","tentacruel","mimikyu-disguised","regirock","orbeetle-gmax","arceus-steel","zarude","feraligatr","goodra-hisui","lopunny","armaldo","delphox","vivillon-river","garchomp","gourgeist-average","suicune","mr-mime-galar","vivillon-meadow","abra","pangoro","fearow","obstagoon","ledian","spiritomb","steelix","mabosstiff","spidops","torterra","ludicolo","dialga-origin","darmanitan-galar-standard","arceus","buzzwole","larvitar","grimmsnarl","duraludon","raichu","palkia","musharna","kricketune","koraidon-limited-build","solrock","chi-yu","simipour","audino","revavroom","golurk","meganium","dialga","ampharos","snorunt","scolipede","gholdengo","larvesta","krookodile","sceptile","pawmot","yveltal","groudon","iron-bundle","flutter-mane","miraidon","cinderace","iron-valiant","arcanine","koraidon","calyrex-ice","carbink","forretress","snivy","zamazenta","mankey","eevee-starter","mawile","kirlia","mawile-mega","lucario","lucario-mega-z"],"pokeseen":["fuecoco","jynx","arctovish","archaludon","boltund","golisopod","decidueye-hisui","wishiwashi-solo","calyrex-shadow","eternatus","zacian-crowned","wartortle","blastoise","charmeleon","charizard","marshadow","ursaluna-bloodmoon","cosmoem","solgaleo","mewtwo","blacephalon","oricorio-pom-pom","shuckle","furfrou","linoone-galar","dudunsparce","phanpy","darmanitan-galar-zen","lairon","aggron","necrozma-dusk","dondozo","drakloak","dragapult","poipole","fletchling","fletchinder","staraptor","escavalier","seviper","spectrier","houndoom-mega","unown-c","skarmory","tornadus-incarnate","polteageist","beautifly","kyurem-white","gardevoir","gyarados","silvally-psychic","aromatisse","electivire","brute-bonnet","charcadet","ceruledge","pumpkaboo-average","goodra","florges-white","shiftry","scizor","squawkabilly-white-plumage","squirtle","magikarp","ralts","iron-hands","frigibax","croconaw","minun","poliwrath","pikachu-starter","victreebel","articuno","typhlosion-hisui","yanmega","omastar","floette-eternal","noivern","slaking","gengar","mewtwo-mega-y","gengar-mega","arceus-ghost","palossand","salazzle","rampardos","tatsugiri-droopy","meowth-alola","deerling-spring","dragalge","pikachu-unova-cap","skuntank","watchog","mantine","vivillon-marine","bruxish","unown-r","koraidon-sprinting-build","guzzlord","alcremie","arctozolt","furfrou-kabuki","hawlucha","melmetal-gmax","braviary-hisui","basculegion-male","marowak","golbat","electabuzz","persian","terapagos","urshifu-rapid-strike","zacian","pikachu","melmetal","urshifu-single-strike","snorlax-gmax","vivillon-modern","latias-mega","unown-i","scrafty","castform","tentacruel","mimikyu-disguised","regirock","orbeetle-gmax","arceus-steel","zarude","feraligatr","goodra-hisui","lopunny","armaldo","delphox","vivillon-river","garchomp","gourgeist-average","suicune","mr-mime-galar","vivillon-meadow","abra","pangoro","fearow","obstagoon","ledian","spiritomb","steelix","mabosstiff","spidops","torterra","ludicolo","dialga-origin","darmanitan-galar-standard","arceus","buzzwole","larvitar","grimmsnarl","duraludon","raichu","chansey","clefairy","wigglytuff","lapras","nidoqueen","nidorina","lickitung","jigglypuff","snorlax","clefable","vaporeon","mew","kangaskhan","palkia","musharna","kricketune","koraidon-limited-build","solrock","chi-yu","simipour","audino","revavroom","golurk","meganium","dialga","lombre","rhydon","cottonee","sewaddle","whirlipede","oshawott","dragonair","servine","kadabra","petilil","deino","ampharos","dewott","treecko","bisharp","snorunt","sneasel","monferno","venipede","metang","scyther","riolu","gible","axew","sealeo","larvesta","timburr","scolipede","gholdengo","krookodile","sceptile","pawmot","yveltal","groudon","iron-bundle","flutter-mane","miraidon","cinderace","iron-valiant","arcanine","koraidon","calyrex-ice","carbink","forretress","snivy","zamazenta","mankey","eevee-starter","mawile","kirlia","mawile-mega","lucario","lucario-mega-z"],"tms":{"2":1,"8":1,"11":1,"14":1,"15":1,"31":1,"33":1,"41":1,"45":1,"53":1,"59":2,"67":1,"68":1,"77":1,"79":1,"84":1,"94":1,"96":1,"102":1,"103":2,"104":1,"116":1,"118":1,"120":1,"121":1,"127":1,"128":1,"129":1,"132":1,"133":1,"137":1,"139":3,"145":1,"151":1,"155":1,"167":1,"177":1,"180":1,"187":1,"188":1,"196":1,"197":1,"199":1,"202":1,"208":1,"214":1,"215":1,"217":1,"220":1,"223":1,"224":2,"227":1,"229":1,"233":1,"234":2,"235":1,"238":1,"243":1},"user_id":7577674783},"reset":false}]
+[
+  {
+    "user_id": 7577674783,
+    "data": {
+      "pokes": [
+        {
+          "name": "urshifu-rapid-strike",
+          "id": 892,
+          "nature": "jolly",
+          "exp": 10197,
+          "pass": "hgUbPEHX",
+          "ivs": {
+            "hp": 18,
+            "attack": 23,
+            "defense": 26,
+            "special_attack": 23,
+            "special_defense": 22,
+            "speed": 27
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 3,
+            "special_attack": 1,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            249,
+            453,
+            332,
+            818
+          ],
+          "ability": "unseen-fist"
+        },
+        {
+          "name": "calyrex-shadow",
+          "id": 898,
+          "nature": "timid",
+          "exp": 0,
+          "pass": "pXYYdeWn",
+          "ivs": {
+            "hp": 20,
+            "attack": 16,
+            "defense": 15,
+            "special_attack": 20,
+            "special_defense": 24,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            1
+          ],
+          "ability": "as-one-spectrier"
+        },
+        {
+          "name": "eternatus",
+          "id": 890,
+          "nature": "naive",
+          "exp": 0,
+          "pass": "fVBpSWSt",
+          "ivs": {
+            "hp": 22,
+            "attack": 18,
+            "defense": 24,
+            "special_attack": 14,
+            "special_defense": 23,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            342
+          ],
+          "ability": "pressure"
+        },
+        {
+          "name": "zacian",
+          "id": 888,
+          "nature": "hasty",
+          "exp": 0,
+          "pass": "bqYhHoHC",
+          "ivs": {
+            "hp": 27,
+            "attack": 28,
+            "defense": 31,
+            "special_attack": 3,
+            "special_defense": 21,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            44
+          ],
+          "ability": "intrepid-sword"
+        },
+        {
+          "name": "wartortle",
+          "id": 8,
+          "nature": "bold",
+          "exp": 0,
+          "pass": "kpI5zSEk",
+          "ivs": {
+            "hp": 30,
+            "attack": 28,
+            "defense": 30,
+            "special_attack": 26,
+            "special_defense": 25,
+            "speed": 28
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "torrent"
+        },
+        {
+          "name": "blastoise",
+          "id": 9,
+          "nature": "bold",
+          "exp": 0,
+          "pass": "4LA9CAs2",
+          "ivs": {
+            "hp": 30,
+            "attack": 28,
+            "defense": 30,
+            "special_attack": 26,
+            "special_defense": 25,
+            "speed": 28
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "rain-dish"
+        },
+        {
+          "name": "charmeleon",
+          "id": 5,
+          "nature": "modest",
+          "exp": 0,
+          "pass": "UGUxp8P7",
+          "ivs": {
+            "hp": 27,
+            "attack": 23,
+            "defense": 28,
+            "special_attack": 30,
+            "special_defense": 29,
+            "speed": 27
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            10
+          ],
+          "ability": "blaze"
+        },
+        {
+          "name": "charizard",
+          "id": 6,
+          "nature": "modest",
+          "exp": 0,
+          "pass": "FVDx989F",
+          "ivs": {
+            "hp": 27,
+            "attack": 23,
+            "defense": 28,
+            "special_attack": 30,
+            "special_defense": 29,
+            "speed": 27
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            10
+          ],
+          "ability": "solar-power"
+        },
+        {
+          "name": "marshadow",
+          "id": 802,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "3lJmvjJN",
+          "ivs": {
+            "hp": 30,
+            "attack": 21,
+            "defense": 27,
+            "special_attack": 22,
+            "special_defense": 31,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            7
+          ],
+          "ability": "technician"
+        },
+        {
+          "name": "ursaluna-bloodmoon",
+          "id": 901,
+          "nature": "timid",
+          "exp": 0,
+          "pass": "JNtwPmli",
+          "ivs": {
+            "hp": 27,
+            "attack": 16,
+            "defense": 17,
+            "special_attack": 28,
+            "special_defense": 23,
+            "speed": 27
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            10
+          ],
+          "ability": "minds-eye"
+        },
+        {
+          "name": "zacian",
+          "id": 888,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "EStX5Ch8",
+          "ivs": {
+            "hp": 14,
+            "attack": 26,
+            "defense": 28,
+            "special_attack": 19,
+            "special_defense": 15,
+            "speed": 22
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            44
+          ],
+          "ability": "intrepid-sword"
+        },
+        {
+          "name": "cosmoem",
+          "id": 790,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "83x6W3li",
+          "ivs": {
+            "hp": 30,
+            "attack": 22,
+            "defense": 24,
+            "special_attack": 29,
+            "special_defense": 24,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            165
+          ],
+          "ability": "sturdy"
+        },
+        {
+          "name": "solgaleo",
+          "id": 791,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "fLPNakMs",
+          "ivs": {
+            "hp": 30,
+            "attack": 22,
+            "defense": 24,
+            "special_attack": 29,
+            "special_defense": 24,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            232
+          ],
+          "ability": "full-metal-body"
+        },
+        {
+          "name": "mewtwo",
+          "id": 150,
+          "nature": "timid",
+          "exp": 0,
+          "pass": "SFdkwZaR",
+          "ivs": {
+            "hp": 26,
+            "attack": 13,
+            "defense": 25,
+            "special_attack": 31,
+            "special_defense": 22,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            93
+          ],
+          "ability": "unnerve"
+        },
+        {
+          "name": "phanpy",
+          "id": 231,
+          "nature": "naughty",
+          "exp": 0,
+          "pass": "OSEqXg4K",
+          "ivs": {
+            "hp": 27,
+            "attack": 29,
+            "defense": 25,
+            "special_attack": 20,
+            "special_defense": 24,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "sand-veil"
+        },
+        {
+          "name": "darmanitan-galar-standard",
+          "id": 555,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "7ff0I4SF",
+          "ivs": {
+            "hp": 22,
+            "attack": 16,
+            "defense": 24,
+            "special_attack": 30,
+            "special_defense": 28,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "zen-mode"
+        },
+        {
+          "name": "lairon",
+          "id": 305,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "goj6P1w8",
+          "ivs": {
+            "hp": 29,
+            "attack": 31,
+            "defense": 30,
+            "special_attack": 29,
+            "special_defense": 18,
+            "speed": 27
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "rock-head"
+        },
+        {
+          "name": "aggron",
+          "id": 306,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "hEPrkxYH",
+          "ivs": {
+            "hp": 29,
+            "attack": 31,
+            "defense": 30,
+            "special_attack": 29,
+            "special_defense": 18,
+            "speed": 27
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "heavy-metal"
+        },
+        {
+          "name": "lairon",
+          "id": 305,
+          "nature": "impish",
+          "exp": 0,
+          "pass": "d32vmMyi",
+          "ivs": {
+            "hp": 29,
+            "attack": 30,
+            "defense": 30,
+            "special_attack": 29,
+            "special_defense": 18,
+            "speed": 26
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "heavy-metal"
+        },
+        {
+          "name": "aggron",
+          "id": 306,
+          "nature": "impish",
+          "exp": 0,
+          "pass": "7qM31KLX",
+          "ivs": {
+            "hp": 29,
+            "attack": 30,
+            "defense": 30,
+            "special_attack": 29,
+            "special_defense": 18,
+            "speed": 26
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "heavy-metal"
+        },
+        {
+          "name": "necrozma-dusk",
+          "id": 800,
+          "nature": "brave",
+          "exp": 0,
+          "pass": "m6a6RFA7",
+          "ivs": {
+            "hp": 14,
+            "attack": 26,
+            "defense": 24,
+            "special_attack": 10,
+            "special_defense": 30,
+            "speed": 14
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            93
+          ],
+          "ability": "prism-armor"
+        },
+        {
+          "name": "eternatus",
+          "id": 890,
+          "nature": "timid",
+          "exp": 0,
+          "pass": "A9CMwbqg",
+          "ivs": {
+            "hp": 29,
+            "attack": 15,
+            "defense": 15,
+            "special_attack": 17,
+            "special_defense": 26,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            342
+          ],
+          "ability": "pressure"
+        },
+        {
+          "name": "dondozo",
+          "id": 977,
+          "nature": "impish",
+          "exp": 0,
+          "pass": "nLwuIUBx",
+          "ivs": {
+            "hp": 20,
+            "attack": 23,
+            "defense": 28,
+            "special_attack": 26,
+            "special_defense": 25,
+            "speed": 17
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "oblivious"
+        },
+        {
+          "name": "drakloak",
+          "id": 886,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "LCSdfKgn",
+          "ivs": {
+            "hp": 26,
+            "attack": 24,
+            "defense": 12,
+            "special_attack": 13,
+            "special_defense": 19,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            44
+          ],
+          "ability": "clear-body"
+        },
+        {
+          "name": "dragapult",
+          "id": 887,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "j1XmsxGE",
+          "ivs": {
+            "hp": 26,
+            "attack": 24,
+            "defense": 12,
+            "special_attack": 13,
+            "special_defense": 19,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            44
+          ],
+          "ability": "infiltrator"
+        },
+        {
+          "name": "poipole",
+          "id": 803,
+          "nature": "timid",
+          "exp": 0,
+          "pass": "e7qOk8j0",
+          "ivs": {
+            "hp": 31,
+            "attack": 29,
+            "defense": 26,
+            "special_attack": 31,
+            "special_defense": 15,
+            "speed": 29
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            51
+          ],
+          "ability": "beast-boost"
+        },
+        {
+          "name": "fletchling",
+          "id": 661,
+          "nature": "naughty",
+          "exp": 0,
+          "pass": "dt3RBzzq",
+          "ivs": {
+            "hp": 31,
+            "attack": 27,
+            "defense": 30,
+            "special_attack": 24,
+            "special_defense": 26,
+            "speed": 28
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            64
+          ],
+          "ability": "gale-wings"
+        },
+        {
+          "name": "fletchinder",
+          "id": 662,
+          "nature": "naughty",
+          "exp": 0,
+          "pass": "RO6Km7Nv",
+          "ivs": {
+            "hp": 31,
+            "attack": 27,
+            "defense": 30,
+            "special_attack": 24,
+            "special_defense": 26,
+            "speed": 28
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            52
+          ],
+          "ability": "flame-body"
+        },
+        {
+          "name": "charcadet",
+          "id": 935,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "WOb5B9CH",
+          "ivs": {
+            "hp": 29,
+            "attack": 27,
+            "defense": 18,
+            "special_attack": 29,
+            "special_defense": 22,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            52
+          ],
+          "ability": "flash-fire"
+        },
+        {
+          "name": "ceruledge",
+          "id": 937,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "60eCnzg4",
+          "ivs": {
+            "hp": 29,
+            "attack": 27,
+            "defense": 18,
+            "special_attack": 29,
+            "special_defense": 22,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            52
+          ],
+          "ability": "weak-armor"
+        },
+        {
+          "name": "squirtle",
+          "id": 7,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "zLmmewfR",
+          "ivs": {
+            "hp": 31,
+            "attack": 23,
+            "defense": 28,
+            "special_attack": 29,
+            "special_defense": 28,
+            "speed": 29
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "torrent"
+        },
+        {
+          "name": "magikarp",
+          "id": 129,
+          "nature": "careful",
+          "exp": 0,
+          "pass": "c1dmNa49",
+          "ivs": {
+            "hp": 21,
+            "attack": 31,
+            "defense": 29,
+            "special_attack": 27,
+            "special_defense": 26,
+            "speed": 25
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            165
+          ],
+          "ability": "rattled"
+        },
+        {
+          "name": "ralts",
+          "id": 280,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "pcRutx7Q",
+          "ivs": {
+            "hp": 30,
+            "attack": 31,
+            "defense": 21,
+            "special_attack": 24,
+            "special_defense": 26,
+            "speed": 24
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            574
+          ],
+          "ability": "synchronize"
+        },
+        {
+          "name": "charcadet",
+          "id": 935,
+          "nature": "modest",
+          "exp": 0,
+          "pass": "ay4BoHoa",
+          "ivs": {
+            "hp": 28,
+            "attack": 29,
+            "defense": 26,
+            "special_attack": 29,
+            "special_defense": 21,
+            "speed": 21
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            52
+          ],
+          "ability": "flame-body"
+        },
+        {
+          "name": "iron-hands",
+          "id": 992,
+          "nature": "impish",
+          "exp": 0,
+          "pass": "tpFzGOEh",
+          "ivs": {
+            "hp": 31,
+            "attack": 27,
+            "defense": 31,
+            "special_attack": 6,
+            "special_defense": 30,
+            "speed": 25
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "quark-drive"
+        },
+        {
+          "name": "frigibax",
+          "id": 996,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "CF1CHj0O",
+          "ivs": {
+            "hp": 26,
+            "attack": 24,
+            "defense": 30,
+            "special_attack": 25,
+            "special_defense": 16,
+            "speed": 26
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "thermal-exchange"
+        },
+        {
+          "name": "croconaw",
+          "id": 159,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "4IwC8p8k",
+          "ivs": {
+            "hp": 24,
+            "attack": 20,
+            "defense": 17,
+            "special_attack": 18,
+            "special_defense": 26,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            10
+          ],
+          "ability": "sheer-force"
+        },
+        {
+          "name": "eternatus",
+          "id": 890,
+          "nature": "quirky",
+          "exp": 1250000,
+          "pass": "TNnncZ1x",
+          "ivs": {
+            "hp": 10,
+            "attack": 10,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            53,
+            744,
+            63,
+            795
+          ],
+          "ability": "pressure"
+        },
+        {
+          "name": "slaking",
+          "id": 289,
+          "nature": "naive",
+          "exp": 1250000,
+          "pass": "nk3RvuLe",
+          "ivs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            185,
+            343,
+            498,
+            359
+          ],
+          "ability": "truant"
+        },
+        {
+          "name": "gengar",
+          "id": 94,
+          "nature": "naive",
+          "exp": 1059860,
+          "pass": "lWfKywwz",
+          "ivs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            389,
+            399,
+            247,
+            138
+          ],
+          "ability": "cursed-body"
+        },
+        {
+          "name": "raichu",
+          "id": 26,
+          "nature": "jolly",
+          "exp": 1000000,
+          "pass": "GSVa1zEG",
+          "ivs": {
+            "hp": 31,
+            "attack": 31,
+            "defense": 31,
+            "special_attack": 31,
+            "special_defense": 31,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            "729",
+            "731",
+            "344",
+            "349"
+          ],
+          "ability": "lightning-rod"
+        },
+        {
+          "name": "pikachu",
+          "id": 25,
+          "nature": "adamant",
+          "exp": 1000000,
+          "pass": "aFFAlGAW",
+          "ivs": {
+            "hp": 31,
+            "attack": 31,
+            "defense": 31,
+            "special_attack": 31,
+            "special_defense": 31,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            21,
+            435,
+            85,
+            87
+          ],
+          "ability": "lightning-rod"
+        },
+        {
+          "name": "mewtwo",
+          "id": 150,
+          "nature": "timid",
+          "exp": 1250000,
+          "pass": "a4Ln9DY7",
+          "ivs": {
+            "hp": 31,
+            "attack": 31,
+            "defense": 31,
+            "special_attack": 31,
+            "special_defense": 31,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            248,
+            427,
+            94,
+            396
+          ],
+          "ability": "insomnia"
+        },
+        {
+          "name": "arceus",
+          "id": 493,
+          "nature": "calm",
+          "exp": 9770,
+          "pass": "MI6ul0BH",
+          "ivs": {
+            "hp": 17,
+            "attack": 15,
+            "defense": 21,
+            "special_attack": 13,
+            "special_defense": 22,
+            "speed": 22
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 2,
+            "attack": 5,
+            "defense": 1,
+            "special_attack": 1,
+            "special_defense": 0,
+            "speed": 3
+          },
+          "moves": [
+            669,
+            885,
+            479,
+            331
+          ],
+          "ability": "multitype"
+        },
+        {
+          "name": "terapagos",
+          "id": 1024,
+          "nature": "modest",
+          "exp": 0,
+          "pass": "2Nip4Yd5",
+          "ivs": {
+            "hp": 22,
+            "attack": 19,
+            "defense": 12,
+            "special_attack": 27,
+            "special_defense": 21,
+            "speed": 17
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [],
+          "ability": "tera-shift"
+        },
+        {
+          "name": "urshifu-rapid-strike",
+          "id": 892,
+          "nature": "impish",
+          "exp": 0,
+          "pass": "6R2N5nFk",
+          "ivs": {
+            "hp": 13,
+            "attack": 21,
+            "defense": 20,
+            "special_attack": 20,
+            "special_defense": 19,
+            "speed": 19
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            249,
+            453
+          ],
+          "ability": "unseen-fist"
+        },
+        {
+          "name": "urshifu-single-strike",
+          "id": 892,
+          "nature": "jolly",
+          "ability": "unseen-fist",
+          "exp": 10,
+          "pass": "dAbZybgP",
+          "ivs": {
+            "hp": 22,
+            "attack": 28,
+            "defense": 15,
+            "special_attack": 25,
+            "special_defense": 30,
+            "speed": 17
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            249,
+            389
+          ]
+        },
+        {
+          "name": "larvitar",
+          "id": 246,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "kXMeKWXO",
+          "ivs": {
+            "hp": 29,
+            "attack": 22,
+            "defense": 21,
+            "special_attack": 23,
+            "special_defense": 27,
+            "speed": 28
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "guts"
+        },
+        {
+          "name": "duraludon",
+          "id": 884,
+          "nature": "timid",
+          "exp": 0,
+          "pass": "D9LWsx3y",
+          "ivs": {
+            "hp": 24,
+            "attack": 23,
+            "defense": 28,
+            "special_attack": 23,
+            "special_defense": 31,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            232
+          ],
+          "ability": "stalwart"
+        },
+        {
+          "name": "dialga",
+          "id": 483,
+          "nature": "quiet",
+          "ability": "telepathy",
+          "exp": 0,
+          "pass": "PxerQ8hD",
+          "ivs": {
+            "hp": 21,
+            "attack": 24,
+            "defense": 21,
+            "special_attack": 29,
+            "special_defense": 23,
+            "speed": 18
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            843,
+            467,
+            688,
+            828
+          ]
+        },
+        {
+          "name": "buzzwole",
+          "id": 794,
+          "nature": "jolly",
+          "ability": "beast-boost",
+          "exp": 1250000,
+          "pass": "K31ENPLb",
+          "ivs": {
+            "hp": 31,
+            "attack": 10,
+            "defense": 10,
+            "special_attack": 0,
+            "special_defense": 31,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            359,
+            565,
+            612,
+            679
+          ]
+        },
+        {
+          "name": "grimmsnarl",
+          "id": 861,
+          "nature": "adamant",
+          "ability": "frisk",
+          "exp": 1000000,
+          "pass": "6hzAG2rm",
+          "ivs": {
+            "hp": 31,
+            "attack": 31,
+            "defense": 28,
+            "special_attack": 20,
+            "special_defense": 28,
+            "speed": 31
+          },
+          "symbol": "✨",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            492,
+            583,
+            789,
+            793
+          ]
+        },
+        {
+          "name": "dondozo",
+          "id": 977,
+          "nature": "adamant",
+          "ability": "oblivious",
+          "exp": 1250000,
+          "pass": "uAkm4FS3",
+          "ivs": {
+            "hp": 31,
+            "attack": 31,
+            "defense": 28,
+            "special_attack": 20,
+            "special_defense": 28,
+            "speed": 31
+          },
+          "symbol": "✨",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            291,
+            401,
+            834,
+            856
+          ],
+          "held_item": "tatsugiri-lunchbox"
+        },
+        {
+          "name": "buzzwole",
+          "id": 794,
+          "nature": "jolly",
+          "ability": "beast-boost",
+          "exp": 1250000,
+          "pass": "Li1tHaQs",
+          "ivs": {
+            "hp": 31,
+            "attack": 20,
+            "defense": 20,
+            "special_attack": 20,
+            "special_defense": 29,
+            "speed": 31
+          },
+          "symbol": "✨",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            359,
+            565,
+            612,
+            679
+          ]
+        },
+        {
+          "name": "simipour",
+          "id": 516,
+          "nature": "Relaxed",
+          "exp": 1000000,
+          "pass": "HG3CUdCE",
+          "ivs": {
+            "hp": 18,
+            "attack": 15,
+            "defense": 23,
+            "special_attack": 16,
+            "special_defense": 11,
+            "speed": 16
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            43,
+            122,
+            154,
+            886
+          ],
+          "temp_battle": true,
+          "ability": "torrent"
+        },
+        {
+          "name": "audino",
+          "id": 531,
+          "nature": "Naive",
+          "exp": 800000,
+          "pass": "5XvhUCi6",
+          "ivs": {
+            "hp": 24,
+            "attack": 23,
+            "defense": 12,
+            "special_attack": 21,
+            "special_defense": 19,
+            "speed": 15
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            574,
+            589,
+            608,
+            791
+          ],
+          "temp_battle": true,
+          "ability": "healer"
+        },
+        {
+          "name": "revavroom",
+          "id": 966,
+          "nature": "Serious",
+          "exp": 1000000,
+          "pass": "p7JqIZDH",
+          "ivs": {
+            "hp": 23,
+            "attack": 21,
+            "defense": 23,
+            "special_attack": 22,
+            "special_defense": 19,
+            "speed": 18
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            441,
+            442,
+            508,
+            859
+          ],
+          "temp_battle": true,
+          "ability": "filter"
+        },
+        {
+          "name": "terapagos",
+          "id": 1024,
+          "nature": "Hasty",
+          "exp": 1250000,
+          "pass": "VULhgXrz",
+          "ivs": {
+            "hp": 19,
+            "attack": 20,
+            "defense": 22,
+            "special_attack": 16,
+            "special_defense": 14,
+            "speed": 19
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            397,
+            414,
+            484,
+            906
+          ],
+          "temp_battle": true,
+          "ability": "tera-shift"
+        },
+        {
+          "name": "golurk",
+          "id": 623,
+          "nature": "Naughty",
+          "exp": 1000000,
+          "pass": "mgSIB0Sd",
+          "ivs": {
+            "hp": 17,
+            "attack": 26,
+            "defense": 17,
+            "special_attack": 18,
+            "special_defense": 15,
+            "speed": 12
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            484,
+            566,
+            667,
+            707
+          ],
+          "temp_battle": true,
+          "ability": "klutz"
+        },
+        {
+          "name": "meganium",
+          "id": 154,
+          "nature": "Naughty",
+          "exp": 1059860,
+          "pass": "Fk0OlJZO",
+          "ivs": {
+            "hp": 22,
+            "attack": 9,
+            "defense": 15,
+            "special_attack": 15,
+            "special_defense": 12,
+            "speed": 8
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            230,
+            235,
+            345,
+            572
+          ],
+          "temp_battle": true,
+          "ability": "overgrow"
+        },
+        {
+          "name": "ampharos",
+          "id": 181,
+          "nature": "modest",
+          "exp": 0,
+          "pass": "fkKOM6gZ",
+          "ivs": {
+            "hp": 23,
+            "attack": 30,
+            "defense": 25,
+            "special_attack": 22,
+            "special_defense": 16,
+            "speed": 21
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            7
+          ],
+          "ability": "plus"
+        },
+        {
+          "name": "lairon",
+          "nature": "Relaxed",
+          "ability": "rock-head",
+          "held_item": "none",
+          "ivs": {
+            "hp": 17,
+            "attack": 16,
+            "defense": 20,
+            "special_attack": 16,
+            "special_defense": 16,
+            "speed": 22
+          },
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33,
+            189,
+            232,
+            442
+          ],
+          "exp": 49130,
+          "id": 305,
+          "pass": "kIEB3cry",
+          "cpass": "bixsN9Vt",
+          "symbol": ""
+        },
+        {
+          "name": "snorunt",
+          "nature": "Naughty",
+          "ability": "inner-focus",
+          "held_item": "none",
+          "ivs": {
+            "hp": 16,
+            "attack": 19,
+            "defense": 16,
+            "special_attack": 20,
+            "special_defense": 19,
+            "speed": 22
+          },
+          "evs": {
+            "hp": 0,
+            "attack": 1,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            196,
+            310,
+            420,
+            524
+          ],
+          "exp": 40280,
+          "id": 361,
+          "pass": "lMNkCTqo",
+          "cpass": "6hNnd85d",
+          "symbol": ""
+        },
+        {
+          "name": "scolipede",
+          "id": 545,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "nYdEUwho",
+          "ivs": {
+            "hp": 28,
+            "attack": 14,
+            "defense": 30,
+            "special_attack": 21,
+            "special_defense": 30,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            40
+          ],
+          "ability": "swarm"
+        },
+        {
+          "name": "gholdengo",
+          "id": 1000,
+          "nature": "bold",
+          "exp": 0,
+          "pass": "evi8bUn2",
+          "ivs": {
+            "hp": 16,
+            "attack": 30,
+            "defense": 20,
+            "special_attack": 25,
+            "special_defense": 30,
+            "speed": 16
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "good-as-gold"
+        },
+        {
+          "name": "gholdengo",
+          "id": 1000,
+          "nature": "sassy",
+          "exp": 0,
+          "pass": "GwiSVxJW",
+          "ivs": {
+            "hp": 28,
+            "attack": 16,
+            "defense": 18,
+            "special_attack": 26,
+            "special_defense": 24,
+            "speed": 24
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ],
+          "ability": "levitate"
+        },
+        {
+          "name": "larvesta",
+          "id": 636,
+          "nature": "mild",
+          "exp": 0,
+          "pass": "1htCW83C",
+          "ivs": {
+            "hp": 22,
+            "attack": 18,
+            "defense": 22,
+            "special_attack": 25,
+            "special_defense": 30,
+            "speed": 24
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            52
+          ],
+          "ability": "swarm"
+        },
+        {
+          "name": "krookodile",
+          "id": 553,
+          "nature": "hasty",
+          "exp": 0,
+          "pass": "T4WFGkAC",
+          "ivs": {
+            "hp": 19,
+            "attack": 23,
+            "defense": 19,
+            "special_attack": 20,
+            "special_defense": 26,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            681
+          ],
+          "ability": "intimidate"
+        },
+        {
+          "name": "sceptile",
+          "id": 254,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "xxxzGuRB",
+          "ivs": {
+            "hp": 20,
+            "attack": 28,
+            "defense": 17,
+            "special_attack": 21,
+            "special_defense": 26,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            1
+          ],
+          "ability": "unburden"
+        },
+        {
+          "name": "pawmot",
+          "id": 923,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "iLmZd2Sc",
+          "ivs": {
+            "hp": 19,
+            "attack": 29,
+            "defense": 26,
+            "special_attack": 24,
+            "special_defense": 22,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            10
+          ],
+          "ability": "natural-cure"
+        },
+        {
+          "name": "yveltal",
+          "id": 717,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "McgYdlLC",
+          "ivs": {
+            "hp": 20,
+            "attack": 31,
+            "defense": 18,
+            "special_attack": 27,
+            "special_defense": 17,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            16
+          ],
+          "ability": "dark-aura"
+        },
+        {
+          "name": "groudon",
+          "id": 383,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "rR7NwycG",
+          "ivs": {
+            "hp": 21,
+            "attack": 28,
+            "defense": 24,
+            "special_attack": 30,
+            "special_defense": 11,
+            "speed": 25
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            246
+          ],
+          "ability": "drought"
+        },
+        {
+          "name": "iron-bundle",
+          "id": 991,
+          "nature": "hasty",
+          "exp": 0,
+          "pass": "tv5TpqRY",
+          "ivs": {
+            "hp": 13,
+            "attack": 11,
+            "defense": 5,
+            "special_attack": 25,
+            "special_defense": 21,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            181
+          ],
+          "ability": "quark-drive"
+        },
+        {
+          "name": "flutter-mane",
+          "id": 987,
+          "nature": "timid",
+          "exp": 0,
+          "pass": "A3T340qY",
+          "ivs": {
+            "hp": 15,
+            "attack": 3,
+            "defense": 25,
+            "special_attack": 24,
+            "special_defense": 18,
+            "speed": 30
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            310
+          ]
+        },
+        {
+          "name": "miraidon",
+          "id": 1008,
+          "nature": "timid",
+          "exp": 0,
+          "pass": "robasLOH",
+          "ivs": {
+            "hp": 20,
+            "attack": 22,
+            "defense": 31,
+            "special_attack": 27,
+            "special_defense": 18,
+            "speed": 27
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            84
+          ]
+        },
+        {
+          "name": "cinderace",
+          "id": 815,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "oS8d0Mok",
+          "ivs": {
+            "hp": 29,
+            "attack": 18,
+            "defense": 12,
+            "special_attack": 22,
+            "special_defense": 19,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ]
+        },
+        {
+          "name": "iron-valiant",
+          "id": 1006,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "XAkrVjY4",
+          "ivs": {
+            "hp": 28,
+            "attack": 21,
+            "defense": 19,
+            "special_attack": 29,
+            "special_defense": 19,
+            "speed": 20
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            425
+          ]
+        },
+        {
+          "name": "arcanine",
+          "id": 59,
+          "nature": "hasty",
+          "exp": 0,
+          "pass": "h6GezVMC",
+          "ivs": {
+            "hp": 26,
+            "attack": 20,
+            "defense": 20,
+            "special_attack": 15,
+            "special_defense": 30,
+            "speed": 30
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            36
+          ]
+        },
+        {
+          "name": "koraidon",
+          "id": 1007,
+          "nature": "hasty",
+          "exp": 0,
+          "pass": "TRHO3Ai1",
+          "ivs": {
+            "hp": 17,
+            "attack": 12,
+            "defense": 10,
+            "special_attack": 12,
+            "special_defense": 25,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            784
+          ]
+        },
+        {
+          "name": "blastoise",
+          "id": 9,
+          "nature": "modest",
+          "exp": 0,
+          "pass": "cCXU408a",
+          "ivs": {
+            "hp": 22,
+            "attack": 20,
+            "defense": 21,
+            "special_attack": 28,
+            "special_defense": 27,
+            "speed": 20
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ]
+        },
+        {
+          "name": "calyrex-ice",
+          "id": 898,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "xD3hLhWi",
+          "ivs": {
+            "hp": 31,
+            "attack": 31,
+            "defense": 17,
+            "special_attack": 24,
+            "special_defense": 22,
+            "speed": 18
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            1
+          ]
+        },
+        {
+          "name": "kyurem-white",
+          "id": 646,
+          "nature": "quiet",
+          "exp": 0,
+          "pass": "LaExqz1q",
+          "ivs": {
+            "hp": 31,
+            "attack": 23,
+            "defense": 30,
+            "special_attack": 29,
+            "special_defense": 31,
+            "speed": 27
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            225
+          ]
+        },
+        {
+          "name": "carbink",
+          "id": 703,
+          "nature": "impish",
+          "exp": 0,
+          "pass": "9FcmxGiy",
+          "ivs": {
+            "hp": 23,
+            "attack": 21,
+            "defense": 22,
+            "special_attack": 26,
+            "special_defense": 16,
+            "speed": 26
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ]
+        },
+        {
+          "name": "magikarp",
+          "id": 129,
+          "nature": "careful",
+          "exp": 0,
+          "pass": "gmdOLGjc",
+          "ivs": {
+            "hp": 21,
+            "attack": 31,
+            "defense": 29,
+            "special_attack": 27,
+            "special_defense": 26,
+            "speed": 25
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            165
+          ]
+        },
+        {
+          "name": "ralts",
+          "id": 280,
+          "nature": "adamant",
+          "exp": 0,
+          "pass": "KWAq3ErT",
+          "ivs": {
+            "hp": 30,
+            "attack": 31,
+            "defense": 21,
+            "special_attack": 24,
+            "special_defense": 26,
+            "speed": 24
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            574
+          ]
+        },
+        {
+          "name": "forretress",
+          "id": 205,
+          "nature": "brave",
+          "exp": 0,
+          "pass": "PW1uKShv",
+          "ivs": {
+            "hp": 29,
+            "attack": 21,
+            "defense": 25,
+            "special_attack": 20,
+            "special_defense": 30,
+            "speed": 26
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ]
+        },
+        {
+          "name": "snivy",
+          "id": 495,
+          "nature": "timid",
+          "exp": 0,
+          "pass": "DBjatvrM",
+          "ivs": {
+            "hp": 30,
+            "attack": 31,
+            "defense": 21,
+            "special_attack": 31,
+            "special_defense": 17,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            33
+          ]
+        },
+        {
+          "name": "zacian",
+          "id": 888,
+          "nature": "naive",
+          "exp": 0,
+          "pass": "NjL7XbSH",
+          "ivs": {
+            "hp": 27,
+            "attack": 27,
+            "defense": 11,
+            "special_attack": 27,
+            "special_defense": 31,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            44
+          ]
+        },
+        {
+          "name": "zamazenta",
+          "id": 889,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "WLnw9SMn",
+          "ivs": {
+            "hp": 24,
+            "attack": 15,
+            "defense": 26,
+            "special_attack": 30,
+            "special_defense": 28,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            44
+          ]
+        },
+        {
+          "name": "zamazenta",
+          "id": 889,
+          "nature": "naive",
+          "exp": 0,
+          "pass": "jkajb7d6",
+          "ivs": {
+            "hp": 15,
+            "attack": 17,
+            "defense": 14,
+            "special_attack": 25,
+            "special_defense": 26,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            44
+          ]
+        },
+        {
+          "name": "groudon",
+          "id": 383,
+          "nature": "jolly",
+          "exp": 0,
+          "pass": "Nk85GVyJ",
+          "ivs": {
+            "hp": 19,
+            "attack": 29,
+            "defense": 27,
+            "special_attack": 16,
+            "special_defense": 28,
+            "speed": 31
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            246
+          ]
+        },
+        {
+          "name": "mankey",
+          "id": 56,
+          "nature": "quirky",
+          "exp": 0,
+          "pass": "unbMlpwV",
+          "ivs": {
+            "hp": 21,
+            "attack": 30,
+            "defense": 29,
+            "special_attack": 29,
+            "special_defense": 31,
+            "speed": 22
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            10
+          ]
+        },
+        {
+          "name": "ralts",
+          "id": 280,
+          "nature": "lonely",
+          "exp": 0,
+          "pass": "2W7wY6LL",
+          "ivs": {
+            "hp": 26,
+            "attack": 30,
+            "defense": 28,
+            "special_attack": 31,
+            "special_defense": 29,
+            "speed": 29
+          },
+          "symbol": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 0,
+            "special_attack": 0,
+            "special_defense": 0,
+            "speed": 0
+          },
+          "moves": [
+            574
+          ]
+        }
+      ],
+      "inv": {
+        "pc": 104590,
+        "region": "conquest-gallery",
+        "exp": 42273,
+        "avtar": "1",
+        "template": "1",
+        "id": "grey",
+        "data": "black",
+        "hometown": "Paldea",
+        "team": "5",
+        "name": "Yash",
+        "stones": [
+          "red-orb",
+          "latiosite",
+          "mewtwonite-y",
+          "sharpedonite",
+          "tyranitarite",
+          "aerodactylite",
+          "banettite",
+          "galladite",
+          "gardevoirite",
+          "lopunnite",
+          "blue-orb",
+          "kangaskhanite",
+          "manectite",
+          "slowbronite",
+          "gengarite",
+          "garchompite",
+          "abomasite",
+          "lucarionite",
+          "jade-orb",
+          "diancite",
+          "scizorite",
+          "audinite",
+          "mewtwonite-x",
+          "beedrillite",
+          "sceptilite",
+          "charizardite-x",
+          "absolite",
+          "mewtwonite-x"
+        ],
+        "win": 2,
+        "ring": true,
+        "pass": 3,
+        "league_points": 990,
+        "holowear_tickets": 91,
+        "battle": 0,
+        "lose": 0,
+        "battle_boxes": 0,
+        "daycare_candy": 10,
+        "vitamin": 1,
+        "candy": 1
+      },
+      "balls": {
+        "regular": 75,
+        "great": 24,
+        "ultra": 33
+      },
+      "extra": {
+        "date": "06/03/2026",
+        "huntd": "2026-03-20",
+        "hunts": 57,
+        "megas": {},
+        "evhunt": 0,
+        "evh": "hp",
+        "temp_battle": {
+          "jl43FmE": [
+            "HG3CUdCE",
+            "5XvhUCi6",
+            "p7JqIZDH",
+            "VULhgXrz",
+            "mgSIB0Sd",
+            "Fk0OlJZO"
+          ]
+        },
+        "sort_order": "desc",
+        "spinEvent": {
+          "date": "2026-03-20",
+          "remaining": 10,
+          "candidate": null,
+          "selectedName": null,
+          "awaitingName": true
+        },
+        "events": {
+          "safariCommemorative": {
+            "lastClaimDate": "2026-03-20",
+            "lastClaimAtUtc": "2026-03-20T03:33:54.363Z"
+          },
+          "commemorativeDaily": {
+            "lastClaimDate": "2026-03-20",
+            "lastClaimAtUtc": "2026-03-20T03:28:42.754Z"
+          }
+        },
+        "hunting": false,
+        "rankRewards": {
+          "claimedLevel": 20,
+          "lastClaimAtUtc": "2026-03-20T15:38:12.013Z"
+        },
+        "itembox": {
+          "bottleCaps": 0,
+          "goldBottleCaps": 0,
+          "mints": {},
+          "heldItems": {
+            "tatsugiri-lunchbox": 1
+          }
+        },
+        "rankLevel": 1,
+        "daycare": {
+          "jobs": [],
+          "draft": null,
+          "starterClaimed": 1,
+          "claimedCount": 0
+        },
+        "tmshop": {
+          "weekKey": "2933",
+          "refreshNonce": 0,
+          "selection": [
+            "48",
+            "24",
+            "81",
+            "84",
+            "76",
+            "95",
+            "74",
+            "80",
+            "77",
+            "0"
+          ],
+          "purchasedWeekKey": "2933",
+          "purchasedSlots": []
+        },
+        "ivEventLastEncounter": {
+          "name": "timburr",
+          "ivs": {
+            "hp": 18,
+            "attack": 16,
+            "defense": 17,
+            "special_attack": 16,
+            "special_defense": 20,
+            "speed": 22
+          },
+          "atUtc": "2026-03-20T15:39:50.079Z"
+        },
+        "ivLockDaily": {
+          "date": "2026-03-20",
+          "used": 1
+        },
+        "ivLock": {
+          "stat": "speed",
+          "value": 22,
+          "remainingHunts": 20,
+          "createdAtUtc": "2026-03-20T15:24:52.762Z",
+          "source": "last_encounter"
+        },
+        "ivEventLastCaught": {
+          "name": "snorunt",
+          "ivs": {
+            "hp": 16,
+            "attack": 19,
+            "defense": 16,
+            "special_attack": 20,
+            "special_defense": 19,
+            "speed": 22
+          },
+          "atUtc": "2026-03-20T15:34:24.457Z"
+        }
+      },
+      "teams": {
+        "1": [
+          "aFFAlGAW",
+          "a4Ln9DY7",
+          "GSVa1zEG",
+          "MI6ul0BH",
+          "hgUbPEHX",
+          "kIEB3cry"
+        ],
+        "2": [],
+        "3": [
+          "uAkm4FS3",
+          "a4Ln9DY7",
+          "GSVa1zEG",
+          "D9LWsx3y",
+          "K31ENPLb",
+          "Li1tHaQs"
+        ],
+        "4": [
+          "TNnncZ1x",
+          "TIcICrEk"
+        ],
+        "5": [
+          "MI6ul0BH",
+          "hgUbPEHX",
+          "lMNkCTqo"
+        ],
+        "6": []
+      },
+      "settings": {
+        "max_poke": 6,
+        "dual_type": true,
+        "min_6l": 0,
+        "max_6l": 6,
+        "min_level": 1,
+        "max_level": 100,
+        "switch": true,
+        "key_item": true,
+        "sandbox": false,
+        "random": false,
+        "preview": "no",
+        "pin": false,
+        "ban_types": [],
+        "allow_types": [],
+        "ban_regions": [],
+        "allow_regions": [],
+        "type_effects": true
+      },
+      "pokecaught": [
+        "fuecoco",
+        "arctovish",
+        "archaludon",
+        "boltund",
+        "golisopod",
+        "decidueye-hisui",
+        "wishiwashi-solo",
+        "calyrex-shadow",
+        "eternatus",
+        "zacian-crowned",
+        "wartortle",
+        "blastoise",
+        "charmeleon",
+        "charizard",
+        "marshadow",
+        "ursaluna-bloodmoon",
+        "cosmoem",
+        "solgaleo",
+        "mewtwo",
+        "blacephalon",
+        "oricorio-pom-pom",
+        "shuckle",
+        "furfrou",
+        "linoone-galar",
+        "dudunsparce",
+        "phanpy",
+        "darmanitan-galar-zen",
+        "lairon",
+        "aggron",
+        "necrozma-dusk",
+        "dondozo",
+        "drakloak",
+        "dragapult",
+        "poipole",
+        "fletchling",
+        "fletchinder",
+        "staraptor",
+        "escavalier",
+        "seviper",
+        "spectrier",
+        "houndoom-mega",
+        "unown-c",
+        "skarmory",
+        "tornadus-incarnate",
+        "polteageist",
+        "beautifly",
+        "kyurem-white",
+        "gardevoir",
+        "gyarados",
+        "silvally-psychic",
+        "aromatisse",
+        "electivire",
+        "brute-bonnet",
+        "charcadet",
+        "ceruledge",
+        "pumpkaboo-average",
+        "goodra",
+        "florges-white",
+        "shiftry",
+        "scizor",
+        "squawkabilly-white-plumage",
+        "squirtle",
+        "magikarp",
+        "ralts",
+        "iron-hands",
+        "frigibax",
+        "croconaw",
+        "minun",
+        "poliwrath",
+        "pikachu-starter",
+        "victreebel",
+        "articuno",
+        "typhlosion-hisui",
+        "yanmega",
+        "omastar",
+        "floette-eternal",
+        "noivern",
+        "slaking",
+        "gengar",
+        "mewtwo-mega-y",
+        "gengar-mega",
+        "arceus-ghost",
+        "palossand",
+        "salazzle",
+        "rampardos",
+        "tatsugiri-droopy",
+        "meowth-alola",
+        "deerling-spring",
+        "dragalge",
+        "pikachu-unova-cap",
+        "skuntank",
+        "watchog",
+        "mantine",
+        "vivillon-marine",
+        "bruxish",
+        "unown-r",
+        "koraidon-sprinting-build",
+        "guzzlord",
+        "alcremie",
+        "arctozolt",
+        "furfrou-kabuki",
+        "hawlucha",
+        "melmetal-gmax",
+        "braviary-hisui",
+        "basculegion-male",
+        "marowak",
+        "terapagos",
+        "urshifu-rapid-strike",
+        "zacian",
+        "zacian",
+        "pikachu",
+        "pikachu",
+        "melmetal",
+        "urshifu-single-strike",
+        "snorlax-gmax",
+        "vivillon-modern",
+        "latias-mega",
+        "unown-i",
+        "scrafty",
+        "castform",
+        "tentacruel",
+        "mimikyu-disguised",
+        "regirock",
+        "orbeetle-gmax",
+        "arceus-steel",
+        "zarude",
+        "feraligatr",
+        "goodra-hisui",
+        "lopunny",
+        "armaldo",
+        "delphox",
+        "vivillon-river",
+        "garchomp",
+        "gourgeist-average",
+        "suicune",
+        "mr-mime-galar",
+        "vivillon-meadow",
+        "abra",
+        "pangoro",
+        "fearow",
+        "obstagoon",
+        "ledian",
+        "spiritomb",
+        "steelix",
+        "mabosstiff",
+        "spidops",
+        "torterra",
+        "ludicolo",
+        "dialga-origin",
+        "darmanitan-galar-standard",
+        "arceus",
+        "buzzwole",
+        "larvitar",
+        "grimmsnarl",
+        "duraludon",
+        "raichu",
+        "palkia",
+        "musharna",
+        "kricketune",
+        "koraidon-limited-build",
+        "solrock",
+        "chi-yu",
+        "simipour",
+        "audino",
+        "revavroom",
+        "golurk",
+        "meganium",
+        "dialga",
+        "ampharos",
+        "snorunt",
+        "scolipede",
+        "gholdengo",
+        "larvesta",
+        "krookodile",
+        "sceptile",
+        "pawmot",
+        "yveltal",
+        "groudon",
+        "iron-bundle",
+        "flutter-mane",
+        "miraidon",
+        "cinderace",
+        "iron-valiant",
+        "arcanine",
+        "koraidon",
+        "calyrex-ice",
+        "carbink",
+        "forretress",
+        "snivy",
+        "zamazenta",
+        "mankey"
+      ],
+      "pokeseen": [
+        "fuecoco",
+        "jynx",
+        "arctovish",
+        "archaludon",
+        "boltund",
+        "golisopod",
+        "decidueye-hisui",
+        "wishiwashi-solo",
+        "calyrex-shadow",
+        "eternatus",
+        "zacian-crowned",
+        "wartortle",
+        "blastoise",
+        "charmeleon",
+        "charizard",
+        "marshadow",
+        "ursaluna-bloodmoon",
+        "cosmoem",
+        "solgaleo",
+        "mewtwo",
+        "blacephalon",
+        "oricorio-pom-pom",
+        "shuckle",
+        "furfrou",
+        "linoone-galar",
+        "dudunsparce",
+        "phanpy",
+        "darmanitan-galar-zen",
+        "lairon",
+        "aggron",
+        "necrozma-dusk",
+        "dondozo",
+        "drakloak",
+        "dragapult",
+        "poipole",
+        "fletchling",
+        "fletchinder",
+        "staraptor",
+        "escavalier",
+        "seviper",
+        "spectrier",
+        "houndoom-mega",
+        "unown-c",
+        "skarmory",
+        "tornadus-incarnate",
+        "polteageist",
+        "beautifly",
+        "kyurem-white",
+        "gardevoir",
+        "gyarados",
+        "silvally-psychic",
+        "aromatisse",
+        "electivire",
+        "brute-bonnet",
+        "charcadet",
+        "ceruledge",
+        "pumpkaboo-average",
+        "goodra",
+        "florges-white",
+        "shiftry",
+        "scizor",
+        "squawkabilly-white-plumage",
+        "squirtle",
+        "magikarp",
+        "ralts",
+        "iron-hands",
+        "frigibax",
+        "croconaw",
+        "minun",
+        "poliwrath",
+        "pikachu-starter",
+        "victreebel",
+        "articuno",
+        "typhlosion-hisui",
+        "yanmega",
+        "omastar",
+        "floette-eternal",
+        "noivern",
+        "slaking",
+        "gengar",
+        "mewtwo-mega-y",
+        "gengar-mega",
+        "arceus-ghost",
+        "palossand",
+        "salazzle",
+        "rampardos",
+        "tatsugiri-droopy",
+        "meowth-alola",
+        "deerling-spring",
+        "dragalge",
+        "pikachu-unova-cap",
+        "skuntank",
+        "watchog",
+        "mantine",
+        "vivillon-marine",
+        "bruxish",
+        "unown-r",
+        "koraidon-sprinting-build",
+        "guzzlord",
+        "alcremie",
+        "arctozolt",
+        "furfrou-kabuki",
+        "hawlucha",
+        "melmetal-gmax",
+        "braviary-hisui",
+        "basculegion-male",
+        "marowak",
+        "golbat",
+        "electabuzz",
+        "persian",
+        "terapagos",
+        "urshifu-rapid-strike",
+        "zacian",
+        "zacian",
+        "pikachu",
+        "pikachu",
+        "melmetal",
+        "zacian",
+        "zacian",
+        "pikachu",
+        "pikachu",
+        "melmetal",
+        "urshifu-single-strike",
+        "snorlax-gmax",
+        "vivillon-modern",
+        "latias-mega",
+        "unown-i",
+        "scrafty",
+        "castform",
+        "tentacruel",
+        "mimikyu-disguised",
+        "regirock",
+        "orbeetle-gmax",
+        "arceus-steel",
+        "zarude",
+        "feraligatr",
+        "goodra-hisui",
+        "lopunny",
+        "armaldo",
+        "delphox",
+        "vivillon-river",
+        "garchomp",
+        "gourgeist-average",
+        "suicune",
+        "mr-mime-galar",
+        "vivillon-meadow",
+        "abra",
+        "pangoro",
+        "fearow",
+        "obstagoon",
+        "ledian",
+        "spiritomb",
+        "steelix",
+        "mabosstiff",
+        "spidops",
+        "torterra",
+        "ludicolo",
+        "dialga-origin",
+        "darmanitan-galar-standard",
+        "arceus",
+        "buzzwole",
+        "larvitar",
+        "grimmsnarl",
+        "duraludon",
+        "raichu",
+        "chansey",
+        "clefairy",
+        "wigglytuff",
+        "lapras",
+        "nidoqueen",
+        "nidorina",
+        "lickitung",
+        "jigglypuff",
+        "snorlax",
+        "clefable",
+        "vaporeon",
+        "mew",
+        "kangaskhan",
+        "palkia",
+        "musharna",
+        "kricketune",
+        "koraidon-limited-build",
+        "solrock",
+        "chi-yu",
+        "simipour",
+        "audino",
+        "revavroom",
+        "golurk",
+        "meganium",
+        "dialga",
+        "lombre",
+        "rhydon",
+        "cottonee",
+        "sewaddle",
+        "whirlipede",
+        "oshawott",
+        "dragonair",
+        "servine",
+        "kadabra",
+        "petilil",
+        "deino",
+        "ampharos",
+        "dewott",
+        "treecko",
+        "bisharp",
+        "snorunt",
+        "sneasel",
+        "monferno",
+        "venipede",
+        "metang",
+        "scyther",
+        "riolu",
+        "gible",
+        "axew",
+        "sealeo",
+        "larvesta",
+        "timburr",
+        "scolipede",
+        "gholdengo",
+        "krookodile",
+        "sceptile",
+        "pawmot",
+        "yveltal",
+        "groudon",
+        "iron-bundle",
+        "flutter-mane",
+        "miraidon",
+        "cinderace",
+        "iron-valiant",
+        "arcanine",
+        "koraidon",
+        "calyrex-ice",
+        "carbink",
+        "forretress",
+        "snivy",
+        "zamazenta",
+        "mankey"
+      ],
+      "tms": {},
+      "user_id": 7577674783
+    },
+    "reset": false
+  }
+]

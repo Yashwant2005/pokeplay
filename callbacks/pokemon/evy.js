@@ -1,6 +1,5 @@
 function register_047_evy(bot, deps) {
   Object.assign(globalThis, deps, { bot });
-  const { toBaseIdentifier } = require('../../utils/base_form_pokemon');
   const { getReadyEvolutionRows, getEvolutionBaseName, getEvolutionRowsForPokemon, getPseudoRandomEvolutionLevel, isEvolutionRequirementMet } = require('../../utils/evolution_rules');
   const { getEvolutionStoneForTarget, removeEvolutionStone, titleCaseEvolutionStone } = require('../../utils/evolution_items');
   const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
@@ -82,7 +81,6 @@ var rn = fr
 
 
 let nam = rn[Math.floor(Math.random()*rn.length)].identifier
-nam = toBaseIdentifier(nam, forms)
 const d = pokes[nam]
 const requiredStone = evo.evolution_method == 'use-item' ? getEvolutionStoneForTarget(evo.evolved_pokemon) : ''
 if(requiredStone && !removeEvolutionStone(data, requiredStone)){

@@ -51,8 +51,8 @@ function registerGcastCommand(bot, deps) {
 
     if(removeIds.length > 0 && typeof removeGroupIds === 'function'){
       removeGroupIds(removeIds);
-      if(typeof saveGroupIdsToFile === 'function'){
-        saveGroupIdsToFile();
+      if(typeof saveGroupIdsToStore === 'function'){
+        saveGroupIdsToStore();
       }
     }
 

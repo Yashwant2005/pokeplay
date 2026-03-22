@@ -14,9 +14,25 @@ function register_010_exrtbt(bot, deps) {
     if (chatKey !== undefined) battlec[chatKey] = now;
     if (userId !== undefined) battlec[userKey] = now;
 const name = ctx.callbackQuery.data.split('_')[1]
-if(ctx.session.name!=ctx.callbackQuery.message.message_id){
-ctx.answerCbQuery(''+c(name)+' Has already gone.')
-return
+const currentMessageId = ctx.callbackQuery && ctx.callbackQuery.message ? ctx.callbackQuery.message.message_id : null
+const chatId = (ctx.chat && ctx.chat.id)
+  || (ctx.callbackQuery && ctx.callbackQuery.message && ctx.callbackQuery.message.chat && ctx.callbackQuery.message.chat.id)
+  || null
+const sessionName = ctx.session ? ctx.session.name : null
+if(String(sessionName) !== String(currentMessageId)){
+  let mdataCheck = await loadMessageData()
+  const entry = chatId !== null ? mdataCheck[chatId] : null
+  let match = entry && String(entry.id) === String(ctx.from.id) && String(entry.mid) === String(currentMessageId)
+  if(!match && typeof loadMessageDataFresh === 'function'){
+    mdataCheck = await loadMessageDataFresh()
+    const freshEntry = chatId !== null ? mdataCheck[chatId] : null
+    match = freshEntry && String(freshEntry.id) === String(ctx.from.id) && String(freshEntry.mid) === String(currentMessageId)
+  }
+  if(!match){
+    ctx.answerCbQuery(''+c(name)+' Has already gone.')
+    return
+  }
+  ctx.session.name = currentMessageId
 }
 const mdata = await loadMessageData();
 if(mdata.battle.includes(ctx.from.id)){

@@ -20,6 +20,8 @@ const emojis = {
   "fairy": "🧚"
 }
 const fs = require('fs')
+const { getCollection, ensureIndexes } = require('./mongo');
+const { getKv, setKv } = require('./mongo_kv');
 const catch_rates = JSON.parse(fs.readFileSync('data/pokemon_rarity.json', 'utf8'));
 const pokes = JSON.parse(fs.readFileSync('data/pokemon_info55_modified2.json', 'utf8'));
 const pokemoves = JSON.parse(fs.readFileSync('data/moveset_data_updated2.json', 'utf8'));
@@ -33,7 +35,64 @@ const growth_rates = JSON.parse(fs.readFileSync('data/pokemon_data2.json', 'utf8
 const rdata = JSON.parse(fs.readFileSync('data/pokedex_data.json', 'utf8'));
 const spawn = JSON.parse(fs.readFileSync('data/pokemon_status_info.json', 'utf8'));
 
-// No cache - all data read/written directly to JSON files for persistence on restart
+// Mongo-backed persistence with in-memory caches for hot state (message/battle).
+
+const DEFAULT_MESSAGE_DATA = { battle: [], moves: {}, tutor: {} };
+let messageCache = { ...DEFAULT_MESSAGE_DATA };
+let messageCacheLoaded = false;
+let initPromise = null;
+
+function cloneJson(value) {
+  if (value === undefined) return undefined;
+  if (value === null) return null;
+  try {
+    return JSON.parse(JSON.stringify(value));
+  } catch (_) {
+    return value;
+  }
+}
+
+function normalizeMessageData(data) {
+  const base = (data && typeof data === 'object') ? data : {};
+  return {
+    ...DEFAULT_MESSAGE_DATA,
+    ...base,
+    battle: Array.isArray(base.battle) ? base.battle : [],
+    moves: base.moves && typeof base.moves === 'object' ? base.moves : {},
+    tutor: base.tutor && typeof base.tutor === 'object' ? base.tutor : {}
+  };
+}
+
+async function hydrateCaches() {
+  try {
+    const msg = await getKv('msg_data', null);
+    messageCache = normalizeMessageData(msg);
+    messageCacheLoaded = true;
+  } catch (error) {
+    console.error('Failed loading message cache:', error.message || error);
+    messageCache = { ...DEFAULT_MESSAGE_DATA };
+    messageCacheLoaded = true;
+  }
+
+  // Battle data stays file-backed for resume support.
+}
+
+async function initDataStores(options = {}) {
+  const loadCaches = options.loadCaches !== false;
+  if (!initPromise) {
+    initPromise = (async () => {
+      try {
+        await ensureIndexes();
+      } catch (error) {
+        console.error('Mongo index init failed:', error.message || error);
+      }
+      if (loadCaches) {
+        await hydrateCaches();
+      }
+    })();
+  }
+  return initPromise;
+}
 
 function parseJsonFileNoBom(filePath) {
   const raw = fs.readFileSync(filePath, 'utf8');
@@ -155,47 +214,38 @@ await next();
 async function saveUserData2(userId, userData) {
   try {
     const key = String(userId);
-    const filePath = './data/db/' + key + '.json';
-    let latestData = {};
-    if (fs.existsSync(filePath)) {
-      try {
-        const existingData = parseJsonFileNoBom(filePath);
-        const dataArray = Array.isArray(existingData) ? existingData : [existingData];
-        const existingEntry = dataArray.find((entry) => String(entry && entry.user_id) === key);
-        latestData = existingEntry && existingEntry.data ? existingEntry.data : {};
-      } catch (_) {
-        latestData = {};
-      }
-    }
+    const users = await getCollection('users');
+    const existing = await users.findOne({ _id: key });
+    const latestData = existing && existing.data ? existing.data : {};
     const mergedData = mergeUserDataForSave(latestData, userData);
-    let userDataEntry = [{ user_id: key, data: mergedData, reset: false }];
-    writeJsonAtomically(filePath, userDataEntry);
+    await users.updateOne(
+      { _id: key },
+      {
+        $set: {
+          user_id: key,
+          userId: key,
+          data: mergedData,
+          reset: false,
+          updatedAt: new Date()
+        },
+        $setOnInsert: { createdAt: new Date() }
+      },
+      { upsert: true }
+    );
   } catch (error) {
-    console.error('Error saving data to disk:', error);
+    console.error('Error saving data to MongoDB:', error);
   }
 }
 const saveUserData22 = saveUserData2;
 async function getUserData(userId) {
   try {
     const key = String(userId);
-    const filePath = './data/db/' + key + '.json';
-    if (!fs.existsSync(filePath)) {
-      return {};
-    }
-    const existingData = parseJsonFileNoBom(filePath);
-    let dataArray = [];
-    if (Array.isArray(existingData)) {
-      dataArray = existingData;
-    } else {
-      dataArray = [existingData];
-    }
-    const userDataEntry = dataArray.filter((data) => data.user_id == userId)[0];
-    if (!userDataEntry) {
-      return {};
-    }
-    return userDataEntry.data;
+    const users = await getCollection('users');
+    const doc = await users.findOne({ _id: key });
+    if (!doc || !doc.data) return {};
+    return doc.data;
   } catch (error) {
-    console.error('Error getting data from disk:', error);
+    console.error('Error getting data from MongoDB:', error);
     return {};
   }
 }
@@ -565,61 +615,69 @@ function findEvolutionLevel(pokemonName) {
   return null; // Return null if not found
 }
 function loadMessageData() {
-    const emptyMessageData = { battle: [], moves: {}, tutor: {} };
-    try {
-        const data = fs.readFileSync('data/msg_data.json', 'utf8');
-        const parsed = JSON.parse(data);
-        return {
-          ...emptyMessageData,
-          ...(parsed && typeof parsed === 'object' ? parsed : {})
-        };
-    } catch (err) {
-        console.error('Error loading message data:', err.message);
-        return emptyMessageData;
-    }
+  if (!messageCacheLoaded) {
+    return cloneJson(DEFAULT_MESSAGE_DATA);
+  }
+  return cloneJson(messageCache);
 }
 
-function saveMessageData(data) {
-    try {
-        writeJsonAtomically('data/msg_data.json', data || {});
-    } catch (error) {
-        console.error('Error saving message data:', error);
-    }
+async function loadMessageDataFresh() {
+  try {
+    const msg = await getKv('msg_data', null);
+    const normalized = normalizeMessageData(msg);
+    messageCache = cloneJson(normalized);
+    messageCacheLoaded = true;
+    return cloneJson(messageCache);
+  } catch (error) {
+    console.error('Error loading fresh message data:', error.message || error);
+    return loadMessageData();
+  }
 }
+
+async function saveMessageData(data) {
+  try {
+    const normalized = normalizeMessageData(data);
+    messageCache = cloneJson(normalized);
+    messageCacheLoaded = true;
+    await setKv('msg_data', cloneJson(messageCache));
+  } catch (error) {
+    console.error('Error saving message data:', error);
+  }
+}
+
+const battleDataRoot = path.join(__dirname, 'data', 'battle');
 
 function loadBattleData(bword) {
   try {
     const key = String(bword);
-    const filePath = './data/battle/' + key + '.json';
+    const filePath = path.join(battleDataRoot, key + '.json');
     if (!fs.existsSync(filePath)) {
       return {};
     }
     const raw = fs.readFileSync(filePath, 'utf8');
-    const data = JSON.parse(raw) || {};
-    return data;
+    const normalized = raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw;
+    return JSON.parse(normalized) || {};
   } catch (error) {
     return {};
   }
 }
 
-function saveBattleData(bword, data) {
+async function saveBattleData(bword, data) {
   const key = String(bword);
   try {
-    const filePath = './data/battle/' + key + '.json';
-    writeJsonAtomically(filePath, data);
+    const filePath = path.join(battleDataRoot, key + '.json');
+    writeJsonAtomically(filePath, data || {});
   } catch (error) {
     console.error('Error saving battle data:', error);
   }
 }
 
-function resetUserData(userId) {
+async function resetUserData(userId) {
   const key = String(userId);
   try {
-    const filePath = './data/db/' + key + '.json';
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
-    }
-    return !fs.existsSync(filePath);
+    const users = await getCollection('users');
+    const res = await users.deleteOne({ _id: key });
+    return res && res.deletedCount > 0;
   } catch (error) {
     console.error('Error resetting user data for', key, error.message || error);
     return false;
@@ -845,24 +903,52 @@ return
 } 
 async function getAllUserData() {
   try {
-    const dataFolderPath = './data/db/';
-    const fileNames = fs.readdirSync(dataFolderPath);
-
-    const userData = fileNames.map((fileName) => {
-      const filePath = path.join(dataFolderPath, fileName);
-      try {
-        const fileData = parseJsonFileNoBom(filePath);
-        return fileData;
-      } catch (error) {
-        console.error(`Error reading file ${filePath}:`, error);
-        return null; // or handle the error in a way that fits your needs
-      }
-    });
-
-    return userData.filter((data) => data !== null).flat();
+    const users = await getCollection('users');
+    const docs = await users.find({}).toArray();
+    return docs.map((doc) => ({
+      user_id: doc.user_id || doc._id,
+      userId: doc.userId || doc.user_id || doc._id,
+      data: doc.data || {},
+      reset: Boolean(doc.reset)
+    }));
   } catch (error) {
     console.error('Error retrieving user data:', error);
     return [];
+  }
+}
+
+async function getUserCount() {
+  try {
+    const users = await getCollection('users');
+    return await users.countDocuments();
+  } catch (error) {
+    console.error('Error counting users:', error);
+    return 0;
+  }
+}
+
+async function getUserIds() {
+  try {
+    const users = await getCollection('users');
+    const docs = await users.find({}, { projection: { _id: 1 } }).toArray();
+    return docs
+      .map((doc) => Number(doc._id))
+      .filter((id) => Number.isFinite(id));
+  } catch (error) {
+    console.error('Error listing user ids:', error);
+    return [];
+  }
+}
+
+async function userExists(userId) {
+  try {
+    const key = String(userId);
+    const users = await getCollection('users');
+    const doc = await users.findOne({ _id: key }, { projection: { _id: 1 } });
+    return Boolean(doc);
+  } catch (error) {
+    console.error('Error checking user existence:', error);
+    return false;
   }
 }
 function getTopUsers(userData, attribute, count) {
@@ -1053,5 +1139,47 @@ function applyCaptureIvRules(ivs, options = {}) {
   return withMinimumIvs(ivs, minPerStat);
 }
 
-module.exports = { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel,saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs,applyCaptureIvRules,resetUserData}
+module.exports = {
+  chooseRandomNumbers,
+  getLevel,
+  stat,
+  calculateTotalEV,
+  calculateTotal,
+  getRandomNature,
+  getUserData,
+  saveUserData2,
+  saveUserData22,
+  check,
+  c,
+  Stats,
+  word,
+  Bar,
+  plevel,
+  calc,
+  calcexp,
+  sleep,
+  eff,
+  findEvolutionLevel,
+  saveMessageData,
+  loadMessageData,
+  loadMessageDataFresh,
+  loadBattleData,
+  saveBattleData,
+  pokelist,
+  pokelisthtml,
+  incexp,
+  incexp2,
+  check2,
+  check2q,
+  getAllUserData,
+  getTopUsers,
+  sort,
+  generateRandomIVs,
+  applyCaptureIvRules,
+  resetUserData,
+  initDataStores,
+  getUserCount,
+  getUserIds,
+  userExists
+}
 

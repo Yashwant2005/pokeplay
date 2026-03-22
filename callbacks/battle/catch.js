@@ -34,9 +34,31 @@ function register_011_catch(bot, deps) {
     const name = ctx.callbackQuery.data.split('_')[1];
     const data56 = await getUserData(ctx.from.id);
     await checkseen(ctx, name);
-    if (!ctx.session.name || ctx.session.name != ctx.callbackQuery.message.message_id) {
-      ctx.answerCbQuery('' + c(name) + ' Has been fled');
-      return;
+    const currentMessageId = ctx.callbackQuery && ctx.callbackQuery.message ? ctx.callbackQuery.message.message_id : null;
+    const chatId =
+      (ctx.chat && ctx.chat.id)
+      || (ctx.callbackQuery && ctx.callbackQuery.message && ctx.callbackQuery.message.chat && ctx.callbackQuery.message.chat.id)
+      || null;
+    const sessionName = ctx.session ? ctx.session.name : null;
+    if (!sessionName || String(sessionName) !== String(currentMessageId)) {
+      let mdataCheck = await loadMessageData();
+      const entry = chatId !== null ? mdataCheck[chatId] : null;
+      const match = entry && String(entry.id) === String(ctx.from.id) && String(entry.mid) === String(currentMessageId);
+      if (!match && typeof loadMessageDataFresh === 'function') {
+        mdataCheck = await loadMessageDataFresh();
+        const freshEntry = chatId !== null ? mdataCheck[chatId] : null;
+        if (freshEntry && String(freshEntry.id) === String(ctx.from.id) && String(freshEntry.mid) === String(currentMessageId)) {
+          ctx.session.name = currentMessageId;
+        } else {
+          ctx.answerCbQuery('' + c(name) + ' Has been fled');
+          return;
+        }
+      } else if (match) {
+        ctx.session.name = currentMessageId;
+      } else {
+        ctx.answerCbQuery('' + c(name) + ' Has been fled');
+        return;
+      }
     }
     const mdata = await loadMessageData();
     if (mdata.battle.includes(ctx.from.id)) {

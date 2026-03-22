@@ -15,14 +15,16 @@ process.on('uncaughtException', (err) => {
   console.error('Uncaught exception:', err)
 })
 const app = [6265981509]
-const LocalSession = require('telegraf-session-local');
-const session = new LocalSession({ database: 'data/hexa_session.json' });
-bot.use(session.middleware());
-loadGroupIdsFromFile()
-setInterval(saveGroupIdsToFile, 5000)
+const { createMongoSession, clearUserSessions, getSessionStats } = require('./session_store');
+const { getKv, setKv } = require('./mongo_kv');
+const session = createMongoSession();
+bot.use(session);
+setInterval(() => {
+  saveGroupIdsToStore();
+}, 5000);
 process.on('beforeExit', () => {
-  saveGroupIdsToFile()
-})
+  saveGroupIdsToStore();
+});
 bot.use(async (ctx, next) => {
   if(ctx.chat && ctx.chat.type !== 'private'){
     addGroupId(ctx.chat.id)
@@ -139,31 +141,29 @@ const bags = {
 "10":"https://graph.org/file/5f0681dee62ffd3867a13.jpg"}
 let he = require('he');
 const fs = require('fs')
-const groupListPath = './data/groups.json'
-let groupIds = new Set()
-let groupIdsDirty = false
+const groupListKey = 'group_ids';
+let groupIds = new Set();
+let groupIdsDirty = false;
 
-function loadGroupIdsFromFile(){
-  try{
-    if(fs.existsSync(groupListPath)){
-      const raw = fs.readFileSync(groupListPath,'utf8')
-      const list = JSON.parse(raw)
-      if(Array.isArray(list)){
-        groupIds = new Set(list.map(id => String(id)))
-      }
+async function loadGroupIdsFromStore() {
+  try {
+    const list = await getKv(groupListKey, []);
+    if (Array.isArray(list)) {
+      groupIds = new Set(list.map((id) => String(id)));
     }
-  }catch(e){}
+  } catch (e) {
+    console.error('Failed loading group ids:', e.message || e);
+  }
 }
 
-function saveGroupIdsToFile(){
-  if(!groupIdsDirty) return
-  try{
-    if(!fs.existsSync('./data')){
-      fs.mkdirSync('./data', { recursive: true })
-    }
-    fs.writeFileSync(groupListPath, JSON.stringify([...groupIds]))
-    groupIdsDirty = false
-  }catch(e){}
+async function saveGroupIdsToStore() {
+  if (!groupIdsDirty) return;
+  try {
+    await setKv(groupListKey, Array.from(groupIds));
+    groupIdsDirty = false;
+  } catch (e) {
+    console.error('Failed saving group ids:', e.message || e);
+  }
 }
 
 function addGroupId(id){
@@ -214,6 +214,43 @@ async function retryTelegramEditMessageText(telegram, chatId, messageId, text, e
     }
   }
   throw lastError;
+}
+
+async function retryTelegramEditMessageCaption(telegram, chatId, messageId, caption, extra = {}, attempts = 3) {
+  let lastError = null;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await telegram.editMessageCaption(chatId, messageId, null, caption, extra);
+    } catch (error) {
+      lastError = error;
+      const code = String(error && error.code || '').toUpperCase();
+      const errno = String(error && error.errno || '').toUpperCase();
+      const desc = String(error && error.response && error.response.description || '').toLowerCase();
+      const transient =
+        code === 'ECONNRESET'
+        || errno === 'ECONNRESET'
+        || code === 'ETIMEDOUT'
+        || errno === 'ETIMEDOUT'
+        || desc.includes('timeout');
+      if (!transient || attempt >= attempts) {
+        throw error;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+    }
+  }
+  throw lastError;
+}
+
+async function retryTelegramEditMessageTextOrCaption(telegram, chatId, messageId, text, extra = {}, attempts = 3) {
+  try {
+    return await retryTelegramEditMessageText(telegram, chatId, messageId, text, extra, attempts);
+  } catch (error) {
+    const desc = String(error && error.response && error.response.description || '').toLowerCase();
+    if (desc.includes('no text in the message to edit')) {
+      return await retryTelegramEditMessageCaption(telegram, chatId, messageId, text, extra, attempts);
+    }
+    throw error;
+  }
 }
 
 function readJsonFile(filePath) {
@@ -301,7 +338,7 @@ function reloadStaticData() {
 }
 
 setInterval(reloadStaticData, 60 * 60 * 1000);
-const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal,getRandomNature, getUserData, resetUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData,loadMessageData,loadBattleData,saveBattleData,pokelist,pokelisthtml,incexp,incexp2,check2,check2q,getAllUserData,getTopUsers,sort,generateRandomIVs,applyCaptureIvRules} = require('./func.js')
+const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal, getRandomNature, getUserData, resetUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData, loadMessageData, loadMessageDataFresh, loadBattleData, saveBattleData, pokelist, pokelisthtml, incexp, incexp2, check2, check2q, getAllUserData, getTopUsers, sort, generateRandomIVs, applyCaptureIvRules, initDataStores, getUserIds, getUserCount, userExists } = require('./func.js')
 const regions = ['Kanto','Johto','Hoenn','Sinnoh','Unova','Kalos','Alola','Galar','Paldea']
 const region = {
 "Kanto":1,
@@ -469,17 +506,20 @@ let lastmsg = {}
 let globalmsg = [];
 let lastInteractionAt = 0;
 let battlec = {}
-const banListFile2 = 'data/ban_list.json';
+const banListKey = 'ban_list';
 const admins = [6265981509, 8493023103, 8551864967]
 const admins35 = [6265981509, 8493023103, 8551864967]
 
 // Load the ban list from the file
 let banList2 = [];
-try {
-    const banListData = fs.readFileSync(banListFile2, 'utf-8');
-    banList2 = JSON.parse(banListData);
-} catch (error) {
+async function loadBanList() {
+  try {
+    const list = await getKv(banListKey, []);
+    banList2 = Array.isArray(list) ? list : [];
+  } catch (error) {
     console.error('Error loading ban list:', error);
+    banList2 = [];
+  }
 }
 
 const moduleDeps = buildModuleDeps({
@@ -506,6 +546,7 @@ const moduleDeps = buildModuleDeps({
   sendMessage,
   editMessage,
   loadMessageData,
+  loadMessageDataFresh,
   loadBattleData,
   saveBattleData,
   regions,
@@ -565,13 +606,14 @@ const moduleDeps = buildModuleDeps({
   rar,
   gma,
   banList2,
-  banListFile2,
   saveBanList,
   admins,
   admins35,
   getGroupIds,
   removeGroupIds,
-  saveGroupIdsToFile
+  saveGroupIdsToStore,
+  clearUserSessions,
+  getSessionStats
   ,
   pokestats,
   plevel,
@@ -581,6 +623,7 @@ const moduleDeps = buildModuleDeps({
   events,
   emojis,
   saveMessageData,
+  loadMessageDataFresh,
   incexp,
   incexp2,
   Bar,
@@ -600,6 +643,9 @@ const moduleDeps = buildModuleDeps({
   ,
   getAllUserData,
   getTopUsers,
+  getUserIds,
+  getUserCount,
+  userExists,
   botStartTime,
   lastClicked,
   lastUsed,
@@ -1255,7 +1301,7 @@ const dr = await getUserData(chatId)
                     delete messageData[chatId];
                 await saveMessageData(messageData);
                 try {
-                  await retryTelegramEditMessageText(bot.telegram, chatId, userMessageData.mid, newMessage, {
+                  await retryTelegramEditMessageTextOrCaption(bot.telegram, chatId, userMessageData.mid, newMessage, {
                     parse_mode: 'markdown'
                   })
                 } catch (error) {
@@ -1275,9 +1321,6 @@ const dr = await getUserData(chatId)
 
 schedule.scheduleJob('*/2 * * * * *', editOverdueMessages);
 
-const dataFolderPath = './data/db/'; // Replace with the path to your data folder
-
-
 function getRetryAfterSeconds(error) {
   const retryAfter = error && error.response && error.response.parameters && error.response.parameters.retry_after;
   if (typeof retryAfter === 'number' && retryAfter > 0) {
@@ -1293,7 +1336,7 @@ function getRetryAfterSeconds(error) {
 }
 
 async function forwardMessageToAllUsers(ctx, msgid,id) {
-  const userIds = getUserIdsFromDataFolder();
+  const userIds = await getUserIds();
   if (!userIds.length) {
     await sendMessage(ctx,ctx.chat.id,'No users found for broadcast.');
     return;
@@ -1325,12 +1368,7 @@ async function forwardMessageToAllUsers(ctx, msgid,id) {
       }
       const d = (error && error.response && error.response.description) ? String(error.response.description).toLowerCase() : ''
       if(d.includes('chat not found') || d.includes('blocked by the user')){
-        try{
-          const p = path.join(dataFolderPath, `${userId}.json`)
-          if(fs.existsSync(p)){
-            fs.unlinkSync(p)
-          }
-        }catch(e){}
+        await resetUserData(userId);
       }
       console.error(`Failed to forward message to user ${userId}: ${error.message}`);
       failureCount++;
@@ -1343,23 +1381,6 @@ async function forwardMessageToAllUsers(ctx, msgid,id) {
   // Send a summary message
   const summaryMessage = `Total Users ${userIds.length}\nMessage forwarded to ${successCount} users.\n Failed to forward to ${failureCount} users.`;
   await sendMessage(ctx,ctx.chat.id,summaryMessage);
-}
-
-function getUserIdsFromDataFolder() {
-  const userIds = [];
-  if (!fs.existsSync(dataFolderPath)) {
-    return userIds;
-  }
-  const files = fs.readdirSync(dataFolderPath);
-
-  for (const file of files) {
-    const userId = parseInt(path.parse(file).name, 10);
-    if (!isNaN(userId)) {
-      userIds.push(userId);
-    }
-  }
-
-  return userIds;
 }
 
 async function checkseen(ctx,name){
@@ -1402,8 +1423,12 @@ const regions2 = {
 }
 
 
-function saveBanList() {
-    fs.writeFileSync(banListFile2, JSON.stringify(banList2, null, 2), 'utf-8');
+async function saveBanList() {
+  try {
+    await setKv(banListKey, Array.isArray(banList2) ? banList2 : []);
+  } catch (error) {
+    console.error('Error saving ban list:', error);
+  }
 }
 
 
@@ -1512,6 +1537,16 @@ console.error('Error sending message:', error)
 return null
 }
 }
-bot.launch();
+async function initApp() {
+  await initDataStores({ loadCaches: true });
+  await loadGroupIdsFromStore();
+  await loadBanList();
+}
+
+initApp()
+  .then(() => bot.launch())
+  .catch((error) => {
+    console.error('Failed to init app:', error);
+  });
 
 

@@ -2472,6 +2472,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         const weatherAccuracy = getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy: move.accuracy });
         const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus || weatherAccuracy.skipAccuracyCheck;
         const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
+        const isStatusMove = String(move.category || '').toLowerCase() === 'status';
         const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(weatherAccuracy.accuracy), unawareModifiers.accuracyStage, unawareModifiers.evasionStage, battleData, defenderAbility) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
           msgLocal += unawareMessage;
@@ -2492,7 +2493,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
             battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - crashTaken);
             msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
           }
-        } else if (hasAccuracyCheck && Math.random() < 0.05) {
+        } else if (hasAccuracyCheck && !isStatusMove && Math.random() < 0.05) {
           msgLocal += unawareMessage;
           msgLocal += '\n-> <b>'+c(op.name)+'</b> Dodged <b>'+c(p.name)+'</b>\'s <b>'+c(move.name)+'</b>';
           const crash = getCrashDamage(moveName, stats1.hp);
@@ -5459,6 +5460,7 @@ async function executeStandardMove(act) {
         const weatherAccuracy = getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy: move.accuracy });
         const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus || weatherAccuracy.skipAccuracyCheck;
         const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
+        const isStatusMove = String(move.category || '').toLowerCase() === 'status';
         const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(weatherAccuracy.accuracy), unawareModifiers.accuracyStage, unawareModifiers.evasionStage, battleData, defenderAbility) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
         msgLocal += unawareMessage;
@@ -5479,7 +5481,7 @@ async function executeStandardMove(act) {
               battleData.tem[battleData.c] = Math.max(0, (battleData.tem[battleData.c] || selfBefore) - crashTaken);
               msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
             }
-    } else if (hasAccuracyCheck && Math.random() < 0.05) {
+    } else if (hasAccuracyCheck && !isStatusMove && Math.random() < 0.05) {
         msgLocal += unawareMessage;
         msgLocal += '\n-> <b>'+c(op.name)+'</b> Dodged <b>'+c(p.name)+'</b>\'s <b>'+c(moveLabel)+'</b>';
             const crash = getCrashDamage(moveName, stats1.hp);

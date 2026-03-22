@@ -48,28 +48,8 @@ function registerResetAllCommand(bot, deps) {
     }
   }
 
-  function clearUserSessionData(userId) {
-    try {
-      const sessPath = './data/hexa_session.json';
-      if (!fs.existsSync(sessPath)) return false;
-      const raw = fs.readFileSync(sessPath, 'utf8');
-      const data = JSON.parse(raw || '{}');
-      if (!Array.isArray(data.sessions)) return false;
-      const key = String(userId);
-      const filtered = data.sessions.filter((s) => {
-        const sid = String(s && s.id);
-        if (!sid.includes(':')) return sid !== key;
-        const [, uid] = sid.split(':');
-        return uid !== key;
-      });
-      if (filtered.length === data.sessions.length) return false;
-      data.sessions = filtered;
-      fs.writeFileSync(sessPath, JSON.stringify(data, null, 2), 'utf8');
-      return true;
-    } catch (error) {
-      console.error('Failed clearing hexa_session for', userId, error.message || error);
-      return false;
-    }
+  async function clearUserSessionData(userId) {
+    return await clearUserSessions(userId);
   }
 
   const handleResetAll = async (ctx) => {
@@ -88,10 +68,9 @@ function registerResetAllCommand(bot, deps) {
       return;
     }
 
-    const userFilePath = './data/db/' + key + '.json';
     const userData = await getUserData(targetId);
-    const hasFile = fs.existsSync(userFilePath);
-    if ((!userData || Object.keys(userData).length === 0) && !hasFile) {
+    const hasRecord = await userExists(targetId);
+    if ((!userData || Object.keys(userData).length === 0) && !hasRecord) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*No saved data found for this user.*', {
         reply_to_message_id: ctx.message.message_id
       });
@@ -99,11 +78,10 @@ function registerResetAllCommand(bot, deps) {
     }
 
     const clearedMsgData = clearUserFromMessageData(targetId);
-    const resetOk = resetUserData(targetId);
-    const fileDeleted = !fs.existsSync(userFilePath);
-    const sessionCleared = clearUserSessionData(targetId);
+    const resetOk = await resetUserData(targetId);
+    const sessionCleared = await clearUserSessionData(targetId);
 
-    if (!resetOk || !fileDeleted) {
+    if (!resetOk) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Failed to reset data. Please try again.*', {
         reply_to_message_id: ctx.message.message_id
       });
@@ -116,8 +94,8 @@ function registerResetAllCommand(bot, deps) {
     if (clearedMsgData) extras.push('message state cleared');
     const extraText = extras.length ? ' (' + extras.join(', ') + ')' : '';
     const notice = selfReset
-      ? '*All of your data has been removed (file deleted)*' + extraText + '.\nUse /start to begin again.'
-      : '*All data for user* `' + key + '` *has been removed (file deleted)*' + extraText + '.';
+      ? '*All of your data has been removed*' + extraText + '.\nUse /start to begin again.'
+      : '*All data for user* `' + key + '` *has been removed*' + extraText + '.';
 
     await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, notice, {
       reply_to_message_id: ctx.message.message_id

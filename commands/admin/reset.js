@@ -46,28 +46,8 @@ function registerReplyResetCommand(bot, deps) {
     }
   }
 
-  function clearUserSessionData(userId) {
-    try {
-      const sessPath = './data/hexa_session.json';
-      if (!fs.existsSync(sessPath)) return false;
-      const raw = fs.readFileSync(sessPath, 'utf8');
-      const data = JSON.parse(raw || '{}');
-      if (!Array.isArray(data.sessions)) return false;
-      const key = String(userId);
-      const filtered = data.sessions.filter((s) => {
-        const sid = String(s && s.id);
-        if (!sid.includes(':')) return sid !== key;
-        const parts = sid.split(':');
-        return String(parts[1] || '') !== key;
-      });
-      if (filtered.length === data.sessions.length) return false;
-      data.sessions = filtered;
-      fs.writeFileSync(sessPath, JSON.stringify(data, null, 2), 'utf8');
-      return true;
-    } catch (error) {
-      console.error('Failed clearing hexa_session for', userId, error.message || error);
-      return false;
-    }
+  async function clearUserSessionData(userId) {
+    return await clearUserSessions(userId);
   }
 
   bot.command('reset', async (ctx) => {
@@ -95,23 +75,21 @@ function registerReplyResetCommand(bot, deps) {
     }
 
     const key = String(targetId);
-    const userFilePath = './data/db/' + key + '.json';
     const userData = await getUserData(targetId);
-    const hasFile = fs.existsSync(userFilePath);
+    const hasRecord = await userExists(targetId);
 
-    if ((!userData || Object.keys(userData).length === 0) && !hasFile) {
+    if ((!userData || Object.keys(userData).length === 0) && !hasRecord) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*No saved data found for this user.*', {
         reply_to_message_id: ctx.message.message_id
       });
       return;
     }
 
-    const resetOk = resetUserData(targetId);
-    const fileDeleted = !fs.existsSync(userFilePath);
-    const sessionCleared = clearUserSessionData(targetId);
+    const resetOk = await resetUserData(targetId);
+    const sessionCleared = await clearUserSessionData(targetId);
     const messageStateCleared = clearUserFromMessageData(targetId);
 
-    if (!resetOk || !fileDeleted) {
+    if (!resetOk) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Failed to reset user data. Please try again.*', {
         reply_to_message_id: ctx.message.message_id
       });

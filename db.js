@@ -2,40 +2,18 @@ const path = require('path');
 const fs = require('fs');
 const { Telegraf } = require('telegraf');
 const archiver = require('archiver');
+const { getAllUserData: fetchAllUserData, initDataStores } = require('./func');
 
 const BOT_TOKEN = '8536034020:AAEavQgVhnnx0ACTme5Kxst_Ytu4k35FiXk';
 const CHAT_ID = '-1002245132909';
 const BACKUP_INTERVAL_MS = 30 * 60 * 1000;
-const DATA_FOLDER = path.join(__dirname, 'data', 'db');
 
 const bot = new Telegraf(BOT_TOKEN);
 let backupRunning = false;
 
 async function getAllUserData() {
   try {
-    if (!fs.existsSync(DATA_FOLDER)) {
-      console.error('DB folder not found:', DATA_FOLDER);
-      return [];
-    }
-
-    const fileNames = fs.readdirSync(DATA_FOLDER).filter((name) => name.endsWith('.json'));
-    const userData = [];
-
-    for (const fileName of fileNames) {
-      const filePath = path.join(DATA_FOLDER, fileName);
-      try {
-        const fileData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        if (Array.isArray(fileData)) {
-          userData.push(...fileData);
-        } else if (fileData && typeof fileData === 'object') {
-          userData.push(fileData);
-        }
-      } catch (error) {
-        console.error(`Error reading file ${filePath}:`, error.message);
-      }
-    }
-
-    return userData;
+    return await fetchAllUserData();
   } catch (error) {
     console.error('Error retrieving user data:', error.message);
     return [];
@@ -98,12 +76,22 @@ async function sendBackup() {
   }
 }
 
-setInterval(sendBackup, BACKUP_INTERVAL_MS);
+async function initBackupBot() {
+  await initDataStores({ loadCaches: false });
+}
 
-bot.launch().then(() => {
-  console.log('db.js backup bot started. Interval:', BACKUP_INTERVAL_MS / 60000, 'minutes');
-  sendBackup();
-});
+initBackupBot()
+  .then(() => {
+    setInterval(sendBackup, BACKUP_INTERVAL_MS);
+    return bot.launch();
+  })
+  .then(() => {
+    console.log('db.js backup bot started. Interval:', BACKUP_INTERVAL_MS / 60000, 'minutes');
+    sendBackup();
+  })
+  .catch((error) => {
+    console.error('Failed to start backup bot:', error);
+  });
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));

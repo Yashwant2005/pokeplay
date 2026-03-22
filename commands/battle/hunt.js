@@ -498,6 +498,9 @@ function registerHuntCommand(bot, deps) {
   const m62 = await sendMessage(ctx,ctx.chat.id,p,{caption:msg,parse_mode:'markdown',reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:[[{text:'Capture',callback_data:'catch_'+name+'_'+level+'_'+s+'_'+org+''},{text:'EV yield',callback_data:'ev_'+name+''}]]}})
   
   ctx.session.name = m62
+  const messageData = await loadMessageData();
+  messageData[ctx.chat.id] = { mid: m62, timestamp: Date.now(), id: ctx.from.id };
+  await saveMessageData(messageData);
   
   });
 }

@@ -1,6 +1,6 @@
 const { Telegraf } = require('telegraf');
-const fs = require('fs');
-const path = require('path');
+const { ensureIndexes } = require('./mongo');
+const { getKv, setKv } = require('./mongo_kv');
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 const BOT_TOKEN      = '8686253817:AAERTq7Z5p6EDn2VLhWS0v13h4WiTVb5EqU';
@@ -8,7 +8,7 @@ const ADMIN_IDS      = [6265981509];
 const CHANNEL_ID     = -1003707195144;
 const BOT_USERNAME   = 'pokeplay_factions_bot';
 const DEFAULT_PFP    = 'https://files.catbox.moe/5rg0pw.jpg';
-const DATA_PATH      = path.join(__dirname, 'factions.json');
+const DATA_KEY       = 'factions';
 
 const bot         = new Telegraf(BOT_TOKEN);
 const botStartTime = Date.now();
@@ -50,19 +50,38 @@ bot.use(async (ctx, next) => {
 });
 
 // ─── Data helpers ─────────────────────────────────────────────────────────────
-function loadData() {
+let cachedData = { factions: [] };
+
+function cloneJson(value) {
+  if (value === undefined) return undefined;
+  if (value === null) return null;
   try {
-    if (!fs.existsSync(DATA_PATH)) return { factions: [] };
-    const raw  = fs.readFileSync(DATA_PATH, 'utf8');
-    const data = JSON.parse(raw);
-    return (!data || !Array.isArray(data.factions)) ? { factions: [] } : data;
+    return JSON.parse(JSON.stringify(value));
   } catch (_) {
-    return { factions: [] };
+    return value;
   }
 }
 
+async function loadDataFromStore() {
+  try {
+    const data = await getKv(DATA_KEY, { factions: [] });
+    if (data && Array.isArray(data.factions)) {
+      cachedData = data;
+    } else {
+      cachedData = { factions: [] };
+    }
+  } catch (_) {
+    cachedData = { factions: [] };
+  }
+}
+
+function loadData() {
+  return cloneJson(cachedData);
+}
+
 function saveData(data) {
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2));
+  cachedData = cloneJson(data && typeof data === 'object' ? data : { factions: [] });
+  setKv(DATA_KEY, cloneJson(cachedData)).catch(() => {});
 }
 
 // ─── Formatting helpers ───────────────────────────────────────────────────────
@@ -979,36 +998,50 @@ bot.on('message', async (ctx, next) => {
 });
 
 // ─── Launch ───────────────────────────────────────────────────────────────────
-bot.launch().then(async () => {
+async function initFactionBot() {
   try {
-    const me = await bot.telegram.getMe();
-    log('BOT STARTED', { username: me.username });
-  } catch (_) {}
-
-  const cmds = [
-    { command: 'start',        description: 'Start the bot' },
-    { command: 'help',         description: 'Show command list' },
-    { command: 'create',       description: 'Create a faction (admin)' },
-    { command: 'deletefac',    description: 'Delete a faction (admin)' },
-    { command: 'setgc',        description: 'Link faction group (captain, in group)' },
-    { command: 'myfac',        description: 'View your faction info' },
-    { command: 'join',         description: 'Request to join a faction (DM)' },
-    { command: 'leave',        description: 'Leave your faction (DM)' },
-    { command: 'fac_link',     description: 'Get faction invite link (DM)' },
-    { command: 'kick_member',  description: 'Kick a member (officers, in group)' },
-    { command: 'facpromote',   description: 'Promote a member to admin (reply)' },
-    { command: 'facdemote',    description: 'Demote an admin to member (reply)' },
-    { command: 'setpfp',       description: 'Set faction profile picture (captain)' },
-    { command: 'setname',      description: 'Rename your faction (captain)' },
-  ];
-
-  try {
-    await bot.telegram.setMyCommands(cmds, { scope: { type: 'default' } });
-    log('COMMANDS SET', { count: cmds.length });
-  } catch (e) {
-    log('COMMANDS FAILED', { error: e?.message ?? String(e) });
+    await ensureIndexes();
+  } catch (error) {
+    log('INDEX INIT FAILED', { error: error?.message ?? String(error) });
   }
-});
+  await loadDataFromStore();
+}
+
+initFactionBot()
+  .then(() => bot.launch())
+  .then(async () => {
+    try {
+      const me = await bot.telegram.getMe();
+      log('BOT STARTED', { username: me.username });
+    } catch (_) {}
+
+    const cmds = [
+      { command: 'start',        description: 'Start the bot' },
+      { command: 'help',         description: 'Show command list' },
+      { command: 'create',       description: 'Create a faction (admin)' },
+      { command: 'deletefac',    description: 'Delete a faction (admin)' },
+      { command: 'setgc',        description: 'Link faction group (captain, in group)' },
+      { command: 'myfac',        description: 'View your faction info' },
+      { command: 'join',         description: 'Request to join a faction (DM)' },
+      { command: 'leave',        description: 'Leave your faction (DM)' },
+      { command: 'fac_link',     description: 'Get faction invite link (DM)' },
+      { command: 'kick_member',  description: 'Kick a member (officers, in group)' },
+      { command: 'facpromote',   description: 'Promote a member to admin (reply)' },
+      { command: 'facdemote',    description: 'Demote an admin to member (reply)' },
+      { command: 'setpfp',       description: 'Set faction profile picture (captain)' },
+      { command: 'setname',      description: 'Rename your faction (captain)' },
+    ];
+
+    try {
+      await bot.telegram.setMyCommands(cmds, { scope: { type: 'default' } });
+      log('COMMANDS SET', { count: cmds.length });
+    } catch (e) {
+      log('COMMANDS FAILED', { error: e?.message ?? String(e) });
+    }
+  })
+  .catch((error) => {
+    log('BOT START FAILED', { error: error?.message ?? String(error) });
+  });
 
 process.once('SIGINT',  () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));

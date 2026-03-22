@@ -7,8 +7,10 @@ const {
   word,
   generateRandomIVs,
   applyCaptureIvRules,
-  c
+  c,
+  initDataStores
 } = require('./func');
+const { getKv, setKv } = require('./mongo_kv');
 
 const pokes = JSON.parse(fs.readFileSync('data/pokemon_info55_modified2.json', 'utf8'));
 const pokemoves = JSON.parse(fs.readFileSync('data/moveset_data_updated2.json', 'utf8'));
@@ -25,44 +27,20 @@ const SOURCE_BOT_IDS = [572621020, 7955369039];
 const STONES_SOURCE_BOT_IDS = [572621020, 7955369039];
 const ADMINS = [6265981509, 1411248872, 8493023103, 8551864967];
 
-const REQUESTS_FILE = path.join('data', 'transfer_requests.json');
 const bot = new Telegraf(BOT_TOKEN);
 const userState = new Map();
 
-function loadRequests() {
+async function loadRequests() {
   try {
-    if (!fs.existsSync(REQUESTS_FILE)) return {};
-    return JSON.parse(fs.readFileSync(REQUESTS_FILE, 'utf8')) || {};
+    const data = await getKv('transfer_requests', {});
+    return data && typeof data === 'object' ? data : {};
   } catch {
     return {};
   }
 }
 
-function saveRequests(requests) {
-  fs.writeFileSync(REQUESTS_FILE, JSON.stringify(requests, null, 2), 'utf8');
-}
-
-function persistUserDataToFile(userId, userData) {
-  const key = String(userId);
-  const filePath = path.join('data', 'db', key + '.json');
-  let userDataEntry = [];
-  if (fs.existsSync(filePath)) {
-    const existingData = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    if (Array.isArray(existingData)) {
-      userDataEntry = existingData;
-    } else {
-      userDataEntry = [existingData];
-    }
-  } else {
-    userDataEntry = [{ user_id: key, data: {}, reset: false }];
-  }
-  let entry = userDataEntry.find(e => e.user_id == key);
-  if (!entry) {
-    entry = { user_id: key, data: {}, reset: false };
-    userDataEntry.push(entry);
-  }
-  entry.data = userData;
-  fs.writeFileSync(filePath, JSON.stringify(userDataEntry, null, 2), 'utf8');
+async function saveRequests(requests) {
+  await setKv('transfer_requests', requests || {});
 }
 
 function isAdmin(id) {
@@ -318,7 +296,6 @@ async function addApprovedStonesToUser(userId, stoneKeys, hasKeyStone) {
   }
 
   await saveUserData2(userId, data);
-  persistUserDataToFile(userId, data);
   return added;
 }
 
@@ -443,7 +420,7 @@ bot.on('message', async (ctx, next) => {
     }
 
     const proofPhotoId = ctx.message.photo[ctx.message.photo.length - 1].file_id;
-    const requests = loadRequests();
+    const requests = await loadRequests();
     const reqId = word(12);
 
     requests[reqId] = {
@@ -460,7 +437,7 @@ bot.on('message', async (ctx, next) => {
       forwardMessageId: state.forwardMessageId,
       proofPhotoId
     };
-    saveRequests(requests);
+    await saveRequests(requests);
 
     try {
       await bot.telegram.forwardMessage(ADMIN_GROUP_ID, state.forwardChatId, state.forwardMessageId);
@@ -558,7 +535,7 @@ bot.on('message', async (ctx, next) => {
       return;
     }
 
-    const requests = loadRequests();
+    const requests = await loadRequests();
     const reqId = word(12);
     const shiny = /\bshiny\b/i.test(ivText) || /\bshiny\b/i.test(state.pokemonName);
     const fingerprint = requestFingerprint(state.pokemonName, state.nature, parsedIvs);
@@ -582,7 +559,7 @@ bot.on('message', async (ctx, next) => {
       fingerprint,
       duplicateOf: duplicates.map((d) => d.id)
     };
-    saveRequests(requests);
+    await saveRequests(requests);
 
     const summary = [
       '<b>New Transfer Request</b>',
@@ -646,7 +623,7 @@ bot.action(/tapprove_/, async (ctx) => {
   }
 
   const reqId = ctx.callbackQuery.data.split('_')[1];
-  const requests = loadRequests();
+  const requests = await loadRequests();
   const req = requests[reqId];
 
   if (!req) {
@@ -665,7 +642,7 @@ bot.action(/tapprove_/, async (ctx) => {
     req.reviewedBy = ctx.from.id;
     req.added = addedNames;
     requests[reqId] = req;
-    saveRequests(requests);
+    await saveRequests(requests);
 
     const done = [
       '<b>Approved</b>',
@@ -689,7 +666,7 @@ bot.action(/tapprove_/, async (ctx) => {
     req.reviewedBy = ctx.from.id;
     req.error = String(err.message || err);
     requests[reqId] = req;
-    saveRequests(requests);
+    await saveRequests(requests);
 
     await ctx.answerCbQuery('Approve failed.');
     await ctx.replyWithHTML(`<b>Approve failed</b>\nReq: <code>${reqId}</code>\nError: <code>${String(err.message || err)}</code>`);
@@ -708,7 +685,7 @@ bot.action(/sapprove_/, async (ctx) => {
   }
 
   const reqId = ctx.callbackQuery.data.split('_')[1];
-  const requests = loadRequests();
+  const requests = await loadRequests();
   const req = requests[reqId];
 
   if (!req || req.type !== 'stones') {
@@ -728,7 +705,7 @@ bot.action(/sapprove_/, async (ctx) => {
     req.reviewedBy = ctx.from.id;
     req.added = added;
     requests[reqId] = req;
-    saveRequests(requests);
+    await saveRequests(requests);
 
     await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
     await ctx.replyWithHTML(
@@ -747,7 +724,7 @@ bot.action(/sapprove_/, async (ctx) => {
     req.reviewedBy = ctx.from.id;
     req.error = String(err.message || err);
     requests[reqId] = req;
-    saveRequests(requests);
+    await saveRequests(requests);
 
     await ctx.answerCbQuery('Approve failed.');
     await ctx.replyWithHTML(`<b>Approve failed</b>\nReq: <code>${reqId}</code>\nError: <code>${String(err.message || err)}</code>`);
@@ -766,7 +743,7 @@ bot.action(/sreject_/, async (ctx) => {
   }
 
   const reqId = ctx.callbackQuery.data.split('_')[1];
-  const requests = loadRequests();
+  const requests = await loadRequests();
   const req = requests[reqId];
 
   if (!req || req.type !== 'stones') {
@@ -782,7 +759,7 @@ bot.action(/sreject_/, async (ctx) => {
   req.reviewedAt = new Date().toISOString();
   req.reviewedBy = ctx.from.id;
   requests[reqId] = req;
-  saveRequests(requests);
+  await saveRequests(requests);
 
   await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
   await ctx.replyWithHTML(`<b>Rejected</b>\nReq: <code>${reqId}</code>\nBy: ${userLink(ctx.from)}`);
@@ -803,7 +780,7 @@ bot.action(/treject_/, async (ctx) => {
   }
 
   const reqId = ctx.callbackQuery.data.split('_')[1];
-  const requests = loadRequests();
+  const requests = await loadRequests();
   const req = requests[reqId];
 
   if (!req) {
@@ -819,7 +796,7 @@ bot.action(/treject_/, async (ctx) => {
   req.reviewedAt = new Date().toISOString();
   req.reviewedBy = ctx.from.id;
   requests[reqId] = req;
-  saveRequests(requests);
+  await saveRequests(requests);
 
   await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
   await ctx.replyWithHTML(`<b>Rejected</b>\nReq: <code>${reqId}</code>\nBy: ${userLink(ctx.from)}`);
@@ -832,12 +809,22 @@ bot.catch((err) => {
   console.error('Transfer bot error:', err);
 });
 
-bot.launch().then(() => {
-  console.log('transfer_bot.js running');
-  console.log('Admin group:', ADMIN_GROUP_ID);
-  console.log('Admins:', ADMINS.join(', '));
-});
+async function initTransferBot() {
+  await initDataStores({ loadCaches: false });
+}
+
+initTransferBot()
+  .then(() => bot.launch())
+  .then(() => {
+    console.log('transfer_bot.js running');
+    console.log('Admin group:', ADMIN_GROUP_ID);
+    console.log('Admins:', ADMINS.join(', '));
+  })
+  .catch((error) => {
+    console.error('Failed to start transfer bot:', error);
+  });
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
+
 

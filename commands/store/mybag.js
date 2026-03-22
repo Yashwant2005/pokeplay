@@ -106,6 +106,19 @@ function registerMybagCommand(bot, deps) {
 
   msg += msgg
 
+  // Mega Stones section
+  if(Array.isArray(data.inv.stones) && data.inv.stones.length > 0) {
+    const stonesData = require('../../data/stones.json');
+    const megaStones = data.inv.stones.filter(s => stonesData[s] && stonesData[s].mega);
+    if(megaStones.length > 0) {
+      msg += '\n\n*💎 Mega Stones:*';
+      for(const stone of [...new Set(megaStones)]) {
+        const info = stonesData[stone];
+        msg += `\n• ${stone} (${info.pokemon} → ${info.mega}) x${data.inv.stones.filter(x=>x===stone).length}`;
+      }
+    }
+  }
+
   msg += '\n• *⭐️ League Points:* '+data.inv.league_points+''
   msg += '\n• *🎟️ Holowear Tickets:* '+data.inv.holowear_tickets+''
   msg += '\n• *🎁 Battle Box:* '+data.inv.battle_boxes+''

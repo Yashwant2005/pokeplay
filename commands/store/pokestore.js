@@ -13,6 +13,8 @@ function registerPokestoreCommand(bot, deps) {
       rows.push(buttons.slice(i, i + 2));
     }
 
+    // Mega Stones section
+    const megaStoneList = Object.keys(globalThis.stones || {}).filter(k => (globalThis.stones[k]?.mega)).map(k => `• ${k} (${globalThis.stones[k].pokemon} → ${globalThis.stones[k].mega})`).join('\n');
     await sendMessage(
       ctx,
       ctx.chat.id,
@@ -36,6 +38,9 @@ function registerPokestoreCommand(bot, deps) {
 • Zygarde Capsule - 10000 💷
 • Ability Capsule - 25000 💷
 • Ability Patch - 50000 💷
+
+*Mega Stones*
+${megaStoneList || 'No Mega Stones available.'}
 
 *Held Items*
 • Open *Held* to buy held items with League Points only

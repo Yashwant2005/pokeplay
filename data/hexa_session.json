@@ -5249,6 +5249,13 @@
       "data": {
         "groupChatLimitReached": false
       }
+    },
+    {
+      "id": "6728782803:6728782803",
+      "data": {
+        "groupChatLimitReached": false,
+        "key": true
+      }
     }
   ]
 }

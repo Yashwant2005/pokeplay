@@ -2,7 +2,7 @@
 const appr = [1072659486,6265981509]
 //const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' //main bot
 //const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //backup bot
-const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // test bot
+const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' // test bot
 const { Telegraf } = require('telegraf')
 const bot = new Telegraf(botToken)
 if (process.env.QUIET_LOGS === '1') {
@@ -1213,16 +1213,16 @@ await saveMessageData(messageData)
                 const elapsedTime = Date.now() - userMessageData.times;
 
                 if (elapsedTime > 130000) {
-              let newMessage = `<a href="tg://user?id=${turn}"><b>${d1Name}</b></a> has not moved and losses <b>25</b> PokeCoins ðŸ’·.`;
-              newMessage += `\n<a href="tg://user?id=${oppo}"><b>${d2Name}</b></a> <b>+25</b> PokeCoins ðŸ’·.`;
+              let newMessage = `<a href="tg://user?id=${turn}"><b>${d1Name}</b></a> has not moved and loses <b>25</b> LP ⭐.`;
+              newMessage += `\n<a href="tg://user?id=${oppo}"><b>${d2Name}</b></a> <b>+25</b> LP ⭐.`;
 
-              if (d1 && d1.inv && typeof d1.inv.pc === 'number' && d1.inv.pc > 25) {
-                d1.inv.pc -= 25;
-                    }
+              if (d1 && d1.inv && typeof d1.inv.league_points === 'number' && d1.inv.league_points > 25) {
+                d1.inv.league_points -= 25;
+              }
 
               if (d2 && d2.inv) {
-                if (typeof d2.inv.pc !== 'number') d2.inv.pc = 0;
-                d2.inv.pc += 25;
+                if (typeof d2.inv.league_points !== 'number') d2.inv.league_points = 0;
+                d2.inv.league_points += 25;
               }
 
               if (d1 && d1.inv) {

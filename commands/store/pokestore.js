@@ -33,7 +33,6 @@ function registerPokestoreCommand(bot, deps) {
 • Candy - 100 💷
 • Berry - 75 💷
 • Vitamin - 100 💷
-• OmniRing - 5000 💷
 • Zygarde Capsule - 10000 💷
 • Ability Capsule - 25000 💷
 • Ability Patch - 50000 💷
@@ -45,7 +44,6 @@ function registerPokestoreCommand(bot, deps) {
 • /buy regular 1
 • /buy nest 5
 • /buy candy 3
-• /buy key
 • /buy zygardecapsule 1
 • /buy abilitycapsule 1
 • /buy abilitypatch 1

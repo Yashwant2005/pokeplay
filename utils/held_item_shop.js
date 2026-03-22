@@ -64,12 +64,7 @@ const HELD_ITEM_PC_TIERS = [
     pc: 100000,
     lp: 3000,
     items: [
-      'booster-energy',
-      'rusted-sword',
-      'rusted-shield',
-      'jade-orb',
-      'red-orb',
-      'blue-orb'
+      // Removed legendary orbs and rusted items from shop
     ]
   }
 ];

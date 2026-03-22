@@ -161,9 +161,9 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,me
 return
 }
 if(item=='items'){
-const key = [[{text:'Key Items',callback_data:'poag_transformational_'+ctx.from.id+''},{text:'Evo Items',callback_data:'poag_evolution_'+ctx.from.id+''}],[{text:'Special Items',callback_data:'poag_special_'+ctx.from.id+''},{text:'Enhance Items',callback_data:'poag_enhance_'+ctx.from.id+''}],[{text:'Held Items',callback_data:'poag_held_'+ctx.from.id+''}]]
+const key = [[{text:'Enhance Items',callback_data:'poag_enhance_'+ctx.from.id+''},{text:'Held Items',callback_data:'poag_held_'+ctx.from.id+''}]]
 key.push(rows)
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Which category of *Items* you wanna check?',{parse_mode:'markdown',reply_markup:{inline_keyboard:key}})
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Only *Held Items* and enhancement items are shown here.',{parse_mode:'markdown',reply_markup:{inline_keyboard:key}})
 return
 }
 if(item=='held'){

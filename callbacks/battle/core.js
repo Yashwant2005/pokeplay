@@ -2219,21 +2219,26 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       if (battleData.chp <= 0 || battleData.ohp <= 0) return; // attacker or defender fainted
 
       const move = dmoves[act.id];
-      const moveName = normalizeMoveName(move?.name);
-      const hitsMinimizedBonus = MINIMIZE_PUNISH_MOVES.has(moveName) && isPokemonMinimized(battleData, battleData.o);
-      const moveKey = move ? String(act.id) : null;
-      let didAttemptMove = false;
-      const isCounterMove = ['counter', 'mirror coat', 'metal burst', 'comeuppance'].includes(moveName);
       let attacker = await getUserData(battleData.cid);
       let defender = await getUserData(battleData.oid);
       let p = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0];
       let op = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
       const attackerAbility = p && p.ability ? p.ability : 'none';
       const defenderAbility = op && op.ability ? op.ability : 'none';
-
-      if(!move || !move.type || !p || !op || !pokes[p.name] || !pokes[op.name]){
+      if (!move || !move.type || !p || !op || !pokes[p.name] || !pokes[op.name]) {
         return;
       }
+      let moveLabel;
+      try {
+        moveLabel = getBattleMoveLabel(move, p, battleData, battleData.c);
+      } catch (e) {
+        moveLabel = move && move.name ? move.name : 'Unknown Move';
+      }
+      const moveName = normalizeMoveName(moveLabel);
+      const hitsMinimizedBonus = MINIMIZE_PUNISH_MOVES.has(moveName) && isPokemonMinimized(battleData, battleData.o);
+      const moveKey = move ? String(act.id) : null;
+      let didAttemptMove = false;
+      const isCounterMove = ['counter', 'mirror coat', 'metal burst', 'comeuppance'].includes(moveName);
       let base1 = pokestats[p.name];
       let base2 = pokestats[op.name];
       if(!base1 || !base2){
@@ -2695,6 +2700,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 currentHp: battleData.chp,
                 maxHp: stats1.hp
               });
+              // Fix: Always declare battleMove before use to avoid TDZ errors
+              let battleMove = move;
+              // If a different battleMove is set earlier in the logic, it will be used; otherwise, defaults to move
               const technicianInfo = getTechnicianPowerInfo({
                 abilityName: attackerAbility,
                 movePower: battleMove.power || move.power
@@ -3299,8 +3307,11 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         b++;
       }
       if(al.length < 1){
-        const gpc = Object.keys(battleData.tem).length*15
-        defender.inv.pc += gpc
+        const rewardLp = 50
+        if(!Number.isFinite(defender.inv.league_points)){
+          defender.inv.league_points = 0
+        }
+        defender.inv.league_points += rewardLp
         if(!defender.inv.win){
           defender.inv.win = 0
         }
@@ -3331,7 +3342,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         messageData.battle = messageData.battle.filter((chats)=> chats!==parseInt(messageData[bword].turn) && chats!==parseInt(messageData[bword].oppo))
         delete messageData[bword];
         await saveMessageData(messageData);
-        await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+gpc+' PokeCoins 💷',{parse_mode:'HTML'})
+        await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+rewardLp+' LP ⭐',{parse_mode:'HTML'})
         if(Math.random()< 0.00005){
           const idr = (Math.random()<0.5) ? battleData.oid : battleData.cid
           const dr = await getUserData(idr)
@@ -5199,7 +5210,12 @@ async function executeStandardMove(act) {
     }
     const attackerHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item });
     const defenderHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item });
-    const moveLabel = getBattleMoveLabel(move, p, battleData, battleData.c);
+    let moveLabel;
+    try {
+      moveLabel = getBattleMoveLabel(move, p, battleData, battleData.c);
+    } catch (e) {
+      moveLabel = move && move.name ? move.name : 'Unknown Move';
+    }
     const moveName = normalizeMoveName(moveLabel);
     const hitsMinimizedBonus = MINIMIZE_PUNISH_MOVES.has(moveName) && isPokemonMinimized(battleData, battleData.o);
     const isCounterMove = ['counter', 'mirror coat', 'metal burst', 'comeuppance'].includes(moveName);
@@ -6113,8 +6129,11 @@ av.push({name:b+' (0 HP)',pass:pok})
 b++;
 }
  if(al.length < 1){
-  const gpc = Object.keys(battleData.tem).length*15
-  defender.inv.pc += gpc
+  const rewardLp = 50
+  if(!Number.isFinite(defender.inv.league_points)){
+  defender.inv.league_points = 0
+  }
+  defender.inv.league_points += rewardLp
   if(!defender.inv.win){
 defender.inv.win = 0
 }
@@ -6145,7 +6164,7 @@ const messageData = await loadMessageData();
 messageData.battle = messageData.battle.filter((chats)=> chats!==parseInt(messageData[bword].turn) && chats!==parseInt(messageData[bword].oppo))
 delete messageData[bword];
 await saveMessageData(messageData);
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+gpc+' PokeCoins 💷',{parse_mode:'HTML'})
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+rewardLp+' LP ⭐',{parse_mode:'HTML'})
 if(Math.random()< 0.00005){
 const idr = (Math.random()<0.5) ? battleData.oid : battleData.cid
 const dr = await getUserData(idr)
@@ -6512,9 +6531,9 @@ const pvpMeg = buildPvpMsg(megaMsg, battleData, attacker, defender, p1, p2, stat
 let img2 = pokes[p12.name].front_default_image
 const im2 = shiny.filter((poke)=>poke.name==p12.name)[0]
 if(im2 && p12.symbol=='✨'){
-img2=im2.shiny_url
+  img2=im2.shiny_url
 }
-await sendMessage(ctx,ctx.chat.id,img2,{caption:'*'+c(n)+'* has transformed into *'+c(pke.name)+'*.',parse_mode:'markdown',reply_to_message_id:ctx.callbackQuery.message.message_id})
+await sendMessage(ctx,ctx.chat.id,img2,{caption:'*'+c(p12.name)+'* has transformed into *'+c(pke.name)+'*.',parse_mode:'markdown',reply_to_message_id:ctx.callbackQuery.message.message_id})
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMeg.msg,{parse_mode:'HTML',reply_markup:pvpMeg.keyboard,...pvpMeg.ext})
 })
 

@@ -199,6 +199,16 @@ function getStatsCacheKey(baseStats, ivs, evs, natureName, level) {
 }
 
 function Stats(baseStats, ivs, evs, natureName, level) {
+  if (!baseStats || typeof baseStats !== 'object') {
+    return {
+      hp: 1,
+      attack: 0,
+      defense: 0,
+      special_attack: 0,
+      special_defense: 0,
+      speed: 0
+    };
+  }
   const cacheKey = getStatsCacheKey(baseStats, ivs, evs, natureName, level);
   const cached = STATS_CACHE.get(cacheKey);
   if (cached && (Date.now() - cached.t) < STATS_CACHE_TTL_MS) {
@@ -463,12 +473,17 @@ function findEvolutionLevel(pokemonName) {
   return null; // Return null if not found
 }
 function loadMessageData() {
+    const emptyMessageData = { battle: [], moves: {}, tutor: {} };
     try {
         const data = fs.readFileSync('data/msg_data.json', 'utf8');
-        return JSON.parse(data) || {};
+        const parsed = JSON.parse(data);
+        return {
+          ...emptyMessageData,
+          ...(parsed && typeof parsed === 'object' ? parsed : {})
+        };
     } catch (err) {
         console.error('Error loading message data:', err.message);
-        return {};
+        return emptyMessageData;
     }
 }
 

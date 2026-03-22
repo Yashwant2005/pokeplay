@@ -1,6 +1,7 @@
 function registerHeldPanelCallbacks(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   const { getHeldItemDescription } = require('../../utils/held_item_shop');
+  const { normalizeHeldStone, normalizeStoneKey, normalizePokemonName } = require('../../utils/stone_alias');
   const {
     getPokemonHeldItemRestrictionMessage,
     getSanitizedHeldItemForPokemon,
@@ -59,6 +60,7 @@ function registerHeldPanelCallbacks(bot, deps) {
 
   function buildHeldPanel(data, poke) {
     const currentItem = normalizeHeldItemName(poke.held_item);
+    const restricted = Boolean(getPokemonHeldItemRestrictionMessage(poke));
     let msg = '*Held Item Manager*\n';
     msg += '*Pokemon:* ' + c(poke.nickname || poke.name) + '\n';
     msg += '*Current Held Item:* ' + c(titleCaseHeldItem(currentItem || 'none'));

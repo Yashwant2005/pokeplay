@@ -49,29 +49,18 @@ if(evo){
 const fr = forms[evo.evolved_pokemon].filter((p)=> !p.identifier.includes('gmax') 
 && !p.identifier.includes('mega') && !p.identifier.includes('crowned') 
 && !p.identifier.includes('primal'))
-if(name2.includes('galar')){
-const n2 = fr.filter((p)=> p.identifier.includes('galar'))
-if(n2.length > 0){
-var rn = n2
-}else{
-var rn = fr
+const playerRegion = String((data.inv && data.inv.region) || '').toLowerCase()
+const regionalGroups = {
+alola: ['alola', 'melemele', 'akala', 'ulaula', 'poni'],
+galar: ['galar', 'isle-of-armor', 'crown-tundra'],
+hisui: ['hisui'],
+paldea: ['paldea', 'kitakami', 'blueberry']
 }
-}else if(name2.includes('hisui')){
-const n2 = fr.filter((p)=> p.identifier.includes('hisui'))
-if(n2.length > 0){
-var rn = n2
-}else{
-var rn = fr
-}
-}else if(name2.includes('paldea')){
-const n2 = fr.filter((p)=> p.identifier.includes('paldea'))
-if(n2.length > 0){
-var rn = n2
-}else{
-var rn = fr
-}
-}else if(name2.includes('alola')){
-const n2 = fr.filter((p)=> p.identifier.includes('alola'))
+const regionTag = Object.keys(regionalGroups).find((tag) => regionalGroups[tag].includes(playerRegion)) || ''
+const currentTag = ['galar', 'hisui', 'paldea', 'alola'].find((tag) => name2.includes(tag)) || ''
+const preferredTag = currentTag || regionTag
+if(preferredTag){
+const n2 = fr.filter((p)=> p.identifier.includes(preferredTag))
 if(n2.length > 0){
 var rn = n2
 }else{

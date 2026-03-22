@@ -4140,7 +4140,7 @@ const heldItems = {}
 for(const p of pokes1){
 const pk = data.pokes.filter((poke)=> poke.pass == p)
 if(pk[0]){
-    const base = getBattleBaseStats(pk[0], battleData, pk[0].pass)
+    const base = getBattleBaseStats({ battleData, pass: pk[0].pass, pokemonName: pk[0].name, abilityName: pk[0].ability, pokestats })
 const clevel = plevel(pk[0].name,pk[0].exp)
 const stats = await Stats(base,pk[0].ivs,pk[0].evs,c(pk[0].nature),clevel)
 la[pk[0].pass] = clevel
@@ -4155,7 +4155,7 @@ let spe2 = {}
 for(const p of pokes2){
 const pk = data2.pokes.filter((poke)=> poke.pass == p)
 if(pk[0]){
-    const base = getBattleBaseStats(pk[0], battleData, pk[0].pass)
+    const base = getBattleBaseStats({ battleData, pass: pk[0].pass, pokemonName: pk[0].name, abilityName: pk[0].ability, pokestats })
 const clevel = plevel(pk[0].name,pk[0].exp)
 const stats = await Stats(base,pk[0].ivs,pk[0].evs,c(pk[0].nature),clevel)
 la2[pk[0].pass] = clevel

@@ -51,12 +51,20 @@ const buttons = balls.map((word) => ({ text: c(word), callback_data: 'ball_'+wor
 const key = [{text:'⬅️ Back',callback_data:'btl_'+bword+''}]
 rows.push(key)
 const op = pokes[battleData.name]
+if(!op){
+  ctx.answerCbQuery('Battle expired. Start again.')
+  return
+}
 const uname = he.encode(ctx.from.first_name)
 let msg = '\n\n<b>wild</b> '+c(battleData.name)+' ['+c(op.types.join(' / '))+']'
 msg += '\n<b>Level :</b> '+battleData.level+' | <b>HP :</b> '+battleData.ochp+'/'+battleData.ohp+''
 msg += '\n<code>'+Bar(battleData.ohp,battleData.ochp)+'</code>'
 msg += '\n\n<b>Turn :</b> <code>'+uname+'</code>'
 const p2 = pokes[p.name]
+if(!p2){
+  ctx.answerCbQuery('Battle desynced. Use /reset_battle.')
+  return
+}
 msg += '\n<b>'+c(p.name)+'</b> ['+c(p2.types.join(' / '))+']'
 msg += '\n<b>Level :</b> '+clevel+' | <b>HP :</b> '+battleData.chp+'/'+stats.hp+''
 msg += '\n<code>'+Bar(stats.hp,battleData.chp)+'</code>'
@@ -64,6 +72,9 @@ msg += '\n\n<b>Moves :</b>'
 const moves = []
 for(const move2 of p.moves){
 let move = dmoves[move2]
+if(!move){
+continue
+}
 msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }

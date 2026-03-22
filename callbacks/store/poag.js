@@ -39,6 +39,9 @@ if(item=='tms'){
       h = '('+data.tms[tm]+')';
     }
     const t = tms.tmnumber[String(tm)];
+    if(!t || !dmoves[t]){
+      continue;
+    }
     msg += '• */TM'+tm+' -* '+c(dmoves[t].name)+' '+h+'\n';
   }
   // Navigation buttons

@@ -3893,12 +3893,16 @@ if (hitBattleCooldown(ctx)) {
 }
 const id1 = ctx.callbackQuery.data.split('_')[1]
 const id2 = ctx.callbackQuery.data.split('_')[2]
-if(ctx.from.id!=id2 && ctx.from.id!=id1){
-ctx.answerCbQuery();
+if(String(ctx.from.id) !== String(id2)){
+if(String(ctx.from.id) === String(id1)){
+ctx.answerCbQuery('Waiting for opponent to accept')
+}else{
+ctx.answerCbQuery('Not your challenge')
+}
 return
 }
 const mdata = await loadMessageData();
-if(mdata.battle.includes(parseInt(ctx.from.id))){
+if(Array.isArray(mdata.battle) && mdata.battle.includes(parseInt(ctx.from.id))){
 ctx.answerCbQuery('You Are In A Battle')
 return
 }
@@ -3910,7 +3914,7 @@ let battleData = {};
       battleData = {};
     }
 const otherPendingUserId = Object.keys(battleData.users || {}).filter((id)=> String(id) != String(ctx.from.id))[0]
-if(otherPendingUserId && mdata.battle.includes(parseInt(otherPendingUserId))){
+if(otherPendingUserId && Array.isArray(mdata.battle) && mdata.battle.includes(parseInt(otherPendingUserId))){
 ctx.answerCbQuery('Opponent Is In A Battle')
 return
 }
@@ -4230,6 +4234,8 @@ syncBattleFormAndAbility({ battleData, pokemon: p2, pass: p2.pass })
 const pp = pokes[p.name]
 const pp2 = pokes[p2.name]
 if (!battleData.usedMoves) battleData.usedMoves = {};
+const leadImpersonate1 = p ? activateImpersonateForPass({ battleData, pass: p.pass, pokemonName: p.name, abilityName: p.ability }) : ''
+const leadImpersonate2 = p2 ? activateImpersonateForPass({ battleData, pass: p2.pass, pokemonName: p2.name, abilityName: p2.ability }) : ''
 const initStats1 = await Stats(pokestats[p2.name], p2.ivs, p2.evs, c(p2.nature), plevel(p2.name, p2.exp));
 const initStats2 = await Stats(pokestats[p.name], p.ivs, p.evs, c(p.nature), plevel(p.name, p.exp));
 let initPrefix = '<b>* The Pokemon battle commences!</b>';

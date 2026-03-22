@@ -88,7 +88,11 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,me
 return
 }
 if(item=='transformational'){
-  const sts = [...new Set(data.inv.stones)]
+  const sts = [...new Set(data.inv.stones)].filter((stoneKey) => {
+    const stoneInfo = stones && stones[stoneKey];
+    const megaTarget = String(stoneInfo && stoneInfo.mega || '').toLowerCase();
+    return megaTarget.includes('-mega');
+  })
   const bt = [{text:'Back',callback_data:'poag_items_'+ctx.from.id+''}]
   if(sts.length < 1){
     await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You does not have any *Transformational Item*',{parse_mode:'markdown',reply_markup:{inline_keyboard:[bt]}})

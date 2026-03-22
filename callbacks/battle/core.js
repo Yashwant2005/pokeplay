@@ -54,6 +54,7 @@
   applyKoAbility: applyAbilityKo,
   applyOnDamageTakenAbilities: applyAbilityOnDamageTaken
 } = require('../../utils/battle_abilities');
+const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
 const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rules');
 const { getGigantamaxFormName, getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
 const { getDynamaxLevel } = require('../../utils/dynamax_level');
@@ -3908,11 +3909,12 @@ let battleData = {};
 } catch (error) {
       battleData = {};
     }
-if(mdata.battle.includes(parseInt(Object.keys(battleData.users).filter((id)=>id!=ctx.from.id)[1]))){
+const otherPendingUserId = Object.keys(battleData.users || {}).filter((id)=> String(id) != String(ctx.from.id))[0]
+if(otherPendingUserId && mdata.battle.includes(parseInt(otherPendingUserId))){
 ctx.answerCbQuery('Opponent Is In A Battle')
 return
 }
-if(battleData.users[ctx.from.id]){
+if(battleData.users && battleData.users[ctx.from.id]){
 ctx.answerCbQuery('Wait For Opponent To Accept')
 return
 }

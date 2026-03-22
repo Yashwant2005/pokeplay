@@ -32,7 +32,7 @@ const IV_STAT_ALIASES = {
 
 function getDefaultIvBoostConfig() {
   return {
-    enabled: true,
+    enabled: false,
     startAtUtc: '2024-03-20T00:00:00Z', // Updated to start March 20, 2024
     endAtUtc: '2024-03-26T23:59:59Z',   // Updated to end March 26, 2024
     regularMinPerStat: 20,              // Minimum IV per stat for regulars
@@ -299,16 +299,24 @@ function applyIvBoostEventToEncounter(ivs, options = {}) {
   const legendaryLike = isLegendaryLike(rarity);
   let out = normalizeIvMap(ivs);
 
-  if (status === 'active') {
-    out = withMinimumIvs(out, legendaryLike ? config.legendaryMinPerStat : config.regularMinPerStat);
-    out = ensureMinimumTotal(out, legendaryLike ? config.legendaryMinTotal : config.regularMinTotal);
+  if (status !== 'active') {
+    return {
+      ivs: out,
+      status,
+      config,
+      lockApplied: null,
+      lockRemaining: 0
+    };
   }
+
+  out = withMinimumIvs(out, legendaryLike ? config.legendaryMinPerStat : config.regularMinPerStat);
+  out = ensureMinimumTotal(out, legendaryLike ? config.legendaryMinTotal : config.regularMinTotal);
 
   let lockApplied = null;
   let lockRemaining = 0;
   const userData = options.userData;
   const lock = getCurrentIvLock(userData);
-  if (status === 'active' && lock) {
+  if (lock) {
     const minLockValue = clampIvValue(legendaryLike ? config.legendaryMinPerStat : config.regularMinPerStat);
     const appliedLockValue = Math.max(minLockValue, clampIvValue(lock.value));
     out[lock.stat] = appliedLockValue;

@@ -41,6 +41,82 @@ function parseJsonFileNoBom(filePath) {
   return JSON.parse(normalized);
 }
 
+function writeJsonAtomically(filePath, value) {
+  const dir = path.dirname(filePath);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  const tempPath = filePath + '.tmp';
+  fs.writeFileSync(tempPath, JSON.stringify(value), 'utf8');
+  fs.renameSync(tempPath, filePath);
+}
+
+function mergeUniquePrimitiveArrays(left, right) {
+  const out = [];
+  for (const list of [left, right]) {
+    if (!Array.isArray(list)) continue;
+    for (const item of list) {
+      if (!out.includes(item)) out.push(item);
+    }
+  }
+  return out;
+}
+
+function mergePokemonLists(latestList, incomingList) {
+  const latest = Array.isArray(latestList) ? latestList : [];
+  const incoming = Array.isArray(incomingList) ? incomingList : [];
+  const merged = [];
+  const indexByPass = new Map();
+  for (const poke of latest) {
+    const pass = String(poke && poke.pass || '');
+    if (!pass) continue;
+    indexByPass.set(pass, merged.length);
+    merged.push(poke);
+  }
+  for (const poke of incoming) {
+    const pass = String(poke && poke.pass || '');
+    if (!pass) continue;
+    if (indexByPass.has(pass)) {
+      merged[indexByPass.get(pass)] = poke;
+    } else {
+      indexByPass.set(pass, merged.length);
+      merged.push(poke);
+    }
+  }
+  return merged;
+}
+
+function mergeTeams(latestTeams, incomingTeams, validPasses) {
+  const mergedTeams = { ...(latestTeams || {}), ...(incomingTeams || {}) };
+  for (const key of Object.keys(mergedTeams)) {
+    mergedTeams[key] = mergeUniquePrimitiveArrays(
+      latestTeams && latestTeams[key],
+      incomingTeams && incomingTeams[key]
+    ).filter((pass) => validPasses.has(pass));
+  }
+  return mergedTeams;
+}
+
+function mergeUserDataForSave(latestData, incomingData) {
+  const latest = latestData && typeof latestData === 'object' ? latestData : {};
+  const incoming = incomingData && typeof incomingData === 'object' ? incomingData : {};
+  const merged = {
+    ...latest,
+    ...incoming,
+    inv: { ...(latest.inv || {}), ...(incoming.inv || {}) },
+    balls: { ...(latest.balls || {}), ...(incoming.balls || {}) },
+    extra: { ...(latest.extra || {}), ...(incoming.extra || {}) },
+    settings: { ...(latest.settings || {}), ...(incoming.settings || {}) },
+    tms: { ...(latest.tms || {}), ...(incoming.tms || {}) }
+  };
+  merged.pokes = mergePokemonLists(latest.pokes, incoming.pokes);
+  merged.pokecaught = mergeUniquePrimitiveArrays(latest.pokecaught, incoming.pokecaught);
+  merged.pokeseen = mergeUniquePrimitiveArrays(latest.pokeseen, incoming.pokeseen);
+  const validPasses = new Set((merged.pokes || []).map((poke) => String(poke && poke.pass || '')).filter(Boolean));
+  merged.teams = mergeTeams(latest.teams, incoming.teams, validPasses);
+  return merged;
+}
+
 async function check(ctx, next) {
   const data = await getUserData(ctx.from.id);
 
@@ -76,8 +152,20 @@ async function saveUserData2(userId, userData) {
   try {
     const key = String(userId);
     const filePath = './data/db/' + key + '.json';
-    let userDataEntry = [{ user_id: key, data: userData, reset: false }];
-    fs.writeFileSync(filePath, JSON.stringify(userDataEntry), 'utf8');
+    let latestData = {};
+    if (fs.existsSync(filePath)) {
+      try {
+        const existingData = parseJsonFileNoBom(filePath);
+        const dataArray = Array.isArray(existingData) ? existingData : [existingData];
+        const existingEntry = dataArray.find((entry) => String(entry && entry.user_id) === key);
+        latestData = existingEntry && existingEntry.data ? existingEntry.data : {};
+      } catch (_) {
+        latestData = {};
+      }
+    }
+    const mergedData = mergeUserDataForSave(latestData, userData);
+    let userDataEntry = [{ user_id: key, data: mergedData, reset: false }];
+    writeJsonAtomically(filePath, userDataEntry);
   } catch (error) {
     console.error('Error saving data to disk:', error);
   }
@@ -489,7 +577,7 @@ function loadMessageData() {
 
 function saveMessageData(data) {
     try {
-        fs.writeFileSync('data/msg_data.json', JSON.stringify(data || {}), 'utf8');
+        writeJsonAtomically('data/msg_data.json', data || {});
     } catch (error) {
         console.error('Error saving message data:', error);
     }
@@ -514,7 +602,7 @@ function saveBattleData(bword, data) {
   const key = String(bword);
   try {
     const filePath = './data/battle/' + key + '.json';
-    fs.writeFileSync(filePath, JSON.stringify(data), 'utf8');
+    writeJsonAtomically(filePath, data);
   } catch (error) {
     console.error('Error saving battle data:', error);
   }

@@ -484,6 +484,17 @@ function registerItemEnhanceCommands(bot, deps) {
       return;
     }
 
+    if (p.bottleCapUsed) {
+      await sendMessage(
+        ctx,
+        ctx.chat.id,
+        { parse_mode: 'markdown' },
+        'This Pokemon already used a *Bottle Cap*. Only *one* Bottle Cap can be used on a Pokemon.',
+        { reply_to_message_id: ctx.message.message_id }
+      );
+      return;
+    }
+
     const pokeIndex = (data.pokes || []).indexOf(p);
     const statButtons = [
       [
@@ -517,12 +528,17 @@ function registerItemEnhanceCommands(bot, deps) {
       return;
     }
 
+    const p = data.pokes[pokeIndex];
+    if (p.bottleCapUsed) {
+      await ctx.answerCbQuery('Bottle Cap already used on this Pokemon!', { show_alert: true });
+      return;
+    }
+
     if (data.extra.itembox.bottleCaps < 1) {
       await ctx.answerCbQuery('Out of Bottle Caps!', { show_alert: true });
       return;
     }
 
-    const p = data.pokes[pokeIndex];
     const before = Number(p.ivs[stat]) || 0;
     if (before >= 31) {
       await ctx.answerCbQuery('Already at 31 IV!', { show_alert: true });
@@ -530,6 +546,7 @@ function registerItemEnhanceCommands(bot, deps) {
     }
 
     p.ivs[stat] = 31;
+    p.bottleCapUsed = true;
     data.extra.itembox.bottleCaps -= 1;
 
     await saveUserData2(userId, data);

@@ -144,6 +144,7 @@ await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},'You Have Been Successfull
 await sendMessage(ctx,ref,'<b>'+he.encode(ctx.from.first_name)+'</b> has used your refer link.\nYou will get reward when user reaches <b>Level 20</b>',{parse_mode:'HTML'})
 
 data.extra.pending = ref
+data.referredBy = ref
 }
 data.extra.date = `${day}/${month}/${year}`;
 data.inv.hometown = region

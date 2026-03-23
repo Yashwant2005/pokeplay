@@ -1,8 +1,8 @@
 ﻿let msgsent = []
 const appr = [1072659486,6265981509]
-//const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' //main bot
+const botToken = '6963847144:AAGeR3kPkhKXgUwMulK-PSemL-L-IEbYct0' //main bot
 //const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //backup bot
-const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // test bot
+//const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // test bot
 const { Telegraf } = require('telegraf')
 const bot = new Telegraf(botToken)
 if (process.env.QUIET_LOGS === '1') {
@@ -970,7 +970,27 @@ const matchingLevels = Object.keys(trainerlevel).filter(level => data.inv.exp >=
 const level = matchingLevels.length > 0 ? parseInt(matchingLevels[matchingLevels.length - 1]) : undefined;
 if(data.extra.pending && level > 19){
 const id = data.extra.pending*1
+if (data.referRewarded) {
+  data.extra.pending = null
+  await saveUserData2(ctx.from.id,data)
+  return
+}
+if (data.referredBy && String(data.referredBy) !== String(id)) {
+  data.extra.pending = null
+  await saveUserData2(ctx.from.id,data)
+  return
+}
+if (data.extra.referred && String(data.extra.referred) === String(id)) {
+  data.extra.pending = null
+  data.referRewarded = true
+  data.referredBy = id
+  await saveUserData2(ctx.from.id,data)
+  return
+}
 const userData2 = await getUserData(id)
+if (!userData2.extra || typeof userData2.extra !== 'object') {
+  userData2.extra = {}
+}
 if(!userData2.extra.refer){
 userData2.extra.refer = []
 }
@@ -981,7 +1001,9 @@ userData2.refers += 1
 userData2.extra.refer.push(ctx.from.id)
 data.inv.pc += 1000
 data.extra.referred = id
-delete data.extra.pending
+ data.extra.pending = null
+ data.referRewarded = true
+ data.referredBy = id
 await sendMessage(ctx,ctx.from.id,'You have successfully reached <b>Level 20</b> and your refer by <b>'+userData2.inv.name+' has been completed.\n+ 1k PC ðŸ’·</b>',{parse_mode:'HTML'})
 let msg = '<b>'+ctx.from.first_name+'</b> has reached <b>Level 20</b>.'
 userData2.inv.pc += 500

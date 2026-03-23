@@ -49,11 +49,7 @@ function registerEvolveCommand(bot, deps) {
     }
 
     const name2 = name.replace(/ /g, '-');
-    const p5 = data.pokes.filter((pk) =>
-      pk.nickname
-        ? name.toLowerCase() === pk.nickname.toLowerCase()
-        : name2.toLowerCase() === pk.name
-    )[0];
+    const p5 = data.pokes.filter((pk) => (pk.nickname && name.toLowerCase() === pk.nickname.toLowerCase()) || name2.toLowerCase() === pk.name)[0];
 
     if (!p5) {
       const matches = stringSimilarity.findBestMatch(name2, data.pokes.map((poke) => poke.nickname || poke.name));
@@ -78,11 +74,7 @@ function registerEvolveCommand(bot, deps) {
       return;
     }
 
-    const p22 = data.pokes.filter((poke) =>
-      poke.nickname
-        ? poke.nickname.toLowerCase() == name.toLowerCase()
-        : poke.name == name2.toLowerCase()
-    );
+    const p22 = data.pokes.filter((poke)=> (poke.name==name2.toLowerCase()) || (poke.nickname && poke.nickname.toLowerCase() == name.toLowerCase()));
 
     if (!p22 || p22.length < 1) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'You Does Not Have *' + name + '*', {

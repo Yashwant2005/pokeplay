@@ -38,15 +38,7 @@ bot.command('stats',async ctx => {
   
   const name2 = name.replace(/ /g,'-')
   
-  const p5 = data.pokes.filter((pk) => 
-  
-      pk.nickname ? 
-  
-      name.toLowerCase() === pk.nickname.toLowerCase() : 
-  
-      name2.toLowerCase() === pk.name
-  
-  )[0];
+  const p5 = data.pokes.filter((pk) => (pk.nickname && name.toLowerCase() === pk.nickname.toLowerCase()) || name2.toLowerCase() === pk.name)[0];
   
   
   
@@ -74,7 +66,7 @@ bot.command('stats',async ctx => {
   
   const p = pokes[p5.name.toLowerCase()]
   
-  const p22 = data.pokes.filter((poke)=> poke.nickname ? poke.nickname.toLowerCase() == name.toLowerCase() : poke.name==name2.toLowerCase())
+  const p22 = data.pokes.filter((poke)=> (poke.name==name2.toLowerCase()) || (poke.nickname && poke.nickname.toLowerCase() == name.toLowerCase()))
   
   if(!p22 || p22.length < 1){
   
@@ -275,7 +267,7 @@ bot.action(/suger_/, async ctx => {
   await ctx.answerCbQuery();
   const data = await getUserData(ctx.from.id);
   const name2 = name.replace(/ /g,'-');
-  const p22 = data.pokes.filter((poke)=> poke.nickname ? poke.nickname.toLowerCase() == name.toLowerCase() : poke.name==name2.toLowerCase());
+  const p22 = data.pokes.filter((poke)=> (poke.name==name2.toLowerCase()) || (poke.nickname && poke.nickname.toLowerCase() == name.toLowerCase()))
   if(!p22 || p22.length < 1){
     await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Does Not Have *'+name+'*',{reply_to_message_id:replyTo});
     return;
@@ -373,4 +365,3 @@ bot.action(/suger_/, async ctx => {
 }
 
 module.exports = registerStatsCommand;
-

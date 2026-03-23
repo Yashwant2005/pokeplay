@@ -42,6 +42,11 @@ let messageCache = { ...DEFAULT_MESSAGE_DATA };
 let messageCacheLoaded = false;
 let initPromise = null;
 const battleCache = new Map();
+let lastMessagePruneAt = 0;
+const MESSAGE_PRUNE_INTERVAL_MS = 2000;
+const USER_CACHE_TTL_MS = 5000;
+const USER_CACHE_MAX = 5000;
+const userCache = new Map();
 
 function cloneJson(value) {
   if (value === undefined) return undefined;
@@ -50,6 +55,24 @@ function cloneJson(value) {
     return JSON.parse(JSON.stringify(value));
   } catch (_) {
     return value;
+  }
+}
+
+function getCachedUserData(key) {
+  const entry = userCache.get(key);
+  if (!entry) return null;
+  if ((Date.now() - entry.t) > USER_CACHE_TTL_MS) {
+    userCache.delete(key);
+    return null;
+  }
+  return cloneJson(entry.v);
+}
+
+function setCachedUserData(key, data) {
+  userCache.set(key, { v: cloneJson(data), t: Date.now() });
+  if (userCache.size > USER_CACHE_MAX) {
+    const firstKey = userCache.keys().next().value;
+    if (firstKey) userCache.delete(firstKey);
   }
 }
 
@@ -62,6 +85,75 @@ function normalizeMessageData(data) {
     moves: base.moves && typeof base.moves === 'object' ? base.moves : {},
     tutor: base.tutor && typeof base.tutor === 'object' ? base.tutor : {}
   };
+}
+
+function isMessageEntryExpired(entry, now) {
+  if (!entry || typeof entry !== 'object') return true;
+  const hasTimes = typeof entry.times === 'number';
+  const hasTimestamp = typeof entry.timestamp === 'number';
+  if (!hasTimes && !hasTimestamp) return true;
+  if (hasTimes && now - entry.times > 130000) return true;
+  if (hasTimestamp && now - entry.timestamp > 60000) return true;
+  return false;
+}
+
+function pruneMessageData(data) {
+  const now = Date.now();
+  const out = normalizeMessageData(data);
+  let changed = false;
+  const activeIds = new Set();
+  for (const key of Object.keys(out)) {
+    if (key === 'battle' || key === 'moves' || key === 'tutor') continue;
+    const entry = out[key];
+    if (!entry || typeof entry !== 'object') {
+      delete out[key];
+      changed = true;
+      continue;
+    }
+    if (isMessageEntryExpired(entry, now)) {
+      delete out[key];
+      changed = true;
+      continue;
+    }
+    if (entry.turn !== undefined || entry.oppo !== undefined) {
+      const battleData = loadBattleData(key);
+      if (!battleData || Object.keys(battleData).length === 0) {
+        delete out[key];
+        changed = true;
+        continue;
+      }
+      if (entry.turn !== undefined) activeIds.add(String(entry.turn));
+      if (entry.oppo !== undefined) activeIds.add(String(entry.oppo));
+      continue;
+    }
+    if (entry.id !== undefined && entry.mid) {
+      activeIds.add(String(entry.id));
+    }
+  }
+  if (!Array.isArray(out.battle)) {
+    out.battle = [];
+    changed = true;
+  } else {
+    const filtered = out.battle.filter((id) => activeIds.has(String(id)));
+    if (filtered.length !== out.battle.length) {
+      out.battle = filtered;
+      changed = true;
+    }
+  }
+  return { data: out, changed };
+}
+
+function maybePruneMessageCache() {
+  if (!messageCacheLoaded) return;
+  const now = Date.now();
+  if ((now - lastMessagePruneAt) < MESSAGE_PRUNE_INTERVAL_MS) return;
+  lastMessagePruneAt = now;
+  const { data, changed } = pruneMessageData(messageCache);
+  if (changed) {
+    messageCache = data;
+    messageCacheLoaded = true;
+    saveMessageData(messageCache).catch(() => {});
+  }
 }
 
 async function hydrateCaches() {
@@ -203,8 +295,11 @@ const msgdata = await loadMessageData();
 const now = Date.now();
 const isEntryExpired = (entry) => {
   if (!entry || typeof entry !== 'object') return true;
-  if (entry.times && now - entry.times > 130000) return true;
-  if (entry.timestamp && now - entry.timestamp > 60000) return true;
+  const hasTimes = typeof entry.times === 'number';
+  const hasTimestamp = typeof entry.timestamp === 'number';
+  if (!hasTimes && !hasTimestamp) return true;
+  if (hasTimes && now - entry.times > 130000) return true;
+  if (hasTimestamp && now - entry.timestamp > 60000) return true;
   return false;
 };
 const hasActiveBattleReference = (data, userId) => {
@@ -244,8 +339,11 @@ const msgdata = await loadMessageData();
 const now = Date.now();
 const isEntryExpired = (entry) => {
   if (!entry || typeof entry !== 'object') return true;
-  if (entry.times && now - entry.times > 130000) return true;
-  if (entry.timestamp && now - entry.timestamp > 60000) return true;
+  const hasTimes = typeof entry.times === 'number';
+  const hasTimestamp = typeof entry.timestamp === 'number';
+  if (!hasTimes && !hasTimestamp) return true;
+  if (hasTimes && now - entry.times > 130000) return true;
+  if (hasTimestamp && now - entry.timestamp > 60000) return true;
   return false;
 };
 const hasActiveBattleReference = (data, userId) => {
@@ -287,8 +385,9 @@ async function saveUserData2(userId, userData) {
   try {
     const key = String(userId);
     const users = await getCollection('users');
-    const existing = await users.findOne({ _id: key });
-    const latestData = existing && existing.data ? existing.data : {};
+    const cached = getCachedUserData(key);
+    const existing = cached ? null : await users.findOne({ _id: key });
+    const latestData = cached || (existing && existing.data ? existing.data : {});
     const mergedData = mergeUserDataForSave(latestData, userData);
     await users.updateOne(
       { _id: key },
@@ -304,6 +403,7 @@ async function saveUserData2(userId, userData) {
       },
       { upsert: true }
     );
+    setCachedUserData(key, mergedData);
   } catch (error) {
     console.error('Error saving data to MongoDB:', error);
   }
@@ -312,9 +412,12 @@ const saveUserData22 = saveUserData2;
 async function getUserData(userId) {
   try {
     const key = String(userId);
+    const cached = getCachedUserData(key);
+    if (cached) return cached;
     const users = await getCollection('users');
     const doc = await users.findOne({ _id: key });
     if (!doc || !doc.data) return {};
+    setCachedUserData(key, doc.data);
     return doc.data;
   } catch (error) {
     console.error('Error getting data from MongoDB:', error);
@@ -690,6 +793,7 @@ function loadMessageData() {
   if (!messageCacheLoaded) {
     return cloneJson(DEFAULT_MESSAGE_DATA);
   }
+  maybePruneMessageCache();
   return cloneJson(messageCache);
 }
 
@@ -697,8 +801,12 @@ async function loadMessageDataFresh() {
   try {
     const msg = await getKv('msg_data', null);
     const normalized = normalizeMessageData(msg);
-    messageCache = cloneJson(normalized);
+    const pruned = pruneMessageData(normalized);
+    messageCache = cloneJson(pruned.data);
     messageCacheLoaded = true;
+    if (pruned.changed) {
+      await setKv('msg_data', cloneJson(messageCache));
+    }
     return cloneJson(messageCache);
   } catch (error) {
     console.error('Error loading fresh message data:', error.message || error);

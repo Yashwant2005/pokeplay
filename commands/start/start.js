@@ -66,21 +66,28 @@ function registerStartCommand(bot, deps) {
       const matchingLevels = Object.keys(trainerlevel).filter((level) => data.inv.exp >= trainerlevel[level]);
       const level = matchingLevels.length > 0 ? parseInt(matchingLevels[matchingLevels.length - 1]) : undefined;
       const id = parseInt(value.split("_")[1]);
+      if (!data.extra || typeof data.extra !== 'object') data.extra = {};
       if (id == ctx.from.id) {
         await sendMessage(ctx, ctx.chat.id, { parse_mode: "markdown" }, "You cant refer *Yourself*");
         return;
       }
-      if (data.extra && (data.extra.pending || data.extra.referred) && ctx.from.id != 1072659486) {
-        const ids = data.extra.pending || data.extra.referred;
-        const data5 = await getUserData(ids);
-        await sendMessage(ctx, ctx.chat.id, { parse_mode: "HTML" }, "You have been already <b>Referred</b> by <b>" + data5.inv.name + "</b>");
+      if ((data.referRewarded || data.referredBy || (data.extra && (data.extra.pending || data.extra.referred))) && ctx.from.id != 1072659486) {
+        const ids = (data.extra && (data.extra.pending || data.extra.referred)) || data.referredBy;
+        if (ids) {
+          const data5 = await getUserData(ids);
+          await sendMessage(ctx, ctx.chat.id, { parse_mode: "HTML" }, "You have been already <b>Referred</b> by <b>" + data5.inv.name + "</b>");
+        } else {
+          await sendMessage(ctx, ctx.chat.id, { parse_mode: "HTML" }, "You have already been <b>Referred</b>.");
+        }
         return;
       }
       if (level * 1 < 20) {
         const data2 = await getUserData(id);
+        if (!data2.extra || typeof data2.extra !== 'object') data2.extra = {};
         if (!data2.extra.refer) data2.extra.refer = [];
         data2.extra.refer.push(ctx.from.id);
         data.extra.pending = id;
+        data.referredBy = id;
         await saveUserData2(ctx.from.id, data);
         await saveUserData2(id, data2);
         await sendMessage(ctx, -1003069884900, "#refer\n\n<b>" + he.encode(ctx.from.first_name) + "</b> (<code>" + ctx.from.id + "</code>) has used <b>" + data2.inv.name + "</b> (<code>" + id + "</code>) refer link.", { parse_mode: "html" });
@@ -90,6 +97,7 @@ function registerStartCommand(bot, deps) {
       }
 
       const userData2 = await getUserData(id);
+      if (!userData2.extra || typeof userData2.extra !== 'object') userData2.extra = {};
       if (!userData2.extra.refer) userData2.extra.refer = [];
       if (!userData2.refers) userData2.refers = 0;
       userData2.refers += 1;
@@ -97,7 +105,9 @@ function registerStartCommand(bot, deps) {
       data.inv.pc += 1000;
       if (!data.extra || typeof data.extra !== 'object') data.extra = {};
       data.extra.referred = id;
-      if (data.extra.pending) delete data.extra.pending;
+      data.extra.pending = null;
+      data.referredBy = id;
+      data.referRewarded = true;
       await sendMessage(ctx, ctx.chat.id, { parse_mode: "HTML" }, "You have successfully referred by <b>" + userData2.inv.name + "\n+ 1k PC 💷</b>");
 
       let msg = "<b>" + ctx.from.first_name + "</b> has used your refer link.";

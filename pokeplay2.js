@@ -1205,12 +1205,30 @@ await next();
 
 async function editOverdueMessages() {
     const messageData = await loadMessageData();
- for(const id in messageData.moves){
-   if(!id || id === 'undefined' || !messageData.moves[id] || !messageData.moves[id].chat){
-     delete messageData.moves[id]
-   }
- }
- await saveMessageData(messageData)
+    const hasActiveBattleReference = (data, userId) => {
+      const idStr = String(userId);
+      for (const [key, entry] of Object.entries(data || {})) {
+        if (key === 'battle' || key === 'moves' || key === 'tutor') continue;
+        if (!entry || typeof entry !== 'object') continue;
+        if (entry.turn !== undefined && String(entry.turn) === idStr) return true;
+        if (entry.oppo !== undefined && String(entry.oppo) === idStr) return true;
+        if (entry.id !== undefined && String(entry.id) === idStr && entry.mid) return true;
+      }
+      return false;
+    };
+  for(const id in messageData.moves){
+    if(!id || id === 'undefined' || !messageData.moves[id] || !messageData.moves[id].chat){
+      delete messageData.moves[id]
+    }
+  }
+  await saveMessageData(messageData)
+  if (Array.isArray(messageData.battle) && messageData.battle.length > 0) {
+    const filtered = messageData.battle.filter((uid) => hasActiveBattleReference(messageData, uid));
+    if (filtered.length !== messageData.battle.length) {
+      messageData.battle = filtered;
+      await saveMessageData(messageData);
+    }
+  }
 for(const id in messageData.tutor){
 const time = messageData.tutor[id].tdy
 const queryTime = new Date(time)

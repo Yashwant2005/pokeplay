@@ -39,13 +39,13 @@ return
   let row = [];
 
 for (let i = startIndex; i < endIndex; i++) {
-  const sortedIndex = userData.pokes.indexOf(pokes[i]);
+  const displayIndex = i + 1;
   row.push({
-    text: `${sortedIndex + 1}`,
-    callback_data: `trdfe_${id2}_${userData.pokes[i].pass}_${id1}`,
+    text: `${displayIndex}`,
+    callback_data: `trdfe_${id2}_${pokes[i].pass}_${id1}`,
   });
 
-  if ((sortedIndex + 1) % buttonsPerRow === 0 || sortedIndex === endIndex - 1) {
+  if (row.length === buttonsPerRow || i === endIndex - 1) {
     inlineKeyboard.push(row);
     row = [];
   }

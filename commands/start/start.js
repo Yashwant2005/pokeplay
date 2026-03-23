@@ -95,7 +95,9 @@ function registerStartCommand(bot, deps) {
       userData2.refers += 1;
       userData2.extra.refer.push(ctx.from.id);
       data.inv.pc += 1000;
+      if (!data.extra || typeof data.extra !== 'object') data.extra = {};
       data.extra.referred = id;
+      if (data.extra.pending) delete data.extra.pending;
       await sendMessage(ctx, ctx.chat.id, { parse_mode: "HTML" }, "You have successfully referred by <b>" + userData2.inv.name + "\n+ 1k PC 💷</b>");
 
       let msg = "<b>" + ctx.from.first_name + "</b> has used your refer link.";
@@ -188,6 +190,7 @@ function registerStartCommand(bot, deps) {
 
       await sendMessage(ctx, -1003069884900, "#refer\n\n<b>" + he.encode(ctx.from.first_name) + "</b> (<code>" + ctx.from.id + "</code>) has reached level 20 and <b>" + userData2.inv.name + "</b> (<code>" + id + "</code>) received :-.\n\n" + msg, { parse_mode: "html" });
       await sendMessage(ctx, id, msg, { parse_mode: "HTML" });
+      await saveUserData2(ctx.from.id, data);
       await saveUserData2(id, userData2);
       return;
     }

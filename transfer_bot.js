@@ -153,10 +153,17 @@ function parseIvFromText(text) {
 }
 
 function normalizeStoneName(input) {
-  return String(input || '')
+  const normalized = String(input || '')
     .trim()
     .toLowerCase()
+    .replace(/[–—−‑‒]/g, '-')
     .replace(/[_.\s]+/g, '-');
+  const aliases = {
+    dragoninite: 'dragoniteite',
+    excadrite: 'excadrillite',
+    excadrilite: 'excadrillite'
+  };
+  return aliases[normalized] || normalized;
 }
 
 function parseStonesFromText(text) {
@@ -175,6 +182,15 @@ function parseStonesFromText(text) {
     if (numberedMatch) {
       const key = normalizeStoneName(numberedMatch[1]);
       const count = Math.max(0, Number(numberedMatch[2]));
+      if (stones[key] && Number.isFinite(count)) {
+        for (let i = 0; i < count; i++) out.push(key);
+      }
+      continue;
+    }
+    const plainMatch = trimmed.match(/^([A-Za-z0-9' -]+)\s*:\s*(\d+)/);
+    if (plainMatch) {
+      const key = normalizeStoneName(plainMatch[1]);
+      const count = Math.max(0, Number(plainMatch[2]));
       if (stones[key] && Number.isFinite(count)) {
         for (let i = 0; i < count; i++) out.push(key);
       }

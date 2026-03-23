@@ -24,6 +24,7 @@ data.extra.itembox.heldItems[heldItem] = Math.max(0, Number(data.extra.itembox.h
 releaseMsg += '\nHeld item *'+c(heldItem.replace(/-/g,' '))+'* was lost as well.'
 }
 data.pokes = data.pokes.filter(pk=>pk.pass!=pass)
+data._replacePokes = true
 await saveUserData2(ctx.from.id,data)
 await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,releaseMsg,{parse_mode:'markdown'})
 })

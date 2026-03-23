@@ -75,6 +75,8 @@ const ensureTeamAutoAdd = (data, removedPass, addedPass) => {
 }
 ensureTeamAutoAdd(data1, pass1, pass2)
 ensureTeamAutoAdd(data2, pass2, pass1)
+data1._replacePokes = true
+data2._replacePokes = true
 await saveUserData2(id2.replace(/[ny]/g,''),data2)
 await saveUserData2(id1.replace(/[ny]/g,''),data1)
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>Trade Has Been Completed</b>\n\n• <a href="tg://user?id='+id1.replace(/[ny]/g,'')+'"><b>'+data1.inv.name+'</b></a> Receives <b>'+c(poke2.name)+'</b>\n\n• <a href="tg://user?id='+id2.replace(/[ny]/g,'')+'"><b>'+data2.inv.name+'</b></a> Receives <b>'+c(poke.name)+'</b>',{parse_mode:'html'})

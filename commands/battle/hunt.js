@@ -33,14 +33,6 @@ function registerHuntCommand(bot, deps) {
   
   }
   
-  if(!ctx.session.key){
-  
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Opening Keyboard.....*',{reply_markup:{keyboard:[['/hunt','/close']],resize_keyboard:true}})
-  
-  ctx.session.key = true
-  
-  }
-  
     const region = data.inv.region
   
   if(!region || !rdata[region]){

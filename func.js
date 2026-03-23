@@ -41,6 +41,7 @@ const DEFAULT_MESSAGE_DATA = { battle: [], moves: {}, tutor: {} };
 let messageCache = { ...DEFAULT_MESSAGE_DATA };
 let messageCacheLoaded = false;
 let initPromise = null;
+const battleCache = new Map();
 
 function cloneJson(value) {
   if (value === undefined) return undefined;
@@ -74,7 +75,7 @@ async function hydrateCaches() {
     messageCacheLoaded = true;
   }
 
-  // Battle data stays file-backed for resume support.
+  // Battle data stays in memory only.
 }
 
 async function initDataStores(options = {}) {
@@ -163,6 +164,7 @@ function mergeTeams(latestTeams, incomingTeams, validPasses) {
 function mergeUserDataForSave(latestData, incomingData) {
   const latest = latestData && typeof latestData === 'object' ? latestData : {};
   const incoming = incomingData && typeof incomingData === 'object' ? incomingData : {};
+  const replacePokes = Boolean(incoming._replacePokes || incoming.__replacePokes);
   const merged = {
     ...latest,
     ...incoming,
@@ -172,11 +174,15 @@ function mergeUserDataForSave(latestData, incomingData) {
     settings: { ...(latest.settings || {}), ...(incoming.settings || {}) },
     tms: { ...(latest.tms || {}), ...(incoming.tms || {}) }
   };
-  merged.pokes = mergePokemonLists(latest.pokes, incoming.pokes);
+  merged.pokes = replacePokes
+    ? (Array.isArray(incoming.pokes) ? incoming.pokes : [])
+    : mergePokemonLists(latest.pokes, incoming.pokes);
   merged.pokecaught = mergeUniquePrimitiveArrays(latest.pokecaught, incoming.pokecaught);
   merged.pokeseen = mergeUniquePrimitiveArrays(latest.pokeseen, incoming.pokeseen);
   const validPasses = new Set((merged.pokes || []).map((poke) => String(poke && poke.pass || '')).filter(Boolean));
   merged.teams = mergeTeams(latest.teams, incoming.teams, validPasses);
+  delete merged._replacePokes;
+  delete merged.__replacePokes;
   return merged;
 }
 
@@ -194,17 +200,83 @@ await next();
 }
 async function check2(ctx,next){
 const msgdata = await loadMessageData();
-if(msgdata.battle.includes(ctx.from.id) || msgdata[ctx.from.id]){
-ctx.replyWithMarkdown('You are in *Battle*',{reply_to_message_id:ctx.message.message_id})
-return
+const now = Date.now();
+const isEntryExpired = (entry) => {
+  if (!entry || typeof entry !== 'object') return true;
+  if (entry.times && now - entry.times > 130000) return true;
+  if (entry.timestamp && now - entry.timestamp > 60000) return true;
+  return false;
+};
+const hasActiveBattleReference = (data, userId) => {
+  const idStr = String(userId);
+  for (const [key, entry] of Object.entries(data || {})) {
+    if (key === 'battle' || key === 'moves' || key === 'tutor') continue;
+    if (!entry || typeof entry !== 'object') continue;
+    if (isEntryExpired(entry)) continue;
+    if (entry.turn !== undefined && String(entry.turn) === idStr) return true;
+    if (entry.oppo !== undefined && String(entry.oppo) === idStr) return true;
+    if (entry.id !== undefined && String(entry.id) === idStr && entry.mid) return true;
+  }
+  return false;
+};
+let needsSave = false;
+if (Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) {
+  if (!hasActiveBattleReference(msgdata, ctx.from.id)) {
+    msgdata.battle = msgdata.battle.filter((id) => String(id) !== String(ctx.from.id));
+    needsSave = true;
+  }
+}
+if (msgdata[ctx.from.id] && isEntryExpired(msgdata[ctx.from.id])) {
+  delete msgdata[ctx.from.id];
+  needsSave = true;
+}
+if (needsSave) {
+  await saveMessageData(msgdata);
+}
+if ((Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) || msgdata[ctx.from.id]){
+  ctx.replyWithMarkdown('You are in *Battle*',{reply_to_message_id:ctx.message.message_id})
+  return
 }
 await next();
 }
 async function check2q(ctx,next){
 const msgdata = await loadMessageData();
-if(msgdata.battle.includes(ctx.from.id) || msgdata[ctx.from.id]){
-ctx.answerCbQuery('You are in Battle')
-return
+const now = Date.now();
+const isEntryExpired = (entry) => {
+  if (!entry || typeof entry !== 'object') return true;
+  if (entry.times && now - entry.times > 130000) return true;
+  if (entry.timestamp && now - entry.timestamp > 60000) return true;
+  return false;
+};
+const hasActiveBattleReference = (data, userId) => {
+  const idStr = String(userId);
+  for (const [key, entry] of Object.entries(data || {})) {
+    if (key === 'battle' || key === 'moves' || key === 'tutor') continue;
+    if (!entry || typeof entry !== 'object') continue;
+    if (isEntryExpired(entry)) continue;
+    if (entry.turn !== undefined && String(entry.turn) === idStr) return true;
+    if (entry.oppo !== undefined && String(entry.oppo) === idStr) return true;
+    if (entry.id !== undefined && String(entry.id) === idStr && entry.mid) return true;
+  }
+  return false;
+};
+let needsSave = false;
+if (Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) {
+  if (!hasActiveBattleReference(msgdata, ctx.from.id)) {
+    msgdata.battle = msgdata.battle.filter((id) => String(id) !== String(ctx.from.id));
+    needsSave = true;
+  }
+}
+if (msgdata[ctx.from.id] && isEntryExpired(msgdata[ctx.from.id])) {
+  delete msgdata[ctx.from.id];
+  needsSave = true;
+}
+if (needsSave) {
+  await saveMessageData(msgdata);
+}
+if ((Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) || msgdata[ctx.from.id]){
+  ctx.answerCbQuery('You are in Battle')
+  return
 }
 await next();
 }
@@ -645,18 +717,11 @@ async function saveMessageData(data) {
   }
 }
 
-const battleDataRoot = path.join(__dirname, 'data', 'battle');
-
 function loadBattleData(bword) {
   try {
     const key = String(bword);
-    const filePath = path.join(battleDataRoot, key + '.json');
-    if (!fs.existsSync(filePath)) {
-      return {};
-    }
-    const raw = fs.readFileSync(filePath, 'utf8');
-    const normalized = raw.charCodeAt(0) === 0xFEFF ? raw.slice(1) : raw;
-    return JSON.parse(normalized) || {};
+    const cached = battleCache.get(key);
+    return cached ? cloneJson(cached) : {};
   } catch (error) {
     return {};
   }
@@ -665,8 +730,7 @@ function loadBattleData(bword) {
 async function saveBattleData(bword, data) {
   const key = String(bword);
   try {
-    const filePath = path.join(battleDataRoot, key + '.json');
-    writeJsonAtomically(filePath, data || {});
+    battleCache.set(key, cloneJson(data || {}));
   } catch (error) {
     console.error('Error saving battle data:', error);
   }

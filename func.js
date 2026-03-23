@@ -44,6 +44,8 @@ let initPromise = null;
 const battleCache = new Map();
 let lastMessagePruneAt = 0;
 const MESSAGE_PRUNE_INTERVAL_MS = 2000;
+const BATTLE_CACHE_TTL_MS = 30 * 60 * 1000;
+const BATTLE_CACHE_MAX = 3000;
 const USER_CACHE_TTL_MS = 5000;
 const USER_CACHE_MAX = 5000;
 const userCache = new Map();
@@ -59,6 +61,20 @@ function cloneJson(value) {
     return JSON.parse(JSON.stringify(value));
   } catch (_) {
     return value;
+  }
+}
+
+function pruneBattleCache() {
+  const now = Date.now();
+  for (const [key, entry] of battleCache) {
+    if (!entry || typeof entry !== 'object' || !entry.t || (now - entry.t) > BATTLE_CACHE_TTL_MS) {
+      battleCache.delete(key);
+    }
+  }
+  while (battleCache.size > BATTLE_CACHE_MAX) {
+    const firstKey = battleCache.keys().next().value;
+    if (!firstKey) break;
+    battleCache.delete(firstKey);
   }
 }
 
@@ -859,8 +875,13 @@ async function saveMessageData(data) {
 function loadBattleData(bword) {
   try {
     const key = String(bword);
+    pruneBattleCache();
     const cached = battleCache.get(key);
-    return cached ? cloneJson(cached) : {};
+    if (!cached || typeof cached !== 'object' || (Date.now() - cached.t) > BATTLE_CACHE_TTL_MS) {
+      battleCache.delete(key);
+      return {};
+    }
+    return cloneJson(cached.data || {});
   } catch (error) {
     return {};
   }
@@ -869,7 +890,12 @@ function loadBattleData(bword) {
 async function saveBattleData(bword, data) {
   const key = String(bword);
   try {
-    battleCache.set(key, cloneJson(data || {}));
+    pruneBattleCache();
+    battleCache.set(key, { t: Date.now(), data: cloneJson(data || {}) });
+    if (battleCache.size > BATTLE_CACHE_MAX) {
+      const firstKey = battleCache.keys().next().value;
+      if (firstKey) battleCache.delete(firstKey);
+    }
   } catch (error) {
     console.error('Error saving battle data:', error);
   }

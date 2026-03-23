@@ -507,8 +507,8 @@ let globalmsg = [];
 let lastInteractionAt = 0;
 let battlec = {}
 const banListKey = 'ban_list';
-const admins = [6265981509, 8493023103, 8551864967]
-const admins35 = [6265981509, 8493023103, 8551864967]
+const admins = [6265981509, 8493023103, 8551864967, 7577674783]
+const admins35 = [6265981509, 8493023103, 8551864967, 7577674783]
 
 // Load the ban list from the file
 let banList2 = [];

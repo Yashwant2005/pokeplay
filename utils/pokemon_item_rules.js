@@ -38,6 +38,14 @@ function isRayquazaLockedFromHeldItems(pokemon) {
   return false;
 }
 
+function normalizeHeldItemKey(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[_\s]+/g, '-')
+    .replace(/-+/g, '-');
+}
+
 function matchesPokemon(pokemonName, requiredName) {
   const p = normalizePokemonName(pokemonName);
   const r = normalizePokemonName(requiredName);
@@ -47,6 +55,17 @@ function matchesPokemon(pokemonName, requiredName) {
 
 function isHeldItemCompatibleWithPokemon(pokemon, heldItem) {
   if (!pokemon || !heldItem) return true;
+  const itemKey = normalizeHeldItemKey(heldItem);
+  const forced = {
+    'rusted-sword': ['zacian'],
+    'rusted-shield': ['zamazenta'],
+    'red-orb': ['groudon'],
+    'blue-orb': ['kyogre'],
+    'jade-orb': ['rayquaza']
+  };
+  if (forced[itemKey]) {
+    return forced[itemKey].some((name) => matchesPokemon(pokemon.name, name));
+  }
   const stoneKey = normalizeStoneKey(heldItem, STONES);
   const stone = STONES && STONES[stoneKey];
   if (stone && stone.pokemon) {

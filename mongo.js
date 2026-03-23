@@ -21,8 +21,12 @@ async function getDb() {
   if (!connectPromise) {
     const uri = getMongoUri();
     const dbName = process.env.MONGODB_DB || DEFAULT_DB_NAME;
+    const maxPool = Math.max(1, Number(process.env.MONGO_POOL_MAX || process.env.MONGODB_POOL_MAX || 50));
+    const minPool = Math.max(0, Number(process.env.MONGO_POOL_MIN || process.env.MONGODB_POOL_MIN || 5));
     client = new MongoClient(uri, {
-      maxPoolSize: 10,
+      maxPoolSize: maxPool,
+      minPoolSize: Math.min(minPool, maxPool),
+      maxIdleTimeMS: 60000,
       serverSelectionTimeoutMS: 10000
     });
     connectPromise = client.connect().then(() => {

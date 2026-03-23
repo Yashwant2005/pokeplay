@@ -1359,7 +1359,7 @@ const dr = await getUserData(chatId)
 
 }
 
-schedule.scheduleJob('*/2 * * * * *', editOverdueMessages);
+schedule.scheduleJob('*/5 * * * * *', editOverdueMessages);
 
 function getRetryAfterSeconds(error) {
   const retryAfter = error && error.response && error.response.parameters && error.response.parameters.retry_after;

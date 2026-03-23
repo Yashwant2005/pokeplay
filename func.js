@@ -47,6 +47,10 @@ const MESSAGE_PRUNE_INTERVAL_MS = 2000;
 const USER_CACHE_TTL_MS = 5000;
 const USER_CACHE_MAX = 5000;
 const userCache = new Map();
+const SAVE_FLUSH_MS = 2000;
+let saveFlushTimer = null;
+let saveFlushInProgress = false;
+const saveQueue = new Map();
 
 function cloneJson(value) {
   if (value === undefined) return undefined;
@@ -73,6 +77,47 @@ function setCachedUserData(key, data) {
   if (userCache.size > USER_CACHE_MAX) {
     const firstKey = userCache.keys().next().value;
     if (firstKey) userCache.delete(firstKey);
+  }
+}
+
+function queueUserSave(key, mergedData) {
+  saveQueue.set(key, cloneJson(mergedData));
+  if (!saveFlushTimer) {
+    saveFlushTimer = setTimeout(flushSaveQueue, SAVE_FLUSH_MS);
+  }
+}
+
+async function flushSaveQueue() {
+  if (saveFlushInProgress) return;
+  saveFlushInProgress = true;
+  saveFlushTimer = null;
+  const entries = Array.from(saveQueue.entries());
+  saveQueue.clear();
+  for (const [key, mergedData] of entries) {
+    try {
+      const users = await getCollection('users');
+      await users.updateOne(
+        { _id: key },
+        {
+          $set: {
+            user_id: key,
+            userId: key,
+            data: mergedData,
+            reset: false,
+            updatedAt: new Date()
+          },
+          $setOnInsert: { createdAt: new Date() }
+        },
+        { upsert: true }
+      );
+    } catch (error) {
+      console.error('Error saving data to MongoDB:', error);
+      saveQueue.set(key, mergedData);
+    }
+  }
+  saveFlushInProgress = false;
+  if (saveQueue.size > 0 && !saveFlushTimer) {
+    saveFlushTimer = setTimeout(flushSaveQueue, SAVE_FLUSH_MS);
   }
 }
 
@@ -384,26 +429,12 @@ await next();
 async function saveUserData2(userId, userData) {
   try {
     const key = String(userId);
-    const users = await getCollection('users');
     const cached = getCachedUserData(key);
-    const existing = cached ? null : await users.findOne({ _id: key });
+    const existing = cached ? null : await (await getCollection('users')).findOne({ _id: key });
     const latestData = cached || (existing && existing.data ? existing.data : {});
     const mergedData = mergeUserDataForSave(latestData, userData);
-    await users.updateOne(
-      { _id: key },
-      {
-        $set: {
-          user_id: key,
-          userId: key,
-          data: mergedData,
-          reset: false,
-          updatedAt: new Date()
-        },
-        $setOnInsert: { createdAt: new Date() }
-      },
-      { upsert: true }
-    );
     setCachedUserData(key, mergedData);
+    queueUserSave(key, mergedData);
   } catch (error) {
     console.error('Error saving data to MongoDB:', error);
   }

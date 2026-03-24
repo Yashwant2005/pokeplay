@@ -45,28 +45,24 @@ function registerDaycareCommand(bot, deps) {
 
     const info = getDaycareSlots(data, trainerlevel);
     let msg = '*Pokemon Daycare*\n';
-    msg += '\nTrain a pokemon all the way to *Lv. 100* while setting its final *EV build* and *moveset*.';
+    msg += '\nTrain up to *3 pokemon at once* to *Lv. 100* while setting their final *EV build* and *moveset*.';
     msg += `\n\n*Trainer Level:* ${info.trainerLevel}`;
-    msg += `\n*Unlocked Slots:* ${info.slots}`;
+    msg += `\n*Daycare Slots:* ${info.slots}`;
     msg += `\n*Daycare Candy:* ${data.inv.daycare_candy}`;
-    msg += '\n\n*Slot Unlocks:*';
-    msg += '\nLevel *5* -> 1 slot';
-    msg += '\nLevel *10* -> 2 slots';
-    msg += '\nLevel *15* -> 3 slots';
-    msg += '\nLevel *20* -> 4 slots';
-    msg += '\nLevel *25* -> 5 slots';
-    msg += '\nLevel *30* -> 6 slots';
-    msg += `\n\n*Daycare Candy Effect:* 1 candy reduces *${Math.floor(DAYCARE_CANDY_REDUCTION_MINUTES / 60)} hours* from one active daycare job`;
+    msg += '\n\n*Training Cost:*';
+    msg += '\n• Every *500 EXP required* costs *1 PC*';
+    msg += '\n• Every *1 EV* costs *5 PC*';
+    msg += '\n\n*Training Time:*';
+    msg += '\n• Every *100 EXP* takes *1 second*';
+    msg += '\n• Every *1 EV* takes *10 seconds*';
+    msg += `\n\n*Daycare Candy Effect:* 1 candy reduces *${DAYCARE_CANDY_REDUCTION_MINUTES} minutes* from one active daycare job`;
 
     if (starter.granted) {
       msg += `\n\n*First Visit Reward:* +${DAYCARE_CANDY_STARTER} Daycare Candy`;
     }
 
-    if (info.slots < 1) {
-      msg += '\n\nReach *Trainer Level 5* to unlock daycare.';
-    } else {
-      msg += '\n\nOpen the menu below to deposit, review, and claim your daycare pokemon.';
-    }
+    msg += '\n\nTraining order: *EVs finish first, then EXP training starts.*';
+    msg += '\n\nOpen the menu below to deposit, review, and claim your daycare pokemon.';
 
     await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, msg, {
       reply_to_message_id: ctx.message.message_id,

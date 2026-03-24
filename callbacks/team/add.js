@@ -4,9 +4,6 @@ function register_028_add(bot, deps) {
 const userData = await getUserData(ctx.from.id);
   const team = ctx.callbackQuery.data.split('_')[1];
 let pokes = await sort(ctx.from.id,userData.pokes);
-if(userData.inv.sort){
-pokes = await sort(ctx.from.id,userData.pokes,userData.inv.sort)
-}
   const buttonsPerRow = 5;
   let page = parseInt(ctx.callbackQuery.data.split('_')[2]) || 1
   const itemsPerPage = 20;
@@ -23,10 +20,10 @@ for (let i = startIndex; i < endIndex; i++) {
   const sortedIndex = userData.pokes.indexOf(pokes[i]);
   row.push({
     text: `${sortedIndex + 1}`,
-    callback_data: `select_${userData.pokes[i].pass}_${team}`,
+    callback_data: `select_${pokes[i].pass}_${team}`,
   });
 
-  if ((sortedIndex + 1) % buttonsPerRow === 0 || sortedIndex === endIndex - 1) {
+  if (row.length === buttonsPerRow || i === endIndex - 1) {
     inlineKeyboard.push(row);
     row = [];
   }

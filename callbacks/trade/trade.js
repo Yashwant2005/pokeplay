@@ -18,9 +18,6 @@ return
   };
   const userData = await getUserData(id2)
   let pokes = await sort(id2,userData.pokes);
-  if(userData.inv.sort){
-  pokes = await sort(userData.pokes,userData.inv.sort)
-  }
   pokes = pokes.filter((p) => !hasHeldItem(p));
   if(pokes.length < 1){
     await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You do not have any tradable pokemon. Remove held items first.',{parse_mode:'html'});

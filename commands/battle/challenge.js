@@ -18,11 +18,12 @@ function registerChallengeCommand(bot, deps) {
       return;
     }
     const mdata = await loadMessageData();
-    if (mdata.battle.includes(ctx.from.id)) {
+    const activeBattles = Array.isArray(mdata.battle) ? mdata.battle : [];
+    if (activeBattles.includes(ctx.from.id)) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: "markdown" }, "You Are In A *Battle*", { reply_to_message_id: ctx.message.message_id });
       return;
     }
-    if (mdata.battle.includes(reply.from.id)) {
+    if (activeBattles.includes(reply.from.id)) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: "markdown" }, "Opponent Is In A *Battle*", { reply_to_message_id: ctx.message.message_id });
       return;
     }
@@ -81,6 +82,10 @@ function registerChallengeCommand(bot, deps) {
     settings3.users[reply.from.id] = false;
     await saveBattleData(bword, settings3);
     const settings = settings3.set;
+    settings.allow_regions = Array.isArray(settings.allow_regions) ? settings.allow_regions : [];
+    settings.ban_regions = Array.isArray(settings.ban_regions) ? settings.ban_regions : [];
+    settings.allow_types = Array.isArray(settings.allow_types) ? settings.allow_types : [];
+    settings.ban_types = Array.isArray(settings.ban_types) ? settings.ban_types : [];
 
     if (settings.max_poke < 6) {
       f = true;

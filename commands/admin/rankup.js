@@ -1,7 +1,7 @@
-const { getTrainerLevel, claimTrainerRankRewards } = require('../../utils/trainer_rank_rewards');
+const { MAX_TRAINER_LEVEL, getTrainerLevel, claimTrainerRankRewards, formatTrainerProgress } = require('../../utils/trainer_rank_rewards');
 
 function getCurrentLevel(data) {
-  return getTrainerLevel(data, trainerlevel, 100);
+  return getTrainerLevel(data, trainerlevel, MAX_TRAINER_LEVEL);
 }
 
 function registerRankupCommand(bot, deps) {
@@ -31,12 +31,12 @@ function registerRankupCommand(bot, deps) {
     if (!data.extra || typeof data.extra !== 'object') data.extra = {};
 
     const currentLevel = getCurrentLevel(data);
-    if (currentLevel >= 100) {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Trainer is already at max level (100).*');
+    if (currentLevel >= MAX_TRAINER_LEVEL) {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Trainer is already at max level (' + MAX_TRAINER_LEVEL + ').*');
       return;
     }
 
-    const targetLevel = Math.min(100, currentLevel + amount);
+    const targetLevel = Math.min(MAX_TRAINER_LEVEL, currentLevel + amount);
     const reqExp = Number(trainerlevel[targetLevel]);
 
     if (Number.isFinite(reqExp)) {
@@ -71,6 +71,7 @@ function registerRankupCommand(bot, deps) {
     } else {
       msg += '\n\nNo new rank rewards were claimable.';
     }
+    msg += '\n\n' + formatTrainerProgress(data, trainerlevel, MAX_TRAINER_LEVEL);
 
     await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, msg);
   });

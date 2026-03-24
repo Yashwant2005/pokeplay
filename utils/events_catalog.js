@@ -1,12 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
-const {
-  loadIvBoostConfig,
-  getIvBoostStatus,
-  formatIvBoostWindow
-} = require('./iv_boost_campaign');
-
 const SAFARI_CONFIG_PATH = path.join(process.cwd(), 'data', 'safari_event.json');
 
 function getDefaultSafariConfig() {
@@ -73,24 +67,9 @@ function formatWindow(cfg) {
 
 function getEventsCatalog() {
   const safariConfig = loadJsonConfig(SAFARI_CONFIG_PATH, getDefaultSafariConfig());
-  const ivBoostConfig = loadIvBoostConfig();
-
   const safariStatus = getAvailability(safariConfig);
-  const ivBoostStatus = getIvBoostStatus(ivBoostConfig);
 
   return [
-    {
-      id: 'ivboost',
-      title: 'IVs Boost Campaign Event',
-      shortLabel: 'IV Boost',
-      status: ivBoostStatus,
-      duration: formatIvBoostWindow(ivBoostConfig),
-      details: [
-        'Wild hunt IVs are boosted during the campaign window.',
-        'Players can lock only one IV stat at a time for the next ' + ivBoostConfig.lockHunts + ' hunts.',
-        'Use /ivlock to set or clear your current IV lock.'
-      ]
-    },
     {
       id: 'safari',
       title: 'Safari Commemorative Event',

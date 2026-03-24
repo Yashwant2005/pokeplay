@@ -36,16 +36,14 @@ function registerDaycareCallbacks(bot, deps) {
     msg += `\n*Trainer Level:* ${info.trainerLevel}`;
     msg += `\n*Slots:* ${jobs.length}/${info.slots}`;
     msg += `\n*Daycare Candy:* ${Number(data.inv && data.inv.daycare_candy) || 0}`;
-    msg += '\n*Unlocks:* Lv. 5 -> 1, Lv. 10 -> 2, Lv. 15 -> 3, Lv. 20 -> 4, Lv. 25 -> 5, Lv. 30 -> 6';
-    msg += `\n*Candy Effect:* 1 candy = ${Math.floor(DAYCARE_CANDY_REDUCTION_MINUTES / 60)}h less`;
+    msg += '\n*Capacity:* Up to 3 daycare pokemon at the same time';
+    msg += `\n*Candy Effect:* 1 candy = ${DAYCARE_CANDY_REDUCTION_MINUTES}m less`;
+    msg += '\n*Cost:* 500 EXP required = 1 PC, 1 EV = 5 PC';
+    msg += '\n*Speed:* 100 EXP = 1s, 1 EV = 10s';
+    msg += '\n*Order:* EV training finishes before EXP training starts';
 
     if (daycare.draft && daycare.draft.step) {
       msg += '\n\n*Pending Setup:* You still have a daycare setup in progress.';
-    }
-
-    if (info.slots < 1) {
-      msg += '\n\nReach *Trainer Level 5* to unlock daycare.';
-      return msg;
     }
 
     if (!jobs.length) {
@@ -61,7 +59,7 @@ function registerDaycareCallbacks(bot, deps) {
       msg += `\nEVs: ${formatEvSummary(job.evs)}`;
       msg += `\nMoves: ${formatMoveSummary(job.moves, dmoves, c)}`;
       msg += `\nCost: ${job.cost} PokeCoins`;
-      msg += `\nTime: ${formatDuration(job.durationMinutes)}`;
+      msg += `\nTime: ${formatDuration(job.durationSeconds || (job.durationMinutes * 60), 'seconds')}`;
       msg += ready ? '\nStatus: *Ready to claim*' : `\nStatus: *${formatRemaining(job.readyAt)} remaining*`;
     });
 
@@ -74,7 +72,7 @@ function registerDaycareCallbacks(bot, deps) {
     const jobs = daycare.jobs || [];
     const rows = [];
 
-    if (info.slots > 0 && jobs.length < info.slots) {
+    if (jobs.length < info.slots) {
       rows.push([{ text: 'Deposit Pokemon', callback_data: 'daycare_open_' + userId + '_1' }]);
     }
 
@@ -134,14 +132,6 @@ function registerDaycareCallbacks(bot, deps) {
     const data = await getUserData(userId);
     const info = getDaycareSlots(data, trainerlevel);
     const daycare = ensureDaycareState(data);
-
-    if (info.slots < 1) {
-      await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, 'Reach *Trainer Level 5* to unlock daycare.', {
-        parse_mode: 'markdown',
-        reply_markup: { inline_keyboard: [[{ text: 'Back', callback_data: 'daycare_menu_' + userId }]] }
-      });
-      return;
-    }
 
     if ((daycare.jobs || []).length >= info.slots) {
       await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, 'All daycare slots are already full.', {
@@ -376,6 +366,7 @@ function registerDaycareCallbacks(bot, deps) {
       moves: draft.moves,
       cost: plan.cost,
       durationMinutes: plan.durationMinutes,
+      durationSeconds: plan.durationSeconds,
       growthRate: plan.growthRate,
       createdAt: Date.now(),
       readyAt: plan.readyAt
@@ -391,7 +382,7 @@ function registerDaycareCallbacks(bot, deps) {
     msg += `\n*EVs:* ${formatEvSummary(draft.evs)}`;
     msg += `\n*Moves:* ${formatMoveSummary(draft.moves, dmoves, c)}`;
     msg += `\n*Cost:* ${plan.cost} PokeCoins`;
-    msg += `\n*Training Time:* ${formatDuration(plan.durationMinutes)}`;
+    msg += `\n*Training Time:* ${formatDuration(plan.durationSeconds, 'seconds')}`;
     msg += `\n*Ready In:* ${formatRemaining(plan.readyAt)}`;
 
     await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
@@ -613,6 +604,7 @@ function registerDaycareCallbacks(bot, deps) {
         moves: draft.moves,
         cost: plan.cost,
         durationMinutes: plan.durationMinutes,
+        durationSeconds: plan.durationSeconds,
         growthRate: plan.growthRate,
         createdAt: Date.now(),
         readyAt: plan.readyAt
@@ -628,7 +620,7 @@ function registerDaycareCallbacks(bot, deps) {
       msg += `\n*EVs:* ${formatEvSummary(job.evs)}`;
       msg += `\n*Moves:* ${formatMoveSummary(job.moves, dmoves, c)}`;
       msg += `\n*Cost:* ${plan.cost} PokeCoins`;
-      msg += `\n*Training Time:* ${formatDuration(plan.durationMinutes)}`;
+      msg += `\n*Training Time:* ${formatDuration(plan.durationSeconds, 'seconds')}`;
       msg += `\n*Ready In:* ${formatRemaining(plan.readyAt)}`;
 
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, msg, {

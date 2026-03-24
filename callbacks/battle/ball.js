@@ -248,11 +248,6 @@ const caughtHeldItem = getBattleHeldItemName({
   heldItem: battleData.oheld_item
 })
 if(!data.extra || typeof data.extra !== 'object') data.extra = {}
-data.extra.ivEventLastCaught = {
-  name: battleData.name,
-  ivs: { ...caughtIvs },
-  atUtc: new Date().toISOString()
-}
 data.pokes.push({
 name:battleData.name,
 nature:battleData.nat,

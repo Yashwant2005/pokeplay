@@ -1,31 +1,33 @@
-function registerAssignAbilityCommand(bot, deps) {
+function registerAssignMoveCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
 
-  const { titleCaseAbility } = require('../../utils/pokemon_ability');
-  const { repairPokemonAbilityEntry } = require('../../utils/pokemon_legality');
+  const { sanitizePokemonMoves } = require('../../utils/pokemon_legality');
 
-  async function repairList(list, localDeps) {
+  function findTargetPokemon(data, key) {
+    return data.pokes.find((p) => String(p.pass || '').toLowerCase() === key)
+      || data.pokes.find((p) => p.nickname && String(p.nickname).toLowerCase() === key)
+      || data.pokes.find((p) => String(p.name || '').toLowerCase() === key);
+  }
+
+  function summarizeList(list, localDeps) {
     let checked = 0;
     let changed = 0;
-    let assignedMissing = 0;
-    let repairedInvalid = 0;
+    let removedCount = 0;
+    let addedCount = 0;
 
     for (const pokemon of list) {
       checked += 1;
-      const result = await repairPokemonAbilityEntry(pokemon, localDeps);
+      const result = sanitizePokemonMoves(pokemon, localDeps);
       if (!result.changed) continue;
       changed += 1;
-      if (result.reason === 'assigned-missing' || result.reason === 'assigned-fallback') {
-        assignedMissing += 1;
-      } else if (result.reason === 'repaired-invalid') {
-        repairedInvalid += 1;
-      }
+      removedCount += result.removedCount;
+      addedCount += result.addedCount;
     }
 
-    return { checked, changed, assignedMissing, repairedInvalid };
+    return { checked, changed, removedCount, addedCount };
   }
 
-  bot.command('assignability', async (ctx) => {
+  bot.command('assignmove', async (ctx) => {
     if (!admins.includes(ctx.from.id)) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'This is an *admin-only* command.', { reply_to_message_id: ctx.message.message_id });
       return;
@@ -39,9 +41,10 @@ function registerAssignAbilityCommand(bot, deps) {
 
     const raw = ctx.message.text.split(' ').slice(1).join(' ').trim();
     const mode = (raw || 'allusers').toLowerCase().replace(/ /g, '-');
+    const repairDeps = { pokemoves, dmoves, chains, forms, growth_rates, chart };
 
     if (['all', 'allpokes', 'allpokemon'].includes(mode)) {
-      const summary = await repairList(data.pokes, { pokes, fetch });
+      const summary = summarizeList(data.pokes, repairDeps);
       if (summary.changed > 0) {
         await saveUserData2(ctx.from.id, data);
       }
@@ -50,9 +53,9 @@ function registerAssignAbilityCommand(bot, deps) {
         ctx.chat.id,
         { parse_mode: 'markdown' },
         'Checked *' + summary.checked + '* pokemon(s).\n'
-          + 'Abilities fixed: *' + summary.changed + '*\n'
-          + 'Missing abilities assigned: *' + summary.assignedMissing + '*\n'
-          + 'Invalid abilities repaired: *' + summary.repairedInvalid + '*',
+          + 'Movesets fixed: *' + summary.changed + '*\n'
+          + 'Illegal moves removed: *' + summary.removedCount + '*\n'
+          + 'Legal moves assigned: *' + summary.addedCount + '*',
         { reply_to_message_id: ctx.message.message_id }
       );
       return;
@@ -64,17 +67,17 @@ function registerAssignAbilityCommand(bot, deps) {
       let usersChanged = 0;
       let totalChecked = 0;
       let totalChanged = 0;
-      let totalAssignedMissing = 0;
-      let totalRepairedInvalid = 0;
+      let totalRemoved = 0;
+      let totalAdded = 0;
 
       for (const row of allUsers) {
         if (!row || !row.data || !Array.isArray(row.data.pokes) || row.data.pokes.length < 1) continue;
         usersTouched += 1;
-        const summary = await repairList(row.data.pokes, { pokes, fetch });
+        const summary = summarizeList(row.data.pokes, repairDeps);
         totalChecked += summary.checked;
         totalChanged += summary.changed;
-        totalAssignedMissing += summary.assignedMissing;
-        totalRepairedInvalid += summary.repairedInvalid;
+        totalRemoved += summary.removedCount;
+        totalAdded += summary.addedCount;
         if (summary.changed > 0) {
           usersChanged += 1;
           await saveUserData2(row.user_id, row.data);
@@ -85,28 +88,26 @@ function registerAssignAbilityCommand(bot, deps) {
         ctx,
         ctx.chat.id,
         { parse_mode: 'markdown' },
-        '*Global ability repair completed.*\n'
+        '*Global move repair completed.*\n'
           + 'Users scanned: *' + usersTouched + '*\n'
           + 'Users updated: *' + usersChanged + '*\n'
           + 'Pokemon checked: *' + totalChecked + '*\n'
-          + 'Abilities fixed: *' + totalChanged + '*\n'
-          + 'Missing abilities assigned: *' + totalAssignedMissing + '*\n'
-          + 'Invalid abilities repaired: *' + totalRepairedInvalid + '*',
+          + 'Movesets fixed: *' + totalChanged + '*\n'
+          + 'Illegal moves removed: *' + totalRemoved + '*\n'
+          + 'Legal moves assigned: *' + totalAdded + '*',
         { reply_to_message_id: ctx.message.message_id }
       );
       return;
     }
 
-    const target = data.pokes.find((p) => String(p.pass || '').toLowerCase() === mode)
-      || data.pokes.find((p) => p.nickname && String(p.nickname).toLowerCase() === mode)
-      || data.pokes.find((p) => String(p.name || '').toLowerCase() === mode);
-
+    const target = findTargetPokemon(data, mode);
     if (!target) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'No *matching pokemon* found.', { reply_to_message_id: ctx.message.message_id });
       return;
     }
 
-    const result = await repairPokemonAbilityEntry(target, { pokes, fetch });
+    const before = Array.isArray(target.moves) ? target.moves.slice() : [];
+    const result = sanitizePokemonMoves(target, repairDeps);
     if (result.changed) {
       await saveUserData2(ctx.from.id, data);
       await sendMessage(
@@ -114,23 +115,23 @@ function registerAssignAbilityCommand(bot, deps) {
         ctx.chat.id,
         { parse_mode: 'markdown' },
         '*Pokemon:* ' + c(target.name) + '\n'
-          + '*Old ability:* ' + titleCaseAbility(result.previousAbility) + '\n'
-          + '*New ability:* ' + titleCaseAbility(result.nextAbility) + '\n'
-          + '*Reason:* ' + c(result.reason),
+          + '*Old move count:* ' + before.length + '\n'
+          + '*New move count:* ' + result.finalMoves.length + '\n'
+          + '*Illegal moves removed:* ' + result.removedCount + '\n'
+          + '*Legal moves assigned:* ' + result.addedCount,
         { reply_to_message_id: ctx.message.message_id }
       );
       return;
     }
 
-    const currentAbility = target.ability ? titleCaseAbility(target.ability) : 'None';
     await sendMessage(
       ctx,
       ctx.chat.id,
       { parse_mode: 'markdown' },
-      '*'+c(target.name)+'* already has a valid ability: *'+currentAbility+'*',
+      '*'+c(target.name)+'* already has a legal moveset.',
       { reply_to_message_id: ctx.message.message_id }
     );
   });
 }
 
-module.exports = registerAssignAbilityCommand;
+module.exports = registerAssignMoveCommand;

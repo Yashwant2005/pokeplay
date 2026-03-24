@@ -1,0 +1,1177 @@
+{
+  "pokemon:pikachu": {
+    "savedAt": 1774367904966,
+    "value": {
+      "species": "pikachu",
+      "regions": [
+        {
+          "id": "kanto",
+          "label": "Kanto",
+          "locations": [
+            {
+              "name": "Celadon City",
+              "url": "https://pokemondb.net/location/kanto-celadon-city",
+              "games": [
+                "Crystal"
+              ]
+            },
+            {
+              "name": "Pallet Town",
+              "url": "https://pokemondb.net/location/kanto-pallet-town",
+              "games": [
+                "Yellow",
+                "Let's Go Pikachu"
+              ]
+            },
+            {
+              "name": "Power Plant",
+              "url": "https://pokemondb.net/location/kanto-power-plant",
+              "games": [
+                "Red",
+                "Blue",
+                "FireRed",
+                "LeafGreen"
+              ]
+            },
+            {
+              "name": "Route 2",
+              "url": "https://pokemondb.net/location/kanto-route-2",
+              "games": [
+                "Gold",
+                "Silver",
+                "Crystal"
+              ]
+            },
+            {
+              "name": "Saffron City",
+              "url": "https://pokemondb.net/location/kanto-saffron-city",
+              "games": [
+                "HeartGold",
+                "SoulSilver"
+              ]
+            },
+            {
+              "name": "Viridian Forest",
+              "url": "https://pokemondb.net/location/kanto-viridian-forest",
+              "games": [
+                "Red",
+                "Blue",
+                "FireRed",
+                "LeafGreen",
+                "HeartGold",
+                "SoulSilver",
+                "Let's Go Pikachu",
+                "Let's Go Eevee"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hoenn",
+          "label": "Hoenn",
+          "locations": [
+            {
+              "name": "Safari Zone",
+              "url": "https://pokemondb.net/location/hoenn-safari-zone",
+              "games": [
+                "Ruby",
+                "Sapphire",
+                "Emerald",
+                "Omega Ruby",
+                "Alpha Sapphire"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sinnoh",
+          "label": "Sinnoh",
+          "locations": [
+            {
+              "name": "Trophy Garden",
+              "url": "https://pokemondb.net/location/sinnoh-trophy-garden",
+              "games": [
+                "Diamond",
+                "Pearl",
+                "Platinum",
+                "Brilliant Diamond",
+                "Shining Pearl"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "kalos",
+          "label": "Kalos",
+          "locations": [
+            {
+              "name": "Route 3",
+              "url": "https://pokemondb.net/location/kalos-route-3",
+              "games": [
+                "X",
+                "Y"
+              ]
+            },
+            {
+              "name": "Santalune Forest",
+              "url": "https://pokemondb.net/location/kalos-santalune-forest",
+              "games": [
+                "X",
+                "Y"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "alola",
+          "label": "Alola",
+          "locations": [
+            {
+              "name": "Hau'oli City",
+              "url": "https://pokemondb.net/location/alola-hauoli-city",
+              "games": [
+                "Sun",
+                "Moon"
+              ]
+            },
+            {
+              "name": "Heahea City",
+              "url": "https://pokemondb.net/location/alola-heahea-city",
+              "games": [
+                "Ultra Sun",
+                "Ultra Moon"
+              ]
+            },
+            {
+              "name": "Route 1",
+              "url": "https://pokemondb.net/location/alola-route-1",
+              "games": [
+                "Sun",
+                "Moon",
+                "Ultra Sun",
+                "Ultra Moon"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "hisui",
+          "label": "Hisui",
+          "locations": [
+            {
+              "name": "Golden Lowlands",
+              "url": "https://pokemondb.net/location/hisui-golden-lowlands",
+              "games": [
+                "Legends: Arceus"
+              ]
+            },
+            {
+              "name": "Nature’s Pantry",
+              "url": "https://pokemondb.net/location/hisui-natures-pantry",
+              "games": [
+                "Legends: Arceus"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "galar",
+          "label": "Galar",
+          "locations": [
+            {
+              "name": "Forest of Focus",
+              "url": "https://pokemondb.net/location/galar-forest-of-focus",
+              "games": [
+                "Sword",
+                "Shield"
+              ]
+            },
+            {
+              "name": "Route 4",
+              "url": "https://pokemondb.net/location/galar-route-4",
+              "games": [
+                "Sword",
+                "Shield"
+              ]
+            },
+            {
+              "name": "Stony Wilderness",
+              "url": "https://pokemondb.net/location/galar-stony-wilderness",
+              "games": [
+                "Sword",
+                "Shield"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "paldea",
+          "label": "Paldea",
+          "locations": [
+            {
+              "name": "East Province (Area One)",
+              "url": "https://pokemondb.net/location/paldea-east-province-area-one",
+              "games": [
+                "Scarlet",
+                "Violet"
+              ]
+            },
+            {
+              "name": "South Province (Area Four)",
+              "url": "https://pokemondb.net/location/paldea-south-province-area-four",
+              "games": [
+                "Scarlet",
+                "Violet"
+              ]
+            },
+            {
+              "name": "South Province (Area Two)",
+              "url": "https://pokemondb.net/location/paldea-south-province-area-two",
+              "games": [
+                "Scarlet",
+                "Violet"
+              ]
+            },
+            {
+              "name": "West Province (Area Three)",
+              "url": "https://pokemondb.net/location/paldea-west-province-area-three",
+              "games": [
+                "Scarlet",
+                "Violet"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "location:https://pokemondb.net/location/kanto-viridian-forest": {
+    "savedAt": 1774367904999,
+    "value": {
+      "title": "Viridian Forest, Kanto",
+      "encounters": [
+        {
+          "pokemon": "Caterpie",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "25%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Weedle",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "25%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Caterpie",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "24%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Weedle",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "24%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pidgey",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "15%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Metapod",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "10%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Kakuna",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "10%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Oddish",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "10%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Bellsprout",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "10%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pikachu",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "5%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Butterfree",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "1%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Beedrill",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "1%",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Bulbasaur",
+          "games": [
+            "LGP",
+            "LGE"
+          ],
+          "rarity": "RARE",
+          "levels": "7",
+          "details": "",
+          "generation": "Generation 7",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Caterpie",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Metapod",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3-5",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Weedle",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Kakuna",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3-5",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Hoothoot",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3-5",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pidgeotto",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "7",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pikachu",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "4-7",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pikachu",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "4",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Butterfree",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "7",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Beedrill",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "7",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pidgey",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3-7",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pidgey",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Noctowl",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "7",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Numel",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "5",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Spoink",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Budew",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Carnivine",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "5",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Kricketot",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3-5",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Hoothoot",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "2-19",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Headbutt"
+        },
+        {
+          "pokemon": "Noctowl",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "5-7",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Headbutt"
+        },
+        {
+          "pokemon": "Ledyba",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3-7",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Headbutt"
+        },
+        {
+          "pokemon": "Ledian",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "5-7",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Headbutt"
+        },
+        {
+          "pokemon": "Spinarak",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3-7",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Headbutt"
+        },
+        {
+          "pokemon": "Ariados",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "5-7",
+          "details": "",
+          "generation": "Generation 4",
+          "method": "Headbutt"
+        },
+        {
+          "pokemon": "Seedot",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3-7",
+          "details": "Post-National Dex",
+          "generation": "Generation 4",
+          "method": "Headbutt"
+        },
+        {
+          "pokemon": "Shroomish",
+          "games": [
+            "HG",
+            "SS"
+          ],
+          "rarity": "",
+          "levels": "3-7",
+          "details": "Post-National Dex",
+          "generation": "Generation 4",
+          "method": "Headbutt"
+        },
+        {
+          "pokemon": "Caterpie",
+          "games": [
+            "FR",
+            "LG"
+          ],
+          "rarity": "",
+          "levels": "3-5",
+          "details": "",
+          "generation": "Generation 3",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Weedle",
+          "games": [
+            "FR",
+            "LG"
+          ],
+          "rarity": "",
+          "levels": "3-5",
+          "details": "",
+          "generation": "Generation 3",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Metapod",
+          "games": [
+            "FR",
+            "LG"
+          ],
+          "rarity": "",
+          "levels": "5",
+          "details": "",
+          "generation": "Generation 3",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Kakuna",
+          "games": [
+            "FR",
+            "LG"
+          ],
+          "rarity": "",
+          "levels": "5",
+          "details": "",
+          "generation": "Generation 3",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pikachu",
+          "games": [
+            "FR",
+            "LG"
+          ],
+          "rarity": "",
+          "levels": "3-5",
+          "details": "",
+          "generation": "Generation 3",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Metapod",
+          "games": [
+            "FR",
+            "LG"
+          ],
+          "rarity": "",
+          "levels": "4-6",
+          "details": "",
+          "generation": "Generation 3",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Kakuna",
+          "games": [
+            "FR",
+            "LG"
+          ],
+          "rarity": "",
+          "levels": "4-6",
+          "details": "",
+          "generation": "Generation 3",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Caterpie",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "3-5",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Metapod",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "4-6",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Weedle",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "3-5",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Kakuna",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "4-6",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Caterpie",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "3-6",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Caterpie",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "3",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Metapod",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "4",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Weedle",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "3",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Kakuna",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "4",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pikachu",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "3-5",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pidgeotto",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "9",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Metapod",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "4-6",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pidgey",
+          "games": [
+            "R",
+            "B",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "4-8",
+          "details": "",
+          "generation": "Generation 1",
+          "method": "Walking"
+        }
+      ]
+    }
+  },
+  "location:https://pokemondb.net/location/kalos-route-3": {
+    "savedAt": 1774368046954,
+    "value": {
+      "title": "Route 3 (Ouvert Way), Kalos",
+      "encounters": [
+        {
+          "pokemon": "Bidoof",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "3-4",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Bunnelby",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "3-4",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Fletchling",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "3-5",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pidgey",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "4",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Pikachu",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "4-5",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Dunsparce",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "5",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Azurill",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "5",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Burmy",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "5",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Walking"
+        },
+        {
+          "pokemon": "Marill",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "25-27",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Surfing"
+        },
+        {
+          "pokemon": "Masquerain",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "25-27",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Surfing"
+        },
+        {
+          "pokemon": "Gyarados",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "35",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Super Rod"
+        },
+        {
+          "pokemon": "Crawdaunt",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "35",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Super Rod"
+        },
+        {
+          "pokemon": "Seaking",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "35",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Super Rod"
+        },
+        {
+          "pokemon": "Goldeen",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "25",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Good Rod"
+        },
+        {
+          "pokemon": "Corphish",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "25",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Good Rod"
+        },
+        {
+          "pokemon": "Magikarp",
+          "games": [
+            "X",
+            "Y"
+          ],
+          "rarity": "",
+          "levels": "15",
+          "details": "",
+          "generation": "Generation 6",
+          "method": "Old Rod"
+        }
+      ]
+    }
+  }
+}

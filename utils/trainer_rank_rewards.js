@@ -1,4 +1,4 @@
-const MAX_TRAINER_LEVEL = 100;
+const MAX_TRAINER_LEVEL = 200;
 
 const CHANCE_REWARDS = [
   { key: 'bundle_small', chance: 60.0 },
@@ -25,7 +25,6 @@ const POKEBALL_REWARDS = [
 ];
 
 const BATTLE_BOX_POKEBALL_POOL = [
-  'safari',
   'premier',
   'net',
   'nest',
@@ -58,7 +57,46 @@ function ensureNumber(v, fallback) {
   return Number.isFinite(v) ? v : fallback;
 }
 
+function buildProgressBar(current, total, size = 10) {
+  const safeTotal = Math.max(0, Number(total) || 0);
+  const safeCurrent = Math.max(0, Number(current) || 0);
+  if (safeTotal <= 0) return '░'.repeat(size);
+  const ratio = Math.max(0, Math.min(1, safeCurrent / safeTotal));
+  const filled = Math.max(0, Math.min(size, Math.round(ratio * size)));
+  return '█'.repeat(filled) + '░'.repeat(size - filled);
+}
+
+function extendTrainerLevelTable(trainerlevel, maxLevel = MAX_TRAINER_LEVEL) {
+  if (!trainerlevel || typeof trainerlevel !== 'object') return trainerlevel;
+
+  const levels = Object.keys(trainerlevel)
+    .map((k) => Number(k))
+    .filter((n) => Number.isFinite(n))
+    .sort((a, b) => a - b);
+
+  if (!levels.length) {
+    trainerlevel[1] = 0;
+  }
+
+  let highest = levels.length ? levels[levels.length - 1] : 1;
+  if (highest >= maxLevel) return trainerlevel;
+
+  let previousLevel = Math.max(1, highest - 1);
+  let previousExp = Number(trainerlevel[previousLevel]) || 0;
+  let currentExp = Number(trainerlevel[highest]) || 0;
+  let delta = Math.max(5000, currentExp - previousExp);
+
+  for (let level = highest + 1; level <= maxLevel; level += 1) {
+    delta = Math.max(5000, Math.round((delta * 1.035) + 350));
+    currentExp += delta;
+    trainerlevel[level] = currentExp;
+  }
+
+  return trainerlevel;
+}
+
 function getTrainerLevel(data, trainerlevel, maxLevel = MAX_TRAINER_LEVEL) {
+  extendTrainerLevelTable(trainerlevel, maxLevel);
   const exp = ensureNumber(data?.inv?.exp, 0);
   const levels = Object.keys(trainerlevel || {})
     .map((k) => Number(k))
@@ -72,6 +110,59 @@ function getTrainerLevel(data, trainerlevel, maxLevel = MAX_TRAINER_LEVEL) {
   const overrideLevel = Number(data?.extra?.rankLevel) || 0;
   if (overrideLevel > current) current = overrideLevel;
   return Math.max(1, Math.min(maxLevel, current));
+}
+
+function getTrainerProgress(data, trainerlevel, maxLevel = MAX_TRAINER_LEVEL) {
+  extendTrainerLevelTable(trainerlevel, maxLevel);
+  const currentLevel = getTrainerLevel(data, trainerlevel, maxLevel);
+  const totalExp = ensureNumber(data?.inv?.exp, 0);
+  const currentLevelExp = ensureNumber(trainerlevel?.[currentLevel], 0);
+
+  if (currentLevel >= maxLevel) {
+    return {
+      currentLevel,
+      maxLevel,
+      totalExp,
+      currentLevelExp,
+      nextLevel: null,
+      nextLevelExp: currentLevelExp,
+      progressExp: 0,
+      neededExp: 0,
+      progressBar: buildProgressBar(1, 1)
+    };
+  }
+
+  const nextLevel = currentLevel + 1;
+  const nextLevelExp = ensureNumber(trainerlevel?.[nextLevel], currentLevelExp);
+  const span = Math.max(1, nextLevelExp - currentLevelExp);
+  const progressExp = Math.max(0, totalExp - currentLevelExp);
+  const neededExp = Math.max(0, nextLevelExp - totalExp);
+
+  return {
+    currentLevel,
+    maxLevel,
+    totalExp,
+    currentLevelExp,
+    nextLevel,
+    nextLevelExp,
+    progressExp,
+    neededExp,
+    progressBar: buildProgressBar(progressExp, span)
+  };
+}
+
+function formatTrainerProgress(data, trainerlevel, maxLevel = MAX_TRAINER_LEVEL) {
+  const progress = getTrainerProgress(data, trainerlevel, maxLevel);
+  let msg = `*Trainer Level:* ${progress.currentLevel}/${progress.maxLevel}`;
+  msg += `\n*Trainer EXP:* ${progress.totalExp}`;
+  if (!progress.nextLevel) {
+    msg += '\n*Progress:* `██████████` MAX';
+    return msg;
+  }
+  const span = Math.max(1, progress.nextLevelExp - progress.currentLevelExp);
+  msg += `\n*Progress:* \`${progress.progressBar}\` ${progress.progressExp}/${span}`;
+  msg += `\n*Need For Lv. ${progress.nextLevel}:* ${progress.neededExp} EXP`;
+  return msg;
 }
 
 function ensureRankRewardState(data) {
@@ -212,20 +303,24 @@ function applyBattleBox(data, summary, deps) {
   }
 
   if (boxRoll === 'tm4') {
+    if (!Array.isArray(summary.tmsReceived)) summary.tmsReceived = [];
     for (let i = 0; i < 4; i++) {
       const tmNo = randomTmNumber(tms);
       if (!tmNo) continue;
       addTm(data, tms, tmNo);
       summary.tmsAdded += 1;
+      summary.tmsReceived.push(tmNo);
     }
     return;
   }
 
   if (boxRoll === 'stone1') {
+    if (!Array.isArray(summary.stonesReceived)) summary.stonesReceived = [];
     const st = randomStone(stones); // all stones (old + new)
     if (st) {
       addStone(data, st);
       summary.stonesAdded += 1;
+      summary.stonesReceived.push(st);
     }
     return;
   }
@@ -236,6 +331,8 @@ function applyBattleBox(data, summary, deps) {
     if (mintName) {
       if (!Number.isFinite(summary.mintBreakdown[mintName])) summary.mintBreakdown[mintName] = 0;
       summary.mintBreakdown[mintName] += 1;
+      if (!Array.isArray(summary.mintsReceived)) summary.mintsReceived = [];
+      summary.mintsReceived.push(mintName);
     }
     return;
   }
@@ -354,6 +451,7 @@ function applyRankRewardForLevel(level, data, summary) {
 
 function claimTrainerRankRewards(data, deps) {
   const { trainerlevel } = deps;
+  extendTrainerLevelTable(trainerlevel, MAX_TRAINER_LEVEL);
   const state = ensureRankRewardState(data);
   const currentLevel = getTrainerLevel(data, trainerlevel, MAX_TRAINER_LEVEL);
   const claimedLevel = Math.max(0, Math.min(MAX_TRAINER_LEVEL, Number(state.claimedLevel || 0)));
@@ -432,7 +530,10 @@ function summarizeMints(mints) {
 
 module.exports = {
   MAX_TRAINER_LEVEL,
+  extendTrainerLevelTable,
   getTrainerLevel,
+  getTrainerProgress,
+  formatTrainerProgress,
   getUnclaimedLevels,
   ensureRankRewardState,
   claimTrainerRankRewards,

@@ -59,9 +59,24 @@ function registerBattleboxCommand(bot, deps) {
       const count = Number(b[key]) || 0;
       if (count > 0) msg += '\n  - ' + c(key) + ': +' + count;
     }
-    if (summary.tmsAdded > 0) msg += '\n• *TMs:* +' + summary.tmsAdded;
-    if (summary.stonesAdded > 0) msg += '\n• *Mega Stones:* +' + summary.stonesAdded;
-    if (summary.mintsAdded > 0) msg += '\n• *Nature Mints:* +' + summary.mintsAdded;
+    if (summary.tmsAdded > 0) {
+      msg += '\n• *TMs:* +' + summary.tmsAdded;
+      if (Array.isArray(summary.tmsReceived) && summary.tmsReceived.length > 0) {
+        msg += '\n  - Received: ' + summary.tmsReceived.map(tm => 'TM' + tm).join(', ');
+      }
+    }
+    if (summary.stonesAdded > 0) {
+      msg += '\n• *Mega Stones:* +' + summary.stonesAdded;
+      if (Array.isArray(summary.stonesReceived) && summary.stonesReceived.length > 0) {
+        msg += '\n  - Received: ' + summary.stonesReceived.map(st => c(st)).join(', ');
+      }
+    }
+    if (summary.mintsAdded > 0) {
+      msg += '\n• *Nature Mints:* +' + summary.mintsAdded;
+      if (Array.isArray(summary.mintsReceived) && summary.mintsReceived.length > 0) {
+        msg += '\n  - Received: ' + summary.mintsReceived.map(mint => c(mint)).join(', ');
+      }
+    }
     if (summary.bottleCapsAdded > 0) msg += '\n• *Bottle Caps:* +' + summary.bottleCapsAdded;
     if (summary.goldBottleCapsAdded > 0) msg += '\n• *Gold Bottle Caps:* +' + summary.goldBottleCapsAdded;
 

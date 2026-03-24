@@ -34,6 +34,15 @@ const chains = JSON.parse(fs.readFileSync('data/evolution_chains2.json', 'utf8')
 const growth_rates = JSON.parse(fs.readFileSync('data/pokemon_data2.json', 'utf8'));
 const rdata = JSON.parse(fs.readFileSync('data/pokedex_data.json', 'utf8'));
 const spawn = JSON.parse(fs.readFileSync('data/pokemon_status_info.json', 'utf8'));
+const trainerlevel = JSON.parse(fs.readFileSync('data/levels.json', 'utf8'));
+const {
+  MAX_TRAINER_LEVEL,
+  extendTrainerLevelTable,
+  getTrainerLevel,
+  claimTrainerRankRewards,
+  formatTrainerProgress
+} = require('./utils/trainer_rank_rewards');
+extendTrainerLevelTable(trainerlevel, MAX_TRAINER_LEVEL);
 
 // Mongo-backed persistence with in-memory caches for hot state (message/battle).
 
@@ -997,8 +1006,32 @@ const baseexp = expdata.filter((poke)=> poke.name == lose.name)[0]
 const g = growth_rates[win.name]
 const exp69 = chart[g.growth_rate]["100"]
 const clevel = plevel(win.name,win.exp)
+if(!winner.inv){
+winner.inv = {}
+}
+if(!Number.isFinite(winner.inv.exp)){
+winner.inv.exp = 0
+}
+const oldTrainerLevel = getTrainerLevel(winner, trainerlevel, MAX_TRAINER_LEVEL)
 winner.inv.exp += 40
+const newTrainerLevel = getTrainerLevel(winner, trainerlevel, MAX_TRAINER_LEVEL)
+let rankSummary = null
+if(newTrainerLevel > oldTrainerLevel){
+rankSummary = claimTrainerRankRewards(winner, { trainerlevel })
+}
 await saveUserData2(battleData.oid,winner)
+try{
+let trainerMsg = '*Trainer EXP Gained:* +40'
+if(rankSummary && rankSummary.levelsToClaim > 0){
+trainerMsg += '\n*Level:* ' + oldTrainerLevel + ' -> ' + newTrainerLevel
+  if (rankSummary.rewards.pc > 0) trainerMsg += '\n- ' + rankSummary.rewards.pc + ' PokeCoins'
+  if (rankSummary.rewards.lp > 0) trainerMsg += '\n- ' + rankSummary.rewards.lp + ' League Points'
+  if (rankSummary.rewards.ht > 0) trainerMsg += '\n- ' + rankSummary.rewards.ht + ' Holowear Tickets'
+  if (rankSummary.rewards.battleBoxes > 0) trainerMsg += '\n- ' + rankSummary.rewards.battleBoxes + ' Battle Box'
+}
+trainerMsg += '\n\n' + formatTrainerProgress(winner, trainerlevel, MAX_TRAINER_LEVEL)
+await bot.telegram.sendMessage(battleData.oid, trainerMsg, { parse_mode:'markdown' })
+}catch(e){}
 if(baseexp && clevel!=100){
 const ee = await calcexp(baseexp.baseExp,plevel(lose.name,lose.exp),clevel)
 win.exp = Math.min((win.exp+ee),exp69)
@@ -1208,31 +1241,32 @@ data.extra = {}
 if(!data.extra.sort_order){
 data.extra.sort_order = 'desc'
 }
+const sortMode = data.extra.sort || (data.inv && data.inv.sort) || 'none'
 const dir = data.extra.sort_order == 'asc' ? 1 : -1
-if(data.extra.sort){
-if(data.extra.sort=='level'){
+if(sortMode && sortMode != 'none'){
+if(sortMode=='level'){
 pokes2.sort((a, b) => (plevel(a.name,a.exp) - plevel(b.name,b.exp))*dir);
-}else if(data.extra.sort=='pokedex-number'){
+}else if(sortMode=='pokedex-number'){
 pokes2.sort((a,b)=> (pokes[a.name].pokedex_number - pokes[b.name].pokedex_number)*dir)
-}else if(data.extra.sort=='iv-points'){
+}else if(sortMode=='iv-points'){
 pokes2.sort((a,b)=> (calculateTotal(a.ivs)- calculateTotal(b.ivs))*dir)
-}else if(data.extra.sort=='ev-points'){
+}else if(sortMode=='ev-points'){
 pokes2.sort((a,b)=> (calculateTotal(a.evs)- calculateTotal(b.evs))*dir)
-}else if(data.extra.sort=='name'){
+}else if(sortMode=='name'){
 pokes2.sort((a, b) => (a.nickname || a.name).localeCompare(b.nickname || b.name)*dir);
-}else if(data.extra.sort=='hp-points'){
+}else if(sortMode=='hp-points'){
 pokes2.sort((a,b)=> (Stats(pokestats[a.name],a.ivs,a.evs,a.nature,plevel(a.name,a.exp)).hp - Stats(pokestats[b.name],b.ivs,b.evs,b.nature,plevel(b.name,b.exp)).hp)*dir)
-}else if(data.extra.sort=='attack-points'){
+}else if(sortMode=='attack-points'){
 pokes2.sort((a,b)=>  (Stats(pokestats[a.name],a.ivs,a.evs,a.nature,plevel(a.name,a.exp)).attack -  Stats(pokestats[b.name],b.ivs,b.evs,b.nature,plevel(b.name,b.exp)).attack)*dir)
-}else if(data.extra.sort=='defense-points'){
+}else if(sortMode=='defense-points'){
 pokes2.sort((a,b)=>  (Stats(pokestats[a.name],a.ivs,a.evs,a.nature,plevel(a.name,a.exp)).defense -  Stats(pokestats[b.name],b.ivs,b.evs,b.nature,plevel(b.name,b.exp)).defense)*dir)
-}else if(data.extra.sort=='special-attack-points'){
+}else if(sortMode=='special-attack-points'){
 pokes2.sort((a,b)=>  (Stats(pokestats[a.name],a.ivs,a.evs,a.nature,plevel(a.name,a.exp)).special_attack -  Stats(pokestats[b.name],b.ivs,b.evs,b.nature,plevel(b.name,b.exp)).special_attack)*dir)
-}else if(data.extra.sort=='special-defense-points'){
+}else if(sortMode=='special-defense-points'){
 pokes2.sort((a,b)=>  (Stats(pokestats[a.name],a.ivs,a.evs,a.nature,plevel(a.name,a.exp)).special_defense -  Stats(pokestats[b.name],b.ivs,b.evs,b.nature,plevel(b.name,b.exp)).special_defense)*dir)
-}else if(data.extra.sort=='speed-points'){
+}else if(sortMode=='speed-points'){
 pokes2.sort((a,b)=>  (Stats(pokestats[a.name],a.ivs,a.evs,a.nature,plevel(a.name,a.exp)).speed -  Stats(pokestats[b.name],b.ivs,b.evs,b.nature,plevel(b.name,b.exp)).speed)*dir)
-}else if(data.extra.sort=='total-points'){
+}else if(sortMode=='total-points'){
 pokes2.sort((a,b)=> (calculateTotal( Stats(pokestats[a.name],a.ivs,a.evs,a.nature,plevel(a.name,a.exp))) - calculateTotal( Stats(pokestats[b.name],b.ivs,b.evs,b.nature,plevel(b.name,b.exp))))*dir)
 }
 }

@@ -1,4 +1,4 @@
-const { getTrainerLevel } = require('../../utils/trainer_rank_rewards');
+const { getTrainerLevel, MAX_TRAINER_LEVEL } = require('../../utils/trainer_rank_rewards');
 
 function registerMycardCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -61,7 +61,7 @@ function registerMycardCommand(bot, deps) {
   
   }
   
-  const level = getTrainerLevel(userData, trainerlevel, 100);
+  const level = getTrainerLevel(userData, trainerlevel, MAX_TRAINER_LEVEL);
   
   if(!userData.inv.battle){
   

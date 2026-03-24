@@ -34,6 +34,7 @@ function register_043_store(bot, deps) {
   function buildBuyMessage() {
     return `*Welcome To Poke Store (Buy Section)*
 
+
 *PokeBalls*
 • Regular Ball - 15 💷
 • Great Ball - 25 💷
@@ -43,6 +44,14 @@ function register_043_store(bot, deps) {
 • Quick Ball - 65 💷
 • Net Ball - 45 💷
 • Nest Ball - 55 💷
+• Friend Ball - 30 💷
+• Level Ball - 35 💷
+• Moon Ball - 40 💷
+• Sport Ball - 20 💷
+• Luxury Ball - 25 💷
+• Premier Ball - 10 💷
+• Park Ball - 120 💷
+• Master Ball - 3000 💷
 
 *Items*
 • Candy - 100 💷

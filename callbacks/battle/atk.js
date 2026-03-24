@@ -46,8 +46,10 @@ const {
 } = require('../../utils/battle_abilities');
 const { getBattleBaseStats, activateImpersonateForPass } = require('../../utils/battle_impersonate');
 const {
+  MAX_TRAINER_LEVEL,
   claimTrainerRankRewards,
-  getTrainerLevel
+  getTrainerLevel,
+  formatTrainerProgress
 } = require('../../utils/trainer_rank_rewards');
 const {
   syncBattleFormAndAbility,
@@ -1219,10 +1221,10 @@ data.inv.pc += ai
 if(!data.inv.exp){
 data.inv.exp = 0
 }
-const oldTrainerLevel = getTrainerLevel(data, trainerlevel, 100)
+const oldTrainerLevel = getTrainerLevel(data, trainerlevel, MAX_TRAINER_LEVEL)
 const ei = Math.floor(Math.random()*700)+200
 data.inv.exp += ei
-const newTrainerLevel = getTrainerLevel(data, trainerlevel, 100)
+const newTrainerLevel = getTrainerLevel(data, trainerlevel, MAX_TRAINER_LEVEL)
 let rankSummary = null
 if(newTrainerLevel > oldTrainerLevel){
   rankSummary = claimTrainerRankRewards(data, { trainerlevel, tms, stones })
@@ -1247,6 +1249,7 @@ if(rankSummary && rankSummary.levelsToClaim > 0){
   if(rankSummary.rewards.ht > 0) finalMsg += '\n- '+rankSummary.rewards.ht+' Holowear Tickets 🎟️'
   if(rankSummary.rewards.battleBoxes > 0) finalMsg += '\n- '+rankSummary.rewards.battleBoxes+' Battle Box 🎁'
 }
+finalMsg += '\n\n' + formatTrainerProgress(data, trainerlevel, MAX_TRAINER_LEVEL)
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,finalMsg,{parse_mode:'markdown'})
 return
 }else{

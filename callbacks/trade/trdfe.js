@@ -20,9 +20,6 @@ return
   };
   const userData = await getUserData(id2)
   let pokes = await sort(id2,userData.pokes);
-  if(userData.inv.sort){
-  pokes = await sort(userData.pokes,userData.inv.sort)
-  }
   pokes = pokes.filter((p) => !hasHeldItem(p));
   if(pokes.length < 1){
     await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You do not have any tradable pokemon. Remove held items first.',{parse_mode:'html'});
@@ -44,10 +41,10 @@ for (let i = startIndex; i < endIndex; i++) {
   const sortedIndex = userData.pokes.indexOf(pokes[i]);
   row.push({
     text: `${sortedIndex + 1}`,
-    callback_data: `trfe_${id1}_${pass}_${id2}_${userData.pokes[i].pass}`,
+    callback_data: `trfe_${id1}_${pass}_${id2}_${pokes[i].pass}`,
   });
 
-  if ((sortedIndex + 1) % buttonsPerRow === 0 || sortedIndex === endIndex - 1) {
+  if (row.length === buttonsPerRow || i === endIndex - 1) {
     inlineKeyboard.push(row);
     row = [];
   }

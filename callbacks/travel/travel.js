@@ -1,133 +1,218 @@
+const regionLocations = require('../../data/region_locations.json');
+const {
+  REGION_CONFIG,
+  buildMainTravelKeyboard,
+  chunkOptions,
+  getRegionConfigByRegionKey
+} = require('../../utils/travel_regions');
+
 function register_021_travel(bot, deps) {
   Object.assign(globalThis, deps, { bot });
-  bot.action(/travel_/,check2q,async ctx => {
-const region = ctx.callbackQuery.data.split('_')[1]
-let place = false
-const id = ctx.callbackQuery.data.split('_')[2]
-if(ctx.from.id!=id){
-ctx.answerCbQuery()
-return
-}
-const data = await getUserData(ctx.from.id)
-const regionGroups = {
-  kanto: ['kanto', 'letsgo-kanto'],
-  johto: ['johto'],
-  hoenn: ['hoenn'],
-  sinnoh: ['sinnoh'],
-  hisui: ['hisui'],
-  unova: ['unova'],
-  kalos: ['kalos-central', 'kalos-coastal', 'kalos-mountain'],
-  alola: ['alola', 'melemele', 'akala', 'ulaula', 'poni'],
-  galar: ['galar', 'isle-of-armor', 'crown-tundra'],
-  paldea: ['paldea', 'kitakami', 'blueberry'],
-  national: ['national'],
-  conquest: ['conquest-gallery']
-}
-const getRegionGroup = (value) => {
-const normalized = String(value || '').toLowerCase()
-for(const [groupName, places] of Object.entries(regionGroups)){
-if(places.includes(normalized)){
-return groupName
-}
-}
-return normalized
-}
-if(region=='back'){
-place = true
-var key = [
-  [{ text: 'National',  callback_data: 'travel_national_'+ctx.from.id+'' },],
-  [
-    { text: 'Kanto', callback_data: 'travel_kanto2_'+ctx.from.id+'' },
-    { text: 'Johto', callback_data: 'travel_johto_'+ctx.from.id+'' },
-    { text: 'Hoenn', callback_data: 'travel_hoenn_'+ctx.from.id+'' }
-  ],
-  [
-    { text: 'Sinnoh',  callback_data: 'travel_sinnoh_'+ctx.from.id+'' },
-    { text: 'Hisui', callback_data: 'travel_hisui_'+ctx.from.id+'' },
-    { text: 'Unova', callback_data: 'travel_unova_'+ctx.from.id+'' },
-    { text: 'Kalos',  callback_data: 'travel_kalos_'+ctx.from.id+'' }
-  ],
-  [
-    { text: 'Alola', callback_data: 'travel_alola2_'+ctx.from.id+'' },
-    { text: 'Galar',  callback_data: 'travel_galar2_'+ctx.from.id+'' },
-    { text: 'Paldea',  callback_data: 'travel_paldea2_'+ctx.from.id+'' }
-  ],
-  [
-    { text: 'Conquest Gallery', callback_data: 'travel_conquest-gallery_'+ctx.from.id+'' }
-  ]
-];
-var msg = '*Which Region You Wanna Travel?*\n\n*Travel cost:* _100 PokeCoins when changing major region. Same-region travel is free._'
-}else if(region=='kanto2'){
-place = true
-var key = [
-[{text:'Kanto',callback_data:'travel_kanto_'+ctx.from.id+''},{text:'LetsGo-Kanto',callback_data:'travel_letsgo-kanto_'+ctx.from.id+''}],
-[{text:'⬅️ Back',callback_data:'travel_back_'+ctx.from.id+''}]
-]
-var msg = 'Which Place Wanna Go In *Kanto*?'
-}else if(region=='kalos'){
-place = true
-var key = [
-[{text:'Central',callback_data:'travel_kalos-central_'+ctx.from.id+''},{text:'Coastal',callback_data:'travel_kalos-coastal_'+ctx.from.id+''},{text:'Mountain',callback_data:'travel_kalos-mountain_'+ctx.from.id+''}],
-[{text:'⬅️ Back',callback_data:'travel_back_'+ctx.from.id+''}]
-]
-var msg = 'Which Place In *Kalos* You Wanna Travel?'
-}else if(region=='galar2'){
-place = true
-var key = [
-[{text:'Galar',callback_data:'travel_galar_'+ctx.from.id+''},{text:'Isle Of Armour',callback_data:'travel_isle-of-armor_'+ctx.from.id+''}],
-[{text:'Crown Tundra',callback_data:'travel_crown-tundra_'+ctx.from.id+''},{text:'⬅️ Back',callback_data:'travel_back_'+ctx.from.id+''}]
-]
-var msg = 'Which Place In *Galar* You Wanna Travel?'
-}else if(region=='paldea2'){
-place = true
-var key = [
-[{text:'Paldea',callback_data:'travel_paldea_'+ctx.from.id+''},{text:'KitaKami',callback_data:'travel_kitakami_'+ctx.from.id+''},{text:'Blueberry',callback_data:'travel_blueberry_'+ctx.from.id+''}],
-[{text:'⬅️ Back',callback_data:'travel_back_'+ctx.from.id+''}]
-] 
-var msg = 'Which Place In *Paldea* You Wanna Travel?'
-}else if(region=='alola2'){
-place = true
-var key = [
-[{text:'Alola',callback_data:'travel_alola_'+ctx.from.id+''},{text:'Melemele',callback_data:'travel_melemele_'+ctx.from.id+''},{text:'Akala',callback_data:'travel_akala_'+ctx.from.id+''}],
-[{text:'Ulaula',callback_data:'travel_ulaula_'+ctx.from.id+''},{text:'Poni',callback_data:'travel_poni_'+ctx.from.id+''}],
-[{text:'⬅️ Back',callback_data:'travel_back_'+ctx.from.id+''}]
-]
-var msg = 'Which Place In *Aloka* You Wanna Travel?'
-}
 
-if(place){
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'markdown',reply_markup:{inline_keyboard:key}})
-return
-}
+  const locationPageSize = 12;
 
-if(data.balls.safari && data.balls.safari > 0){
-ctx.answerCbQuery('You Are In *'+c(data.extra.saf)+' Safari Zone*')
-return
-}
-const selectedRegion = ctx.callbackQuery.data.split('_')[1]
-const currentRegion = String(data.inv.region || '').toLowerCase()
-const selectedRegionGroup = getRegionGroup(selectedRegion)
-const currentRegionGroup = getRegionGroup(currentRegion)
-const isPaidTravel = currentRegionGroup !== selectedRegionGroup
-if(isPaidTravel){
-if(!Number.isFinite(data.inv.pc)){
-data.inv.pc = 0
-}
-if(data.inv.pc < 100){
-ctx.answerCbQuery('Need 100 PokeCoins to change region.',{show_alert:true})
-return
-}
-data.inv.pc -= 100
-}
-data.inv.region = selectedRegion
-await saveUserData2(ctx.from.id,data)
-let arrivalMessage = 'Successfully Arrived To *'+c(selectedRegion)+'*'
-if(isPaidTravel){
-arrivalMessage += '\n*Cost:* 100 PokeCoins 💷'
-}
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,arrivalMessage,{parse_mode:'markdown'})
-})
+  const getRegionEntries = (config) => {
+    if(!config || !config.locationDataKey || !Array.isArray(regionLocations[config.locationDataKey])){
+      return [];
+    }
+    return regionLocations[config.locationDataKey];
+  };
+
+  const buildRegionMenu = (config, userId) => {
+    const optionRows = chunkOptions(
+      config.travelOptions.map((option) => ({
+        text: option.label,
+        callback_data: 'travel_go:'+option.regionKey+'_'+userId+''
+      })),
+      3
+    );
+
+    const entries = getRegionEntries(config);
+    if(entries.length > 0){
+      optionRows.push([{ text: config.label + ' Locations', callback_data: 'travel_locations:'+config.id+':0_'+userId+'' }]);
+    }
+
+    optionRows.push([{ text: 'Back', callback_data: 'travel_menu:main_'+userId+'' }]);
+
+    return optionRows;
+  };
+
+  const buildLocationPage = (config, page, userId) => {
+    const entries = getRegionEntries(config);
+    const maxPage = Math.max(0, Math.ceil(entries.length / locationPageSize) - 1);
+    const safePage = Math.min(Math.max(Number(page) || 0, 0), maxPage);
+    const start = safePage * locationPageSize;
+    const pageEntries = entries.slice(start, start + locationPageSize);
+    const keyboard = [];
+
+    for(let i = 0; i < pageEntries.length; i += 2){
+      keyboard.push(
+        pageEntries.slice(i, i + 2).map((entry, offset) => ({
+          text: entry.name,
+          callback_data: 'travel_pick:'+config.id+':'+(start + i + offset)+'_'+userId+''
+        }))
+      );
+    }
+
+    const navRow = [];
+    if(safePage > 0){
+      navRow.push({ text: 'Prev', callback_data: 'travel_locations:'+config.id+':'+(safePage - 1)+'_'+userId+'' });
+    }
+    if(safePage < maxPage){
+      navRow.push({ text: 'Next', callback_data: 'travel_locations:'+config.id+':'+(safePage + 1)+'_'+userId+'' });
+    }
+    if(navRow.length > 0){
+      keyboard.push(navRow);
+    }
+
+    keyboard.push([{ text: 'Back', callback_data: 'travel_menu:'+config.id+'_'+userId+'' }]);
+
+    return {
+      page: safePage,
+      maxPage,
+      keyboard
+    };
+  };
+
+  bot.action(/travel_/, check2q, async (ctx) => {
+    const parts = ctx.callbackQuery.data.split('_');
+    const action = parts[1];
+    const userId = parts[2];
+
+    if(ctx.from.id != userId){
+      ctx.answerCbQuery();
+      return;
+    }
+
+    const data = await getUserData(ctx.from.id);
+
+    if(action === 'menu:main'){
+      await editMessage(
+        'text',
+        ctx,
+        ctx.chat.id,
+        ctx.callbackQuery.message.message_id,
+        '*Which Region You Wanna Travel?*\n\n*Travel cost:* _100 PokeCoins when changing major region. Same-region travel is free._',
+        { parse_mode: 'markdown', reply_markup: { inline_keyboard: buildMainTravelKeyboard(ctx.from.id) } }
+      );
+      return;
+    }
+
+    const actionParts = action.split(':');
+    const type = actionParts[0];
+    const regionId = actionParts[1];
+    const indexText = actionParts[2];
+    const config = REGION_CONFIG[regionId] || null;
+
+    if(type === 'menu' && config){
+      const currentRegionConfig = getRegionConfigByRegionKey(data.inv.region);
+      const currentLocation = currentRegionConfig && currentRegionConfig.id === config.id && data.extra && data.extra.location
+        ? '\n*Current location:* _' + c(data.extra.location) + '_'
+        : '';
+      const entryCount = getRegionEntries(config).length;
+      const countLine = entryCount > 0 ? '\n*Locations loaded:* ' + entryCount : '';
+
+      await editMessage(
+        'text',
+        ctx,
+        ctx.chat.id,
+        ctx.callbackQuery.message.message_id,
+        'Which Place Wanna Go In *' + config.label + '*?' + currentLocation + countLine,
+        { parse_mode: 'markdown', reply_markup: { inline_keyboard: buildRegionMenu(config, ctx.from.id) } }
+      );
+      return;
+    }
+
+    if(type === 'locations' && config){
+      const pageData = buildLocationPage(config, indexText, ctx.from.id);
+      await editMessage(
+        'text',
+        ctx,
+        ctx.chat.id,
+        ctx.callbackQuery.message.message_id,
+        'Pick A *' + config.label + '* Location\n\n_Page ' + (pageData.page + 1) + ' of ' + (pageData.maxPage + 1) + '_',
+        { parse_mode: 'markdown', reply_markup: { inline_keyboard: pageData.keyboard } }
+      );
+      return;
+    }
+
+    if(data.balls.safari && data.balls.safari > 0){
+      ctx.answerCbQuery('You Are In *' + c(data.extra.saf) + ' Safari Zone*');
+      return;
+    }
+
+    let targetRegionKey = null;
+    let selectedLocation = null;
+    let selectedMajorRegion = null;
+
+    if(type === 'go'){
+      targetRegionKey = regionId;
+      selectedMajorRegion = getRegionConfigByRegionKey(regionId);
+    }else if(type === 'pick' && config){
+      const entries = getRegionEntries(config);
+      selectedLocation = entries[Number(indexText)] || null;
+      if(!selectedLocation){
+        ctx.answerCbQuery('That location is not available right now.', { show_alert: true });
+        return;
+      }
+      const currentRegionConfig = getRegionConfigByRegionKey(data.inv.region);
+      selectedMajorRegion = config;
+      targetRegionKey = currentRegionConfig && currentRegionConfig.id === config.id
+        ? String(data.inv.region || '').toLowerCase()
+        : config.defaultRegion;
+    }
+
+    if(!targetRegionKey || !selectedMajorRegion){
+      ctx.answerCbQuery();
+      return;
+    }
+
+    const currentRegionConfig = getRegionConfigByRegionKey(data.inv.region);
+    const currentMajorId = currentRegionConfig ? currentRegionConfig.id : String(data.inv.region || '').toLowerCase();
+    const selectedMajorId = selectedMajorRegion.id;
+    const isPaidTravel = currentMajorId !== selectedMajorId;
+
+    if(isPaidTravel){
+      if(!Number.isFinite(data.inv.pc)){
+        data.inv.pc = 0;
+      }
+      if(data.inv.pc < 100){
+        ctx.answerCbQuery('Need 100 PokeCoins to change region.', { show_alert: true });
+        return;
+      }
+      data.inv.pc -= 100;
+    }
+
+    data.inv.region = targetRegionKey;
+    if(!data.extra || typeof data.extra !== 'object'){
+      data.extra = {};
+    }
+
+    if(selectedLocation){
+      data.extra.location = selectedLocation.name;
+    }else if(data.extra.location){
+      delete data.extra.location;
+    }
+
+    await saveUserData2(ctx.from.id, data);
+
+    let arrivalMessage = 'Successfully Arrived To *' + c(targetRegionKey) + '*';
+    if(selectedLocation){
+      arrivalMessage += '\n*Location:* _' + c(selectedLocation.name) + '_';
+    }
+    if(isPaidTravel){
+      arrivalMessage += '\n*Cost:* 100 PokeCoins';
+    }
+
+    await editMessage(
+      'text',
+      ctx,
+      ctx.chat.id,
+      ctx.callbackQuery.message.message_id,
+      arrivalMessage,
+      { parse_mode: 'markdown' }
+    );
+  });
 }
 
 module.exports = register_021_travel;
-

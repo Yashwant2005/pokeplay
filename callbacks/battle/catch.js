@@ -2,7 +2,6 @@ const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
 const { applyEntryAbility, getAirBalloonInfo, getDisplayedWeatherState, getWeatherDisplayName, setBattleWeatherNegationState } = require('../../utils/battle_abilities');
 const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
 const { activateImpersonateForPass, getBattleBaseStats } = require('../../utils/battle_impersonate');
-const { applyIvBoostEventToEncounter, IV_STAT_LABELS } = require('../../utils/iv_boost_campaign');
 const { ARCEUS_PLATES } = require('../../utils/held_item_shop');
 const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rules');
 
@@ -112,16 +111,6 @@ function register_011_catch(bot, deps) {
       k = 15;
     }
     let iv = await generateRandomIVs(spawn[name].toLowerCase());
-    const ivEventResult = applyIvBoostEventToEncounter(iv, {
-      rarity: spawn[name],
-      userData: data
-    });
-    iv = ivEventResult.ivs;
-    data.extra.ivEventLastEncounter = {
-      name,
-      ivs: { ...iv },
-      atUtc: new Date().toISOString()
-    };
 
     const bword = word(10);
     let battleData = {};
@@ -182,14 +171,6 @@ function register_011_catch(bot, deps) {
     msg += '\n<b>Level :</b> ' + clevel + ' | <b>HP :</b> ' + hp + '/' + hp + '';
     msg += '\n<code>' + Bar(hp, hp) + '</code>';
     msg += '\n\n<b>Moves :</b>';
-    if (ivEventResult.lockApplied) {
-      msg += '\n\n<i>IV Lock Active:</i> ' + IV_STAT_LABELS[ivEventResult.lockApplied.stat] + ' stays at ' + ivEventResult.lockApplied.value + ' IV';
-      if (ivEventResult.lockRemaining > 0) {
-        msg += ' (' + ivEventResult.lockRemaining + ' hunts left)';
-      } else {
-        msg += ' (final locked hunt)';
-      }
-    }
     const moves = [];
     for (const move2 of p.moves) {
       const move = dmoves[move2];

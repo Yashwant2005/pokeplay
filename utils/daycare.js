@@ -33,7 +33,8 @@ const GROWTH_MULTIPLIERS = {
 };
 
 const DAYCARE_CANDY_STARTER = 5;
-const DAYCARE_CANDY_REDUCTION_MINUTES = 360;
+const DAYCARE_CANDY_REDUCTION_MINUTES = 10;
+const DAYCARE_FIXED_SLOTS = 3;
 
 function normalizeName(value) {
   return String(value || '').trim().toLowerCase();
@@ -113,14 +114,7 @@ function grantDaycareClaimCandy(data, claimedAmount) {
 }
 
 function getDaycareSlotsForLevel(level) {
-  const safeLevel = Number(level) || 1;
-  if (safeLevel >= 30) return 6;
-  if (safeLevel >= 25) return 5;
-  if (safeLevel >= 20) return 4;
-  if (safeLevel >= 15) return 3;
-  if (safeLevel >= 10) return 2;
-  if (safeLevel >= 5) return 1;
-  return 0;
+  return DAYCARE_FIXED_SLOTS;
 }
 
 function getDaycareSlots(data, trainerlevel) {
@@ -312,44 +306,32 @@ function getGrowthMultiplier(growthRate) {
 }
 
 function estimateDaycarePlan(pokemon, options) {
-  const { chart, growthRates, pokemoves, dmoves, evs, moveIds } = options;
+  const { chart, growthRates, evs, moveIds } = options;
   const currentLevel = getPokemonCurrentLevel(pokemon, chart, growthRates);
   const growthRate = growthRates[pokemon.name] ? growthRates[pokemon.name].growth_rate : 'medium';
-  const growthMultiplier = getGrowthMultiplier(growthRate);
-  const levelDelta = Math.max(0, 100 - currentLevel);
   const evTotal = getEvTotal(evs);
-  const newMoveCount = (moveIds || []).filter((id) => !(pokemon.moves || []).includes(id)).length;
-
-  const cost = Math.max(
-    200,
-    Math.round(
-      350
-      + (levelDelta * 30 * growthMultiplier)
-      + (evTotal * 1.2)
-      + (newMoveCount * 120)
-    )
-  );
-
-  const durationMinutes = Math.max(
-    240,
-    Math.round(
-      180
-      + (levelDelta * 18 * growthMultiplier)
-      + (evTotal * 1.5)
-      + (newMoveCount * 90)
-    )
-  );
+  const targetExp = Number(chart?.[growthRate]?.[100]) || 0;
+  const currentExp = Math.max(0, Number(pokemon.exp) || 0);
+  const expRequired = Math.max(0, targetExp - currentExp);
+  const expCost = Math.ceil(expRequired / 500);
+  const evCost = evTotal * 5;
+  const expSeconds = Math.ceil(expRequired / 100);
+  const evSeconds = evTotal * 10;
+  const durationSeconds = evSeconds + expSeconds;
+  const durationMinutes = durationSeconds / 60;
+  const readyAt = Date.now() + (durationSeconds * 1000);
 
   return {
     currentLevel,
     targetLevel: 100,
     growthRate,
-    growthMultiplier,
+    expRequired,
     evTotal,
-    newMoveCount,
-    cost,
+    newMoveCount: (moveIds || []).filter((id) => !(pokemon.moves || []).includes(id)).length,
+    cost: expCost + evCost,
     durationMinutes,
-    readyAt: Date.now() + (durationMinutes * 60 * 1000)
+    durationSeconds,
+    readyAt
   };
 }
 
@@ -476,21 +458,25 @@ function formatMoveSummary(moveIds, dmoves, c) {
     .join(', ');
 }
 
-function formatDuration(durationMinutes) {
-  const totalMinutes = Math.max(0, Math.round(Number(durationMinutes) || 0));
-  const days = Math.floor(totalMinutes / 1440);
-  const hours = Math.floor((totalMinutes % 1440) / 60);
-  const minutes = totalMinutes % 60;
+function formatDuration(durationValue, unit = 'minutes') {
+  const totalSeconds = unit === 'seconds'
+    ? Math.max(0, Math.round(Number(durationValue) || 0))
+    : Math.max(0, Math.round((Number(durationValue) || 0) * 60));
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
   const parts = [];
   if (days) parts.push(`${days}d`);
   if (hours) parts.push(`${hours}h`);
-  if (minutes || !parts.length) parts.push(`${minutes}m`);
+  if (minutes) parts.push(`${minutes}m`);
+  if (seconds || !parts.length) parts.push(`${seconds}s`);
   return parts.join(' ');
 }
 
 function formatRemaining(readyAt) {
   const ms = Math.max(0, Number(readyAt) - Date.now());
-  return formatDuration(Math.ceil(ms / 60000));
+  return formatDuration(Math.ceil(ms / 1000), 'seconds');
 }
 
 module.exports = {

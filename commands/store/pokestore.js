@@ -20,44 +20,46 @@ function registerPokestoreCommand(bot, deps) {
       `*Welcome To Poke Store (Buy Section)*
 
 *PokeBalls*
-• Regular Ball - 15 💷
-• Great Ball - 25 💷
-• Ultra Ball - 40 💷
-• Repeat Ball - 50 💷
-• Beast Ball - 100 💷
-• Quick Ball - 65 💷
-• Net Ball - 45 💷
-• Nest Ball - 55 💷
+- Regular Ball - 15 PC
+- Great Ball - 25 PC
+- Ultra Ball - 40 PC
+- Repeat Ball - 50 PC
+- Beast Ball - 100 PC
+- Quick Ball - 65 PC
+- Net Ball - 45 PC
+- Nest Ball - 55 PC
 
 *Items*
-• Candy - 100 💷
-• Berry - 75 💷
-• Vitamin - 100 💷
-• Zygarde Capsule - 10000 💷
-• Ability Capsule - 25000 💷
-• Ability Patch - 50000 💷
+- Candy - 100 PC
+- Berry - 75 PC
+- Vitamin - 100 PC
+- Zygarde Capsule - 10000 PC
+- Ability Capsule - 25000 PC
+- Ability Patch - 50000 PC
+- Daycare Candy - 375 PC
 
 *Held Items*
-• Open *Held* to buy held items with League Points only
+- Open *Held* to buy held items with League Points only
 
 *Examples*
-• /buy regular 1
-• /buy nest 5
-• /buy candy 3
-• /buy zygardecapsule 1
-• /buy abilitycapsule 1
-• /buy abilitypatch 1
+- /buy regular 1
+- /buy nest 5
+- /buy candy 3
+- /buy zygardecapsule 1
+- /buy abilitycapsule 1
+- /buy abilitypatch 1
+- /buy daycarecandy 1
 
 _Use /pokeballs for Pokeball details._
 _Use /buy for direct PokeCoins purchases._
 _Use the Held button for held item shop._
 
 *Weekly TM Shop*
-• 10 random TMs per user each week
-• Buy with League Points (minimum 1000 LP)
-• Each weekly TM slot can be bought once
-• Duplicate TM buy is not allowed
-• Refresh weekly TM list: 10000 PokeCoins
+- 10 random TMs per user each week
+- Buy with League Points (minimum 1000 LP)
+- Each weekly TM slot can be bought once
+- Duplicate TM buy is not allowed
+- Refresh weekly TM list: 10000 PokeCoins
 Open it from the *Tms* button.`,
       { reply_to_message_id: ctx.message.message_id, reply_markup: { inline_keyboard: rows } }
     );
@@ -65,4 +67,3 @@ Open it from the *Tms* button.`,
 }
 
 module.exports = registerPokestoreCommand;
-

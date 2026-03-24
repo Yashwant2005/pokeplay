@@ -163,6 +163,53 @@ function registerBattleCallbacks(bot, deps) {
     return Math.max(0, Math.min(maxHp, Math.round(currentHp || 0)));
   }
 
+  function ensureBattleSleepTurns(battleData) {
+    if (!battleData.sleepTurns || typeof battleData.sleepTurns !== 'object') {
+      battleData.sleepTurns = {};
+    }
+    return battleData.sleepTurns;
+  }
+
+  function clearBattleMajorStatus(battleData, pass) {
+    const existingStatus = getBattleStatus(battleData, pass);
+    setBattleStatus(battleData, pass, null);
+    const sleepTurns = ensureBattleSleepTurns(battleData);
+    delete sleepTurns[pass];
+    return existingStatus;
+  }
+
+  function setBattleSleepStatus(battleData, pass, turns) {
+    setBattleStatus(battleData, pass, 'sleep');
+    ensureBattleSleepTurns(battleData)[pass] = Math.max(1, Number(turns) || 2);
+  }
+
+  function healBattlePokemon({ battleData, pass, maxHp, amount, hpKey, tempKey }) {
+    const healAmount = Math.max(0, Math.floor(Number(amount) || 0));
+    const hpBefore = Math.max(0, Number(battleData[hpKey]) || 0);
+    if (healAmount <= 0 || hpBefore >= maxHp) {
+      return 0;
+    }
+    const nextHp = Math.min(maxHp, hpBefore + healAmount);
+    const healed = Math.max(0, nextHp - hpBefore);
+    battleData[hpKey] = nextHp;
+    if (!battleData[tempKey] || typeof battleData[tempKey] !== 'object') {
+      battleData[tempKey] = {};
+    }
+    battleData[tempKey][pass] = Math.min(maxHp, Math.max(0, (battleData[tempKey][pass] || hpBefore) + healed));
+    return healed;
+  }
+
+  const HALF_HEAL_STATUS_MOVES = new Set(['heal order', 'milk drink', 'recover', 'roost', 'slack off', 'soft-boiled']);
+
+  function normalizeBattleSettings(settings) {
+    const next = settings && typeof settings === 'object' ? settings : {};
+    next.allow_regions = Array.isArray(next.allow_regions) ? next.allow_regions : [];
+    next.ban_regions = Array.isArray(next.ban_regions) ? next.ban_regions : [];
+    next.allow_types = Array.isArray(next.allow_types) ? next.allow_types : [];
+    next.ban_types = Array.isArray(next.ban_types) ? next.ban_types : [];
+    return next;
+  }
+
   function isBattleGigantamaxPokemon(pokemon) {
     if (!pokemon) return false;
     if (getDisplayPokemonSymbol(pokemon) !== '✘') return false;
@@ -2471,8 +2518,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         } else {
         const weatherAccuracy = getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy: move.accuracy });
         const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus || weatherAccuracy.skipAccuracyCheck;
-        const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
         const isStatusMove = String(move.category || '').toLowerCase() === 'status';
+        const hasAccuracyCheck = !bypassAccuracyCheck && !isStatusMove && move.accuracy !== null && move.accuracy !== undefined;
         const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(weatherAccuracy.accuracy), unawareModifiers.accuracyStage, unawareModifiers.evasionStage, battleData, defenderAbility) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
           msgLocal += unawareMessage;
@@ -2635,14 +2682,87 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 }).message;
               }
 
+              if (HALF_HEAL_STATUS_MOVES.has(moveName)) {
+                const healed = healBattlePokemon({
+                  battleData,
+                  pass: battleData.c,
+                  maxHp: stats1.hp,
+                  amount: Math.max(1, Math.floor(stats1.hp / 2) * (attackerHeldItemInfo.recoveryMultiplier || 1)),
+                  hpKey: 'chp',
+                  tempKey: 'tem'
+                });
+                if (healed > 0) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
+                }
+              }
+
+              if (moveName === 'rest') {
+                if (battleData.chp >= stats1.hp || getBattleStatus(battleData, battleData.c) === 'sleep') {
+                  msgLocal += '\n-> But it failed!';
+                } else {
+                  const healed = healBattlePokemon({
+                    battleData,
+                    pass: battleData.c,
+                    maxHp: stats1.hp,
+                    amount: stats1.hp,
+                    hpKey: 'chp',
+                    tempKey: 'tem'
+                  });
+                  setBattleSleepStatus(battleData, battleData.c, 2);
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> fell asleep and restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
+                }
+              }
+
+              if (moveName === 'lunar blessing') {
+                const healed = healBattlePokemon({
+                  battleData,
+                  pass: battleData.c,
+                  maxHp: stats1.hp,
+                  amount: Math.max(1, Math.floor(stats1.hp / 2) * (attackerHeldItemInfo.recoveryMultiplier || 1)),
+                  hpKey: 'chp',
+                  tempKey: 'tem'
+                });
+                const clearedStatus = clearBattleMajorStatus(battleData, battleData.c);
+                if (healed > 0) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
+                }
+                if (clearedStatus) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> was cured of <b>'+getStatusLabel(clearedStatus)+'</b>.';
+                }
+              }
+
+              if (moveName === 'purify') {
+                const targetStatus = getBattleStatus(battleData, battleData.o);
+                if (!targetStatus) {
+                  msgLocal += '\n-> But it failed!';
+                } else {
+                  clearBattleMajorStatus(battleData, battleData.o);
+                  msgLocal += '\n-> <b>'+c(op.name)+'</b> was cured of <b>'+getStatusLabel(targetStatus)+'</b>.';
+                  const healed = healBattlePokemon({
+                    battleData,
+                    pass: battleData.c,
+                    maxHp: stats1.hp,
+                    amount: Math.max(1, Math.floor(stats1.hp / 2) * (attackerHeldItemInfo.recoveryMultiplier || 1)),
+                    hpKey: 'chp',
+                    tempKey: 'tem'
+                  });
+                  if (healed > 0) {
+                    msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
+                  }
+                }
+              }
+
               if (moveName === 'synthesis' || moveName === 'morning sun' || moveName === 'moonlight' || moveName === 'shore up') {
                 const recoveryRatio = getWeatherRecoveryRatio({ battleData, moveName });
                 if (recoveryRatio > 0) {
-                  const healAmount = Math.max(1, Math.floor(stats1.hp * recoveryRatio * (attackerHeldItemInfo.recoveryMultiplier || 1)));
-                  const hpBefore = battleData.chp;
-                  battleData.chp = Math.min(stats1.hp, battleData.chp + healAmount);
-                  const healed = Math.max(0, battleData.chp - hpBefore);
-                  battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || hpBefore) + healed));
+                  const healed = healBattlePokemon({
+                    battleData,
+                    pass: battleData.c,
+                    maxHp: stats1.hp,
+                    amount: Math.max(1, Math.floor(stats1.hp * recoveryRatio * (attackerHeldItemInfo.recoveryMultiplier || 1))),
+                    hpKey: 'chp',
+                    tempKey: 'tem'
+                  });
                   if (healed > 0) {
                     msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
                   }
@@ -3418,6 +3538,7 @@ let settings3 = {};
 } catch (error) {
       settings3 = {};
     }
+settings3.set = normalizeBattleSettings(settings3.set)
 const settings = settings3.set
 const d1 = await getUserData(id)
 const d2 = await getUserData(rid)
@@ -3925,6 +4046,7 @@ let battleData = {};
 } catch (error) {
       battleData = {};
     }
+battleData.set = normalizeBattleSettings(battleData.set)
 const otherPendingUserId = Object.keys(battleData.users || {}).filter((id)=> String(id) != String(ctx.from.id))[0]
 if(otherPendingUserId && Array.isArray(mdata.battle) && mdata.battle.includes(parseInt(otherPendingUserId))){
 ctx.answerCbQuery('Opponent Is In A Battle')
@@ -4322,7 +4444,7 @@ messageData.battle.push(parseInt(battleData.oid))
 }else{
 let msg = '⚔️ <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> Has Challenged <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a>\n'
 let msg2 = ''
-const settings = battleData.set
+const settings = normalizeBattleSettings(battleData.set)
 if(settings.max_poke < 6){
 f = true
 msg2 += '\n<b>• Max number of pokemon:</b> '+settings.max_poke+''
@@ -4421,6 +4543,7 @@ try {
 } catch (error) {
   battleData = {};
 }
+battleData.set = normalizeBattleSettings(battleData.set)
 dbg('multimo:click', { bword, from: ctx.from.id, turnId: id, moveid, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o, qlen: battleData.queuedActions ? battleData.queuedActions.length : 0, switchLock: battleData.switchLock || null, switchPending: battleData.switchPending ? Object.keys(battleData.switchPending) : [] });
 const selectedMove = dmoves[moveid];
 const selectedMoveName = normalizeMoveName(selectedMove?.name);
@@ -5459,8 +5582,8 @@ async function executeStandardMove(act) {
         } else {
         const weatherAccuracy = getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy: move.accuracy });
         const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus || weatherAccuracy.skipAccuracyCheck;
-        const hasAccuracyCheck = !bypassAccuracyCheck && move.accuracy !== null && move.accuracy !== undefined;
         const isStatusMove = String(move.category || '').toLowerCase() === 'status';
+        const hasAccuracyCheck = !bypassAccuracyCheck && !isStatusMove && move.accuracy !== null && move.accuracy !== undefined;
         const accValue = hasAccuracyCheck ? getModifiedAccuracy(Number(weatherAccuracy.accuracy), unawareModifiers.accuracyStage, unawareModifiers.evasionStage, battleData, defenderAbility) : 100;
         if (hasAccuracyCheck && Math.random() * 100 > accValue) {
         msgLocal += unawareMessage;
@@ -5623,14 +5746,87 @@ async function executeStandardMove(act) {
               }).message;
             }
 
+            if (HALF_HEAL_STATUS_MOVES.has(moveName)) {
+              const healed = healBattlePokemon({
+                battleData,
+                pass: battleData.c,
+                maxHp: stats1.hp,
+                amount: Math.max(1, Math.floor(stats1.hp / 2) * (attackerHeldItemInfo.recoveryMultiplier || 1)),
+                hpKey: 'chp',
+                tempKey: 'tem'
+              });
+              if (healed > 0) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(moveLabel)+'</b>!';
+              }
+            }
+
+            if (moveName === 'rest') {
+              if (battleData.chp >= stats1.hp || getBattleStatus(battleData, battleData.c) === 'sleep') {
+                msgLocal += '\n-> But it failed!';
+              } else {
+                const healed = healBattlePokemon({
+                  battleData,
+                  pass: battleData.c,
+                  maxHp: stats1.hp,
+                  amount: stats1.hp,
+                  hpKey: 'chp',
+                  tempKey: 'tem'
+                });
+                setBattleSleepStatus(battleData, battleData.c, 2);
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> fell asleep and restored <code>'+healed+'</code> HP with <b>'+c(moveLabel)+'</b>!';
+              }
+            }
+
+            if (moveName === 'lunar blessing') {
+              const healed = healBattlePokemon({
+                battleData,
+                pass: battleData.c,
+                maxHp: stats1.hp,
+                amount: Math.max(1, Math.floor(stats1.hp / 2) * (attackerHeldItemInfo.recoveryMultiplier || 1)),
+                hpKey: 'chp',
+                tempKey: 'tem'
+              });
+              const clearedStatus = clearBattleMajorStatus(battleData, battleData.c);
+              if (healed > 0) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(moveLabel)+'</b>!';
+              }
+              if (clearedStatus) {
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> was cured of <b>'+getStatusLabel(clearedStatus)+'</b>.';
+              }
+            }
+
+            if (moveName === 'purify') {
+              const targetStatus = getBattleStatus(battleData, battleData.o);
+              if (!targetStatus) {
+                msgLocal += '\n-> But it failed!';
+              } else {
+                clearBattleMajorStatus(battleData, battleData.o);
+                msgLocal += '\n-> <b>'+c(op.name)+'</b> was cured of <b>'+getStatusLabel(targetStatus)+'</b>.';
+                const healed = healBattlePokemon({
+                  battleData,
+                  pass: battleData.c,
+                  maxHp: stats1.hp,
+                  amount: Math.max(1, Math.floor(stats1.hp / 2) * (attackerHeldItemInfo.recoveryMultiplier || 1)),
+                  hpKey: 'chp',
+                  tempKey: 'tem'
+                });
+                if (healed > 0) {
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(moveLabel)+'</b>!';
+                }
+              }
+            }
+
             if (moveName === 'synthesis' || moveName === 'morning sun' || moveName === 'moonlight' || moveName === 'shore up') {
               const recoveryRatio = getWeatherRecoveryRatio({ battleData, moveName });
               if (recoveryRatio > 0) {
-                const healAmount = Math.max(1, Math.floor(stats1.hp * recoveryRatio * (attackerHeldItemInfo.recoveryMultiplier || 1)));
-                const hpBefore = battleData.chp;
-                battleData.chp = Math.min(stats1.hp, battleData.chp + healAmount);
-                const healed = Math.max(0, battleData.chp - hpBefore);
-                battleData.tem[battleData.c] = Math.min(stats1.hp, Math.max(0, (battleData.tem[battleData.c] || hpBefore) + healed));
+                const healed = healBattlePokemon({
+                  battleData,
+                  pass: battleData.c,
+                  maxHp: stats1.hp,
+                  amount: Math.max(1, Math.floor(stats1.hp * recoveryRatio * (attackerHeldItemInfo.recoveryMultiplier || 1))),
+                  hpKey: 'chp',
+                  tempKey: 'tem'
+                });
                 if (healed > 0) {
                   msgLocal += '\n-> <b>'+c(p.name)+'</b> restored <code>'+healed+'</code> HP with <b>'+c(moveLabel)+'</b>!';
                 }
@@ -6241,6 +6437,7 @@ let battleData = {};
 } catch (error) {
       battleData = {};
     }
+battleData.set = normalizeBattleSettings(battleData.set)
 if(!battleData.set.switch){
 ctx.answerCbQuery('Switch is diabled')
 return

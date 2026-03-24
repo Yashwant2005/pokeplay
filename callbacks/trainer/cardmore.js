@@ -1,4 +1,4 @@
-const { getTrainerLevel } = require('../../utils/trainer_rank_rewards');
+const { MAX_TRAINER_LEVEL, formatTrainerProgress } = require('../../utils/trainer_rank_rewards');
 
 function register_089_cardmore(bot, deps) {
   Object.assign(globalThis, deps, { bot });
@@ -9,7 +9,6 @@ function register_089_cardmore(bot, deps) {
         ctx.answerCbQuery('Start your journey')
         return
       }
-      const level = getTrainerLevel(data, trainerlevel, 100);
       const caught = data.pokecaught ? data.pokecaught.length : 0
       const seen = data.pokeseen ? data.pokeseen.length : 0
       const wins = data.inv.win || 0
@@ -20,8 +19,7 @@ function register_089_cardmore(bot, deps) {
       const nicknameCount = data.nicknames ? Object.keys(data.nicknames).length : 0
       let msg = '*Trainer Card Details*\n'
       msg += `\n*User ID:* ${ctx.from.id}`
-      msg += `\n*Trainer Level:* ${level}`
-      msg += `\n*EXP:* ${data.inv.exp || 0}`
+      msg += '\n' + formatTrainerProgress(data, trainerlevel, MAX_TRAINER_LEVEL)
       msg += `\n*PokeCoins:* ${pc}`
       msg += `\n*Battle Boxes:* ${battleBoxes}`
       msg += `\n*Battles:* ${battles}`

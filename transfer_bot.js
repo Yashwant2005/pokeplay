@@ -1,6 +1,12 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
+const { execFile } = require('child_process');
+const { promisify } = require('util');
 const { Telegraf } = require('telegraf');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+
+const execFileAsync = promisify(execFile);
 const {
   getUserData,
   saveUserData2,
@@ -26,9 +32,115 @@ const ADMIN_GROUP_ID = -1003736053869;
 const SOURCE_BOT_IDS = [572621020, 7955369039];
 const STONES_SOURCE_BOT_IDS = [572621020, 7955369039];
 const ADMINS = [6265981509, 1411248872, 8493023103, 8551864967];
+const BACKUP_ENABLED = String(process.env.BACKUP_ENABLED || '').toLowerCase() === 'true' || Boolean(process.env.BACKUP_CHAT_ID);
+const BACKUP_CHAT_ID = process.env.BACKUP_CHAT_ID ? Number(process.env.BACKUP_CHAT_ID) : ADMIN_GROUP_ID;
+const BACKUP_INTERVAL_MS = Math.max(5 * 60 * 1000, Number(process.env.BACKUP_INTERVAL_MS || 60 * 60 * 1000));
+const envRunOnStart = String(process.env.BACKUP_RUN_ON_START || '').trim().toLowerCase();
+const BACKUP_RUN_ON_START = envRunOnStart === ''
+  ? true
+  : (envRunOnStart === 'true' || envRunOnStart === '1' || envRunOnStart === 'yes');
 
 const bot = new Telegraf(BOT_TOKEN);
 const userState = new Map();
+let backupRunning = false;
+let backupTimer = null;
+
+async function listCollections(uri, dbName) {
+  const evalScript = `db.getSiblingDB('${dbName}').getCollectionNames().join("\\n")`;
+  const { stdout } = await execFileAsync('mongosh', [uri, '--quiet', '--eval', evalScript], { timeout: 10 * 60 * 1000 });
+  return String(stdout || '')
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+async function runBackup(reason, options = {}) {
+  const force = Boolean(options.force);
+  if ((!BACKUP_ENABLED && !force) || backupRunning) return;
+  backupRunning = true;
+  const uri = process.env.MONGODB_URI || process.env.MONGO_URI;
+  const dbName = process.env.MONGODB_DB || 'pokeplay2';
+
+  try {
+    if (!uri) {
+      throw new Error('MONGODB_URI is missing');
+    }
+
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pokeplay-backup-'));
+    const zipName = `pokeplay_backup_${timestamp}.zip`;
+    const zipPath = path.join(tempDir, zipName);
+
+    const collections = await listCollections(uri, dbName);
+    for (const col of collections) {
+      const outFile = path.join(tempDir, `${col}.json`);
+      await execFileAsync(
+        'mongoexport',
+        ['--uri', uri, '--db', dbName, '--collection', col, '--jsonArray', '--out', outFile],
+        { timeout: 30 * 60 * 1000 }
+      );
+
+      if (col === 'users') {
+        const usersDir = path.join(tempDir, 'users');
+        fs.mkdirSync(usersDir, { recursive: true });
+        const raw = fs.readFileSync(outFile, 'utf8');
+        let docs = [];
+        try {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) docs = parsed;
+        } catch (err) {
+          throw new Error(`Failed to parse users.json: ${err.message || err}`);
+        }
+
+        docs.forEach((doc, idx) => {
+          const key =
+            doc.userId ??
+            doc.id ??
+            doc.chatId ??
+            (doc._id && doc._id.$oid) ??
+            doc._id ??
+            `unknown_${idx + 1}`;
+          const safeKey = String(key).replace(/[^\w.-]/g, '_');
+          const filePath = path.join(usersDir, `${safeKey}.json`);
+          fs.writeFileSync(filePath, JSON.stringify(doc));
+        });
+
+        fs.unlinkSync(outFile);
+      }
+    }
+
+    await execFileAsync('zip', ['-q', '-r', zipName, '.'], { cwd: tempDir, timeout: 30 * 60 * 1000 });
+
+    const caption = `Backup ${timestamp} UTC (${collections.length} collections, reason: ${reason || 'scheduled'})`;
+    await bot.telegram.sendDocument(BACKUP_CHAT_ID, { source: zipPath, filename: zipName }, { caption });
+
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  } catch (err) {
+    console.error('Backup failed:', err);
+    try {
+      await bot.telegram.sendMessage(BACKUP_CHAT_ID, `Backup failed: ${String(err.message || err)}`);
+    } catch (notifyErr) {
+      console.error('Backup notify failed:', notifyErr);
+    }
+  } finally {
+    backupRunning = false;
+  }
+}
+
+function scheduleBackups() {
+  if (!BACKUP_ENABLED) {
+    console.log('Backups disabled (set BACKUP_ENABLED=true or BACKUP_CHAT_ID).');
+    return;
+  }
+  if (backupTimer) {
+    clearInterval(backupTimer);
+  }
+  backupTimer = setInterval(() => runBackup('interval'), BACKUP_INTERVAL_MS);
+  if (BACKUP_RUN_ON_START) {
+    runBackup('startup');
+  }
+  console.log(`Hourly backups enabled. Interval: ${Math.round(BACKUP_INTERVAL_MS / 60000)} minutes. Chat: ${BACKUP_CHAT_ID}`);
+}
 
 async function loadRequests() {
   try {
@@ -172,6 +284,10 @@ function parseStonesFromText(text) {
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed) continue;
+    const lower = trimmed.toLowerCase();
+    if (lower.includes('key stone')) continue;
+    if (lower.startsWith('your mega stones')) continue;
+    if (lower.startsWith('format ')) continue;
     const slashMatch = trimmed.match(/^\/([A-Za-z0-9_-]+)/);
     if (slashMatch) {
       const key = normalizeStoneName(slashMatch[1]);
@@ -194,6 +310,13 @@ function parseStonesFromText(text) {
       if (stones[key] && Number.isFinite(count)) {
         for (let i = 0; i < count; i++) out.push(key);
       }
+      continue;
+    }
+
+    const simpleMatch = trimmed.match(/^([A-Za-z0-9' -]+)$/);
+    if (simpleMatch) {
+      const key = normalizeStoneName(simpleMatch[1]);
+      if (stones[key]) out.push(key);
     }
   }
   return out;
@@ -392,6 +515,34 @@ bot.command('stones', async (ctx) => {
   );
 });
 
+bot.command('backupnow', async (ctx) => {
+  const chatId = ctx.chat && ctx.chat.id;
+  const isPrivate = ctx.chat && ctx.chat.type === 'private';
+  if (chatId === ADMIN_GROUP_ID) {
+    const allowed = isAdmin(ctx.from.id) || await isGroupAdmin(ctx, ctx.from.id);
+    if (!allowed) {
+      await ctx.reply('Not allowed.');
+      return;
+    }
+  } else if (isPrivate) {
+    if (!isAdmin(ctx.from.id)) {
+      await ctx.reply('Not allowed.');
+      return;
+    }
+  } else {
+    await ctx.reply('Use /backupnow in admin group or private chat.');
+    return;
+  }
+
+  if (backupRunning) {
+    await ctx.reply('Backup already running. Please wait.');
+    return;
+  }
+
+  await ctx.reply('Starting backup...');
+  runBackup('manual', { force: true });
+});
+
 bot.on('message', async (ctx, next) => {
   if (ctx.chat.type !== 'private') {
     return next();
@@ -480,11 +631,25 @@ bot.on('message', async (ctx, next) => {
       ]]
     };
 
-    await bot.telegram.sendPhoto(ADMIN_GROUP_ID, proofPhotoId, {
-      caption: summary,
-      parse_mode: 'HTML',
-      reply_markup: adminMarkup
-    });
+    let adminMessage = null;
+    try {
+      adminMessage = await bot.telegram.sendMessage(ADMIN_GROUP_ID, summary, {
+        parse_mode: 'HTML',
+        reply_markup: adminMarkup
+      });
+    } catch (err) {
+      console.error('Failed to send stones summary message:', err);
+    }
+
+    try {
+      await bot.telegram.sendPhoto(ADMIN_GROUP_ID, proofPhotoId, {
+        caption: 'Proof Screenshot',
+        parse_mode: 'HTML',
+        reply_to_message_id: adminMessage ? adminMessage.message_id : undefined
+      });
+    } catch (err) {
+      console.error('Failed to send stones proof photo:', err);
+    }
 
     userState.delete(ctx.from.id);
     await ctx.reply('Stones request submitted to admins. You will be notified after approval.');
@@ -835,6 +1000,7 @@ initTransferBot()
     console.log('transfer_bot.js running');
     console.log('Admin group:', ADMIN_GROUP_ID);
     console.log('Admins:', ADMINS.join(', '));
+    scheduleBackups();
   })
   .catch((error) => {
     console.error('Failed to start transfer bot:', error);

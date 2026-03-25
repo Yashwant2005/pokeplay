@@ -14,6 +14,19 @@ function registerBattleboxCommand(bot, deps) {
     return msg;
   }
 
+  function buildCompactSummary(summary, pokeballTotal) {
+    let msg = '*Battle Box Opened:* ' + summary.opened + '\n';
+    msg += '*Remaining:* ' + summary.remaining + ' 🎁';
+    if (summary.holowearTicketsAdded > 0) msg += '\n• *Holowear Tickets:* +' + summary.holowearTicketsAdded + ' 🎟️';
+    if (pokeballTotal > 0) msg += '\n• *Pokeballs:* +' + pokeballTotal;
+    if (summary.tmsAdded > 0) msg += '\n• *TMs:* +' + summary.tmsAdded;
+    if (summary.stonesAdded > 0) msg += '\n• *Mega Stones:* +' + summary.stonesAdded;
+    if (summary.mintsAdded > 0) msg += '\n• *Nature Mints:* +' + summary.mintsAdded;
+    if (summary.bottleCapsAdded > 0) msg += '\n• *Bottle Caps:* +' + summary.bottleCapsAdded;
+    if (summary.goldBottleCapsAdded > 0) msg += '\n• *Gold Bottle Caps:* +' + summary.goldBottleCapsAdded;
+    return msg;
+  }
+
   function buildButtons(id, remaining) {
     if (!Number.isFinite(remaining) || remaining <= 0) {
       return [[{ text: 'No Boxes Left', callback_data: 'crncl' }]];
@@ -92,16 +105,11 @@ function registerBattleboxCommand(bot, deps) {
       if (summary.goldBottleCapsAdded > 0) msg += '\n/goldbottlecap <pokemon|pass|nickname>';
     }
 
+    if (msg.length > 3000) {
+      msg = buildCompactSummary(summary, pokeballTotal);
+    }
     if (msg.length > 3500) {
-      msg = '*Battle Box Opened:* ' + summary.opened + '\n';
-      msg += '*Remaining:* ' + summary.remaining + ' 🎁';
-      if (summary.holowearTicketsAdded > 0) msg += '\n• *Holowear Tickets:* +' + summary.holowearTicketsAdded + ' 🎟️';
-      if (pokeballTotal > 0) msg += '\n• *Pokeballs:* +' + pokeballTotal;
-      if (summary.tmsAdded > 0) msg += '\n• *TMs:* +' + summary.tmsAdded;
-      if (summary.stonesAdded > 0) msg += '\n• *Mega Stones:* +' + summary.stonesAdded;
-      if (summary.mintsAdded > 0) msg += '\n• *Nature Mints:* +' + summary.mintsAdded;
-      if (summary.bottleCapsAdded > 0) msg += '\n• *Bottle Caps:* +' + summary.bottleCapsAdded;
-      if (summary.goldBottleCapsAdded > 0) msg += '\n• *Gold Bottle Caps:* +' + summary.goldBottleCapsAdded;
+      msg = msg.slice(0, 3450) + '\n...';
     }
 
     await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, msg, {

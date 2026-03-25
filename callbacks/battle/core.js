@@ -150,8 +150,7 @@ function registerBattleCallbacks(bot, deps) {
   }
 
   function getBattleDynamaxMultiplier(pokemon) {
-    const level = getDynamaxLevel(pokemon);
-    return 1 + (level * 0.1);
+    return 2;
   }
 
   function getBattleDisplayedMaxHp(battleData, pokemon, baseMaxHp) {
@@ -4772,8 +4771,10 @@ if (!singleActionTurn && battleData.queuedActions.length < 2) {
 
     const attacker = await getUserData(battleData.cid);
     const defender = await getUserData(battleData.oid);
-    const p1 = attacker.pokes.filter((poke) => poke.pass == battleData.c)[0]
-    const p2 = defender.pokes.filter((poke) => poke.pass == battleData.o)[0]
+    const attackerPokes = Array.isArray(attacker && attacker.pokes) ? attacker.pokes : []
+    const defenderPokes = Array.isArray(defender && defender.pokes) ? defender.pokes : []
+    const p1 = attackerPokes.filter((poke) => poke.pass == battleData.c)[0]
+    const p2 = defenderPokes.filter((poke) => poke.pass == battleData.o)[0]
     if (!p1 || !p2) {
       dbg('multimo:wait_missing_pokes', { bword, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o });
       return;
@@ -4805,7 +4806,13 @@ if (!singleActionTurn && battleData.queuedActions.length < 2) {
         // Forfeit logic: inactive player loses
         const inactiveUser = await getUserData(nextUserId);
         const opponentUser = await getUserData(battleData.oid);
+        if (opponentUser && opponentUser.inv) {
+          if (typeof opponentUser.inv.league_points !== 'number') opponentUser.inv.league_points = 0;
+          opponentUser.inv.league_points += 25;
+          await saveUserData2(battleData.oid, opponentUser);
+        }
         let forfeitMsg = `\n\n<b>${displayName(inactiveUser, nextUserId)} took too long!\nThey forfeit the match due to inactivity (60s timeout).</b>`;
+        forfeitMsg += `\n<b>${displayName(opponentUser, battleData.oid)} +25 LP ⭐.</b>`;
         // End the battle, declare opponent as winner
         // (You may want to call your existing battle end/cleanup logic here)
         // Remove from messageData.battle, etc.

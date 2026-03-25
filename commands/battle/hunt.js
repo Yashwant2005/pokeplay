@@ -33,7 +33,11 @@ function registerHuntCommand(bot, deps) {
   
   }
   
-    const region = data.inv.region
+    const regionAliases = {
+      blueberry: 'paldea',
+      kitakami: 'paldea'
+    }
+    const region = rdata[data.inv.region] ? data.inv.region : (regionAliases[String(data.inv.region || '').toLowerCase()] || data.inv.region)
   
   if(!region || !rdata[region]){
   
@@ -65,9 +69,9 @@ function registerHuntCommand(bot, deps) {
   
   await saveUserData2(ctx.from.id,data)
   
-  const mdata = await loadMessageData();
+  const mdata = await loadMessageDataFresh();
   
-  if(Array.isArray(mdata.battle) && mdata.battle.includes(ctx.from.id)){
+  if((Array.isArray(mdata.battle) && mdata.battle.some((id) => String(id) === String(ctx.from.id))) || mdata[ctx.from.id]){
   
   await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You are in a *battle*',{reply_to_message_id:ctx.message.message_id})
   
@@ -240,7 +244,7 @@ function registerHuntCommand(bot, deps) {
   let rg = data.inv.region
   
   if(
-    ['alola', 'melmele', 'akala', 'ulaula', 'poni'].includes(playerRegion) ||
+    ['alola', 'melemele', 'akala', 'ulaula', 'poni'].includes(playerRegion) ||
     (isActiveSafari && safariRegion == 'alola')
   ){
     rg = 'alola'

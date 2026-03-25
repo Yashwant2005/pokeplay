@@ -98,7 +98,8 @@ function registerDailyRewardCommand(bot, deps) {
   });
 
   bot.command('dailyreset', check, async (ctx) => {
-    if (!Array.isArray(admins) || !admins.includes(ctx.from.id)) {
+    const adminIds = Array.isArray(admins) ? admins.map((id) => String(id)) : [];
+    if (!adminIds.includes(String(ctx.from.id))) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Only admins can use /dailyreset.*', {
         reply_to_message_id: ctx.message.message_id
       });

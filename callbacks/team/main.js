@@ -1,14 +1,16 @@
 function register_027_main(bot, deps) {
   Object.assign(globalThis, deps, { bot });
-  bot.action(/main_/,check2q,async ctx => {
+  bot.action(/^main_/,check2q,async ctx => {
 const userData = await getUserData(ctx.from.id);
+if(!userData.inv || typeof userData.inv !== 'object') userData.inv = {}
+if(!Array.isArray(userData.pokes)) userData.pokes = []
+if(!userData.teams || typeof userData.teams !== 'object') userData.teams = {}
  const team = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2] || false
 if(id && ctx.from.id!=id){
 ctx.answerCbQuery()
 return
 }
-if(!userData.inv || typeof userData.inv !== 'object') userData.inv = {}
 if(!userData.teams || typeof userData.teams !== 'object' || !Array.isArray(userData.teams[team])){
 ctx.answerCbQuery('Team not found')
 return

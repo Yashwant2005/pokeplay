@@ -3,11 +3,13 @@ function register_028_add(bot, deps) {
   bot.action(/add_/, check2q,async ctx => {
 const userData = await getUserData(ctx.from.id);
   const team = ctx.callbackQuery.data.split('_')[1];
-let pokes = await sort(ctx.from.id,userData.pokes);
+if(!Array.isArray(userData.pokes)) userData.pokes = [];
+const visiblePokes = userData.pokes.filter((poke) => !poke.temp_battle);
+let pokes = await sort(ctx.from.id,visiblePokes);
   const buttonsPerRow = 5;
   let page = parseInt(ctx.callbackQuery.data.split('_')[2]) || 1
   const itemsPerPage = 20;
-const totalPages = Math.ceil(userData.pokes.length / itemsPerPage);
+const totalPages = Math.ceil(Math.max(pokes.length, 1) / itemsPerPage);
 if(page<1 || page > totalPages){
 return
 }

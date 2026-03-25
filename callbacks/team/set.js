@@ -2,6 +2,9 @@ function register_022_set(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action(/set_/, check2q,async (ctx) => {
 const userData = await getUserData(ctx.from.id);
+if(!userData.inv || typeof userData.inv !== 'object') userData.inv = {}
+if(!Array.isArray(userData.pokes)) userData.pokes = []
+if(!userData.teams || typeof userData.teams !== 'object') userData.teams = {}
     const team = ctx.callbackQuery.data.split('_')[1];
 
     if (!userData.teams || !userData.teams[team]) {

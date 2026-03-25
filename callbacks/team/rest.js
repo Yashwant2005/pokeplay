@@ -8,6 +8,10 @@ let userData = {};
  userData = {};
   }
  const team = ctx.callbackQuery.data.split('_')[1]
+if(!userData.inv || typeof userData.inv !== 'object') userData.inv = {}
+if(!Array.isArray(userData.pokes)) userData.pokes = []
+if(!userData.teams || typeof userData.teams !== 'object') userData.teams = {}
+if(!Array.isArray(userData.teams[team])) userData.teams[team] = []
 const count = userData.teams[team].length
 if(count<1){
 ctx.answerCbQuery('Add Some Pokes First')

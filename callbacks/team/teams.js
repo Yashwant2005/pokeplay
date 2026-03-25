@@ -2,8 +2,11 @@ function register_025_teams(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action('teams',check2q,async ctx => {
 const userData = await getUserData(ctx.from.id);
+if(!userData.inv || typeof userData.inv !== 'object') userData.inv = {}
+if(!Array.isArray(userData.pokes)) userData.pokes = []
+if(!userData.teams || typeof userData.teams !== 'object') userData.teams = {}
 const team = userData.inv.team*1 || 1
-const pokes = userData.teams[team];
+const pokes = Array.isArray(userData.teams[team]) ? userData.teams[team] : [];
     const matchings = [];
 let b = 1
     for (const pass of pokes) {

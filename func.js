@@ -352,13 +352,29 @@ async function check(ctx, next) {
   const data = await getUserData(ctx.from.id);
   const msgdata = await loadMessageData();
   const inBattle = Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id);
-  if (!inBattle && data.extra && data.extra.temp_battle) {
-    const allPasses = Object.values(data.extra.temp_battle).flat();
-    if (allPasses.length > 0 && Array.isArray(data.pokes)) {
-      data.pokes = data.pokes.filter((p) => !allPasses.includes(p.pass));
+  if (!inBattle) {
+    data.extra = data.extra || {};
+    const tempBattleEntries = data.extra.temp_battle && typeof data.extra.temp_battle === 'object'
+      ? Object.values(data.extra.temp_battle).flat().filter(Boolean)
+      : [];
+    const pokes = Array.isArray(data.pokes) ? data.pokes : [];
+    const hadTempBattlePokes = pokes.some((poke) => poke && poke.temp_battle);
+    const shouldCleanupTempBattle = tempBattleEntries.length > 0 || hadTempBattlePokes;
+
+    if (shouldCleanupTempBattle) {
+      const cleanedPokes = pokes.filter((poke) => poke && !poke.temp_battle && !tempBattleEntries.includes(poke.pass));
+      const validPasses = new Set(cleanedPokes.map((poke) => poke.pass));
+      data.pokes = cleanedPokes;
+
+      if (Array.isArray(data.teams)) {
+        data.teams = data.teams
+          .map((team) => Array.isArray(team) ? team.filter((pass) => validPasses.has(pass)) : [])
+          .filter((team) => team.length > 0);
+      }
+
+      data.extra.temp_battle = {};
+      await saveUserData2(ctx.from.id, data);
     }
-    data.extra.temp_battle = {};
-    await saveUserData2(ctx.from.id, data);
   }
 
   if (!data.pokes) {
@@ -371,43 +387,7 @@ return
 await next();
 }
 async function check2(ctx,next){
-const msgdata = await loadMessageData();
-const now = Date.now();
-const isEntryExpired = (entry) => {
-  if (!entry || typeof entry !== 'object') return true;
-  const hasTimes = typeof entry.times === 'number';
-  const hasTimestamp = typeof entry.timestamp === 'number';
-  if (!hasTimes && !hasTimestamp) return true;
-  if (hasTimes && now - entry.times > 130000) return true;
-  if (hasTimestamp && now - entry.timestamp > 60000) return true;
-  return false;
-};
-const hasActiveBattleReference = (data, userId) => {
-  const idStr = String(userId);
-  for (const [key, entry] of Object.entries(data || {})) {
-    if (key === 'battle' || key === 'moves' || key === 'tutor') continue;
-    if (!entry || typeof entry !== 'object') continue;
-    if (isEntryExpired(entry)) continue;
-    if (entry.turn !== undefined && String(entry.turn) === idStr) return true;
-    if (entry.oppo !== undefined && String(entry.oppo) === idStr) return true;
-    if (entry.id !== undefined && String(entry.id) === idStr && entry.mid) return true;
-  }
-  return false;
-};
-let needsSave = false;
-if (Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) {
-  if (!hasActiveBattleReference(msgdata, ctx.from.id)) {
-    msgdata.battle = msgdata.battle.filter((id) => String(id) !== String(ctx.from.id));
-    needsSave = true;
-  }
-}
-if (msgdata[ctx.from.id] && isEntryExpired(msgdata[ctx.from.id])) {
-  delete msgdata[ctx.from.id];
-  needsSave = true;
-}
-if (needsSave) {
-  await saveMessageData(msgdata);
-}
+const msgdata = await loadMessageDataFresh();
 if ((Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) || msgdata[ctx.from.id]){
   ctx.replyWithMarkdown('You are in *Battle*',{reply_to_message_id:ctx.message.message_id})
   return
@@ -415,43 +395,7 @@ if ((Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) || m
 await next();
 }
 async function check2q(ctx,next){
-const msgdata = await loadMessageData();
-const now = Date.now();
-const isEntryExpired = (entry) => {
-  if (!entry || typeof entry !== 'object') return true;
-  const hasTimes = typeof entry.times === 'number';
-  const hasTimestamp = typeof entry.timestamp === 'number';
-  if (!hasTimes && !hasTimestamp) return true;
-  if (hasTimes && now - entry.times > 130000) return true;
-  if (hasTimestamp && now - entry.timestamp > 60000) return true;
-  return false;
-};
-const hasActiveBattleReference = (data, userId) => {
-  const idStr = String(userId);
-  for (const [key, entry] of Object.entries(data || {})) {
-    if (key === 'battle' || key === 'moves' || key === 'tutor') continue;
-    if (!entry || typeof entry !== 'object') continue;
-    if (isEntryExpired(entry)) continue;
-    if (entry.turn !== undefined && String(entry.turn) === idStr) return true;
-    if (entry.oppo !== undefined && String(entry.oppo) === idStr) return true;
-    if (entry.id !== undefined && String(entry.id) === idStr && entry.mid) return true;
-  }
-  return false;
-};
-let needsSave = false;
-if (Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) {
-  if (!hasActiveBattleReference(msgdata, ctx.from.id)) {
-    msgdata.battle = msgdata.battle.filter((id) => String(id) !== String(ctx.from.id));
-    needsSave = true;
-  }
-}
-if (msgdata[ctx.from.id] && isEntryExpired(msgdata[ctx.from.id])) {
-  delete msgdata[ctx.from.id];
-  needsSave = true;
-}
-if (needsSave) {
-  await saveMessageData(msgdata);
-}
+const msgdata = await loadMessageDataFresh();
 if ((Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) || msgdata[ctx.from.id]){
   ctx.answerCbQuery('You are in Battle')
   return

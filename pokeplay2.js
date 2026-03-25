@@ -1,8 +1,8 @@
 ﻿let msgsent = []
 const appr = [1072659486, 6265981509]
-const botToken = '8734728430:AAF1nY-gwmINr4-jQn18ts5IQBCkM9gszoo' //main bot
-//const botToken = '8734728430:AAEOH4b37Iq0gCyScapQBwE4Emiaqr-nRZs' //backup bot
-//const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // test bot
+//const botToken = '8734728430:AAF1nY-gwmINr4-jQn18ts5IQBCkM9gszoo' //main bot
+//const botToken = '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' //backup bot
+const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // test bot
 const { Telegraf } = require('telegraf')
 const bot = new Telegraf(botToken)
 if (process.env.QUIET_LOGS === '1') {
@@ -1337,16 +1337,29 @@ async function editOverdueMessages() {
               await saveMessageData(messageData);
               return;
             }
-            let newMessage = `<a href="tg://user?id=${turn}"><b>${d1Name}</b></a> has not moved.`;
-            newMessage += `\n<a href="tg://user?id=${oppo}"><b>${d2Name}</b></a> <b>+25</b> LP ⭐.`;
-
-            if (d2 && d2.inv) {
-              if (typeof d2.inv.league_points !== 'number') d2.inv.league_points = 0;
-              d2.inv.league_points += 25;
+            let inactiveId = turn;
+            let winnerId = oppo;
+            let inactiveName = d1Name;
+            let winnerName = d2Name;
+            let winnerData = d2;
+            const queuedActions = Array.isArray(battleData.queuedActions) ? battleData.queuedActions : [];
+            if (queuedActions.length === 1) {
+              const actingId = String(queuedActions[0] && queuedActions[0].cid || '');
+              if (actingId === String(turn)) {
+                inactiveId = oppo;
+                winnerId = turn;
+                inactiveName = d2Name;
+                winnerName = d1Name;
+                winnerData = d1;
+              }
             }
+            let newMessage = `<a href="tg://user?id=${inactiveId}"><b>${inactiveName}</b></a> has not moved.`;
+            newMessage += `\n<a href="tg://user?id=${winnerId}"><b>${winnerName}</b></a> <b>+25</b> LP ⭐.`;
 
-            if (d2 && d2.inv) {
-              await saveUserData2(oppo, d2);
+            if (winnerData && winnerData.inv) {
+              if (typeof winnerData.inv.league_points !== 'number') winnerData.inv.league_points = 0;
+              winnerData.inv.league_points += 25;
+              await saveUserData2(winnerId, winnerData);
             }
             messageData.battle = messageData.battle.filter((chats) => chats !== parseInt(turn) && chats !== parseInt(oppo));
             delete messageData[chatId];

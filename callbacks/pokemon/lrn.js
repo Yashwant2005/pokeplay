@@ -5,6 +5,13 @@ const pass = ctx.callbackQuery.data.split('_')[1]
 const mid = ctx.callbackQuery.data.split('_')[2]
 const time = ctx.callbackQuery.data.split('_')[3]
 const data = await getUserData(ctx.from.id)
+if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+if(!data.extra.pendingMoveLearn || typeof data.extra.pendingMoveLearn !== 'object') data.extra.pendingMoveLearn = {}
+const pendingKey = pass + '_' + mid + '_' + String(time)
+if(data.extra.pendingMoveLearn[pendingKey] === 'processing'){
+ctx.answerCbQuery('This move choice is already open.')
+return
+}
 const poke = data.pokes.filter((poke)=> poke.pass == pass)[0]
 if(!poke){
 ctx.answerCbQuery('You Not Have This Poke AnyMore')
@@ -19,6 +26,8 @@ if(!Number.isFinite(queryTime)){
     queryTime = Date.now()
   }
 }
+data.extra.pendingMoveLearn[pendingKey] = 'selecting'
+await saveUserData2(ctx.from.id,data)
 const timeDifference = Date.now() - queryTime;
 console.log(timeDifference)
 let msg = '<b>Pokemon :</b> '+c(poke.name)+' (Lv. '+plevel(poke.name,poke.exp)+')\n\n'

@@ -6,6 +6,8 @@ const pass = ctx.callbackQuery.data.split('_')[2]
 const mid = ctx.callbackQuery.data.split('_')[3]
 const time = ctx.callbackQuery.data.split('_')[4]
 const data = await getUserData(ctx.from.id)
+if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+if(!data.extra.pendingMoveLearn || typeof data.extra.pendingMoveLearn !== 'object') data.extra.pendingMoveLearn = {}
 const poke = data.pokes.filter((poke)=> poke.pass == pass)[0]
 if(!poke){
 ctx.answerCbQuery('You Not Have This Poke AnyMore')
@@ -14,6 +16,13 @@ return
 const queryTime = Number(time)
 const timeDifference = Date.now() - (Number.isFinite(queryTime) ? queryTime : Date.now());
 console.log(timeDifference)
+const pendingKey = pass + '_' + mid + '_' + String(time)
+if(!data.extra.pendingMoveLearn[pendingKey]){
+ctx.answerCbQuery('This move choice is already resolved.')
+return
+}
+data.extra.pendingMoveLearn[pendingKey] = 'confirming'
+await saveUserData2(ctx.from.id,data)
 let msg = 'Are You Sure To Your <b>'+c(poke.name)+'</b> (<b>Lv.</b> '+plevel(poke.name,poke.exp)+')\n\n'
 msg += '<b>Forget The Move:</b>'
 const move = dmoves[String(move9)]

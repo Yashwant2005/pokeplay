@@ -1,17 +1,8 @@
 module.exports = function registerExitMeCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
 
-  function isEntryExpired(entry, now) {
-    if (!entry || typeof entry !== 'object') return true;
-    const hasTimes = typeof entry.times === 'number';
-    const hasTimestamp = typeof entry.timestamp === 'number';
-    if (!hasTimes && !hasTimestamp) return true;
-    if (hasTimes && now - entry.times <= 130000) return false;
-    if (hasTimestamp && now - entry.timestamp <= 60000) return false;
-    return true;
-  }
-
   function isUserEntry(entry, userId) {
+    if (!entry || typeof entry !== 'object') return false;
     const idStr = String(userId);
     return (
       (entry.turn !== undefined && String(entry.turn) === idStr) ||
@@ -20,33 +11,21 @@ module.exports = function registerExitMeCommand(bot, deps) {
     );
   }
 
-  function clearUserFromMessageData(userId) {
-    const mdata = loadMessageData();
-    if (!mdata || typeof mdata !== 'object') return { cleared: false, active: false };
-
-    const now = Date.now();
-    let active = false;
-    for (const [key, entry] of Object.entries(mdata)) {
-      if (key === 'battle' || key === 'moves' || key === 'tutor') continue;
-      if (!entry || typeof entry !== 'object') continue;
-      if (!isUserEntry(entry, userId)) continue;
-      if (!isEntryExpired(entry, now)) {
-        active = true;
-        break;
-      }
-    }
-
-    if (active) {
-      return { cleared: false, active: true };
+  async function clearUserFromMessageData(userId) {
+    const mdata = await loadMessageDataFresh();
+    if (!mdata || typeof mdata !== 'object') {
+      return { cleared: false, battleChats: [] };
     }
 
     const key = String(userId);
     let dirty = false;
+    const battleChats = new Set();
 
     if (mdata[key]) {
       delete mdata[key];
       dirty = true;
     }
+
     if (Array.isArray(mdata.battle)) {
       const filtered = mdata.battle.filter((id) => String(id) !== key);
       if (filtered.length !== mdata.battle.length) {
@@ -57,10 +36,10 @@ module.exports = function registerExitMeCommand(bot, deps) {
 
     for (const [chatId, entry] of Object.entries(mdata)) {
       if (chatId === 'battle' || chatId === 'moves' || chatId === 'tutor') continue;
-      if (entry && isUserEntry(entry, userId)) {
-        delete mdata[chatId];
-        dirty = true;
-      }
+      if (!isUserEntry(entry, userId)) continue;
+      battleChats.add(String(chatId));
+      delete mdata[chatId];
+      dirty = true;
     }
 
     if (mdata.moves && typeof mdata.moves === 'object') {
@@ -84,26 +63,60 @@ module.exports = function registerExitMeCommand(bot, deps) {
     }
 
     if (dirty) {
-      saveMessageData(mdata);
+      await saveMessageData(mdata);
     }
-    return { cleared: dirty, active: false };
+
+    return { cleared: dirty, battleChats: Array.from(battleChats) };
+  }
+
+  async function clearUserBattleState(userId, battleChats) {
+    let clearedBattles = 0;
+    for (const chatId of battleChats) {
+      try {
+        await saveBattleData(chatId, {});
+        clearedBattles += 1;
+      } catch (error) {
+        // ignore cache clear failures for individual battle rooms
+      }
+    }
+
+    let userDataCleared = false;
+    try {
+      const data = await getUserData(userId);
+      if (data && typeof data === 'object') {
+        data.extra = data.extra && typeof data.extra === 'object' ? data.extra : {};
+        let dirty = false;
+
+        if (data.extra.hunting) {
+          data.extra.hunting = false;
+          dirty = true;
+        }
+        if (data.extra.temp_battle && Object.keys(data.extra.temp_battle).length > 0) {
+          data.extra.temp_battle = {};
+          dirty = true;
+        }
+        if (data.extra.pendingMoveLearn && typeof data.extra.pendingMoveLearn === 'object' && Object.keys(data.extra.pendingMoveLearn).length > 0) {
+          data.extra.pendingMoveLearn = {};
+          dirty = true;
+        }
+
+        if (dirty) {
+          await saveUserData2(userId, data);
+          userDataCleared = true;
+        }
+      }
+    } catch (error) {
+      userDataCleared = false;
+    }
+
+    return { clearedBattles, userDataCleared };
   }
 
   bot.command('exitme', async (ctx) => {
     const targetId = ctx.from && ctx.from.id ? ctx.from.id : null;
     if (!targetId) return;
 
-    const result = clearUserFromMessageData(targetId);
-    if (result.active) {
-      await sendMessage(
-        ctx,
-        ctx.chat.id,
-        { parse_mode: 'markdown' },
-        'You are in an *active* battle/hunt right now.\nFinish it first, or wait a minute and try again.',
-        { reply_to_message_id: ctx.message.message_id }
-      );
-      return;
-    }
+    const result = await clearUserFromMessageData(targetId);
 
     let sessionCleared = false;
     try {
@@ -112,8 +125,12 @@ module.exports = function registerExitMeCommand(bot, deps) {
       sessionCleared = false;
     }
 
+    const battleState = await clearUserBattleState(targetId, result.battleChats);
+
     const extras = [];
-    if (result.cleared) extras.push('battle state cleared');
+    if (result.cleared) extras.push('message state cleared');
+    if (battleState.clearedBattles > 0) extras.push('battle cache cleared');
+    if (battleState.userDataCleared) extras.push('user battle flags reset');
     if (sessionCleared) extras.push('session refreshed');
     const extraText = extras.length ? ' (' + extras.join(', ') + ')' : '';
 
@@ -121,7 +138,7 @@ module.exports = function registerExitMeCommand(bot, deps) {
       ctx,
       ctx.chat.id,
       { parse_mode: 'markdown' },
-      '*Done.* Your stuck state has been refreshed' + extraText + '.',
+      '*Done.* You were force-exited from all battle states' + extraText + '.',
       { reply_to_message_id: ctx.message.message_id }
     );
   });

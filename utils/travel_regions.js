@@ -99,12 +99,11 @@ const REGION_CONFIG = {
     id: 'paldea',
     label: 'Paldea',
     defaultRegion: 'paldea',
-    regionKeys: ['paldea', 'kitakami', 'blueberry'],
+    regionKeys: ['paldea', 'kitakami'],
     locationDataKey: 'Paldea',
     travelOptions: [
       { label: 'Paldea', regionKey: 'paldea' },
-      { label: 'Kitakami', regionKey: 'kitakami' },
-      { label: 'Blueberry', regionKey: 'blueberry' }
+      { label: 'Kitakami', regionKey: 'kitakami' }
     ]
   },
   conquest: {

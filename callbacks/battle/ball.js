@@ -3,6 +3,29 @@ function register_015_ball(bot, deps) {
     const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
     const { getBattleHeldItemName } = require('../../utils/battle_abilities');
     const { revertTrackedFormsOnBattleEnd } = require('../../utils/battle_forms');
+    const clearBattlePrompt = async (chatId, userId, battleKey) => {
+      const messageData = await loadMessageDataFresh();
+      let dirty = false;
+      if (Array.isArray(messageData.battle)) {
+        const filtered = messageData.battle.filter((id) => String(id) !== String(userId));
+        if (filtered.length !== messageData.battle.length) {
+          messageData.battle = filtered;
+          dirty = true;
+        }
+      }
+      if (messageData[chatId]) {
+        delete messageData[chatId];
+        dirty = true;
+      }
+      if (messageData[userId]) {
+        delete messageData[userId];
+        dirty = true;
+      }
+      if (dirty) {
+        await saveMessageData(messageData);
+      }
+      await saveBattleData(battleKey, {});
+    };
     const revertPowerConstructFormsOnBattleEnd = (battleDataArg, userData) => {
       if (!battleDataArg || !battleDataArg.powerConstructOriginal || !userData || !Array.isArray(userData.pokes)) return
       for (const pass of Object.keys(battleDataArg.powerConstructOriginal)) {
@@ -28,9 +51,9 @@ if (userId !== undefined) battlec[userKey] = now;
 const ball = ctx.callbackQuery.data.split('_')[1]
 const bword = ctx.callbackQuery.data.split('_')[2]
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You Thrown A '+c(ball)+' Ball')
-const data = await getUserData(ctx.from.id)
-data.balls[ball] -= 1
-await saveUserData2(ctx.from.id,data)
+  const data = await getUserData(ctx.from.id)
+  data.balls[ball] -= 1
+  await saveUserData2(ctx.from.id,data)
 await sleep(600)
 let battleData = {};
     try {
@@ -39,11 +62,13 @@ let battleData = {};
       battleData = {};
     }
 if(!battleData || !battleData.c || !battleData.name){
+  await clearBattlePrompt(ctx.chat.id, ctx.from.id, bword)
   ctx.answerCbQuery('Battle expired. Start again.')
   return
 }
 const p = data.pokes.filter((poke)=>poke.pass==battleData.c)[0]
 if(!p){
+  await clearBattlePrompt(ctx.chat.id, ctx.from.id, bword)
   ctx.answerCbQuery('Battle desynced. Use /reset_battle.')
   return
 }
@@ -78,7 +103,8 @@ buttons.push({text:'  ',callback_data:'empty'})
     rows.push(buttons.slice(i, i + 2));
   }
 const key2 = [{text:'Bag',callback_data:'bag_'+bword+''},{text:'Escape',callback_data:'run_'+bword+''},{text:'Pokemon',callback_data:'pokemon_'+bword+''}]
-const isstone = [...new Set(data.inv.stones)].filter(stone => stones[stone]?.pokemon === p.name)
+const playerStones = Array.isArray(data.inv && data.inv.stones) ? data.inv.stones : []
+const isstone = [...new Set(playerStones)].filter(stone => stones[stone]?.pokemon === p.name)
 rows.push(key2)
   const keyboard = {
     inline_keyboard: rows,key2
@@ -106,9 +132,9 @@ bonusBall = ((52-battleData.level*1)/10)
 }
 }
 if(ball == 'repeat'){
-if(data.pokecaught.includes(battleData.name)){
-bonusBall = 4.7
-}
+ if(Array.isArray(data.pokecaught) && data.pokecaught.includes(battleData.name)){
+  bonusBall = 4.7
+ }
 }
 if(ball=='quick' && battleData.ochp == battleData.ohp){
 bonusBall = 6
@@ -151,18 +177,12 @@ revertPowerConstructFormsOnBattleEnd(battleData, data)
 revertTrackedFormsOnBattleEnd(battleData, data)
 await saveUserData2(ctx.from.id,data)
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Your *'+c(ball)+'* Failed And wild *'+c(battleData.name)+'* Has fled.',{parse_mode:'markdown'})
-const messageData = await loadMessageData();
-if(messageData[ctx.from.id]) {
-messageData.battle = messageData.battle.filter((chats)=> chats!== ctx.from.id)
-delete messageData[ctx.from.id];
-await saveMessageData(messageData)
-}
-await saveBattleData(bword, {})
-return
-}
-const messageData = await loadMessageData();
-    messageData[ctx.chat.id] = { mid: ctx.callbackQuery.message.message_id, timestamp: Date.now(),id:ctx.from.id };
-    await saveMessageData(messageData);
+  await clearBattlePrompt(ctx.chat.id, ctx.from.id, bword)
+  return
+  }
+ const messageData = await loadMessageDataFresh();
+     messageData[ctx.chat.id] = { mid: ctx.callbackQuery.message.message_id, timestamp: Date.now(),id:ctx.from.id };
+     await saveMessageData(messageData);
 if(ball=='safari'){
 if(data.balls.safari && data.balls.safari > 0){
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<i>Your Safari Ball Failed.</i>\n\n<b>wild</b> '+c(battleData.name)+' ['+c(op.types.join(' / '))+'] - <b>Level :</b> '+battleData.level+'\n\n<b>Safari Balls:</b> '+data.balls.safari+'',{
@@ -172,15 +192,9 @@ inline_keyboard:[[{text:'Use Safari Ball',callback_data:'ball_safari_'+bword+''}
 {text:'Escape',callback_data:'run_'+bword+''}]]}})
 return
 }else{
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'*You are out of safari balls*',{parse_mode:'markdown'})
-const messageData = await loadMessageData();
-if(messageData[ctx.from.id]) {
-messageData.battle = messageData.battle.filter((chats)=> chats!== ctx.from.id)
-delete messageData[ctx.from.id];
-await saveMessageData(messageData) 
-}
-await saveBattleData(bword, {})
-return
+ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'*You are out of safari balls*',{parse_mode:'markdown'})
+ await clearBattlePrompt(ctx.chat.id, ctx.from.id, bword)
+ return
 }
 return
 }
@@ -209,14 +223,9 @@ await sleep(800)
    try{
      await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Missing pokemon data. Please /hunt again.',{parse_mode:'markdown'})
    }catch(e){}
-   const messageData = await loadMessageData();
-   if(messageData[ctx.from.id]) {
-     messageData.battle = messageData.battle.filter((chats)=> chats!== ctx.from.id)
-     delete messageData[ctx.from.id];
-     await saveMessageData(messageData)
-   }
-   return
- }
+    await clearBattlePrompt(ctx.chat.id, ctx.from.id, bword)
+    return
+  }
  const exp = chart[g.growth_rate][String(battleData.level)]
 const nyio = battleData.name
 if(battleData.org == 'yes' && Math.random()< 0.98){
@@ -249,7 +258,8 @@ const caughtHeldItem = getBattleHeldItemName({
   pass: battleData.opass,
   heldItem: battleData.oheld_item
 })
-if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+  if(!data.extra || typeof data.extra !== 'object') data.extra = {}
+  if(!Array.isArray(data.pokes)) data.pokes = []
 data.pokes.push({
 name:battleData.name,
 nature:battleData.nat,
@@ -280,18 +290,13 @@ if(data.teams[teamId].length < 6 && !data.teams[teamId].includes(pass2)){
 if(!data.pokecaught){
 data.pokecaught = []
 }
-if(!data.pokecaught.includes(battleData.name)){
-data.pokecaught.push(battleData.name)
-}
-revertPowerConstructFormsOnBattleEnd(battleData, data)
-revertTrackedFormsOnBattleEnd(battleData, data)
-await saveUserData2(ctx.from.id,data)
-const messageData = await loadMessageData();
-if(messageData[ctx.from.id]) {
-messageData.battle = messageData.battle.filter((chats)=> chats !== ctx.from.id)
-delete messageData[ctx.from.id];
-await saveMessageData(messageData) 
-}
+  if(!data.pokecaught.includes(battleData.name)){
+  data.pokecaught.push(battleData.name)
+  }
+  revertPowerConstructFormsOnBattleEnd(battleData, data)
+  revertTrackedFormsOnBattleEnd(battleData, data)
+  await saveUserData2(ctx.from.id,data)
+  await clearBattlePrompt(ctx.chat.id, ctx.from.id, bword)
 if(Math.random()< 0.00003){
 const idr = ctx.from.id
 const dr = await getUserData(idr)

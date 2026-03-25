@@ -1,7 +1,10 @@
 function registerMyteamsCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   commands.set('myteams',async ctx => {  
-  const userData = await getUserData(ctx.from.id)  
+  const userData = await getUserData(ctx.from.id)
+  if(!Array.isArray(userData.pokes)){
+  userData.pokes = []
+  }
   if(!userData.inv){  
   await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Start your journey now*',{reply_to_message_id:ctx.message.message_id,  
   reply_markup:{inline_keyboard:[[  
@@ -20,7 +23,7 @@ function registerMyteamsCommand(bot, deps) {
     
       await saveUserData2(ctx.from.id, userData);  
   const team = userData.inv.team*1 || 1  
-  const teampokes = userData.teams[team];  
+  const teampokes = Array.isArray(userData.teams[team]) ? userData.teams[team] : [];
   var matching = [];  
   let b = 1  
       for (const pass of teampokes) {  

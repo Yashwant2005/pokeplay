@@ -75,9 +75,10 @@ function register_021_travel(bot, deps) {
   };
 
   bot.action(/travel_/, check2q, async (ctx) => {
-    const parts = ctx.callbackQuery.data.split('_');
-    const action = parts[1];
-    const userId = parts[2];
+    const raw = String(ctx.callbackQuery.data || '');
+    const splitAt = raw.lastIndexOf('_');
+    const action = splitAt >= 0 ? raw.slice('travel_'.length, splitAt) : '';
+    const userId = splitAt >= 0 ? raw.slice(splitAt + 1) : '';
 
     if(ctx.from.id != userId){
       ctx.answerCbQuery();
@@ -103,6 +104,18 @@ function register_021_travel(bot, deps) {
     const regionId = actionParts[1];
     const indexText = actionParts[2];
     const config = REGION_CONFIG[regionId] || null;
+
+    if(type === 'menu' && regionId === 'back'){
+      await editMessage(
+        'text',
+        ctx,
+        ctx.chat.id,
+        ctx.callbackQuery.message.message_id,
+        '*Which Region You Wanna Travel?*\n\n*Travel cost:* _100 PokeCoins when changing major region. Same-region travel is free._',
+        { parse_mode: 'markdown', reply_markup: { inline_keyboard: buildMainTravelKeyboard(ctx.from.id) } }
+      );
+      return;
+    }
 
     if(type === 'menu' && config){
       const currentRegionConfig = getRegionConfigByRegionKey(data.inv.region);

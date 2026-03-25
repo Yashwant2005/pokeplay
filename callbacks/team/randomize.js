@@ -3,9 +3,11 @@ function register_024_randomize(bot, deps) {
   bot.action(/randomize_/,check2q,async ctx => {
 const data = await getUserData(ctx.from.id)
 const team = ctx.callbackQuery.data.split('_')[1]
+if(!Array.isArray(data.pokes)) data.pokes = []
+if(!data.teams || typeof data.teams !== 'object') data.teams = {}
 const pk5 = []
 for(let i = 1; i <=6; i++){
-const pk = data.pokes.filter((pk2)=> !pk5.includes(pk2.pass))
+const pk = data.pokes.filter((pk2)=> !pk2.temp_battle && !pk5.includes(pk2.pass))
 if(pk.length > 0){
 const ran = pk[Math.floor(Math.random()*pk.length)]
 pk5.push(ran.pass)

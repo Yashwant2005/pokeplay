@@ -14,9 +14,9 @@ const BATTLE_BOX_REWARDS = [
   { key: 'pokeballs', chance: 30.0 },
   { key: 'tm4', chance: 20.0 },
   { key: 'stone1', chance: 7.0 },
-  { key: 'mint1', chance: 2.6 },
+  { key: 'mint1', chance: 1.0 },
   { key: 'bottlecap1', chance: 0.3 },
-  { key: 'goldcap1', chance: 0.1 }
+  { key: 'goldcap1', chance: 0.0025 }
 ];
 
 const POKEBALL_REWARDS = [

@@ -6,6 +6,7 @@ const {
   cleanupTeamsForPokemon,
   parseEvBuild,
   parseMoveSet,
+  getLearnableMoveMap,
   estimateDaycarePlan,
   finalizeDaycarePokemon,
   formatEvSummary,
@@ -25,6 +26,78 @@ function registerDaycareCallbacks(bot, deps) {
 
   function getEligiblePokemon(data) {
     return (data.pokes || []).filter((poke) => poke && poke.pass);
+  }
+
+  function getDaycareMoveOptions(pokemonName) {
+    const learnable = getLearnableMoveMap(pokemonName, pokemoves, dmoves, chains);
+    return Array.from(learnable.entries())
+      .map(([key, moveId]) => ({
+        key,
+        moveId: Number(moveId),
+        name: (dmoves && dmoves[String(moveId)] && dmoves[String(moveId)].name) ? dmoves[String(moveId)].name : key.replace(/-/g, ' ')
+      }))
+      .sort((a, b) => String(a.name).localeCompare(String(b.name)));
+  }
+
+  function buildDaycareMovePickerMessage(data, pokemon, draft) {
+    const selectedMoves = Array.isArray(draft && draft.moves) ? draft.moves : [];
+    const plan = estimateDaycarePlan(pokemon, {
+      chart,
+      growthRates: growth_rates,
+      pokemoves,
+      dmoves,
+      evs: draft && draft.evs ? draft.evs : {},
+      moveIds: selectedMoves
+    });
+
+    let msg = '*Choose Daycare Moveset*\n';
+    msg += `\n*Pokemon:* ${c(pokemon.nickname || pokemon.name)}`;
+    msg += `\n*Level:* ${plan.currentLevel} -> 100`;
+    msg += `\n*EVs:* ${formatEvSummary(draft.evs)}`;
+    msg += `\n*Selected Moves:* ${selectedMoves.length}/4`;
+    msg += `\n*Moves:* ${selectedMoves.length ? formatMoveSummary(selectedMoves, dmoves, c) : 'None yet'}`;
+    msg += `\n*Cost:* ${plan.cost} PokeCoins`;
+    msg += `\n*Training Time:* ${formatDuration(plan.durationSeconds, 'seconds')}`;
+    msg += '\n\nTap moves to add or remove them. Only level-up moves from this evolution line are shown.';
+    if (selectedMoves.length > 0) {
+      msg += '\n\nWhen you are happy with the moveset, press *Start Daycare*.';
+    }
+    return msg;
+  }
+
+  function buildDaycareMovePickerKeyboard(pokemon, draft, userId) {
+    const options = getDaycareMoveOptions(pokemon.name);
+    const selected = new Set((draft.moves || []).map((id) => Number(id)));
+    const pageSize = 8;
+    const totalPages = Math.max(1, Math.ceil(options.length / pageSize));
+    const currentPage = Math.max(1, Math.min(totalPages, Number(draft.movePage) || 1));
+    const pageItems = options.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+    const rows = [];
+
+    for (let i = 0; i < pageItems.length; i += 2) {
+      const row = [];
+      for (const item of pageItems.slice(i, i + 2)) {
+        row.push({
+          text: (selected.has(item.moveId) ? '✓ ' : '') + String(item.name),
+          callback_data: 'daycare_movepick_' + item.moveId + '_' + userId
+        });
+      }
+      rows.push(row);
+    }
+
+    const nav = [];
+    if (currentPage > 1) nav.push({ text: '<', callback_data: 'daycare_movepage_' + (currentPage - 1) + '_' + userId });
+    nav.push({ text: currentPage + '/' + totalPages, callback_data: 'daycare_movepage_' + currentPage + '_' + userId });
+    if (currentPage < totalPages) nav.push({ text: '>', callback_data: 'daycare_movepage_' + (currentPage + 1) + '_' + userId });
+    if (nav.length) rows.push(nav);
+
+    if (selected.size > 0) {
+      rows.push([{ text: 'Start Daycare', callback_data: 'daycare_confirm_' + userId }]);
+      rows.push([{ text: 'Clear Moves', callback_data: 'daycare_moveclear_' + userId }]);
+    }
+
+    rows.push([{ text: 'Cancel Setup', callback_data: 'daycare_cancel_' + userId }]);
+    return rows;
   }
 
   function buildMenuMessage(data) {
@@ -158,7 +231,7 @@ function registerDaycareCallbacks(bot, deps) {
 
     let text = `*Select A Pokemon For Daycare* (Page ${safePage}/${totalPages})\n\n`;
     text += await pokelist(pageItems.map((item) => item.pass), ctx, startIndex);
-    text += '\n\nAfter selection, you will be asked for the final *EV build* and *moveset*.';
+    text += '\n\nAfter selection, you will send the final *EV build* and then choose the *moveset* from buttons.';
 
     const rows = [];
     let row = [];
@@ -285,7 +358,7 @@ function registerDaycareCallbacks(bot, deps) {
     };
     await saveUserData2(userId, data);
 
-    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, '*Daycare Setup Started*\n\nReply to the new prompt with your EV build.', {
+    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, '*Daycare Setup Started*\n\nReply to the new prompt with your EV build. After that, the move picker will open.', {
       parse_mode: 'markdown',
       reply_markup: { inline_keyboard: [[{ text: 'Cancel Setup', callback_data: 'daycare_cancel_' + userId }]] }
     });
@@ -309,6 +382,124 @@ function registerDaycareCallbacks(bot, deps) {
     });
   });
 
+  bot.action(/^daycare_movepage_(\d+)_(\d+)$/, check2q, async (ctx) => {
+    const page = Number(ctx.match[1]);
+    const userId = Number(ctx.match[2]);
+    if (ctx.from.id !== userId) {
+      await ctx.answerCbQuery('Not your setup.');
+      return;
+    }
+
+    const data = await getUserData(userId);
+    const daycare = ensureDaycareState(data);
+    const draft = daycare.draft;
+    if (!draft || draft.step !== 'moves_picker') {
+      await ctx.answerCbQuery('No pending move picker.');
+      return;
+    }
+
+    const pokemon = getDaycarePokemon(data, draft.pokemonPass);
+    if (!pokemon) {
+      daycare.draft = null;
+      await saveUserData2(userId, data);
+      await ctx.answerCbQuery('Pokemon not found.');
+      return;
+    }
+
+    draft.movePage = Math.max(1, page);
+    await saveUserData2(userId, data);
+    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, buildDaycareMovePickerMessage(data, pokemon, draft), {
+      parse_mode: 'markdown',
+      reply_markup: { inline_keyboard: buildDaycareMovePickerKeyboard(pokemon, draft, userId) }
+    });
+  });
+
+  bot.action(/^daycare_movepick_(\d+)_(\d+)$/, check2q, async (ctx) => {
+    const moveId = Number(ctx.match[1]);
+    const userId = Number(ctx.match[2]);
+    if (ctx.from.id !== userId) {
+      await ctx.answerCbQuery('Not your setup.');
+      return;
+    }
+
+    const data = await getUserData(userId);
+    const daycare = ensureDaycareState(data);
+    const draft = daycare.draft;
+    if (!draft || draft.step !== 'moves_picker') {
+      await ctx.answerCbQuery('No pending move picker.');
+      return;
+    }
+
+    const pokemon = getDaycarePokemon(data, draft.pokemonPass);
+    if (!pokemon) {
+      daycare.draft = null;
+      await saveUserData2(userId, data);
+      await ctx.answerCbQuery('Pokemon not found.');
+      return;
+    }
+
+    const options = getDaycareMoveOptions(pokemon.name);
+    if (!options.some((entry) => entry.moveId === moveId)) {
+      await ctx.answerCbQuery('That move is not available here.');
+      return;
+    }
+
+    const selected = Array.isArray(draft.moves) ? draft.moves.map((id) => Number(id)) : [];
+    const index = selected.indexOf(moveId);
+    let answer = '';
+    if (index >= 0) {
+      selected.splice(index, 1);
+      answer = 'Move removed.';
+    } else {
+      if (selected.length >= 4) {
+        await ctx.answerCbQuery('You can only pick up to 4 moves.');
+        return;
+      }
+      selected.push(moveId);
+      answer = 'Move added.';
+    }
+
+    draft.moves = selected;
+    await saveUserData2(userId, data);
+    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, buildDaycareMovePickerMessage(data, pokemon, draft), {
+      parse_mode: 'markdown',
+      reply_markup: { inline_keyboard: buildDaycareMovePickerKeyboard(pokemon, draft, userId) }
+    });
+    await ctx.answerCbQuery(answer);
+  });
+
+  bot.action(/^daycare_moveclear_(\d+)$/, check2q, async (ctx) => {
+    const userId = Number(ctx.match[1]);
+    if (ctx.from.id !== userId) {
+      await ctx.answerCbQuery('Not your setup.');
+      return;
+    }
+
+    const data = await getUserData(userId);
+    const daycare = ensureDaycareState(data);
+    const draft = daycare.draft;
+    if (!draft || draft.step !== 'moves_picker') {
+      await ctx.answerCbQuery('No pending move picker.');
+      return;
+    }
+
+    const pokemon = getDaycarePokemon(data, draft.pokemonPass);
+    if (!pokemon) {
+      daycare.draft = null;
+      await saveUserData2(userId, data);
+      await ctx.answerCbQuery('Pokemon not found.');
+      return;
+    }
+
+    draft.moves = [];
+    await saveUserData2(userId, data);
+    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, buildDaycareMovePickerMessage(data, pokemon, draft), {
+      parse_mode: 'markdown',
+      reply_markup: { inline_keyboard: buildDaycareMovePickerKeyboard(pokemon, draft, userId) }
+    });
+    await ctx.answerCbQuery('Moves cleared.');
+  });
+
   bot.action(/^daycare_confirm_(\d+)$/, check2q, async (ctx) => {
     const userId = Number(ctx.match[1]);
     if (ctx.from.id !== userId) {
@@ -319,7 +510,7 @@ function registerDaycareCallbacks(bot, deps) {
     const data = await getUserData(userId);
     const daycare = ensureDaycareState(data);
     const draft = daycare.draft;
-    if (!draft || (draft.step !== 'confirm' && draft.step !== 'moves_ready')) {
+    if (!draft || (draft.step !== 'confirm' && draft.step !== 'moves_ready' && draft.step !== 'moves_picker')) {
       await ctx.answerCbQuery('No pending daycare setup.');
       return;
     }
@@ -337,6 +528,11 @@ function registerDaycareCallbacks(bot, deps) {
       daycare.draft = null;
       await saveUserData2(userId, data);
       await ctx.answerCbQuery('Pokemon not found.');
+      return;
+    }
+
+    if (!Array.isArray(draft.moves) || draft.moves.length < 1 || draft.moves.length > 4) {
+      await ctx.answerCbQuery('Pick between 1 and 4 moves first.');
       return;
     }
 
@@ -537,16 +733,22 @@ function registerDaycareCallbacks(bot, deps) {
       }
 
       draft.evs = parsed.evs;
-      draft.step = 'moves';
-      const promptId = await sendMessage(
-        ctx,
-        ctx.chat.id,
-        { parse_mode: 'markdown' },
-        'EV build saved for *' + c(pokemon.nickname || pokemon.name) + '*.\n\nNow send the final moveset as *1 to 4 move names separated by commas*.\nExample:\n`earthquake, stone-edge, stealth-rock, crunch`\n\nOnly moves this pokemon can actually learn will be accepted.',
-        { reply_markup: { force_reply: true } }
-      );
-      draft.messageId = promptId;
+      draft.moves = [];
+      draft.movePage = 1;
+      draft.step = 'moves_picker';
+      const learnableOptions = getDaycareMoveOptions(pokemon.name);
+      if (!learnableOptions.length) {
+        daycare.draft = null;
+        await saveUserData2(ctx.from.id, data);
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'This pokemon does not have level-up move data for the daycare picker yet.', {
+          reply_markup: { inline_keyboard: [[{ text: 'Back To Daycare', callback_data: 'daycare_menu_' + ctx.from.id }]] }
+        });
+        return;
+      }
       await saveUserData2(ctx.from.id, data);
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, buildDaycareMovePickerMessage(data, pokemon, draft), {
+        reply_markup: { inline_keyboard: buildDaycareMovePickerKeyboard(pokemon, draft, ctx.from.id) }
+      });
       return;
     }
 

@@ -210,7 +210,7 @@ const formatAbilityLabel = (abilityName) => String(abilityName || 'none')
   .split('-')
   .map((part) => part ? part.charAt(0).toUpperCase() + part.slice(1) : part)
   .join(' ')
-const getDisplayedMoveType = (move, battleDataArg, pass, pokemonName, heldItem) => {
+const getDisplayedMoveType = (move, battleDataArg, pass, pokemonName, heldItem, abilityName) => {
   const effectiveMoveName = getEffectiveMoveName({
     pokemonName,
     heldItem: getBattleHeldItemName({ battleData: battleDataArg, pass, heldItem }),
@@ -219,6 +219,7 @@ const getDisplayedMoveType = (move, battleDataArg, pass, pokemonName, heldItem) 
   return getEffectiveMoveType({
     battleData: battleDataArg,
     pokemonName,
+    abilityName,
     heldItem: getBattleHeldItemName({ battleData: battleDataArg, pass, heldItem }),
     moveName: effectiveMoveName || (move && move.name),
     moveType: move && move.type
@@ -230,7 +231,7 @@ const getDisplayedMovePower = (move, abilityName, currentHp, maxHp, battleDataAr
     heldItem: getBattleHeldItemName({ battleData: battleDataArg, pass }),
     moveName: move && move.name
   });
-  const effectiveMoveType = getDisplayedMoveType(move, battleDataArg, pass, pokemonName)
+  const effectiveMoveType = getDisplayedMoveType(move, battleDataArg, pass, pokemonName, undefined, abilityName)
   const rawPower = getBattleMovePower({
     battleData: battleDataArg,
     pass,
@@ -405,8 +406,8 @@ if (wildUnawareModifiers.attackerActivated) {
 if (wildUnawareModifiers.defenderActivated) {
   wildUnawareMessage += '\n<b>✶ '+c(p.name)+'</b>\'s <b>Unaware</b> activated!'
 }
-const playerMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: playerHeldItemName, moveName: move1.name, moveType: move1.type })
-const wildMoveType = getEffectiveMoveType({ battleData, pokemonName: battleData.name, heldItem: wildHeldItemName, moveName: move2.name, moveType: move2.type })
+const playerMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, abilityName: playerAbility, heldItem: playerHeldItemName, moveName: move1.name, moveType: move1.type })
+const wildMoveType = getEffectiveMoveType({ battleData, pokemonName: battleData.name, abilityName: wildAbility, heldItem: wildHeldItemName, moveName: move2.name, moveType: move2.type })
 const wildTypes = getEffectivePokemonTypes({ pokemonName: battleData.name, pokemonTypes: pokes[battleData.name]?.types || [], heldItem: wildHeldItemName, abilityName: wildAbility })
 const playerTypes = getEffectivePokemonTypes({ pokemonName: p.name, pokemonTypes: pokes[p.name]?.types || [], heldItem: playerHeldItemName, abilityName: playerAbility })
 const wildDisplayName = getEffectivePokemonDisplayName({ pokemonName: battleData.name, abilityName: wildAbility, heldItem: wildHeldItemName })
@@ -1369,7 +1370,7 @@ const moves = []
    moveName: move && move.name
  }) || (move && move.name);
  const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name)
- const shownType = getDisplayedMoveType(move, battleData, p.pass, p.name)
+ const shownType = getDisplayedMoveType(move, battleData, p.pass, p.name, undefined, playerAbility)
  msg += '\n<b>'+c(displayMoveName)+'</b>['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
  moves.push(''+move2+'')
  }

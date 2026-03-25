@@ -20,6 +20,11 @@ const WIND_MOVE_NAMES = new Set([
   'twister',
   'whirlwind'
 ]);
+const NORMAL_MOVE_TYPE_OVERRIDE_ABILITIES = {
+  aerilate: 'flying',
+  galvanize: 'electric',
+  dragonize: 'dragon'
+};
 
 function normalizeAbilityName(value) {
   return String(value || '')
@@ -36,6 +41,10 @@ function normalizeMoveName(value) {
     .replace(/[_\s]+/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function getAbilityWeatherOverride(abilityName) {
+  return normalizeAbilityName(abilityName) === 'mega-sol' ? 'sun' : '';
 }
 
 function titleCaseHyphenated(value) {
@@ -304,8 +313,8 @@ function applyWeatherByMove(options) {
 }
 
 function getWeatherMovePowerMultiplier(options) {
-  const { battleData, moveName, moveType } = options || {};
-  const weather = getEffectiveWeatherName(battleData);
+  const { battleData, moveName, moveType, abilityName } = options || {};
+  const weather = getAbilityWeatherOverride(abilityName) || getEffectiveWeatherName(battleData);
   const move = normalizeMoveName(moveName);
   const type = String(moveType || '').toLowerCase();
   if (move === 'weather ball' && weather && weather !== 'strong-winds') {
@@ -326,8 +335,8 @@ function getWeatherMovePowerMultiplier(options) {
 }
 
 function getWeatherAccuracyInfo(options) {
-  const { battleData, moveName, baseAccuracy } = options || {};
-  const weather = getEffectiveWeatherName(battleData);
+  const { battleData, moveName, baseAccuracy, abilityName } = options || {};
+  const weather = getAbilityWeatherOverride(abilityName) || getEffectiveWeatherName(battleData);
   const move = normalizeMoveName(moveName);
   const base = Number(baseAccuracy);
   if (!Number.isFinite(base)) {
@@ -359,8 +368,8 @@ function getWeatherAccuracyMultiplierForTarget(options) {
 }
 
 function getWeatherRecoveryRatio(options) {
-  const { battleData, moveName } = options || {};
-  const weather = getEffectiveWeatherName(battleData);
+  const { battleData, moveName, abilityName } = options || {};
+  const weather = getAbilityWeatherOverride(abilityName) || getEffectiveWeatherName(battleData);
   const move = normalizeMoveName(moveName);
   if (move === 'shore up') {
     return weather === 'sandstorm' ? (2 / 3) : 0.5;
@@ -435,8 +444,8 @@ function getStrongWindsEffectiveness(options) {
   return effValue;
 }
 
-function getGrowthStageChange(battleData) {
-  return getEffectiveWeatherName(battleData) === 'sun' ? 2 : 1;
+function getGrowthStageChange(battleData, abilityName) {
+  return (getAbilityWeatherOverride(abilityName) || getEffectiveWeatherName(battleData)) === 'sun' ? 2 : 1;
 }
 
 function canUseAuroraVeilWeather(battleData) {
@@ -553,9 +562,9 @@ function getBaseSpeciesName(pokemonName) {
 }
 
 function canSkipChargeByWeather(options) {
-  const { battleData, moveName } = options || {};
+  const { battleData, moveName, abilityName } = options || {};
   const move = normalizeMoveName(moveName);
-  const weather = getEffectiveWeatherName(battleData);
+  const weather = getAbilityWeatherOverride(abilityName) || getEffectiveWeatherName(battleData);
   if ((move === 'solar beam' || move === 'solar blade') && (weather === 'sun' || weather === 'sunny' || weather === 'harsh sunlight')) {
     return true;
   }
@@ -566,7 +575,7 @@ function canSkipChargeByWeather(options) {
 }
 
 function getPowerHerbInfo(options) {
-  const { battleData, pass, heldItem, moveName } = options || {};
+  const { battleData, pass, heldItem, moveName, abilityName } = options || {};
   const item = getBattleHeldItemName({ battleData, pass, heldItem });
   const move = normalizeMoveName(moveName);
   const chargeEligible = new Set([
@@ -587,7 +596,7 @@ function getPowerHerbInfo(options) {
     'solar beam',
     'solar blade'
   ]);
-  const active = item === 'power-herb' && move !== 'sky drop' && chargeEligible.has(move) && !canSkipChargeByWeather({ battleData, moveName });
+  const active = item === 'power-herb' && move !== 'sky drop' && chargeEligible.has(move) && !canSkipChargeByWeather({ battleData, moveName, abilityName });
   return {
     active,
     heldItem: item
@@ -1212,7 +1221,8 @@ function getEffectiveMoveType(options) {
   const normalizedMove = normalizeMoveName(moveName);
   const baseSpecies = getBaseSpeciesName(pokemonName);
   const rawType = String(moveType || '').toLowerCase();
-  const weather = normalizeWeatherName(getBattleWeatherName(battleData));
+  const ability = normalizeAbilityName(abilityName);
+  const weather = getAbilityWeatherOverride(abilityName) || normalizeWeatherName(getBattleWeatherName(battleData));
   const plateType = getArceusPlateType(normalizeHeldItemName(heldItem));
   if (normalizedMove === 'judgment' && baseSpecies === 'arceus' && plateType && hasMultitypeFormEffect({ pokemonName, abilityName, heldItem, isTerastallized })) {
     return plateType;
@@ -1222,6 +1232,9 @@ function getEffectiveMoveType(options) {
     if (weather === 'rain') return 'water';
     if (weather === 'sandstorm') return 'rock';
     if (weather === 'hail' || weather === 'snow') return 'ice';
+  }
+  if (rawType === 'normal' && NORMAL_MOVE_TYPE_OVERRIDE_ABILITIES[ability]) {
+    return NORMAL_MOVE_TYPE_OVERRIDE_ABILITIES[ability];
   }
   return rawType;
 }

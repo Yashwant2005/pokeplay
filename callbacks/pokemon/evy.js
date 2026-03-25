@@ -1,6 +1,6 @@
 function register_047_evy(bot, deps) {
   Object.assign(globalThis, deps, { bot });
-  const { getReadyEvolutionRows, getEvolutionBaseName, getEvolutionRowsForPokemon, getPseudoRandomEvolutionLevel, isEvolutionRequirementMet } = require('../../utils/evolution_rules');
+  const { getReadyEvolutionRows, getEvolutionBaseName, getEvolutionRowsForPokemon, getPseudoRandomEvolutionLevel, isEvolutionRequirementMet, resolveEvolutionTargetIdentifier } = require('../../utils/evolution_rules');
   const { getEvolutionStoneForTarget, removeEvolutionStone, titleCaseEvolutionStone } = require('../../utils/evolution_items');
   const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
   bot.action(/^(?:evy_|evytarget_|eeveeevy_)/,check2q,async ctx => {
@@ -45,42 +45,7 @@ return
 }
 
 if(evo){
-const fr = forms[evo.evolved_pokemon].filter((p)=> !p.identifier.includes('gmax') 
-&& !p.identifier.includes('mega') && !p.identifier.includes('crowned') 
-&& !p.identifier.includes('primal'))
-const playerRegion = String((data.inv && data.inv.region) || '').toLowerCase()
-const regionalGroups = {
-alola: ['alola', 'melemele', 'akala', 'ulaula', 'poni'],
-galar: ['galar', 'isle-of-armor', 'crown-tundra'],
-hisui: ['hisui'],
-paldea: ['paldea', 'kitakami', 'blueberry']
-}
-const regionTag = Object.keys(regionalGroups).find((tag) => regionalGroups[tag].includes(playerRegion)) || ''
-const currentTag = ['galar', 'hisui', 'paldea', 'alola'].find((tag) => name2.includes(tag)) || ''
-const preferredTag = currentTag || regionTag
-if(preferredTag){
-const n2 = fr.filter((p)=> p.identifier.includes(preferredTag))
-if(n2.length > 0){
-var rn = n2
-}else{
-var rn = fr
-}
-}else{
-const fr2 = forms[evo.current_pokemon].filter((p)=> !p.identifier.includes('gmax') 
-&& !p.identifier.includes('mega') && !p.identifier.includes('crowned') 
-&& !p.identifier.includes('primal'))
-const ye = fr2.filter((p)=> p.identifier.includes('galar') || 
-p.identifier.includes('hisui') || p.identifier.includes('alola') || p.identifier.includes('paldea'))
-if(ye.length > 0){
-var rn = fr.filter((p)=> !p.identifier.includes('hisui') && 
-!p.identifier.includes('galar') && !p.identifier.includes('alola') && !p.identifier.includes('paldea'))
-}else{
-var rn = fr
-}
-}
-
-
-let nam = rn[Math.floor(Math.random()*rn.length)].identifier
+let nam = resolveEvolutionTargetIdentifier(name2, evo.evolved_pokemon, forms)
 const d = pokes[nam]
 const requiredStone = evo.evolution_method == 'use-item' ? getEvolutionStoneForTarget(evo.evolved_pokemon) : ''
 if(requiredStone && !removeEvolutionStone(data, requiredStone)){

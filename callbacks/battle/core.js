@@ -25,6 +25,7 @@
   getEffectivePokemonDisplayName,
   getEffectiveMoveType,
   getEffectivePokemonTypes,
+  canSkipChargeByWeather,
   getPowerConstructFormChange,
   getAirBalloonInfo,
   getGoodAsGoldInfo,
@@ -207,6 +208,7 @@ function registerBattleCallbacks(bot, deps) {
     next.ban_regions = Array.isArray(next.ban_regions) ? next.ban_regions : [];
     next.allow_types = Array.isArray(next.allow_types) ? next.allow_types : [];
     next.ban_types = Array.isArray(next.ban_types) ? next.ban_types : [];
+    next.unrestricted = next.unrestricted === true;
     return next;
   }
 
@@ -517,6 +519,32 @@ function registerBattleCallbacks(bot, deps) {
 
   function getAbilityActivationMessage(pokemonName, abilityLabel) {
     return '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + abilityLabel + '</b> activated!';
+  }
+
+  function getMegaSolMoveActivationMessage(options) {
+    const { battleData, pokemonName, abilityName, moveName, moveType, baseAccuracy } = options || {};
+    if (normalizeAbilityName(abilityName) !== 'mega-sol') return '';
+
+    const liveWeather = getEffectiveWeatherName(battleData);
+    const hasNaturalSun = liveWeather === 'sun' || liveWeather === 'sunny' || liveWeather === 'harsh sunlight' || liveWeather === 'extreme-sun';
+    if (hasNaturalSun) return '';
+
+    const move = normalizeMoveName(moveName);
+    let activated = false;
+
+    if ((move === 'solar beam' || move === 'solar blade') && canSkipChargeByWeather({ battleData, moveName, abilityName })) {
+      activated = true;
+    } else if (move === 'growth' && getGrowthStageChange(battleData, abilityName) > getGrowthStageChange(battleData, '')) {
+      activated = true;
+    } else if (move === 'weather ball') {
+      activated = getEffectiveMoveType({ battleData, abilityName, moveName, moveType }) === 'fire';
+    } else if (move === 'synthesis' || move === 'morning sun' || move === 'moonlight') {
+      activated = getWeatherRecoveryRatio({ battleData, moveName, abilityName }) > getWeatherRecoveryRatio({ battleData, moveName });
+    } else if (move === 'thunder' || move === 'hurricane') {
+      activated = Number(getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy, abilityName }).accuracy) !== Number(getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy }).accuracy);
+    }
+
+    return activated ? getAbilityActivationMessage(pokemonName, 'Mega Sol') : '';
   }
 
   function isOpponentTargetingStatusMove(move, moveName) {
@@ -2298,7 +2326,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
       const attackerHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item });
       const defenderHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item });
-      const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
+      const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, abilityName: attackerAbility, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
       const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name].types || [], heldItem: defenderHeldItemName });
 
       // Check type effectiveness
@@ -2378,7 +2406,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         battleData,
         pass: battleData.c,
         heldItem: p.held_item,
-        moveName
+        moveName,
+        abilityName: attackerAbility
       });
       const isImmediateChargeTurn = actState.canAct && !isChargeReleaseTurn && powerHerbInfo.active;
       if (!actState.canAct && isChargeReleaseTurn) {
@@ -2491,7 +2520,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           msgLocal += '\n-> <b>'+c(p.name)+'</b> retaliated with <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
           msgLocal += sturdyDamage.message;
         }
-      } else if (actState.canAct && !isChargeReleaseTurn && !isImmediateChargeTurn && CHARGING_TURN_MOVES.has(moveName)) {
+      } else if (actState.canAct && !isChargeReleaseTurn && !isImmediateChargeTurn && CHARGING_TURN_MOVES.has(moveName) && !canSkipChargeByWeather({ battleData, moveName, abilityName: attackerAbility })) {
         setChargingStateForPass(battleData, battleData.c, act.id, moveName);
         if (SEMI_INVULNERABLE_CHARGE_MOVES.has(moveName)) {
           setSemiInvulnerableStateForPass(battleData, battleData.c, moveName);
@@ -2516,7 +2545,15 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           const opSemi = getSemiInvulnerableStateForPass(battleData, battleData.o);
           msgLocal += getSemiInvulnerableAvoidMessage(op.name, opSemi ? opSemi.moveName : '');
         } else {
-        const weatherAccuracy = getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy: move.accuracy });
+        const weatherAccuracy = getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy: move.accuracy, abilityName: attackerAbility });
+        msgLocal += getMegaSolMoveActivationMessage({
+          battleData,
+          pokemonName: p.name,
+          abilityName: attackerAbility,
+          moveName,
+          moveType: move.type,
+          baseAccuracy: move.accuracy
+        });
         const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus || weatherAccuracy.skipAccuracyCheck;
         const isStatusMove = String(move.category || '').toLowerCase() === 'status';
         const hasAccuracyCheck = !bypassAccuracyCheck && !isStatusMove && move.accuracy !== null && move.accuracy !== undefined;
@@ -2670,7 +2707,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               }
 
               if (moveName === 'growth') {
-                const growthDelta = getGrowthStageChange(battleData);
+                const growthDelta = getGrowthStageChange(battleData, attackerAbility);
                 msgLocal += applyStageChanges({
                   battleData,
                   pass: battleData.c,
@@ -2753,7 +2790,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               }
 
               if (moveName === 'synthesis' || moveName === 'morning sun' || moveName === 'moonlight' || moveName === 'shore up') {
-                const recoveryRatio = getWeatherRecoveryRatio({ battleData, moveName });
+                const recoveryRatio = getWeatherRecoveryRatio({ battleData, moveName, abilityName: attackerAbility });
                 if (recoveryRatio > 0) {
                   const healed = healBattlePokemon({
                     battleData,
@@ -3508,45 +3545,12 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
   }
 
 bot.action(/sytbr_/,async ctx => {
-const id = ctx.callbackQuery.data.split('_')[1]
-const rid = ctx.callbackQuery.data.split('_')[2]
-const bword = ctx.callbackQuery.data.split('_')[3]
-if(ctx.from.id==id){
-const bt = ['max-poke','min-/-max-6l','min-/-max-level','switch','form-change','sandbox-mode','random-mode','preview-mode','types-lock','regions-lock','type-efficiency','dual-type','save-settings']
-const buttons = bt.map((word) => ({ text: '• '+c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
-buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_back_'+id+'_'+rid+'_'+bword+''})
-  const rows = [];
-  for (let i = 0; i < buttons.length; i += 2) {
-    rows.push(buttons.slice(i, i + 2));
-}
-const d1 = await getUserData(id)
-const d2 = await getUserData(rid)
-await editMessage('markup',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,{inline_keyboard:rows})
-}
+await ctx.answerCbQuery('Battle settings are disabled for normal challenges.')
 })
 bot.action(/stbtlsyt_/,async ctx => {
-const word = ctx.callbackQuery.data.split('_')[1]
-const id = ctx.callbackQuery.data.split('_')[2]
-const rid = ctx.callbackQuery.data.split('_')[3]
-const bword = ctx.callbackQuery.data.split('_')[4]
-if(ctx.from.id!=id){
+await ctx.answerCbQuery('Battle settings are disabled for normal challenges.')
 return
-}
-let settings3 = {};
-    try {
-      settings3 = loadBattleData(bword);
-} catch (error) {
-      settings3 = {};
-    }
-settings3.set = normalizeBattleSettings(settings3.set)
-const settings = settings3.set
-const d1 = await getUserData(id)
-const d2 = await getUserData(rid)
-const challanger = displayName(d1, id)
-const challanged = displayName(d2, rid)
-let msg = '⚔️ <a href="tg://user?id='+id+'"><b>'+challanger+'</b></a> Has Challenged <a href="tg://user?id='+rid+'"><b>'+challanged+'</b></a>\n'
-let f = false
-let msg2 = ''
+const word = ctx.callbackQuery.data.split('_')[1]
 if(word=='maxs'){
 const m = ctx.callbackQuery.data.split('_')[5]
 settings.max_poke = parseInt(m*1)
@@ -3596,6 +3600,9 @@ settings.key_item = (settings.key_item==true) ? false : true
 }
 if(word=='sandbox-mode'){
 settings.sandbox = (settings.sandbox==true) ? false : true
+}
+if(word=='unrestricted-mode'){
+settings.unrestricted = (settings.unrestricted==true) ? false : true
 }
 if(word=='preview-mode'){
 if(settings.preview=='Upper'){
@@ -3669,9 +3676,12 @@ return
 }
 settings.allow_regions = []
 }
-for (let key in settings3.users) {
-    settings3.users[key] = false;
-  }
+settings3.users = settings3.users && typeof settings3.users === 'object' ? settings3.users : {}
+settings3.users[id] = true
+settings3.users[rid] = false
+settings3.userReasons = settings3.userReasons && typeof settings3.userReasons === 'object' ? settings3.userReasons : {}
+settings3.userReasons[id] = ''
+settings3.userReasons[rid] = ''
 await saveBattleData(bword, settings3);
 if(settings.max_poke < 6){
 f = true
@@ -3696,6 +3706,10 @@ msg2 += '\n<b>• Form Changing:</b> Disabled'
 if(settings.sandbox){
 f = true
 msg2 += '\n<b>• Sandbox mode:</b> Enabled'
+}
+if(settings.unrestricted){
+f = true
+msg2 += '\n<b>• Unrestricted mode:</b> Enabled'
 }
 if(settings.random){
 f = true
@@ -4006,10 +4020,10 @@ ctx.answerCbQuery('Settings Saved!')
 return
 }
 if(word=='back'){
-var rows = [[{text:'Agree ✅',callback_data:'battle_'+id+'_'+rid+'_'+bword+''},{text:'Reject ❌',callback_data:'reject_'+id+'_'+rid+'_'+bword+''}],[{text:'Battle Settings ⚔️',callback_data:'sytbr_'+id+'_'+rid+'_'+bword+''}]]
+var rows = [[{text:'Agree ✅',callback_data:'battle_'+id+'_'+rid+'_'+bword+''},{text:'Reject ❌',callback_data:'reject_'+id+'_'+rid+'_'+bword+''}]]
 }else{
 msg += '\n\nUse /settings to get more info about battle settings.'
-const bt = ['max-poke','min-/-max-6l','min-/-max-level','switch','form-change','sandbox-mode','random-mode','preview-mode','types-lock','regions-lock','type-efficiency','dual-type','save-settings']
+const bt = ['max-poke','min-/-max-6l','min-/-max-level','switch','form-change','sandbox-mode','unrestricted-mode','random-mode','preview-mode','types-lock','regions-lock','type-efficiency','dual-type','save-settings']
 const buttons = bt.map((word) => ({ text: '• '+c(word), callback_data: 'stbtlsyt_'+word+'_'+id+'_'+rid+'_'+bword+'' }));
 buttons.push({text:'🔙 Back',callback_data:'stbtlsyt_back_'+id+'_'+rid+'_'+bword+''})
   var rows = [];
@@ -4047,6 +4061,73 @@ let battleData = {};
       battleData = {};
     }
 battleData.set = normalizeBattleSettings(battleData.set)
+if(!battleData.userReasons || typeof battleData.userReasons !== 'object'){
+battleData.userReasons = {}
+}
+const normalizeSelectedTeam = async (playerData, playerId) => {
+if(!playerData.inv || !playerData.teams){
+return []
+}
+let changed = false
+for(const poke of (playerData.pokes || [])){
+if(poke && !String(poke.pass || '').trim()){
+poke.pass = word(8)
+changed = true
+}
+}
+const teamId = playerData.inv.team ? playerData.inv.team : '1'
+if(!Array.isArray(playerData.teams[teamId])){
+playerData.teams[teamId] = []
+}
+const ownedPasses = new Set((playerData.pokes || []).map((poke) => String(poke && poke.pass)))
+const cleanedTeam = [...new Set((playerData.teams[teamId] || []).map((p) => String(p)))].filter((p) => ownedPasses.has(p))
+if(cleanedTeam.length !== playerData.teams[teamId].length){
+playerData.teams[teamId] = cleanedTeam
+changed = true
+}
+if(changed){
+await saveUserData2(playerId, playerData)
+}
+return cleanedTeam
+}
+const buildEmergencyTempTeam = async (playerData, playerId, bword, count) => {
+const defaultSpeciesPool = ['pikachu', 'eevee', 'charizard', 'blastoise', 'venusaur', 'lucario']
+  .filter((name) => pokes[name] && pokestats[name]);
+const ownedSpeciesPool = [...new Set((playerData.pokecaught || []).map((name) => String(name || '').toLowerCase()))]
+  .filter((name) => name && pokes[name] && pokestats[name]);
+const liveSpeciesPool = [...new Set((playerData.pokes || []).map((poke) => String(poke && poke.name || '').toLowerCase()))]
+  .filter((name) => name && pokes[name] && pokestats[name]);
+const speciesPool = ownedSpeciesPool.length > 0
+  ? ownedSpeciesPool
+  : (liveSpeciesPool.length > 0 ? liveSpeciesPool : defaultSpeciesPool);
+if(speciesPool.length < 1){
+return []
+}
+const movePool = [33, 44, 98, 1].filter((id) => !!dmoves[String(id)] || !!dmoves[id]);
+const teamSize = Math.max(1, Math.min(Number(count) || 6, speciesPool.length));
+const picked = speciesPool.slice(0, teamSize);
+const created = picked.map((name) => ({
+  name,
+  id: pokes[name].pokedex_number,
+  nature: 'Serious',
+  exp: 1000000,
+  pass: word(8),
+  ivs: { hp: 15, attack: 15, defense: 15, special_attack: 15, special_defense: 15, speed: 15 },
+  symbol: '',
+  evs: { hp: 0, attack: 0, defense: 0, special_attack: 0, special_defense: 0, speed: 0 },
+  moves: movePool.slice(0, 4),
+  ability: ((ABILITY_BY_FORM[name] || [])[0]) || '',
+  held_item: 'none',
+  temp_battle: true
+}));
+if(!playerData.extra || typeof playerData.extra !== 'object') playerData.extra = {}
+if(!playerData.extra.temp_battle || typeof playerData.extra.temp_battle !== 'object') playerData.extra.temp_battle = {}
+if(!Array.isArray(playerData.pokes)) playerData.pokes = []
+playerData.pokes.push(...created)
+playerData.extra.temp_battle[bword] = created.map((poke) => poke.pass)
+await saveUserData2(playerId, playerData)
+return created.map((poke) => poke.pass)
+}
 const otherPendingUserId = Object.keys(battleData.users || {}).filter((id)=> String(id) != String(ctx.from.id))[0]
 if(otherPendingUserId && Array.isArray(mdata.battle) && mdata.battle.includes(parseInt(otherPendingUserId))){
 ctx.answerCbQuery('Opponent Is In A Battle')
@@ -4066,29 +4147,92 @@ return
   ctx.answerCbQuery('One of the players has no battle data. Ask them to /start and set a team.',{show_alert:true})
   return
   }
+  const normalizedTeam1 = await normalizeSelectedTeam(data, id1)
+  const normalizedTeam2 = await normalizeSelectedTeam(data2, id2)
+  const unrestrictedFallback1 = (data.pokes || []).map((poke) => String(poke && poke.pass)).filter(Boolean)
+  const unrestrictedFallback2 = (data2.pokes || []).map((poke) => String(poke && poke.pass)).filter(Boolean)
   let pokes1 = []
   let pokes2 = []
   const useTempTeams = battleData.tempTeams && battleData.tempTeams[id1] && battleData.tempTeams[id2];
-  if(!useTempTeams && !battleData.set.random){
-  const team1 = data.teams[data.inv.team]
-  const team2 = data2.teams[data2.inv.team]
+  if(!battleData.set.unrestricted && !useTempTeams && !battleData.set.random){
+  const team1 = battleData.set.unrestricted && normalizedTeam1.length < 1 ? unrestrictedFallback1 : normalizedTeam1
+  const team2 = battleData.set.unrestricted && normalizedTeam2.length < 1 ? unrestrictedFallback2 : normalizedTeam2
   if(!Array.isArray(team1) || team1.length < 1 || !Array.isArray(team2) || team2.length < 1){
   ctx.answerCbQuery('Both players must have a valid team selected to accept the battle.',{show_alert:true})
   return
   }
   }
-  if(useTempTeams){
+  if(battleData.set.unrestricted && !useTempTeams && !battleData.set.random){
+  pokes1 = unrestrictedFallback1
+  pokes2 = unrestrictedFallback2
+  }else if(useTempTeams){
   pokes1 = battleData.tempTeams[id1]
   pokes2 = battleData.tempTeams[id2]
   }else if(battleData.set.random){
   pokes1 = data.pokes.map(p => p.pass)
   pokes2 = data2.pokes.map(p => p.pass)
   }else{
-  pokes1 = data.teams[data.inv.team]
-  pokes2 = data2.teams[data2.inv.team]
+  pokes1 = battleData.set.unrestricted && normalizedTeam1.length < 1 ? unrestrictedFallback1 : normalizedTeam1
+  pokes2 = battleData.set.unrestricted && normalizedTeam2.length < 1 ? unrestrictedFallback2 : normalizedTeam2
   }
-  const skipTempFilters = useTempTeams && battleData.tempBattle;
+  if(battleData.set.unrestricted && pokes1.length < 1){
+  const generated = await buildEmergencyTempTeam(data, id1, bword, battleData.set.max_poke)
+  if(generated.length > 0){
+  pokes1 = generated
+  battleData.tempTeams = battleData.tempTeams && typeof battleData.tempTeams === 'object' ? battleData.tempTeams : {}
+  battleData.tempTeams[id1] = generated
+  battleData.tempBattle = true
+  }
+  }
+  if(battleData.set.unrestricted && pokes2.length < 1){
+  const generated = await buildEmergencyTempTeam(data2, id2, bword, battleData.set.max_poke)
+  if(generated.length > 0){
+  pokes2 = generated
+  battleData.tempTeams = battleData.tempTeams && typeof battleData.tempTeams === 'object' ? battleData.tempTeams : {}
+  battleData.tempTeams[id2] = generated
+  battleData.tempBattle = true
+  }
+  }
+  if(battleData.set.unrestricted){
+  pokes1 = pokes1.filter(p => data.pokes.some(pok => String(pok.pass) === String(p)))
+  pokes2 = pokes2.filter(p => data2.pokes.some(pok => String(pok.pass) === String(p)))
+  }
+  let emptyReason1 = ''
+  let emptyReason2 = ''
+  const updateEmptyReason = (beforeList, afterList, reasonText, which) => {
+  if((beforeList || []).length > 0 && (afterList || []).length < 1){
+  if(which === 1 && !emptyReason1){
+  emptyReason1 = reasonText
+  }
+  if(which === 2 && !emptyReason2){
+  emptyReason2 = reasonText
+  }
+  }
+  }
+  const getTeamValidationReason = (list, playerData, emptyReason) => {
+  if(!Array.isArray(list) || list.length < 1){
+  if(battleData.set.unrestricted){
+  return 'This trainer has no Pokemon available to battle.'
+  }
+  return emptyReason || 'Your selected team has no valid Pokemon entries. Rebuild the team and try again.'
+  }
+  const legendaries = list.filter(p => {
+  const pk = playerData.pokes.find(pok=>pok.pass == p)
+  const tag = String(spawn[pk?.name] || '').toLowerCase()
+  return pk && (tag== 'legendry' || tag== 'legendary' || tag == 'mythical')
+  })
+  if(!battleData.set.unrestricted && legendaries.length < battleData.set.min_6l){
+  return 'Team needs at least '+battleData.set.min_6l+' legendary/mythical Pokemon for this battle.'
+  }
+  if(!battleData.set.unrestricted && legendaries.length > battleData.set.max_6l){
+  return 'Team has too many legendary/mythical Pokemon for this battle.'
+  }
+  return ''
+  }
+  const skipTempFilters = battleData.set.unrestricted || (useTempTeams && battleData.tempBattle);
   if(!skipTempFilters && (battleData.set.min_level > 1 || battleData.set.max_level < 100)){
+  const before1 = pokes1.slice()
+  const before2 = pokes2.slice()
   pokes1 = pokes1.filter(p=> {
   const pk = data.pokes.find(pok=>pok.pass == p)
   return pk && plevel(pk.name,pk.exp) >= battleData.set.min_level*1 && plevel(pk.name,pk.exp) <= battleData.set.max_level*1
@@ -4097,8 +4241,12 @@ return
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && plevel(pk.name,pk.exp) >= battleData.set.min_level*1 && plevel(pk.name,pk.exp) <= battleData.set.max_level*1
 })
+  updateEmptyReason(before1, pokes1, 'No Pokemon in the selected team fit the allowed level range for this battle.', 1)
+  updateEmptyReason(before2, pokes2, 'No Pokemon in the selected team fit the allowed level range for this battle.', 2)
 }
   if(!skipTempFilters && !battleData.set.dual_type){
+  const before1 = pokes1.slice()
+  const before2 = pokes2.slice()
   pokes1 = pokes1.filter(p=> {
   const pk = data.pokes.find(pok=>pok.pass == p)
   return pk && pokes[pk.name].types.length == 1
@@ -4107,8 +4255,12 @@ return pk && plevel(pk.name,pk.exp) >= battleData.set.min_level*1 && plevel(pk.n
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && pokes[pk.name].types.length == 1
 })
+  updateEmptyReason(before1, pokes1, 'No Pokemon in the selected team fit the single-type only rule for this battle.', 1)
+  updateEmptyReason(before2, pokes2, 'No Pokemon in the selected team fit the single-type only rule for this battle.', 2)
 }
   if(!skipTempFilters && battleData.set.allow_types.length > 0){
+  const before1 = pokes1.slice()
+  const before2 = pokes2.slice()
   pokes1 = pokes1.filter(p=> {
   const pk = data.pokes.find(pok=>pok.pass == p)
   return pk && pokes[pk.name].types.every(type => battleData.set.allow_types.includes(type))
@@ -4117,8 +4269,12 @@ return pk && pokes[pk.name].types.length == 1
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && pokes[pk.name].types.every(type => battleData.set.allow_types.includes(type))
 })
+  updateEmptyReason(before1, pokes1, 'No Pokemon in the selected team match the allowed type filter for this battle.', 1)
+  updateEmptyReason(before2, pokes2, 'No Pokemon in the selected team match the allowed type filter for this battle.', 2)
 }
   if(!skipTempFilters && battleData.set.ban_types.length > 0){
+  const before1 = pokes1.slice()
+  const before2 = pokes2.slice()
   pokes1 = pokes1.filter(p=> {
   const pk = data.pokes.find(pok=>pok.pass == p)
   return pk && pokes[pk.name].types.every(type => !battleData.set.ban_types.includes(type))
@@ -4127,6 +4283,8 @@ return pk && pokes[pk.name].types.every(type => battleData.set.allow_types.inclu
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && pokes[pk.name].types.every(type => !battleData.set.ban_types.includes(type))
 })
+  updateEmptyReason(before1, pokes1, 'All Pokemon in the selected team were blocked by the banned type filter.', 1)
+  updateEmptyReason(before2, pokes2, 'All Pokemon in the selected team were blocked by the banned type filter.', 2)
 }
 const prg = {
   "kanto": {
@@ -4168,6 +4326,8 @@ const prg = {
 }
 
  if(!skipTempFilters && battleData.set.allow_regions.length > 0){
+ const before1 = pokes1.slice()
+ const before2 = pokes2.slice()
  pokes1 = pokes1.filter(p => {
  const pk = data.pokes.find(pok=>pok.pass == p)
  return pk && battleData.set.allow_regions.some(region => (pokes[pk.name].pokedex_number >= prg[region].start && pokes[pk.name].pokedex_number <= prg[region].end) || (pk.name.includes(region)))
@@ -4176,8 +4336,12 @@ const prg = {
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && battleData.set.allow_regions.some(region => (pokes[pk.name].pokedex_number >= prg[region].start && pokes[pk.name].pokedex_number <= prg[region].end) || (pk.name.includes(region)))
 })
+ updateEmptyReason(before1, pokes1, 'No Pokemon in the selected team match the allowed region filter for this battle.', 1)
+ updateEmptyReason(before2, pokes2, 'No Pokemon in the selected team match the allowed region filter for this battle.', 2)
 }
  if(!skipTempFilters && battleData.set.ban_regions.length > 0){
+ const before1 = pokes1.slice()
+ const before2 = pokes2.slice()
  pokes1 = pokes1.filter(p => {
  const pk = data.pokes.find(pok=>pok.pass == p)
  return pk && !battleData.set.ban_regions.some(region => (pokes[pk.name].pokedex_number >= prg[region].start && pokes[pk.name].pokedex_number <= prg[region].end) || (pk.name.includes(region)))
@@ -4186,6 +4350,8 @@ return pk && battleData.set.allow_regions.some(region => (pokes[pk.name].pokedex
 const pk = data2.pokes.find(pok=>pok.pass == p)
 return pk && !battleData.set.ban_regions.some(region => (pokes[pk.name].pokedex_number >= prg[region].start && pokes[pk.name].pokedex_number <= prg[region].end) || (pk.name.includes(region)))
 })
+ updateEmptyReason(before1, pokes1, 'All Pokemon in the selected team were blocked by the banned region filter.', 1)
+ updateEmptyReason(before2, pokes2, 'All Pokemon in the selected team were blocked by the banned region filter.', 2)
 }
  if(battleData.set.random && !useTempTeams){
 const pk2 = []
@@ -4258,6 +4424,10 @@ pokes1 = pokes1.slice(0,battleData.set.max_poke*1)
 pokes2 = pokes2.slice(0,battleData.set.max_poke*1)
 
 battleData.users[ctx.from.id] = true
+  const reason1 = getTeamValidationReason(pokes1, data, emptyReason1)
+  const reason2 = getTeamValidationReason(pokes2, data2, emptyReason2)
+  battleData.userReasons[id1] = reason1
+  battleData.userReasons[id2] = reason2
 const leng = pokes1.filter(p => {
 const pk = data.pokes.find(pok=>pok.pass == p)
 const tag = String(spawn[pk?.name] || '').toLowerCase()
@@ -4268,14 +4438,20 @@ const pk = data2.pokes.find(pok=>pok.pass == p)
 const tag = String(spawn[pk?.name] || '').toLowerCase()
 return pk && (tag== 'legendry' || tag== 'legendary' || tag == 'mythical')
 })
-if(pokes1.length < 1 || leng.length < battleData.set.min_6l || leng.length > battleData.set.max_6l){
+if(pokes1.length < 1 || (!battleData.set.unrestricted && (leng.length < battleData.set.min_6l || leng.length > battleData.set.max_6l))){
 battleData.users[id1] = false
+}else{
+battleData.userReasons[id1] = ''
 }
-if(pokes2.length < 1 || leng2.length < battleData.set.min_6l || leng2.length > battleData.set.max_6l){
+if(pokes2.length < 1 || (!battleData.set.unrestricted && (leng2.length < battleData.set.min_6l || leng2.length > battleData.set.max_6l))){
 battleData.users[id2] = false
+}else{
+battleData.userReasons[id2] = ''
 }
  if(!battleData.users[ctx.from.id]){
- ctx.answerCbQuery('A valid team for this battle could not be formed')
+ const currentReason = String(ctx.from.id) === String(id1) ? reason1 : reason2
+ await saveBattleData(bword, battleData);
+ ctx.answerCbQuery(currentReason || 'A valid team for this battle could not be formed')
  return
  }
 await saveBattleData(bword, battleData);
@@ -4442,69 +4618,7 @@ messageData.battle.push(parseInt(battleData.oid))
     messageData[bword] = { chat:ctx.chat.id,mid: ctx.callbackQuery.message.message_id, times: Date.now(), turn:battleData.cid, oppo:battleData.oid };
     await saveMessageData(messageData);
 }else{
-let msg = '⚔️ <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> Has Challenged <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a>\n'
-let msg2 = ''
-const settings = normalizeBattleSettings(battleData.set)
-if(settings.max_poke < 6){
-f = true
-msg2 += '\n<b>• Max number of pokemon:</b> '+settings.max_poke+''
-}
-if(settings.min_6l > 0 || settings.max_6l < 6){
-f = true
-msg2 += '\n<b>• Number of legendaries:</b> '+settings.min_6l+'-'+settings.max_6l+''
-}
-if(settings.min_level > 1 || settings.max_level < 100){
-f = true
-msg2 += '\n<b>• Level gap of pokemon:</b> '+settings.min_level+'-'+settings.max_level+''
-}
-if(!settings.switch){
-f = true
-msg2 += '\n<b>• Switching pokemon:</b> Disabled'
-}
-if(!settings.key_item){
-f = true
-msg2 += '\n<b>• Form Changing:</b> Disabled'
-}
-if(settings.sandbox){
-f = true
-msg2 += '\n<b>• Sandbox mode:</b> Enabled'
-}
-if(settings.random){
-f = true
-msg2 += '\n<b>• Random mode:</b> Enabled'
-}
-if(settings.preview && settings.preview != 'no'){
-f = true
-msg2 += '\n<b>• Preview mode:</b> '+settings.preview+''
-}
-if(settings.pin){
-f = true
-msg2 += '\n<b>• Pin mode:</b> Enabled'
-}
-if(!settings.type_effects){
-f = true
-msg2 += '\n<b>• Type efficiency:</b> Disabled'
-}
-if(!settings.dual_type){
-f = true
-msg2 += '\n<b>• Dual Types:</b> Disabled'
-}
-if(settings.allow_regions.length > 0){
-f = true
-msg2 += '\n<b>• Only regions:</b> ['+c(settings.allow_regions.join(' , '))+']'
-}
-if(settings.ban_regions.length > 0){
-f = true
-msg2 += '\n<b>• Banned regions:</b> ['+c(settings.ban_regions.join(' , '))+']'
-}
-if(settings.ban_types.length > 0){
-f = true
-msg2 += '\n<b>• Banned types:</b> ['+c(settings.ban_types.join(' , '))+']'
-}
-if(settings.allow_types.length > 0){
-f = true
-msg2 += '\n<b>• Types:</b> ['+c(settings.allow_types.join(' , '))+']'
-}
+let msg = 'Challenge: <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> vs <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a>\n'
 if(battleData.users[id1]){
 var em1 = '✅'
 }else{
@@ -4515,13 +4629,14 @@ var em2 = '✅'
 }else{
 var em2 = '❌'
 }
-if(f){
-msg += msg2
- msg += '\n\n-> <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> : '+em1+'\n-> <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a> : '+em2+''
-}else{
- msg += '\n\n-> <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> : '+em1+'\n-> <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a> : '+em2+''
-}
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:[[{text:'Agree ✅',callback_data:'battle_'+id1+'_'+id2+'_'+bword+''},{text:'Reject ❌',callback_data:'reject_'+id1+'_'+id2+'_'+bword+''}],[{text:'Battle Settings ⚔️',callback_data:'sytbr_'+id1+'_'+id2+'_'+bword+''}]]}})
+const reasonLabel1 = !battleData.users[id1] && battleData.userReasons && battleData.userReasons[id1]
+  ? ' - ' + c(battleData.userReasons[id1])
+  : ''
+const reasonLabel2 = !battleData.users[id2] && battleData.userReasons && battleData.userReasons[id2]
+  ? ' - ' + c(battleData.userReasons[id2])
+  : ''
+msg += '\n\n-> <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> : '+em1+reasonLabel1+'\n-> <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a> : '+em2+reasonLabel2+''
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:[[{text:'Agree ✅',callback_data:'battle_'+id1+'_'+id2+'_'+bword+''},{text:'Reject ❌',callback_data:'reject_'+id1+'_'+id2+'_'+bword+''}]]}})
 }
 })
 
@@ -5366,7 +5481,7 @@ async function executeStandardMove(act) {
     let stats1 = await Stats(base1, p.ivs, p.evs, c(p.nature), level1);
     let stats2 = await Stats(base2, op.ivs, op.evs, c(op.nature), level2);
     
-    const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
+    const effectiveMoveType = getEffectiveMoveType({ battleData, pokemonName: p.name, abilityName: attackerAbility, heldItem: attackerHeldItemName, moveName: move.name, moveType: move.type });
     const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name].types || [], heldItem: defenderHeldItemName });
 
     // Check type effectiveness
@@ -5447,7 +5562,8 @@ async function executeStandardMove(act) {
       battleData,
       pass: battleData.c,
       heldItem: p.held_item,
-      moveName
+      moveName,
+      abilityName: attackerAbility
     });
     const isImmediateChargeTurn = actState.canAct && !isChargeReleaseTurn && powerHerbInfo.active;
     if (!actState.canAct && isChargeReleaseTurn) {
@@ -5525,7 +5641,7 @@ async function executeStandardMove(act) {
                 delete battleData.bideState[battleData.c];
             }
         }
-          } else if (CHARGING_TURN_MOVES.has(moveName) && !isImmediateChargeTurn) {
+          } else if (CHARGING_TURN_MOVES.has(moveName) && !isImmediateChargeTurn && !canSkipChargeByWeather({ battleData, moveName, abilityName: attackerAbility })) {
             setChargingStateForPass(battleData, battleData.c, act.id, moveName);
             if (SEMI_INVULNERABLE_CHARGE_MOVES.has(moveName)) {
               setSemiInvulnerableStateForPass(battleData, battleData.c, moveName);
@@ -5580,7 +5696,15 @@ async function executeStandardMove(act) {
           const opSemi = getSemiInvulnerableStateForPass(battleData, battleData.o);
           msgLocal += getSemiInvulnerableAvoidMessage(op.name, opSemi ? opSemi.moveName : '');
         } else {
-        const weatherAccuracy = getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy: move.accuracy });
+        const weatherAccuracy = getWeatherAccuracyInfo({ battleData, moveName, baseAccuracy: move.accuracy, abilityName: attackerAbility });
+        msgLocal += getMegaSolMoveActivationMessage({
+          battleData,
+          pokemonName: p.name,
+          abilityName: attackerAbility,
+          moveName,
+          moveType: move.type,
+          baseAccuracy: move.accuracy
+        });
         const bypassAccuracyCheck = moveName === 'bind' || hitsMinimizedBonus || weatherAccuracy.skipAccuracyCheck;
         const isStatusMove = String(move.category || '').toLowerCase() === 'status';
         const hasAccuracyCheck = !bypassAccuracyCheck && !isStatusMove && move.accuracy !== null && move.accuracy !== undefined;
@@ -5734,7 +5858,7 @@ async function executeStandardMove(act) {
             }
 
             if (moveName === 'growth') {
-              const growthDelta = getGrowthStageChange(battleData);
+              const growthDelta = getGrowthStageChange(battleData, attackerAbility);
               msgLocal += applyStageChanges({
                 battleData,
                 pass: battleData.c,
@@ -5817,7 +5941,7 @@ async function executeStandardMove(act) {
             }
 
             if (moveName === 'synthesis' || moveName === 'morning sun' || moveName === 'moonlight' || moveName === 'shore up') {
-              const recoveryRatio = getWeatherRecoveryRatio({ battleData, moveName });
+              const recoveryRatio = getWeatherRecoveryRatio({ battleData, moveName, abilityName: attackerAbility });
               if (recoveryRatio > 0) {
                 const healed = healBattlePokemon({
                   battleData,

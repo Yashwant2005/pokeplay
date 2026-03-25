@@ -1,5 +1,5 @@
 const { getTrainerLevel } = require('./trainer_rank_rewards');
-const { toBaseIdentifier } = require('./base_form_pokemon');
+const { resolveEvolutionTargetIdentifier } = require('./evolution_rules');
 
 const EV_STATS = ['hp', 'attack', 'defense', 'special_attack', 'special_defense', 'speed'];
 const EV_ALIASES = {
@@ -336,49 +336,8 @@ function estimateDaycarePlan(pokemon, options) {
 }
 
 function resolveDaycareEvolutionName(currentName, evolvedPokemon, forms) {
-  if (!forms || !forms[evolvedPokemon]) return evolvedPokemon;
-
-  const candidates = forms[evolvedPokemon].filter((p) =>
-    !p.identifier.includes('gmax')
-    && !p.identifier.includes('mega')
-    && !p.identifier.includes('crowned')
-    && !p.identifier.includes('primal')
-  );
-
-  let selected = candidates;
-  if (String(currentName || '').includes('galar')) {
-    const regional = candidates.filter((p) => p.identifier.includes('galar'));
-    if (regional.length) selected = regional;
-  } else if (String(currentName || '').includes('hisui')) {
-    const regional = candidates.filter((p) => p.identifier.includes('hisui'));
-    if (regional.length) selected = regional;
-  } else if (String(currentName || '').includes('paldea')) {
-    const regional = candidates.filter((p) => p.identifier.includes('paldea'));
-    if (regional.length) selected = regional;
-  } else if (String(currentName || '').includes('alola')) {
-    const regional = candidates.filter((p) => p.identifier.includes('alola'));
-    if (regional.length) selected = regional;
-  } else {
-    const currentForms = forms[currentName] || [];
-    const hasRegionalCurrent = currentForms.some((p) =>
-      p.identifier.includes('galar')
-      || p.identifier.includes('hisui')
-      || p.identifier.includes('alola')
-      || p.identifier.includes('paldea')
-    );
-    if (hasRegionalCurrent) {
-      const baseOnly = candidates.filter((p) =>
-        !p.identifier.includes('hisui')
-        && !p.identifier.includes('galar')
-        && !p.identifier.includes('alola')
-        && !p.identifier.includes('paldea')
-      );
-      if (baseOnly.length) selected = baseOnly;
-    }
-  }
-
-  const pick = selected[0] || candidates[0];
-  return pick ? toBaseIdentifier(pick.identifier, forms) : evolvedPokemon;
+  const resolved = resolveEvolutionTargetIdentifier(currentName, evolvedPokemon, forms);
+  return resolved || evolvedPokemon;
 }
 
 function applyDaycareLevelUpEvolutions(pokemon, targetLevel, chains, forms, pokes) {
@@ -492,6 +451,7 @@ module.exports = {
   findPokemonIndex,
   cleanupTeamsForPokemon,
   parseEvBuild,
+  getLearnableMoveMap,
   parseMoveSet,
   estimateDaycarePlan,
   finalizeDaycarePokemon,

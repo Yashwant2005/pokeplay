@@ -1,10 +1,6 @@
 {
   "mewtwo": [
-    "pressure",
-    "unnerve",
-    "moxie",
-    "infiltrator",
-    "prankster"
+    "pressure"
   ],
   "charizard": [
     "blaze",
@@ -61,17 +57,7 @@
     "solar-power"
   ],
   "slaking": [
-    "truant",
-    "anger-shell",
-    "torrent",
-    "overgrow",
-    "shadow-shield",
-    "weak-armour",
-    "contrary",
-    "moxie",
-    "technician",
-    "stamina",
-    "unaware"
+    "truant"
   ],
   "snorlax": [
     "immunity",

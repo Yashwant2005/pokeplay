@@ -3,6 +3,17 @@ const { openBattleBoxes } = require('../../utils/trainer_rank_rewards');
 function registerBattleboxCommand(bot, deps) {
   Object.assign(globalThis, deps, { bot });
 
+  function appendListSection(msg, label, items, formatter, maxItems) {
+    if (!Array.isArray(items) || items.length < 1) return msg;
+    const take = Math.max(0, Math.min(items.length, maxItems));
+    const shown = items.slice(0, take).map(formatter);
+    msg += '\n  - ' + label + ': ' + shown.join(', ');
+    if (items.length > take) {
+      msg += ' ...and ' + (items.length - take) + ' more';
+    }
+    return msg;
+  }
+
   function buildButtons(id, remaining) {
     if (!Number.isFinite(remaining) || remaining <= 0) {
       return [[{ text: 'No Boxes Left', callback_data: 'crncl' }]];
@@ -61,21 +72,15 @@ function registerBattleboxCommand(bot, deps) {
     }
     if (summary.tmsAdded > 0) {
       msg += '\n• *TMs:* +' + summary.tmsAdded;
-      if (Array.isArray(summary.tmsReceived) && summary.tmsReceived.length > 0) {
-        msg += '\n  - Received: ' + summary.tmsReceived.map(tm => 'TM' + tm).join(', ');
-      }
+      msg = appendListSection(msg, 'Received', summary.tmsReceived || [], (tm) => 'TM' + tm, 30);
     }
     if (summary.stonesAdded > 0) {
       msg += '\n• *Mega Stones:* +' + summary.stonesAdded;
-      if (Array.isArray(summary.stonesReceived) && summary.stonesReceived.length > 0) {
-        msg += '\n  - Received: ' + summary.stonesReceived.map(st => c(st)).join(', ');
-      }
+      msg = appendListSection(msg, 'Received', summary.stonesReceived || [], (st) => c(st), 20);
     }
     if (summary.mintsAdded > 0) {
       msg += '\n• *Nature Mints:* +' + summary.mintsAdded;
-      if (Array.isArray(summary.mintsReceived) && summary.mintsReceived.length > 0) {
-        msg += '\n  - Received: ' + summary.mintsReceived.map(mint => c(mint)).join(', ');
-      }
+      msg = appendListSection(msg, 'Received', summary.mintsReceived || [], (mint) => c(mint), 12);
     }
     if (summary.bottleCapsAdded > 0) msg += '\n• *Bottle Caps:* +' + summary.bottleCapsAdded;
     if (summary.goldBottleCapsAdded > 0) msg += '\n• *Gold Bottle Caps:* +' + summary.goldBottleCapsAdded;
@@ -85,6 +90,18 @@ function registerBattleboxCommand(bot, deps) {
       if (summary.mintsAdded > 0) msg += '\n/mint <pokemon|pass|nickname> | <mint name>';
       if (summary.bottleCapsAdded > 0) msg += '\n/bottlecap <pokemon|pass|nickname> | <stat>';
       if (summary.goldBottleCapsAdded > 0) msg += '\n/goldbottlecap <pokemon|pass|nickname>';
+    }
+
+    if (msg.length > 3500) {
+      msg = '*Battle Box Opened:* ' + summary.opened + '\n';
+      msg += '*Remaining:* ' + summary.remaining + ' 🎁';
+      if (summary.holowearTicketsAdded > 0) msg += '\n• *Holowear Tickets:* +' + summary.holowearTicketsAdded + ' 🎟️';
+      if (pokeballTotal > 0) msg += '\n• *Pokeballs:* +' + pokeballTotal;
+      if (summary.tmsAdded > 0) msg += '\n• *TMs:* +' + summary.tmsAdded;
+      if (summary.stonesAdded > 0) msg += '\n• *Mega Stones:* +' + summary.stonesAdded;
+      if (summary.mintsAdded > 0) msg += '\n• *Nature Mints:* +' + summary.mintsAdded;
+      if (summary.bottleCapsAdded > 0) msg += '\n• *Bottle Caps:* +' + summary.bottleCapsAdded;
+      if (summary.goldBottleCapsAdded > 0) msg += '\n• *Gold Bottle Caps:* +' + summary.goldBottleCapsAdded;
     }
 
     await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, msg, {

@@ -226,6 +226,15 @@ function randomStone(stones) {
   return ids[Math.floor(Math.random() * ids.length)];
 }
 
+function randomMegaStone(stones) {
+  const ids = Object.keys(stones || {}).filter((key) => {
+    const mega = String(stones[key] && stones[key].mega || '').toLowerCase();
+    return mega.includes('-mega');
+  });
+  if (!ids.length) return null;
+  return ids[Math.floor(Math.random() * ids.length)];
+}
+
 
 // Stones that should NOT be in hunt rewards (the new stones)
 const NEW_STONES = [
@@ -316,7 +325,7 @@ function applyBattleBox(data, summary, deps) {
 
   if (boxRoll === 'stone1') {
     if (!Array.isArray(summary.stonesReceived)) summary.stonesReceived = [];
-    const st = randomStone(stones); // all stones (old + new)
+    const st = randomMegaStone(stones); // mega stones only
     if (st) {
       addStone(data, st);
       summary.stonesAdded += 1;

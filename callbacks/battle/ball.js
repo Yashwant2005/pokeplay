@@ -157,6 +157,7 @@ messageData.battle = messageData.battle.filter((chats)=> chats!== ctx.from.id)
 delete messageData[ctx.from.id];
 await saveMessageData(messageData)
 }
+await saveBattleData(bword, {})
 return
 }
 const messageData = await loadMessageData();
@@ -176,8 +177,9 @@ const messageData = await loadMessageData();
 if(messageData[ctx.from.id]) {
 messageData.battle = messageData.battle.filter((chats)=> chats!== ctx.from.id)
 delete messageData[ctx.from.id];
-await saveMessageData(messageData)
+await saveMessageData(messageData) 
 }
+await saveBattleData(bword, {})
 return
 }
 return

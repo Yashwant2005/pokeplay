@@ -3481,8 +3481,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         if(battleData.tempBattle && battleData.tempTeams){
           const t1 = battleData.tempTeams[battleData.cid] || []
           const t2 = battleData.tempTeams[battleData.oid] || []
-          attacker.pokes = (attacker.pokes || []).filter(p => !t1.includes(p.pass))
-          defender.pokes = (defender.pokes || []).filter(p => !t2.includes(p.pass))
+          // Remove all temp battle Pokémon before saving user data
+          if (attacker.pokes) attacker.pokes = attacker.pokes.filter(p => !t1.includes(p.pass) && !p.temp_battle);
+          if (defender.pokes) defender.pokes = defender.pokes.filter(p => !t2.includes(p.pass) && !p.temp_battle);
           if(attacker.extra && attacker.extra.temp_battle){
             delete attacker.extra.temp_battle[bword]
           }
@@ -4640,7 +4641,19 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,ms
 }
 })
 
+// In-memory timeout tracker for inactivity forfeits
+const battleTurnTimeouts = {};
+
 bot.action(/multimo_/, async ctx => {
+// Clear inactivity timer for this user (if any)
+try {
+  const bword = ctx.callbackQuery.data.split('_')[2];
+  const userId = ctx.from.id;
+  if (battleTurnTimeouts[bword] && battleTurnTimeouts[bword][userId]) {
+    clearTimeout(battleTurnTimeouts[bword][userId]);
+    delete battleTurnTimeouts[bword][userId];
+  }
+} catch (e) {}
 if (hitBattleCooldown(ctx)) {
   await ctx.answerCbQuery('On cooldown 2 sec');
   return;
@@ -4749,6 +4762,7 @@ if (battleData.switchPending) {
 }
 dbg('multimo:queued', { bword, q: battleData.queuedActions });
 
+
 // 2. Wait for Opponent OR Resolve
 const singleActionTurn = false;
 if (!singleActionTurn && battleData.queuedActions.length < 2) {
@@ -4756,16 +4770,16 @@ if (!singleActionTurn && battleData.queuedActions.length < 2) {
     fullSwap(battleData);
     await saveBattleData(bword, battleData);
 
-const attacker = await getUserData(battleData.cid);
-const defender = await getUserData(battleData.oid);
-const p1 = attacker.pokes.filter((poke) => poke.pass == battleData.c)[0]
-const p2 = defender.pokes.filter((poke) => poke.pass == battleData.o)[0]
-if (!p1 || !p2) {
-  dbg('multimo:wait_missing_pokes', { bword, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o });
-  return;
-}
-const base1 = pokestats[p2.name]
-const base2 = pokestats[p1.name]
+    const attacker = await getUserData(battleData.cid);
+    const defender = await getUserData(battleData.oid);
+    const p1 = attacker.pokes.filter((poke) => poke.pass == battleData.c)[0]
+    const p2 = defender.pokes.filter((poke) => poke.pass == battleData.o)[0]
+    if (!p1 || !p2) {
+      dbg('multimo:wait_missing_pokes', { bword, cid: battleData.cid, oid: battleData.oid, c: battleData.c, o: battleData.o });
+      return;
+    }
+    const base1 = pokestats[p2.name]
+    const base2 = pokestats[p1.name]
     const level1 = plevel(p2.name, p2.exp)
     const level2 = plevel(p1.name, p1.exp)
     const stats1 = await Stats(base1, p2.ivs, p2.evs, c(p2.nature), level1)
@@ -4774,12 +4788,39 @@ const base2 = pokestats[p1.name]
     let msg = `<b>* ${displayName(defender, battleData.oid)} has locked in an action!</b>\n`
     msg += `<b>Waiting for ${displayName(attacker, battleData.cid)} to select...</b>`
 
-const isGroupMmo = ctx.chat.type !== 'private';
-const pvpMmo = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
-await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, pvpMmo.msg, { parse_mode: 'HTML', reply_markup: pvpMmo.keyboard, ...pvpMmo.ext })
- dbg('multimo:waiting', { bword, nextTurn: battleData.cid });
-     return;
- }
+    const isGroupMmo = ctx.chat.type !== 'private';
+    const pvpMmo = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
+    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, pvpMmo.msg, { parse_mode: 'HTML', reply_markup: pvpMmo.keyboard, ...pvpMmo.ext })
+    dbg('multimo:waiting', { bword, nextTurn: battleData.cid });
+
+    // --- Inactivity Timeout Logic ---
+    // Start/reset a 60s timer for the next player to act
+    if (!battleTurnTimeouts[bword]) battleTurnTimeouts[bword] = {};
+    const nextUserId = battleData.cid;
+    if (battleTurnTimeouts[bword][nextUserId]) {
+      clearTimeout(battleTurnTimeouts[bword][nextUserId]);
+    }
+    battleTurnTimeouts[bword][nextUserId] = setTimeout(async () => {
+      try {
+        // Forfeit logic: inactive player loses
+        const inactiveUser = await getUserData(nextUserId);
+        const opponentUser = await getUserData(battleData.oid);
+        let forfeitMsg = `\n\n<b>${displayName(inactiveUser, nextUserId)} took too long!\nThey forfeit the match due to inactivity (60s timeout).</b>`;
+        // End the battle, declare opponent as winner
+        // (You may want to call your existing battle end/cleanup logic here)
+        // Remove from messageData.battle, etc.
+        // For now, just update the UI and clear the timer
+        await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, pvpMmo.msg + forfeitMsg, { parse_mode: 'HTML' });
+        // Optionally: remove battle from active battles, clean up temp data, etc.
+      } catch (e) {}
+      // Clean up timer
+      if (battleTurnTimeouts[bword] && battleTurnTimeouts[bword][nextUserId]) {
+        clearTimeout(battleTurnTimeouts[bword][nextUserId]);
+        delete battleTurnTimeouts[bword][nextUserId];
+      }
+    }, 60000);
+    return;
+}
  
  // 3. Both have chosen: resolve immediately using the queued actions.
  dbg('multimo:resolving', { bword, qlen: battleData.queuedActions.length });

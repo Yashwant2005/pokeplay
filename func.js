@@ -350,6 +350,16 @@ function mergeUserDataForSave(latestData, incomingData) {
 
 async function check(ctx, next) {
   const data = await getUserData(ctx.from.id);
+  const msgdata = await loadMessageData();
+  const inBattle = Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id);
+  if (!inBattle && data.extra && data.extra.temp_battle) {
+    const allPasses = Object.values(data.extra.temp_battle).flat();
+    if (allPasses.length > 0 && Array.isArray(data.pokes)) {
+      data.pokes = data.pokes.filter((p) => !allPasses.includes(p.pass));
+    }
+    data.extra.temp_battle = {};
+    await saveUserData2(ctx.from.id, data);
+  }
 
   if (!data.pokes) {
     ctx.replyWithMarkdown('*Start your journey now*',{reply_to_message_id:ctx.message.message_id,

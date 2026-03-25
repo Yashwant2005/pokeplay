@@ -261,7 +261,7 @@ function registerHuntCommand(bot, deps) {
   }
 
   if(['paldea', 'kitakami', 'blueberry'].includes(playerRegion)){
-    rg = 'paldea'
+    rg = playerRegion
   }
   
   const regionList = (rdata && rdata[region]) ? rdata[region] : null;

@@ -19,6 +19,10 @@ if(!poke.moves.includes(parseInt(move))){
 ctx.answerCbQuery('Your Poke Does Not Know This Move')
 return
 }
+if(poke.moves.includes(parseInt(mid))){
+ctx.answerCbQuery('This move is already learned.')
+return
+}
 const index = poke.moves.indexOf(parseInt(move));
 
 if (index !== -1) {

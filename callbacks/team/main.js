@@ -8,6 +8,11 @@ if(id && ctx.from.id!=id){
 ctx.answerCbQuery()
 return
 }
+if(!userData.inv || typeof userData.inv !== 'object') userData.inv = {}
+if(!userData.teams || typeof userData.teams !== 'object' || !Array.isArray(userData.teams[team])){
+ctx.answerCbQuery('Team not found')
+return
+}
 const count = userData.teams[team].length
 if(userData.inv.team && userData.inv.team==team){
 ctx.answerCbQuery('Already Main')

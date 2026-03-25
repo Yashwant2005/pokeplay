@@ -1188,12 +1188,14 @@ const groupCommands = [
   { command: '/hunt', description: 'hunt A Poke' },
   { command: '/events', description: 'View active and upcoming events' },
   { command: '/daily', description: 'Claim commemorative daily rewards' },
+  { command: '/dailyreset', description: 'Reset your daily reward timer' },
   { command: '/reset', description: 'Reset data for yourself or a replied user' },
   { command: '/claim_safari_pass', description: 'Claim your daily safari event pass' },
   { command: '/challenge', description: 'Battle With Other Players' },
   { command: '/mybag', description: 'Check Your Bag' },
   { command: '/mypokemons', description: 'Check Your All Pokes' },
   { command: '/mycard', description: 'View Your Trainer Card' },
+  { command: '/trainerreward', description: 'Claim unclaimed trainer rank rewards' },
   { command: '/trainer_card', description: 'Customize Your Trainer Card' },
   { command: '/stats', description: 'Check Stats Of A Poke' },
   { command: '/assignability', description: 'Repair missing or invalid abilities' },
@@ -1329,21 +1331,20 @@ async function editOverdueMessages() {
           const elapsedTime = Date.now() - userMessageData.times;
 
           if (elapsedTime > 130000) {
-            let newMessage = `<a href="tg://user?id=${turn}"><b>${d1Name}</b></a> has not moved and loses <b>25</b> LP ⭐.`;
-            newMessage += `\n<a href="tg://user?id=${oppo}"><b>${d2Name}</b></a> <b>+25</b> LP ⭐.`;
-
-            if (d1 && d1.inv && typeof d1.inv.league_points === 'number' && d1.inv.league_points > 25) {
-              d1.inv.league_points -= 25;
+            const battleData = loadBattleData(chatId);
+            if (!battleData || String(battleData.cid) !== String(turn) || String(battleData.oid) !== String(oppo)) {
+              delete messageData[chatId];
+              await saveMessageData(messageData);
+              return;
             }
+            let newMessage = `<a href="tg://user?id=${turn}"><b>${d1Name}</b></a> has not moved.`;
+            newMessage += `\n<a href="tg://user?id=${oppo}"><b>${d2Name}</b></a> <b>+25</b> LP ⭐.`;
 
             if (d2 && d2.inv) {
               if (typeof d2.inv.league_points !== 'number') d2.inv.league_points = 0;
               d2.inv.league_points += 25;
             }
 
-            if (d1 && d1.inv) {
-              await saveUserData2(turn, d1);
-            }
             if (d2 && d2.inv) {
               await saveUserData2(oppo, d2);
             }

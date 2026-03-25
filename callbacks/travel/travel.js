@@ -136,6 +136,18 @@ function register_021_travel(bot, deps) {
       return;
     }
 
+    if(!config && type !== 'go'){
+      await editMessage(
+        'text',
+        ctx,
+        ctx.chat.id,
+        ctx.callbackQuery.message.message_id,
+        '*Which Region You Wanna Travel?*\n\n*Travel cost:* _100 PokeCoins when changing major region. Same-region travel is free._',
+        { parse_mode: 'markdown', reply_markup: { inline_keyboard: buildMainTravelKeyboard(ctx.from.id) } }
+      );
+      return;
+    }
+
     if(data.balls.safari && data.balls.safari > 0){
       ctx.answerCbQuery('You Are In *' + c(data.extra.saf) + ' Safari Zone*');
       return;

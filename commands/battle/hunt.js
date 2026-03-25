@@ -70,13 +70,33 @@ function registerHuntCommand(bot, deps) {
   await saveUserData2(ctx.from.id,data)
   
   const mdata = await loadMessageDataFresh();
+  const userIdText = String(ctx.from.id)
+  const hasActiveBattleEntry = Object.entries(mdata || {}).some(([key, entry]) => {
+    if (key === 'battle' || key === 'moves' || key === 'tutor') return false
+    if (!entry || typeof entry !== 'object') return false
+    if (String(entry.turn) === userIdText || String(entry.oppo) === userIdText) return true
+    if (String(entry.id) === userIdText && entry.kind === 'wild_battle') return true
+    return false
+  })
   
-  if((Array.isArray(mdata.battle) && mdata.battle.some((id) => String(id) === String(ctx.from.id))) || mdata[ctx.from.id]){
+  const directEntry = mdata[userIdText]
+  const hasDirectBattleLock = !!(
+    directEntry &&
+    typeof directEntry === 'object' &&
+    directEntry.kind !== 'hunt_prompt'
+  )
+  
+  if(hasDirectBattleLock || hasActiveBattleEntry){
   
   await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You are in a *battle*',{reply_to_message_id:ctx.message.message_id})
   
   return
   
+  }
+  
+  if(Array.isArray(mdata.battle) && mdata.battle.some((id) => String(id) === userIdText)){
+  mdata.battle = mdata.battle.filter((id) => String(id) !== userIdText)
+  await saveMessageData(mdata)
   }
   
   if(Math.random() < 0.0003){
@@ -495,7 +515,7 @@ function registerHuntCommand(bot, deps) {
   
   ctx.session.name = m62
   const messageData = await loadMessageData();
-  messageData[ctx.chat.id] = { mid: m62, timestamp: Date.now(), id: ctx.from.id };
+  messageData[ctx.chat.id] = { mid: m62, timestamp: Date.now(), id: ctx.from.id, kind: 'hunt_prompt' };
   await saveMessageData(messageData);
   
   });

@@ -1,6 +1,6 @@
+const fs = require('fs');
+const path = require('path');
 const { Telegraf } = require('telegraf');
-const { ensureIndexes } = require('./mongo');
-const { getKv, setKv } = require('./mongo_kv');
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 const BOT_TOKEN      = '8686253817:AAERTq7Z5p6EDn2VLhWS0v13h4WiTVb5EqU';
@@ -8,7 +8,7 @@ const ADMIN_IDS      = [6265981509];
 const CHANNEL_ID     = -1003707195144;
 const BOT_USERNAME   = 'pokeplay_factions_bot';
 const DEFAULT_PFP    = 'https://files.catbox.moe/5rg0pw.jpg';
-const DATA_KEY       = 'factions';
+const DATA_FILE      = path.join(__dirname, 'data', 'factions.json');
 
 const bot         = new Telegraf(BOT_TOKEN);
 const botStartTime = Date.now();
@@ -64,12 +64,13 @@ function cloneJson(value) {
 
 async function loadDataFromStore() {
   try {
-    const data = await getKv(DATA_KEY, { factions: [] });
-    if (data && Array.isArray(data.factions)) {
-      cachedData = data;
-    } else {
-      cachedData = { factions: [] };
+    if (!fs.existsSync(DATA_FILE)) {
+      fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
+      fs.writeFileSync(DATA_FILE, JSON.stringify({ factions: [] }, null, 2), 'utf8');
     }
+    const raw = fs.readFileSync(DATA_FILE, 'utf8');
+    const data = JSON.parse(raw);
+    cachedData = (data && Array.isArray(data.factions)) ? data : { factions: [] };
   } catch (_) {
     cachedData = { factions: [] };
   }
@@ -81,7 +82,12 @@ function loadData() {
 
 function saveData(data) {
   cachedData = cloneJson(data && typeof data === 'object' ? data : { factions: [] });
-  setKv(DATA_KEY, cloneJson(cachedData)).catch(() => {});
+  try {
+    fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
+    fs.writeFileSync(DATA_FILE, JSON.stringify(cachedData, null, 2), 'utf8');
+  } catch (error) {
+    log('SAVE FAILED', { error: error?.message ?? String(error) });
+  }
 }
 
 // ─── Formatting helpers ───────────────────────────────────────────────────────
@@ -999,11 +1005,6 @@ bot.on('message', async (ctx, next) => {
 
 // ─── Launch ───────────────────────────────────────────────────────────────────
 async function initFactionBot() {
-  try {
-    await ensureIndexes();
-  } catch (error) {
-    log('INDEX INIT FAILED', { error: error?.message ?? String(error) });
-  }
   await loadDataFromStore();
 }
 

@@ -59,8 +59,8 @@ function register_011_catch(bot, deps) {
         return;
       }
     }
-    const mdata = await loadMessageData();
-    if (mdata.battle.includes(ctx.from.id)) {
+    const mdata = await loadMessageDataFresh();
+    if (Array.isArray(mdata.battle) && mdata.battle.some((id) => String(id) === String(ctx.from.id))) {
       ctx.answerCbQuery('You Are In A Battle');
       return;
     }
@@ -312,11 +312,11 @@ function register_011_catch(bot, deps) {
     } else {
       mg = await sendMessage(ctx, ctx.chat.id, { parse_mode: 'HTML' }, msg, { reply_markup: keyboard });
     }
-    const messageData = await loadMessageData();
+    const messageData = await loadMessageDataFresh();
     data.extra.hunting = true;
     await saveUserData2(ctx.from.id, data);
     messageData.battle.push(ctx.from.id);
-    messageData[ctx.chat.id] = { mid: mg, timestamp: Date.now(), id: ctx.from.id };
+    messageData[ctx.chat.id] = { mid: mg, timestamp: Date.now(), id: ctx.from.id, kind: 'wild_battle' };
     await saveMessageData(messageData);
   });
 }

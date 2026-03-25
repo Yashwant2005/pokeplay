@@ -1,8 +1,8 @@
 ﻿let msgsent = []
 const appr = [1072659486, 6265981509]
 //const botToken = '8734728430:AAF1nY-gwmINr4-jQn18ts5IQBCkM9gszoo' //main bot
-//const botToken = '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' //backup bot
-const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // test bot
+const botToken = '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' //backup bot
+//const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // test bot
 const { Telegraf } = require('telegraf')
 const bot = new Telegraf(botToken)
 if (process.env.QUIET_LOGS === '1') {

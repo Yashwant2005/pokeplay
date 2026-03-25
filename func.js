@@ -196,9 +196,6 @@ function pruneMessageData(data) {
       if (entry.oppo !== undefined) activeIds.add(String(entry.oppo));
       continue;
     }
-    if (entry.id !== undefined && entry.mid) {
-      activeIds.add(String(entry.id));
-    }
   }
   if (!Array.isArray(out.battle)) {
     out.battle = [];
@@ -388,7 +385,13 @@ await next();
 }
 async function check2(ctx,next){
 const msgdata = await loadMessageDataFresh();
-if ((Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) || msgdata[ctx.from.id]){
+const directEntry = msgdata[ctx.from.id]
+const hasDirectBattleLock = !!(
+  directEntry &&
+  typeof directEntry === 'object' &&
+  directEntry.kind !== 'hunt_prompt'
+)
+if ((Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) || hasDirectBattleLock){
   ctx.replyWithMarkdown('You are in *Battle*',{reply_to_message_id:ctx.message.message_id})
   return
 }
@@ -396,7 +399,13 @@ await next();
 }
 async function check2q(ctx,next){
 const msgdata = await loadMessageDataFresh();
-if ((Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) || msgdata[ctx.from.id]){
+const directEntry = msgdata[ctx.from.id]
+const hasDirectBattleLock = !!(
+  directEntry &&
+  typeof directEntry === 'object' &&
+  directEntry.kind !== 'hunt_prompt'
+)
+if ((Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) || hasDirectBattleLock){
   ctx.answerCbQuery('You are in Battle')
   return
 }

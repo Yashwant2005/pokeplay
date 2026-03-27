@@ -46,7 +46,12 @@ function registerBerryCommand(bot, deps) {
   
   if(!p5){
   
-  const matches = stringSimilarity.findBestMatch(name2, data.pokes.map(poke => poke.nickname || poke.name));
+  const _pokeNames = (data.pokes || []).map(poke => poke.nickname || poke.name).filter(Boolean);
+  if (_pokeNames.length === 0) {
+    await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You have no Pokemon.*', { reply_to_message_id: ctx.message.message_id });
+    return;
+  }
+  const matches = stringSimilarity.findBestMatch(name2, _pokeNames);
   
           const bestMatch = matches.bestMatch.target;
   

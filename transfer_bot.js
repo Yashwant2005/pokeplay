@@ -27,7 +27,7 @@ const chains = JSON.parse(fs.readFileSync('data/evolution_chains2.json', 'utf8')
 const spawn = JSON.parse(fs.readFileSync('data/pokemon_status_info.json', 'utf8'));
 const stones = JSON.parse(fs.readFileSync('data/stones.json', 'utf8'));
 
-const BOT_TOKEN = '8616181555:AAHFesYbqllv11TGDDR4kNAU2rznGR_OLG8';
+const BOT_TOKEN = process.env.TRANSFER_BOT_TOKEN || process.env.BOT_TOKEN || '8616181555:AAHFesYbqllv11TGDDR4kNAU2rznGR_OLG8'; // fallback for local dev
 const ADMIN_GROUP_ID = -1003736053869;
 const SOURCE_BOT_IDS = [572621020, 7955369039];
 const STONES_SOURCE_BOT_IDS = [572621020, 7955369039];

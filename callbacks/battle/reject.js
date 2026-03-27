@@ -1,3 +1,5 @@
+const { cleanupTempBattleForUsers, clearBattleMessageState } = require('../../utils/temp_battle_cleanup');
+
 function register_057_reject(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action(/reject_/,async ctx => {
@@ -12,21 +14,9 @@ return
 if(bword){
   try {
     const battleData = loadBattleData(bword);
-    if(battleData && battleData.tempBattle && battleData.tempTeams){
-      const ids = [id1,id2];
-      for(const uid of ids){
-        const data = await getUserData(uid);
-        if(!data || !data.pokes) continue;
-        const passes = battleData.tempTeams[uid] || [];
-        if(passes.length > 0){
-          data.pokes = data.pokes.filter(p => !passes.includes(p.pass));
-        }
-        if(data.extra && data.extra.temp_battle && data.extra.temp_battle[bword]){
-          delete data.extra.temp_battle[bword];
-        }
-        await saveUserData2(uid, data);
-      }
-    }
+    await cleanupTempBattleForUsers({ battleData, bword, userIds: [id1, id2], getUserData, saveUserData2 });
+    await clearBattleMessageState({ bword, loadMessageData, saveMessageData });
+    await saveBattleData(bword, {});
   } catch (e) {
     // ignore missing battle file
   }

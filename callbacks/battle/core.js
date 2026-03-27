@@ -3500,6 +3500,11 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         messageData.battle = messageData.battle.filter((chats)=> chats!==parseInt(messageData[bword].turn) && chats!==parseInt(messageData[bword].oppo))
         delete messageData[bword];
         await saveMessageData(messageData);
+        // Clean up inactivity timers for this battle
+        if (battleTurnTimeouts[bword]) {
+          for (const tid of Object.values(battleTurnTimeouts[bword])) clearTimeout(tid);
+          delete battleTurnTimeouts[bword];
+        }
         await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+rewardLp+' LP ⭐',{parse_mode:'HTML'})
         if(Math.random()< 0.00005){
           const idr = (Math.random()<0.5) ? battleData.oid : battleData.cid
@@ -4613,8 +4618,13 @@ const isGroupInit = ctx.chat.type !== 'private';
 const pvpInit = buildPvpMsg(initPrefix, battleData, attacker, defender, p, p2, initStats1, initStats2, bword, isGroupInit);
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpInit.msg,{parse_mode:'HTML',reply_markup:pvpInit.keyboard,...pvpInit.ext})
 const messageData = await loadMessageData();
-messageData.battle.push(parseInt(battleData.cid))
-messageData.battle.push(parseInt(battleData.oid))
+const _pvpId1 = String(battleData.cid);
+const _pvpId2 = String(battleData.oid);
+if (!messageData.battle.map(String).includes(_pvpId1)) messageData.battle.push(_pvpId1);
+if (!messageData.battle.map(String).includes(_pvpId2)) messageData.battle.push(_pvpId2);
+if (!messageData._battleTimestamps) messageData._battleTimestamps = {};
+messageData._battleTimestamps[_pvpId1] = Date.now();
+messageData._battleTimestamps[_pvpId2] = Date.now();
     messageData[bword] = { chat:ctx.chat.id,mid: ctx.callbackQuery.message.message_id, times: Date.now(), turn:battleData.cid, oppo:battleData.oid };
     await saveMessageData(messageData);
 }else{
@@ -4801,6 +4811,10 @@ if (!singleActionTurn && battleData.queuedActions.length < 2) {
     if (battleTurnTimeouts[bword][nextUserId]) {
       clearTimeout(battleTurnTimeouts[bword][nextUserId]);
     }
+    // Capture only the data we need — NOT ctx, which will be stale after 60s
+    const _chatId = ctx.chat.id;
+    const _msgId = ctx.callbackQuery.message.message_id;
+    const _pvpMsg = pvpMmo.msg;
     battleTurnTimeouts[bword][nextUserId] = setTimeout(async () => {
       try {
         // Forfeit logic: inactive player loses
@@ -4811,19 +4825,26 @@ if (!singleActionTurn && battleData.queuedActions.length < 2) {
           opponentUser.inv.league_points += 25;
           await saveUserData2(battleData.oid, opponentUser);
         }
+        // Remove both players from active battle list
+        try {
+          const md = loadMessageData();
+          if (Array.isArray(md.battle)) {
+            md.battle = md.battle.filter(id => id !== parseInt(battleData.cid) && id !== parseInt(battleData.oid));
+          }
+          delete md[bword];
+          await saveMessageData(md);
+        } catch (_) {}
         let forfeitMsg = `\n\n<b>${displayName(inactiveUser, nextUserId)} took too long!\nThey forfeit the match due to inactivity (60s timeout).</b>`;
         forfeitMsg += `\n<b>${displayName(opponentUser, battleData.oid)} +25 LP ⭐.</b>`;
-        // End the battle, declare opponent as winner
-        // (You may want to call your existing battle end/cleanup logic here)
-        // Remove from messageData.battle, etc.
-        // For now, just update the UI and clear the timer
-        await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, pvpMmo.msg + forfeitMsg, { parse_mode: 'HTML' });
-        // Optionally: remove battle from active battles, clean up temp data, etc.
+        await editMessage('text', ctx, _chatId, _msgId, _pvpMsg + forfeitMsg, { parse_mode: 'HTML' });
       } catch (e) {}
-      // Clean up timer
-      if (battleTurnTimeouts[bword] && battleTurnTimeouts[bword][nextUserId]) {
-        clearTimeout(battleTurnTimeouts[bword][nextUserId]);
+      // Clean up timer entry
+      if (battleTurnTimeouts[bword]) {
         delete battleTurnTimeouts[bword][nextUserId];
+        // If no more active timers for this battle, remove the bword key entirely
+        if (Object.keys(battleTurnTimeouts[bword]).length === 0) {
+          delete battleTurnTimeouts[bword];
+        }
       }
     }, 60000);
     return;
@@ -6550,6 +6571,11 @@ const messageData = await loadMessageData();
 messageData.battle = messageData.battle.filter((chats)=> chats!==parseInt(messageData[bword].turn) && chats!==parseInt(messageData[bword].oppo))
 delete messageData[bword];
 await saveMessageData(messageData);
+// Clean up inactivity timers for this battle
+if (battleTurnTimeouts[bword]) {
+  for (const tid of Object.values(battleTurnTimeouts[bword])) clearTimeout(tid);
+  delete battleTurnTimeouts[bword];
+}
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>'+c(p1.name)+' </b>has fainted.\n<a href="tg://user?id='+battleData.cid+'"><b>'+displayName(attacker,battleData.cid)+'</b></a> lost against <a href="tg://user?id='+battleData.oid+'"><b>'+displayName(defender,battleData.oid)+'</b></a>.\n+'+rewardLp+' LP ⭐',{parse_mode:'HTML'})
 if(Math.random()< 0.00005){
 const idr = (Math.random()<0.5) ? battleData.oid : battleData.cid

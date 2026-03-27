@@ -44,14 +44,39 @@ function registerTempCommand(bot, deps) {
     }
 
     if (!data.extra) data.extra = {};
-    const temp = data.extra.temp_battle || {};
-    const tempPasses = Object.values(temp).flat().filter(Boolean);
-    if (tempPasses.length < 1) {
+    const temp = data.extra.temp_battle && typeof data.extra.temp_battle === 'object' ? data.extra.temp_battle : {};
+    const staleBattleKeys = [];
+    const staleTempPasses = [];
+
+    for (const [battleKey, passes] of Object.entries(temp)) {
+      let battleData = null;
+      try {
+        battleData = loadBattleData(battleKey);
+      } catch (error) {
+        battleData = null;
+      }
+
+      const isActiveBattle =
+        battleData &&
+        typeof battleData === 'object' &&
+        Object.keys(battleData).length > 0 &&
+        ((battleData.tempTeams && (battleData.tempTeams[String(ctx.from.id)] || battleData.tempTeams[ctx.from.id])) ||
+          (battleData.users && Object.prototype.hasOwnProperty.call(battleData.users, String(ctx.from.id))) ||
+          String(battleData.cid) === String(ctx.from.id) ||
+          String(battleData.oid) === String(ctx.from.id));
+
+      if (!isActiveBattle) {
+        staleBattleKeys.push(battleKey);
+        staleTempPasses.push(...(Array.isArray(passes) ? passes : []).filter(Boolean).map(String));
+      }
+    }
+
+    if (staleTempPasses.length < 1) {
       await sendMessage(
         ctx,
         ctx.chat.id,
         { parse_mode: 'markdown' },
-        'No *temp pokemons* found to clear.',
+        'No *stale temp pokemons* found to clear.',
         { reply_to_message_id: ctx.message.message_id }
       );
       return;
@@ -59,8 +84,13 @@ function registerTempCommand(bot, deps) {
 
     if (!data.pokes) data.pokes = [];
     const before = data.pokes.length;
-    data.pokes = data.pokes.filter(p => !tempPasses.includes(p.pass));
-    data.extra.temp_battle = {};
+    data.pokes = data.pokes.filter((p) => {
+      const pass = p && p.pass !== undefined ? String(p.pass) : '';
+      return !p?.temp_battle && !staleTempPasses.includes(pass);
+    });
+    for (const battleKey of staleBattleKeys) {
+      delete data.extra.temp_battle[battleKey];
+    }
 
     await saveUserData2(ctx.from.id, data);
 
@@ -69,7 +99,7 @@ function registerTempCommand(bot, deps) {
       ctx,
       ctx.chat.id,
       { parse_mode: 'markdown' },
-      `Cleared *${removed}* temp pokemon(s).`,
+      `Cleared *${removed}* stale temp pokemon(s).`,
       { reply_to_message_id: ctx.message.message_id }
     );
   });

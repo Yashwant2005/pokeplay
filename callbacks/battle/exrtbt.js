@@ -187,7 +187,12 @@ await saveBattleData(bword, battleData);
 ctx.session.name = ''
 var mg = await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},msg,{reply_markup:keyboard})
 const messageData = await loadMessageData();
-messageData.battle.push(ctx.from.id)
+const _exrtbtUserId = String(ctx.from.id);
+if (!messageData.battle.map(String).includes(_exrtbtUserId)) {
+  messageData.battle.push(_exrtbtUserId);
+}
+if (!messageData._battleTimestamps) messageData._battleTimestamps = {};
+messageData._battleTimestamps[_exrtbtUserId] = Date.now();
     messageData[ctx.chat.id] = { mid: mg, timestamp: Date.now(),id:ctx.from.id };
 await saveMessageData(messageData);
 })

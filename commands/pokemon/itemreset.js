@@ -60,7 +60,11 @@ function registerItemResetCommand(bot, deps) {
     });
 
     if (matched.length < 1) {
-      const names = data.pokes.map((poke) => poke.nickname || poke.name);
+      const names = (data.pokes || []).map((poke) => poke.nickname || poke.name).filter(Boolean);
+      if (names.length === 0) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You have no Pokemon.*', { reply_to_message_id: ctx.message.message_id });
+        return;
+      }
       const matches = stringSimilarity.findBestMatch(target, names);
       const bestMatch = matches.bestMatch && matches.bestMatch.target;
       const similarity = matches.bestMatch ? matches.bestMatch.rating : 0;

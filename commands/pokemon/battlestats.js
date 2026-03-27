@@ -67,7 +67,8 @@ function registerBattleStatsCommand(bot, deps) {
       return { sideMap, activePass, pokemon: direct };
     }
 
-    const names = candidates.map((p) => p.nickname || p.name);
+    const names = candidates.map((p) => p.nickname || p.name).filter(Boolean);
+    if (names.length === 0) return { sideMap, activePass, pokemon: null };
     const best = stringSimilarity.findBestMatch(normalizedQuery, names).bestMatch;
     if (best && best.rating > 0.45) {
       const pokemon = candidates.find((p) => (p.nickname || p.name) === best.target) || null;

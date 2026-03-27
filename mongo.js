@@ -27,10 +27,21 @@ async function getDb() {
       maxPoolSize: maxPool,
       minPoolSize: Math.min(minPool, maxPool),
       maxIdleTimeMS: 60000,
-      serverSelectionTimeoutMS: 10000
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 10000,
+      retryWrites: true,
+      retryReads: true
     });
     connectPromise = client.connect().then(() => {
       db = client.db(dbName);
+      // Auto-reconnect: if the topology closes unexpectedly, reset so next
+      // call to getDb() creates a fresh connection instead of hanging forever.
+      client.on('topologyClosed', () => {
+        console.warn('[mongo] topology closed — will reconnect on next request');
+        db = null;
+        connectPromise = null;
+      });
       return db;
     });
   }

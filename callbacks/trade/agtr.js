@@ -23,6 +23,7 @@ if(!id3.includes('n') && !id4.includes('n')){
   const data2 = await getUserData(id2.replace(/[ny]/g,''))
   const poke = data1.pokes.filter((p)=>p.pass==pass1)[0]
   const poke2 = data2.pokes.filter((p)=>p.pass==pass2)[0]
+  const isTradablePokemon = (p) => p && !p.temp_battle
 if(!poke){
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<a href="tg://user?id='+id1.replace(/[ny]/g,'')+'"><b>'+data1.inv.name+'</b></a> does not have the choosen poke any more.',{parse_mode:'html'})
 return
@@ -30,6 +31,10 @@ return
   if(!poke2){
   await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<a href="tg://user?id='+id2.replace(/[ny]/g,'')+'"><b>'+data2.inv.name+'</b></a> does not have the choosen poke any more.',{parse_mode:'html'})
   return
+  }
+  if(!isTradablePokemon(poke) || !isTradablePokemon(poke2)){
+    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>Trade blocked:</b> random battle pokemon cannot be traded.',{parse_mode:'html'})
+    return
   }
   const hasHeldItem = (p) => {
     const item = p && p.held_item ? String(p.held_item).trim().toLowerCase() : 'none';

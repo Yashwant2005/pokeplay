@@ -1,8 +1,7 @@
 ﻿let msgsent = []
 const appr = [1072659486, 6265981509]
-//const botToken = '8734728430:AAF1nY-gwmINr4-jQn18ts5IQBCkM9gszoo' //main bot
-const botToken = '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' //backup bot
-//const botToken = '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // test bot
+require('dotenv').config();
+const botToken = process.env.BOT_TOKEN || '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' // fallback for local dev
 const { Telegraf } = require('telegraf')
 const bot = new Telegraf(botToken)
 if (process.env.QUIET_LOGS === '1') {
@@ -534,6 +533,60 @@ let globalClicks = [];
 let lastmsg = {}
 let globalmsg = [];
 let lastInteractionAt = 0;
+
+// ── Memory leak fix: trim rate-limit arrays every 5 minutes ──────────────────
+setInterval(() => {
+  const now = Date.now();
+  const cutoff1s  = now - 1000;
+  const cutoff1m  = now - 60000;
+  const cutoff10m = now - 600000;
+
+  // Trim global rate arrays – these were growing forever
+  globalClicks = globalClicks.filter(t => t > cutoff1s);
+  globalmsg    = globalmsg.filter(t => t > cutoff1s);
+
+  // Trim per-chat click arrays and remove stale chat keys entirely
+  for (const chatId of Object.keys(lastClicked)) {
+    lastClicked[chatId] = (lastClicked[chatId] || []).filter(t => t > cutoff1m);
+    if (lastClicked[chatId].length === 0) delete lastClicked[chatId];
+  }
+  for (const chatId of Object.keys(lastmsg)) {
+    lastmsg[chatId] = (lastmsg[chatId] || []).filter(t => t > cutoff1m);
+    if (lastmsg[chatId].length === 0) delete lastmsg[chatId];
+  }
+
+  // Remove stale per-user cooldown entries
+  for (const userId of Object.keys(lastClicked2)) {
+    if (now - lastClicked2[userId] > cutoff10m) delete lastClicked2[userId];
+  }
+  for (const userId of Object.keys(lastUsed)) {
+    if (now - lastUsed[userId] > cutoff10m) delete lastUsed[userId];
+  }
+
+  // Remove stale userState entries
+  for (const [userId, state] of userState.entries()) {
+    if (!state || (state._ts && now - state._ts > cutoff10m)) userState.delete(userId);
+  }
+  for (const [userId, state] of userState2.entries()) {
+    if (!state || (state._ts && now - state._ts > cutoff10m)) userState2.delete(userId);
+  }
+}, 5 * 60 * 1000);
+// ─────────────────────────────────────────────────────────────────────────────
+// ── Per-user callback lock — prevents race conditions when user taps fast ─────
+const userCallbackLock = new Map();
+async function withUserLock(userId, fn) {
+  const key = String(userId);
+  // If already processing for this user, skip (don't queue — stale actions cause data corruption)
+  if (userCallbackLock.get(key)) return null;
+  userCallbackLock.set(key, true);
+  try {
+    return await fn();
+  } finally {
+    userCallbackLock.delete(key);
+  }
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 let battlec = {}
 const banListKey = 'ban_list';
 const admins = [...new Set([6265981509, 8493023103, 8551864967, 7577674783])]
@@ -685,7 +738,8 @@ const moduleDeps = buildModuleDeps({
   lastmsg,
   globalmsg,
   forwardMessageToAllUsers,
-  reloadStaticData
+  reloadStaticData,
+  withUserLock
 });
 registerCommands(bot, moduleDeps);
 registerCallbacks(bot, moduleDeps);
@@ -699,12 +753,12 @@ bot.on('callback_query', async (ctx, next) => {
     lastInteractionAt = Date.now();
     const userId = ctx.from.id;
     const chatId = ctx.chat ? ctx.chat.id : 0;
-    const globalClicksPerSecond = globalClicks.filter(
-      (timestamp) => Date.now() - timestamp < 1000
-    );
+    const now1 = Date.now();
+    globalClicks = globalClicks.filter(t => now1 - t < 1000); // trim on every check
+    const globalClicksPerSecond = globalClicks;
 
     if (globalClicksPerSecond.length > 40) {
-      const waitTime = Math.ceil((globalClicksPerSecond[0] + 1000 - Date.now()) / 1000);
+      const waitTime = Math.ceil((globalClicksPerSecond[0] + 1000 - now1) / 1000);
       ctx.answerCbQuery(`Hold on 1 sec.`);
       return;
     }
@@ -715,11 +769,10 @@ bot.on('callback_query', async (ctx, next) => {
         lastClicked[chatId] = [];
       }
 
-      // Check total clicks in the current minute
-      const currentMinuteStart = Date.now() - (Date.now() % 60000);
-      const clicksPerMinute = lastClicked[chatId].filter(
-        (timestamp) => timestamp >= currentMinuteStart
-      );
+      // Check total clicks in the current minute — trim stale entries first
+      const currentMinuteStart = now1 - (now1 % 60000);
+      lastClicked[chatId] = lastClicked[chatId].filter(t => t >= currentMinuteStart);
+      const clicksPerMinute = lastClicked[chatId];
 
       if (clicksPerMinute.length >= 40) {
         const waitTime = Math.ceil((clicksPerMinute[0] + 60000 - Date.now()) / 1000);
@@ -737,7 +790,11 @@ bot.on('callback_query', async (ctx, next) => {
       ctx.answerCbQuery('Hold on 1 sec.');
       return;
     }
-    await next();
+    // Per-user lock: skip if this user's previous callback is still processing
+    const lockResult = await withUserLock(ctx.from.id, () => next());
+    if (lockResult === null) {
+      ctx.answerCbQuery('Processing, please wait...');
+    }
   } catch (error) {
     console.log(error)
   }
@@ -755,12 +812,12 @@ bot.on('message', async (ctx, next) => {
     }
     const userId = ctx.from.id;
     const chatId = ctx.chat ? ctx.chat.id : 0;
-    const globalClicksPerSecond = globalmsg.filter(
-      (timestamp) => Date.now() - timestamp < 1000
-    );
+    const now2 = Date.now();
+    globalmsg = globalmsg.filter(t => now2 - t < 1000); // trim on every check
+    const globalClicksPerSecond = globalmsg;
 
     if (globalClicksPerSecond.length > 40) {
-      const waitTime = Math.ceil((globalClicksPerSecond[0] + 1000 - Date.now()) / 1000);
+      const waitTime = Math.ceil((globalClicksPerSecond[0] + 1000 - now2) / 1000);
       return;
     }
 
@@ -770,11 +827,10 @@ bot.on('message', async (ctx, next) => {
         lastmsg[chatId] = [];
       }
 
-      // Check total clicks in the current minute
-      const currentMinuteStart = Date.now() - (Date.now() % 60000);
-      const clicksPerMinute = lastmsg[chatId].filter(
-        (timestamp) => timestamp >= currentMinuteStart
-      );
+      // Check total clicks in the current minute — trim stale entries first
+      const currentMinuteStart = now2 - (now2 % 60000);
+      lastmsg[chatId] = lastmsg[chatId].filter(t => t >= currentMinuteStart);
+      const clicksPerMinute = lastmsg[chatId];
 
       if (clicksPerMinute.length >= 40) {
         const waitTime = Math.ceil((clicksPerMinute[0] + 60000 - Date.now()) / 1000);

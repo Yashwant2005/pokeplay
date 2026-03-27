@@ -315,7 +315,12 @@ function register_011_catch(bot, deps) {
     const messageData = await loadMessageDataFresh();
     data.extra.hunting = true;
     await saveUserData2(ctx.from.id, data);
-    messageData.battle.push(ctx.from.id);
+    const _battleUserId = String(ctx.from.id);
+    if (!messageData.battle.map(String).includes(_battleUserId)) {
+      messageData.battle.push(_battleUserId);
+    }
+    if (!messageData._battleTimestamps) messageData._battleTimestamps = {};
+    messageData._battleTimestamps[_battleUserId] = Date.now();
     messageData[ctx.chat.id] = { mid: mg, timestamp: Date.now(), id: ctx.from.id, kind: 'wild_battle' };
     await saveMessageData(messageData);
   });

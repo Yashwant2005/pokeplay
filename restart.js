@@ -1,16 +1,25 @@
 const { exec } = require('child_process');
 
-const INTERVAL_MS = 4 * 60 * 1000;
-const CMD = 'pm2 start pokeplay2';
+const INTERVAL_MS = 20 * 60 * 1000;
+const CMD = 'pm2 restart all';
 
 function runRestart() {
-  exec(CMD, (err, stdout, stderr) => {
-    if (err) {
-      console.error(`[pm2-restart] error: ${err.message}`);
+  const startedAt = new Date().toISOString();
+  console.log(`[pm2-restart] Running "${CMD}" at ${startedAt}`);
+
+  exec(CMD, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`[pm2-restart] Command failed: ${error.message}`);
       return;
     }
-    if (stdout) console.log(`[pm2-restart] ${stdout.trim()}`);
-    if (stderr) console.error(`[pm2-restart] ${stderr.trim()}`);
+
+    if (stdout && stdout.trim()) {
+      console.log(`[pm2-restart] ${stdout.trim()}`);
+    }
+
+    if (stderr && stderr.trim()) {
+      console.error(`[pm2-restart] ${stderr.trim()}`);
+    }
   });
 }
 

@@ -63,6 +63,10 @@ let saveFlushTimer = null;
 let saveFlushInProgress = false;
 const saveQueue = new Map();
 
+// In-flight deduplication: if two concurrent calls ask for the same user,
+// the second one waits for the first DB fetch instead of making a duplicate request.
+const userFetchInFlight = new Map();
+
 function cloneJson(value) {
   if (value === undefined) return undefined;
   if (value === null) return null;
@@ -112,6 +116,9 @@ function queueUserSave(key, mergedData) {
   }
 }
 
+const SAVE_FLUSH_MAX_RETRIES = 3;
+const saveQueueRetries = new Map();
+
 async function flushSaveQueue() {
   if (saveFlushInProgress) return;
   saveFlushInProgress = true;
@@ -119,6 +126,7 @@ async function flushSaveQueue() {
   const entries = Array.from(saveQueue.entries());
   saveQueue.clear();
   for (const [key, mergedData] of entries) {
+    const retries = saveQueueRetries.get(key) || 0;
     try {
       const users = await getCollection('users');
       await users.updateOne(
@@ -135,9 +143,16 @@ async function flushSaveQueue() {
         },
         { upsert: true }
       );
+      saveQueueRetries.delete(key); // success — clear retry count
     } catch (error) {
       console.error('Error saving data to MongoDB:', error);
-      saveQueue.set(key, mergedData);
+      if (retries < SAVE_FLUSH_MAX_RETRIES) {
+        saveQueueRetries.set(key, retries + 1);
+        saveQueue.set(key, mergedData); // re-queue for retry
+      } else {
+        console.error(`Dropping save for user ${key} after ${SAVE_FLUSH_MAX_RETRIES} retries`);
+        saveQueueRetries.delete(key);
+      }
     }
   }
   saveFlushInProgress = false;
@@ -153,7 +168,9 @@ function normalizeMessageData(data) {
     ...base,
     battle: Array.isArray(base.battle) ? base.battle : [],
     moves: base.moves && typeof base.moves === 'object' ? base.moves : {},
-    tutor: base.tutor && typeof base.tutor === 'object' ? base.tutor : {}
+    tutor: base.tutor && typeof base.tutor === 'object' ? base.tutor : {},
+    _battleTimestamps: base._battleTimestamps && typeof base._battleTimestamps === 'object'
+      ? base._battleTimestamps : {}
   };
 }
 
@@ -167,11 +184,15 @@ function isMessageEntryExpired(entry, now) {
   return false;
 }
 
+// Max time a user can be stuck in battle[] even if no cleanup runs (safety net)
+const BATTLE_LOCK_MAX_AGE_MS = 10 * 60 * 1000; // 10 minutes
+
 function pruneMessageData(data) {
   const now = Date.now();
   const out = normalizeMessageData(data);
   let changed = false;
   const activeIds = new Set();
+
   for (const key of Object.keys(out)) {
     if (key === 'battle' || key === 'moves' || key === 'tutor') continue;
     const entry = out[key];
@@ -185,6 +206,8 @@ function pruneMessageData(data) {
       changed = true;
       continue;
     }
+
+    // PVP battle: keyed by bword, has turn + oppo
     if (entry.turn !== undefined || entry.oppo !== undefined) {
       const battleData = loadBattleData(key);
       if (!battleData || Object.keys(battleData).length === 0) {
@@ -192,16 +215,36 @@ function pruneMessageData(data) {
         changed = true;
         continue;
       }
+      // BUG 1 FIX: normalise to String so battle[] filter always matches
       if (entry.turn !== undefined) activeIds.add(String(entry.turn));
       if (entry.oppo !== undefined) activeIds.add(String(entry.oppo));
       continue;
     }
+
+    // Wild battle / hunt: keyed by chatId, has .id field
+    // BUG 1 FIX: also collect the .id so wild-battle users get cleared from battle[]
+    if (entry.id !== undefined) {
+      activeIds.add(String(entry.id));
+      continue;
+    }
   }
+
   if (!Array.isArray(out.battle)) {
     out.battle = [];
     changed = true;
   } else {
-    const filtered = out.battle.filter((id) => activeIds.has(String(id)));
+    // BUG 3 FIX: normalise all ids to String before comparing so parseInt vs number
+    // mismatches never leave phantom entries
+    // BUG 4 FIX: also enforce a hard max-age so users can never be stuck forever —
+    // we store a timestamp alongside the battle entry; fall back to 0 if missing
+    const battleTimestamps = out._battleTimestamps || {};
+    const filtered = out.battle.filter((id) => {
+      const sid = String(id);
+      if (!activeIds.has(sid)) return false;
+      const ts = battleTimestamps[sid] || 0;
+      if (ts && (now - ts) > BATTLE_LOCK_MAX_AGE_MS) return false;
+      return true;
+    });
     if (filtered.length !== out.battle.length) {
       out.battle = filtered;
       changed = true;
@@ -384,32 +427,52 @@ return
 await next();
 }
 async function check2(ctx,next){
-const msgdata = await loadMessageDataFresh();
-const directEntry = msgdata[ctx.from.id]
-const hasDirectBattleLock = !!(
-  directEntry &&
-  typeof directEntry === 'object' &&
-  directEntry.kind !== 'hunt_prompt'
-)
-if ((Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) || hasDirectBattleLock){
-  ctx.replyWithMarkdown('You are in *Battle*',{reply_to_message_id:ctx.message.message_id})
-  return
+  const msgdata = await loadMessageDataFresh();
+  const userIdStr = String(ctx.from.id);
+
+  // Check 1: user is in the battle[] array (covers both PVP and wild)
+  const inBattleArray = Array.isArray(msgdata.battle) &&
+    msgdata.battle.some(id => String(id) === userIdStr);
+
+  // Check 2: there is an active messageData entry that references this user
+  // (keyed by chatId for wild battles, or bword for PVP)
+  const hasActiveLock = Object.entries(msgdata).some(([key, entry]) => {
+    if (key === 'battle' || key === 'moves' || key === 'tutor' || key === '_battleTimestamps') return false;
+    if (!entry || typeof entry !== 'object') return false;
+    // PVP entry: turn/oppo fields
+    if (String(entry.turn) === userIdStr || String(entry.oppo) === userIdStr) return true;
+    // Wild battle entry: id field (but NOT hunt_prompt which is not a real battle)
+    if (String(entry.id) === userIdStr && entry.kind !== 'hunt_prompt') return true;
+    return false;
+  });
+
+  if (inBattleArray || hasActiveLock) {
+    ctx.replyWithMarkdown('You are in *Battle*',{reply_to_message_id:ctx.message.message_id})
+    return
+  }
+  await next();
 }
-await next();
-}
+
 async function check2q(ctx,next){
-const msgdata = await loadMessageDataFresh();
-const directEntry = msgdata[ctx.from.id]
-const hasDirectBattleLock = !!(
-  directEntry &&
-  typeof directEntry === 'object' &&
-  directEntry.kind !== 'hunt_prompt'
-)
-if ((Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id)) || hasDirectBattleLock){
-  ctx.answerCbQuery('You are in Battle')
-  return
-}
-await next();
+  const msgdata = await loadMessageDataFresh();
+  const userIdStr = String(ctx.from.id);
+
+  const inBattleArray = Array.isArray(msgdata.battle) &&
+    msgdata.battle.some(id => String(id) === userIdStr);
+
+  const hasActiveLock = Object.entries(msgdata).some(([key, entry]) => {
+    if (key === 'battle' || key === 'moves' || key === 'tutor' || key === '_battleTimestamps') return false;
+    if (!entry || typeof entry !== 'object') return false;
+    if (String(entry.turn) === userIdStr || String(entry.oppo) === userIdStr) return true;
+    if (String(entry.id) === userIdStr && entry.kind !== 'hunt_prompt') return true;
+    return false;
+  });
+
+  if (inBattleArray || hasActiveLock) {
+    ctx.answerCbQuery('You are in Battle')
+    return
+  }
+  await next();
 }
 
 
@@ -417,7 +480,11 @@ await next();
 async function saveUserData2(userId, userData) {
   try {
     const key = String(userId);
-    const cached = getCachedUserData(key);
+    // Prefer the pending save-queue entry as the freshest known state,
+    // then fall back to cache, then DB — this prevents overwriting a
+    // queued save that hasn't been flushed to MongoDB yet.
+    const queued = saveQueue.get(key);
+    const cached = queued || getCachedUserData(key);
     const existing = cached ? null : await (await getCollection('users')).findOne({ _id: key });
     const latestData = cached || (existing && existing.data ? existing.data : {});
     const mergedData = mergeUserDataForSave(latestData, userData);
@@ -431,13 +498,27 @@ const saveUserData22 = saveUserData2;
 async function getUserData(userId) {
   try {
     const key = String(userId);
+    // 1. Return from cache if fresh
     const cached = getCachedUserData(key);
     if (cached) return cached;
-    const users = await getCollection('users');
-    const doc = await users.findOne({ _id: key });
-    if (!doc || !doc.data) return {};
-    setCachedUserData(key, doc.data);
-    return doc.data;
+    // 2. If a DB fetch is already in-flight for this user, wait for it
+    if (userFetchInFlight.has(key)) {
+      return await userFetchInFlight.get(key);
+    }
+    // 3. Start a new DB fetch and register it so concurrent callers share it
+    const fetchPromise = (async () => {
+      try {
+        const users = await getCollection('users');
+        const doc = await users.findOne({ _id: key });
+        if (!doc || !doc.data) return {};
+        setCachedUserData(key, doc.data);
+        return doc.data;
+      } finally {
+        userFetchInFlight.delete(key);
+      }
+    })();
+    userFetchInFlight.set(key, fetchPromise);
+    return await fetchPromise;
   } catch (error) {
     console.error('Error getting data from MongoDB:', error);
     return {};
@@ -520,6 +601,14 @@ const STAT_NAMES = ['attack', 'defense', 'special_attack', 'special_defense', 's
 const STATS_CACHE = new Map();
 const STATS_CACHE_MAX = 5000;
 const STATS_CACHE_TTL_MS = 5 * 60 * 1000;
+
+// Periodically evict expired stats cache entries
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, entry] of STATS_CACHE) {
+    if (!entry || (now - entry.t) > STATS_CACHE_TTL_MS) STATS_CACHE.delete(key);
+  }
+}, 10 * 60 * 1000);
 
 function getStatsCacheKey(baseStats, ivs, evs, natureName, level) {
   const b = baseStats || {};

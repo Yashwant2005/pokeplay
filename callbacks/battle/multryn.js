@@ -1,3 +1,5 @@
+const { cleanupTempBattleForUsers, clearBattleMessageState } = require('../../utils/temp_battle_cleanup');
+
 function register_058_multryn(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action(/multryn_/,async ctx => {
@@ -36,26 +38,9 @@ await saveBattleData(bword, battleData);
 }
 if(battleData.runs.includes(parseInt(battleData.cid)) && battleData.runs.includes(parseInt(battleData.oid))){
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Both Player Choosed To *Escape* Battle',{parse_mode:'markdown'})
-if(battleData.tempBattle && battleData.tempTeams){
-  const t1 = battleData.tempTeams[battleData.cid] || [];
-  const t2 = battleData.tempTeams[battleData.oid] || [];
-  const u1 = await getUserData(battleData.cid);
-  const u2 = await getUserData(battleData.oid);
-  u1.pokes = (u1.pokes || []).filter(p => !t1.includes(p.pass));
-  u2.pokes = (u2.pokes || []).filter(p => !t2.includes(p.pass));
-  if(u1.extra && u1.extra.temp_battle){
-    delete u1.extra.temp_battle[bword];
-  }
-  if(u2.extra && u2.extra.temp_battle){
-    delete u2.extra.temp_battle[bword];
-  }
-  await saveUserData2(battleData.cid, u1);
-  await saveUserData2(battleData.oid, u2);
-}
-const messageData = await loadMessageData();
-messageData.battle = messageData.battle.filter((chats)=> chats!==parseInt(messageData[bword].turn) && chats!==parseInt(messageData[bword].oppo))
-delete messageData[bword];
-await saveMessageData(messageData);
+await cleanupTempBattleForUsers({ battleData, bword, getUserData, saveUserData2 });
+await clearBattleMessageState({ bword, loadMessageData, saveMessageData });
+await saveBattleData(bword, {});
 }
 })
 }

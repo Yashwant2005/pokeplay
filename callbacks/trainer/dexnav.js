@@ -6,8 +6,7 @@ const {
 } = require('../../utils/dexnav');
 
 function registerDexNavCallback(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check2q, editMessage, regions, c, region } = deps;
   const locationsPerPage = 12;
 
   const buildLocationKeyboard = (species, regionId, locations, page, userId) => {

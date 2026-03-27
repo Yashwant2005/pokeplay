@@ -1,5 +1,5 @@
 function register_024_randomize(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, saveUserData2, editMessage, pokes, pokelist } = deps;
   bot.action(/randomize_/,check2q,async ctx => {
 const data = await getUserData(ctx.from.id)
 const team = ctx.callbackQuery.data.split('_')[1]

@@ -1,5 +1,5 @@
 function register_071_display(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, editMessage, c } = deps;
   bot.action(/display_/,async ctx => {
 const item = ctx.callbackQuery.data.split('_')[1]
 const data = await getUserData(ctx.from.id)

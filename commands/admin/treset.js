@@ -1,6 +1,5 @@
 function registerTrainerResetCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { saveUserData2, sendMessage, admins, getAllUserData } = deps;
   bot.command('treset', async (ctx) => {
     if (!admins.includes(ctx.from.id)) return;
 

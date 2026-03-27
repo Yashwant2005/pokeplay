@@ -1,5 +1,5 @@
 function register_086_relst(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, editMessage, pokes, c } = deps;
   bot.action(/relst_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]

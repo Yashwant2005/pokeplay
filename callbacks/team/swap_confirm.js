@@ -1,5 +1,5 @@
 function register_034_swap_confirm(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, saveUserData2, editMessage, pokes, pokelist } = deps;
   bot.action(/swap_confirm_/, check2q,async (ctx) => {
     const userData = await getUserData(ctx.from.id);
 

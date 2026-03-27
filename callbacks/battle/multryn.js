@@ -1,7 +1,7 @@
 const { cleanupTempBattleForUsers, clearBattleMessageState } = require('../../utils/temp_battle_cleanup');
 
 function register_058_multryn(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, editMessage, loadMessageData, loadBattleData, saveBattleData, battlec, saveMessageData } = deps;
   bot.action(/multryn_/,async ctx => {
 const now = Date.now();
 const chatKey = ctx.chat && ctx.chat.id;

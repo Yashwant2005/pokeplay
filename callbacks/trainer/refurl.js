@@ -1,5 +1,5 @@
 function register_074_refurl(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { sendMessage } = deps;
   bot.action(/refurl_/,async ctx => {
 const id = ctx.callbackQuery.data.split('_')[1]
 if(id!=ctx.from.id){

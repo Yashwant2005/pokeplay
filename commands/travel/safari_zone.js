@@ -1,5 +1,5 @@
 function registerSafariZoneCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, sendMessage, safari } = deps;
   bot.command('safari_zone',async ctx => {
   
   const userData = await getUserData(ctx.from.id)

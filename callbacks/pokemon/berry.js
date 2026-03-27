@@ -1,6 +1,5 @@
 function register_069_berry(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, editMessage, pokes, c, plevel } = deps;
   function buildStatKeyboard(pass, id) {
     return [
       [

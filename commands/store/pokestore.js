@@ -1,5 +1,5 @@
 function registerPokestoreCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { sendMessage, tms, word, c } = deps;
   bot.command('pokestore', async ctx => {
     const store2 = ['buy', 'heldlp', 'tms', 'sell'];
     const store = store2.filter((storeitem) => storeitem !== 'buy');

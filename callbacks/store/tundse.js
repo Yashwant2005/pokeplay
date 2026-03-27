@@ -1,5 +1,5 @@
 function register_052_tundse(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, editMessage, tms, pokes, dmoves, word, c, plevel, emojis } = deps;
   bot.action(/tundse_/,check2q,async ctx => {
 const id = ctx.callbackQuery.data.split('_')[2]
 if(ctx.from.id!=id){

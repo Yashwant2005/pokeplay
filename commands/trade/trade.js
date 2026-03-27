@@ -1,5 +1,5 @@
 function registerTradeCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check, getUserData, sendMessage, loadMessageData } = deps;
   bot.command('trade',check,async ctx => {
   
   const data = await getUserData(ctx.from.id)

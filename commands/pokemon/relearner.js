@@ -1,6 +1,5 @@
 function registerRelearnerCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { commands, getUserData, sendMessage, loadMessageData } = deps;
   commands.set('relearner', async (ctx) => {
     const data = await getUserData(ctx.from.id);
 

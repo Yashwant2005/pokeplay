@@ -1,5 +1,5 @@
 function register_055_tmselly(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { editMessage, tmprices } = deps;
   const getTmSellLp = (tm) => {
     const sellValue = Number(tmprices.sell[String(tm)] || 0)
     // Convert legacy PC sell value to LP with a stable ratio.

@@ -1,5 +1,5 @@
 function register_060_tradc(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { editMessage, he } = deps;
   bot.action(/tradc_/,async ctx => {
 const id1 = ctx.callbackQuery.data.split('_')[1]
 const id2 = ctx.callbackQuery.data.split('_')[2]

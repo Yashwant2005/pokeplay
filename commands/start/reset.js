@@ -1,6 +1,5 @@
 function registerResetCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { session, getUserData, resetUserData, sendMessage, loadMessageData, admins, clearUserSessions, saveMessageData, userExists } = deps;
   function clearUserFromMessageData(userId) {
     try {
       const mdata = loadMessageData();

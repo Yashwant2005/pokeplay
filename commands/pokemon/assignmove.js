@@ -1,6 +1,5 @@
 function registerAssignMoveCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, saveUserData2, sendMessage, forms, pokes, pokemoves, dmoves, growth_rates, chart, c, chains, admins, getAllUserData } = deps;
   const { sanitizePokemonMoves } = require('../../utils/pokemon_legality');
 
   function findTargetPokemon(data, key) {

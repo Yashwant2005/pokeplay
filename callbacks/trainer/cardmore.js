@@ -1,7 +1,7 @@
 const { MAX_TRAINER_LEVEL, formatTrainerProgress } = require('../../utils/trainer_rank_rewards');
 
 function register_089_cardmore(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, sendMessage, trainerlevel } = deps;
   bot.action('cardmore', async ctx => {
     try {
       const data = await getUserData(ctx.from.id)

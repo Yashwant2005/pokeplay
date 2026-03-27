@@ -102,8 +102,7 @@ function findPokemon(data, targetRaw) {
 }
 
 function registerItemEnhanceCommands(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check, getUserData, saveUserData2, sendMessage, pokes, stat, c, fetch } = deps;
   const STAT_MAP = {
     hp: 'hp',
     atk: 'attack',

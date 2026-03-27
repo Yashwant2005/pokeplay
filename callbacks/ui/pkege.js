@@ -1,5 +1,5 @@
 function register_001_pkege(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, sendMessage, editMessage, pokes, c, sort, pokelist } = deps;
   bot.action(/pkege_/, async (ctx) => {
     const data = await getUserData(ctx.from.id);
     const id = ctx.callbackQuery.data.split('_')[2];

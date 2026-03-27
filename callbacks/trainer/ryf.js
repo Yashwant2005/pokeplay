@@ -1,5 +1,5 @@
 function register_078_ryf(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { gmax, editMessage, forms, pokes, c, safari, rdata, formatDetails, Stats } = deps;
   bot.action(/ryf_/,async ctx => {
 const poke = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]

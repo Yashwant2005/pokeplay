@@ -1,5 +1,5 @@
 function register_023_rename(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { userState, sendMessage } = deps;
   bot.action(/rename_/,async ctx => {
 const team = ctx.callbackQuery.data.split('_')[1]
 ctx.deleteMessage();

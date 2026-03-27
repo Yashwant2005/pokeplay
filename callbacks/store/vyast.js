@@ -1,5 +1,5 @@
 function register_035_vyast(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, stones, word, c } = deps;
   bot.action(/vyast:/,async ctx => {
 const id = ctx.callbackQuery.data.split(':')[2]
 if(ctx.from.id!=id){

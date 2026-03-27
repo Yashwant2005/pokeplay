@@ -1,6 +1,5 @@
 function registerTempCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, saveUserData2, sendMessage, loadMessageData, loadBattleData, pokes } = deps;
   bot.command('temp', async (ctx) => {
     const args = ctx.message.text.split(' ').slice(1);
     if (!args[0] || args[0].toLowerCase() !== 'clear') {

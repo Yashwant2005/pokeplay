@@ -1,5 +1,5 @@
 function register_020_locked(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { bot } = deps;
   bot.action('locked',async ctx => {
 ctx.answerCbQuery();
 })

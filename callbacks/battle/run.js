@@ -1,5 +1,5 @@
 function register_009_run(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, editMessage, loadMessageData, loadBattleData, pokes, saveMessageData } = deps;
   const { revertTrackedFormsOnBattleEnd } = require('../../utils/battle_forms');
   bot.action(/run_/,async ctx => {
 let battleData = {};

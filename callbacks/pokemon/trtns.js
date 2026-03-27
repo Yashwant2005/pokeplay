@@ -1,5 +1,5 @@
 function register_082_trtns(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, editMessage, loadMessageData, pokes, dmoves, word, c, plevel, emojis, saveMessageData } = deps;
   bot.action(/trtns_/,async ctx => {
 const m = ctx.callbackQuery.data.split('_')[1]
 const d = ctx.callbackQuery.data.split('_')[2]

@@ -1,5 +1,5 @@
 function register_080_trlr(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, pokes, dmoves, word, c, plevel, emojis } = deps;
   bot.action(/trlr_/,async ctx => {
 const m = ctx.callbackQuery.data.split('_')[1]
 const d = ctx.callbackQuery.data.split('_')[2]

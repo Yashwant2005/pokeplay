@@ -1,5 +1,5 @@
 function registerSortCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { commands, getUserData, saveUserData2, sendMessage, c, sort } = deps;
   commands.set('sort',async ctx => {
   
   if (ctx.message.chat.type != 'private') {

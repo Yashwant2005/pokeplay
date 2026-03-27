@@ -1,5 +1,5 @@
 function register_081_tryfrg(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, pokes, dmoves, c, plevel, emojis } = deps;
   bot.action(/tryfrg_/,async ctx => {
 const frmove = ctx.callbackQuery.data.split('_')[1]
 const m = ctx.callbackQuery.data.split('_')[2]

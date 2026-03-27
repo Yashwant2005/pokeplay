@@ -1,5 +1,5 @@
 function register_043_store(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, editMessage, tms, dmoves, word, c, tmprices, emojis } = deps;
   const {
     getDaysUntilWeeklyReset,
     getTmLpPrice,

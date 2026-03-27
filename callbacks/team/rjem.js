@@ -1,5 +1,5 @@
 function register_031_rjem(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, saveUserData2, editMessage, pokes, pokelist } = deps;
   bot.action(/rjem_/,check2q, async (ctx) => {
     const pass = String(ctx.callbackQuery.data.split('_')[1]);
     const team = ctx.callbackQuery.data.split('_')[2];

@@ -1,6 +1,6 @@
 const _balls_vyabll = JSON.parse(require('fs').readFileSync('data/balls.json', 'utf8'));
 function register_038_vyabll(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, c, fs } = deps;
   bot.action(/vyabll:/, async ctx => {
     const balls = _balls_vyabll;
     const ball = ctx.callbackQuery.data.split(':')[1];

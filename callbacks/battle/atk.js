@@ -57,7 +57,7 @@ const {
 } = require('../../utils/battle_forms');
 
 function register_012_atk(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, sendMessage, editMessage, loadMessageData, loadBattleData, saveBattleData, trainerlevel, tms, stones, forms, pokes, pokemoves, dmoves, growth_rates, chart, stat, word, c, he, expdata, chains, calculateTotal, calcexp, sleep, pokestats, plevel, Stats, battlec, emojis, saveMessageData, Bar, eff, calc } = deps;
   const { getReadyEvolutionRows } = require('../../utils/evolution_rules');
   bot.action(/atk_/,async ctx => {
 const now = Date.now();

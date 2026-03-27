@@ -1,5 +1,5 @@
 function register_049_trainer(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, c, fs, colors } = deps;
   bot.action(/trainer_/,async ctx => {
 const edit = ctx.callbackQuery.data.split('_')[1]
 const userData = await getUserData(ctx.from.id)

@@ -1,8 +1,7 @@
 const { openBattleBoxes } = require('../../utils/trainer_rank_rewards');
 
 function registerBattleboxCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check, getUserData, saveUserData2, sendMessage, tms, stones, stat, c } = deps;
   function appendListSection(msg, label, items, formatter, maxItems) {
     if (!Array.isArray(items) || items.length < 1) return msg;
     const take = Math.max(0, Math.min(items.length, maxItems));

@@ -1,5 +1,5 @@
 function registerCandyCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { commands, getUserData, saveUserData2, sendMessage, loadMessageData, forms, pokes, pokemoves, dmoves, growth_rates, chart, c, chains, stringSimilarity, sort, pokelist, emojis, saveMessageData } = deps;
   const { getReadyEvolutionRows } = require('../../utils/evolution_rules');
   commands.set('candy', async ctx => {
   

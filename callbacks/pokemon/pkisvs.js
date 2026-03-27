@@ -1,5 +1,5 @@
 function register_008_pkisvs(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, pokes, calculateTotal, Stats } = deps;
   const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');
   bot.action(/pkisvs_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]

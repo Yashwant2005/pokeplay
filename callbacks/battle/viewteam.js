@@ -1,5 +1,5 @@
 function register_059_viewteam(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, loadBattleData, pokelist } = deps;
   bot.action(/viewteam_/,async ctx => {
 const bword = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]

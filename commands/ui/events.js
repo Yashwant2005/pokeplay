@@ -1,6 +1,5 @@
 function registerEventsCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { sendMessage, events } = deps;
   const {
     buildEventsListMessage,
     buildEventsListKeyboard

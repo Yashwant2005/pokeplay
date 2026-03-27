@@ -1,5 +1,5 @@
 function registerRecordCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { sendMessage, getUserCount } = deps;
   bot.command('record', async (ctx) => {
     if (ctx.from.id == '1072659486' || ctx.from.id == '6663592560') {
       const total = await getUserCount();

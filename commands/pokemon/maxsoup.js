@@ -19,8 +19,7 @@ function findPokemonMatches(data, targetRaw) {
 }
 
 function registerMaxSoupCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check, getUserData, saveUserData2, sendMessage, forms, pokes, c } = deps;
   bot.command('maxsoup', check, async (ctx) => {
     const data = await getUserData(ctx.from.id);
     if (!data.inv) {

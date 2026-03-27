@@ -1,5 +1,5 @@
 function register_040_elr(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, saveUserData2, editMessage, pokes, dmoves, c, plevel, emojis } = deps;
   bot.action(/elr_/,check2q,async ctx => {
 const move9 = ctx.callbackQuery.data.split('_')[1]
 const pass = ctx.callbackQuery.data.split('_')[2]

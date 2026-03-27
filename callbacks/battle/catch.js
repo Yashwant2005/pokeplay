@@ -6,7 +6,7 @@ const { ARCEUS_PLATES } = require('../../utils/held_item_shop');
 const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rules');
 
 function register_011_catch(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { session, getUserData, saveUserData2, sendMessage, loadMessageData, loadMessageDataFresh, loadBattleData, saveBattleData, spawn, pokes, pokemoves, dmoves, word, getRandomNature, generateRandomIVs, c, he, safari, checkseen, pokestats, plevel, Stats, battlec, emojis, saveMessageData, Bar } = deps;
   const getWildHeldItem = (pokemonName) => {
     const key = String(pokemonName || '').toLowerCase();
     if (key === 'arceus' && Math.random() < 0.2) {

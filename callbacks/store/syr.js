@@ -1,5 +1,5 @@
 function register_046_syr(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { session, getUserData, saveUserData2, sendMessage, editMessage, stones, c, he, catch_rates } = deps;
   const getStoneSell = (stoneName) => {
     const poke = stones[stoneName] ? stones[stoneName].pokemon : ''
     const rate = Number(catch_rates[poke] || 190)

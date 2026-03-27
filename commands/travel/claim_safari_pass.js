@@ -1,6 +1,5 @@
 function registerClaimSafariPassCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { event, check, getUserData, saveUserData2, sendMessage, fs, path, moment, events } = deps;
   const SAFARI_EVENT_PATH = path.join(process.cwd(), 'data', 'safari_event.json');
 
   const getDefaultSafariEventConfig = () => ({

@@ -1,5 +1,5 @@
 function register_056_tsejl(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, editMessage, tms, tmprices } = deps;
   const getTmSellLp = (tm) => {
     const sellValue = Number(tmprices.sell[String(tm)] || 0)
     // Convert legacy PC sell value to LP with a stable ratio.

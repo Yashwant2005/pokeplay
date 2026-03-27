@@ -1,6 +1,5 @@
 function registerSetAbilityCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, saveUserData2, sendMessage, pokes, c, fs, path, admins } = deps;
   const fs = require('fs');
   const path = require('path');
   const CACHE_PATH = path.join(process.cwd(), 'data', 'pokemon_abilities_cache.json');

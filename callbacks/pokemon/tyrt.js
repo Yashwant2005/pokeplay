@@ -1,5 +1,5 @@
 function register_079_tyrt(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, pokes, pokemoves, dmoves, c, sort, pokelist } = deps;
   bot.action(/tyrt_/,async ctx => {
 const m = ctx.callbackQuery.data.split('_')[1]*1
 const d = ctx.callbackQuery.data.split('_')[2]

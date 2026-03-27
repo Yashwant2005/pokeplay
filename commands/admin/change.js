@@ -3,8 +3,7 @@ function normalizePokemonName(value) {
 }
 
 function registerChangeCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { saveUserData2, sendMessage, pokes, stat, c, admins, getAllUserData } = deps;
   bot.command('change', async (ctx) => {
     if (!admins.includes(ctx.from.id)) return;
 

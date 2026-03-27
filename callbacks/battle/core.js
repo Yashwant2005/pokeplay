@@ -108,8 +108,7 @@ function registerBattleCallbacks(bot, deps) {
     getSpeedWithStatus,
     sendMessage,
     tutors,
-    word,
-    bot: botInstance,
+    word: botInstance,
     he,
     chains
   } = deps;

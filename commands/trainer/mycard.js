@@ -1,7 +1,7 @@
 const { getTrainerLevel, MAX_TRAINER_LEVEL } = require('../../utils/trainer_rank_rewards');
 
 function registerMycardCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check, getUserData, saveUserData2, sendMessage, trainerlevel, fs, createCanvas, loadImage, bags } = deps;
   bot.command('mycard', check, async (ctx) => {
   
     try {

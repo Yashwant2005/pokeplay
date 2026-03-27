@@ -1,6 +1,5 @@
 function registerDailyRewardCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check, getUserData, saveUserData2, sendMessage, moment, admins, events, getAllUserData } = deps;
   const ensureDailyState = (data) => {
     if (!data.extra || typeof data.extra !== 'object') data.extra = {};
     if (!data.extra.events || typeof data.extra.events !== 'object') data.extra.events = {};

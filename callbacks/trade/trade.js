@@ -1,5 +1,5 @@
 function register_061_trade(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, pokes, sort, pokelisthtml } = deps;
   bot.action(/trade_/,async ctx => {
 const id1 = ctx.callbackQuery.data.split('_')[1]
 const id2 = ctx.callbackQuery.data.split('_')[2]

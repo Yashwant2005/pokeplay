@@ -1,5 +1,5 @@
 function register_063_trfe(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, pokes, c, calculateTotal, plevel } = deps;
   bot.action(/trfe_/,async ctx => {
 const id1 = ctx.callbackQuery.data.split('_')[1]
 const pass1 = ctx.callbackQuery.data.split('_')[2]

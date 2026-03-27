@@ -1,5 +1,5 @@
 function registerHuntCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { session, commands, gmax, trainers, getUserData, saveUserData2, sendMessage, loadMessageData, loadMessageDataFresh, tms, stones, spawn, forms, lvls, pokes, stat, c, he, moment, safari, re, chains, rdata, region, rar, gma, shiny, saveMessageData } = deps;
   const { toBaseIdentifier } = require('../../utils/base_form_pokemon');
   const { Z_CRYSTALS, titleCaseZCrystal } = require('../../utils/z_crystals');
   function isBlockedWildArceusForm(identifier) {

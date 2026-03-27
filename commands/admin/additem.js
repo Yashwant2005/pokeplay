@@ -22,7 +22,7 @@ function parseNameAndAmount(tokens) {
 }
 
 function registerAddItemCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { gmax, getUserData, saveUserData2, sendMessage, tms, stones, c, safari, admins } = deps;
   const { HELD_ITEM_POOL, normalizeHeldItemShopName } = require('../../utils/held_item_shop');
   const { Z_CRYSTALS, resolveZCrystalName, titleCaseZCrystal } = require('../../utils/z_crystals');
 

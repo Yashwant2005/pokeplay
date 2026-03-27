@@ -1,5 +1,5 @@
 function registerBuyCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check, check2, getUserData, saveUserData2, sendMessage, loadMessageData, tms, c, he, tmprices, shiny } = deps;
   const {
     getTmLpPrice,
     getWeeklyTmShop,

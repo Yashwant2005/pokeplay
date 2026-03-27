@@ -1,5 +1,5 @@
 function registerMybagCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, sendMessage, tms, c, sort } = deps;
   const { titleCaseZCrystal } = require('../../utils/z_crystals');
   bot.command('mybag',async ctx => {
   

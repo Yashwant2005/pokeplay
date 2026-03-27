@@ -1,6 +1,5 @@
 function registerEventsCallbacks(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { editMessage } = deps;
   const {
     buildEventsListMessage,
     buildEventsListKeyboard,

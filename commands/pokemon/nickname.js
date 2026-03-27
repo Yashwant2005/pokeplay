@@ -1,5 +1,5 @@
 function registerNicknameCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { commands, userState2, getUserData, saveUserData2, sendMessage, pokes, growth_rates, chart, c, stringSimilarity, sort, pokelist } = deps;
   commands.set('nickname',async ctx => {
   
   if (ctx.message.chat.type != 'private') {

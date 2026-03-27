@@ -1,5 +1,5 @@
 function register_033_fswc(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, editMessage, pokes, c } = deps;
   bot.action(/fswc_/, check2q,async (ctx) => {
     const userData = await getUserData(ctx.from.id);
 

@@ -1,5 +1,5 @@
 function registerTrainerCardCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { commands, getUserData, saveUserData2, sendMessage, trainerlevel, fs, createCanvas, loadImage, bags } = deps;
   commands.set('trainer_card',async ctx => {
   
   try {

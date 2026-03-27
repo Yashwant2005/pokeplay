@@ -2,7 +2,7 @@ const { getBattleHeldItemName, getEffectiveMoveType, getPinchAbilityInfo } = req
 const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
 
 function register_016_btl(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, loadBattleData, pokes, dmoves, word, c, he, pokestats, plevel, Stats, battlec, emojis, Bar } = deps;
   bot.action(/btl_/,async ctx => {
 const now = Date.now();
 const chatKey = ctx.chat && ctx.chat.id;

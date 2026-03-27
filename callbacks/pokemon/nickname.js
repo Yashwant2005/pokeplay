@@ -1,5 +1,5 @@
 function register_073_nickname(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { userState2, check2q, getUserData, sendMessage, pokes, c } = deps;
   bot.action(/nickname_/,check2q,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]

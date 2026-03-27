@@ -1,5 +1,5 @@
 function register_028_add(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, editMessage, pokes, sort, pokelist } = deps;
   bot.action(/add_/, check2q,async ctx => {
 const userData = await getUserData(ctx.from.id);
   const team = ctx.callbackQuery.data.split('_')[1];

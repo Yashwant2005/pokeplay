@@ -1,5 +1,5 @@
 function register_051_tmuse(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, editMessage, tms, pokes, pokemoves, dmoves, sort, pokelist } = deps;
   bot.action(/tmuse_/,check2q,async ctx => {
 const id = ctx.callbackQuery.data.split('_')[2]
 if(ctx.from.id!=id){

@@ -1,5 +1,5 @@
 function register_014_bag(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, loadBattleData, pokes, dmoves, word, c, he, pokestats, plevel, Stats, battlec, emojis, Bar } = deps;
   bot.action(/bag_/,async ctx => {
 const now = Date.now();
 const chatKey = ctx.chat && ctx.chat.id;

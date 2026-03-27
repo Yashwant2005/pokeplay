@@ -1,5 +1,5 @@
 function register_045_syllity(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, editMessage, stones, c, catch_rates } = deps;
   const getStoneSell = (stoneName) => {
     const poke = stones[stoneName] ? stones[stoneName].pokemon : ''
     const rate = Number(catch_rates[poke] || 190)

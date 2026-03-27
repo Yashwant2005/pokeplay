@@ -1,5 +1,5 @@
 function register_025_teams(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, editMessage, pokes, pokelist } = deps;
   bot.action('teams',check2q,async ctx => {
 const userData = await getUserData(ctx.from.id);
 if(!userData.inv || typeof userData.inv !== 'object') userData.inv = {}

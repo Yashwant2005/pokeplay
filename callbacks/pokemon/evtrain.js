@@ -1,5 +1,5 @@
 function register_083_evtrain(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { editMessage, stat, word, c } = deps;
   bot.action('evtrain',async ctx => {
 const bt = ['hp','attack','defense','special-attack','special-defense','speed']
 const buttons = bt.map((word) => ({ text: c(word), callback_data: 'rvyr_'+word+'' }));

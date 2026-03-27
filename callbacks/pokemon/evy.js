@@ -1,5 +1,5 @@
 function register_047_evy(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, saveUserData2, sendMessage, editMessage, loadMessageData, forms, pokes, pokemoves, dmoves, c, chains, plevel, shiny, events, emojis, saveMessageData } = deps;
   const { getReadyEvolutionRows, getEvolutionBaseName, getEvolutionRowsForPokemon, getPseudoRandomEvolutionLevel, isEvolutionRequirementMet, resolveEvolutionTargetIdentifier } = require('../../utils/evolution_rules');
   const { getEvolutionStoneForTarget, removeEvolutionStone, titleCaseEvolutionStone } = require('../../utils/evolution_items');
   const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');

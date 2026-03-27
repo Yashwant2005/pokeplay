@@ -1,5 +1,5 @@
 function register_077_bst(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { editMessage, forms, pokes, c, pokestats, Stats } = deps;
   bot.action(/bst_/,async ctx => {
 const poke = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]

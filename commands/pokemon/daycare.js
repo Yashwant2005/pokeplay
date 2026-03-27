@@ -6,8 +6,7 @@ const {
 } = require('../../utils/daycare');
 
 function registerDaycareCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { commands, getUserData, saveUserData2, sendMessage, loadMessageData, trainerlevel } = deps;
   commands.set('daycare', async (ctx) => {
     const data = await getUserData(ctx.from.id);
 

@@ -1,5 +1,5 @@
 function register_042_mhusz(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, saveUserData2, editMessage, loadMessageData, pokes, dmoves, c, saveMessageData } = deps;
   bot.action(/mhusz_/,check2q,async ctx => {
 const move = ctx.callbackQuery.data.split('_')[1]
 const pass = ctx.callbackQuery.data.split('_')[3]

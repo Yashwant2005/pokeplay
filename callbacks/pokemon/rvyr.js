@@ -1,5 +1,5 @@
 function register_084_rvyr(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, editMessage, stat, c, safari } = deps;
   bot.action(/rvyr_/,async ctx => {
 const stat = ctx.callbackQuery.data.split('_')[1]
 const data = await getUserData(ctx.from.id)

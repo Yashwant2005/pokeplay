@@ -2,8 +2,7 @@ const regionLocations = require('../../data/region_locations.json');
 const { buildMainTravelKeyboard, getRegionConfigByRegionKey } = require('../../utils/travel_regions');
 
 function registerTravelCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check, check2, getUserData, sendMessage, c, safari, region } = deps;
   bot.command('travel', check, check2, async (ctx) => {
     const data = await getUserData(ctx.from.id);
 

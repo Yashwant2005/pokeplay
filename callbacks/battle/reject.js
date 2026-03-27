@@ -1,7 +1,7 @@
 const { cleanupTempBattleForUsers, clearBattleMessageState } = require('../../utils/temp_battle_cleanup');
 
 function register_057_reject(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, editMessage, loadMessageData, loadBattleData, saveBattleData, he, saveMessageData } = deps;
   bot.action(/reject_/,async ctx => {
 const parts = ctx.callbackQuery.data.split('_')
 const id1 = parts[1]

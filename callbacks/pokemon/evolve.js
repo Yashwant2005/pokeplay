@@ -1,5 +1,5 @@
 function register_065_evolve(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, editMessage, forms, pokes, growth_rates, chart, c, chains } = deps;
   const { getReadyEvolutionRows, getEvolutionRowsForPokemon, getPseudoRandomEvolutionLevel, isEvolutionRequirementMet } = require('../../utils/evolution_rules');
   const { getEvolutionStoneForTarget, titleCaseEvolutionStone } = require('../../utils/evolution_items');
 

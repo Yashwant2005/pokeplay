@@ -1,5 +1,5 @@
 function registerEvolveCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2, getUserData, sendMessage, forms, pokes, growth_rates, chart, c, chains, stringSimilarity, sort, pokelist } = deps;
   const { getReadyEvolutionRows, getEvolutionRowsForPokemon, getPseudoRandomEvolutionLevel, isEvolutionRequirementMet } = require('../../utils/evolution_rules');
   const { getEvolutionStoneForTarget, titleCaseEvolutionStone } = require('../../utils/evolution_items');
 

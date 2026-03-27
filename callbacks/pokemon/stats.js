@@ -1,5 +1,5 @@
 function register_004_stats(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, sendMessage, forms, pokes, growth_rates, chart, c, Stats, shiny, events, Bar } = deps;
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
   const { getDisplayPokemonName, getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
   const { getDynamaxLevel, getDynamaxLevelBar } = require('../../utils/dynamax_level');

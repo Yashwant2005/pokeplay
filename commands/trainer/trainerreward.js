@@ -6,8 +6,7 @@ const {
 } = require('../../utils/trainer_rank_rewards');
 
 function registerTrainerRewardCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check, getUserData, saveUserData2, sendMessage, trainerlevel, tms, stones } = deps;
   bot.command('trainerreward', check, async (ctx) => {
     const data = await getUserData(ctx.from.id);
     if (!data.inv) {

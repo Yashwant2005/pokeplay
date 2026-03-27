@@ -1,5 +1,5 @@
 function register_075_nykne(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, pokes, c, sort } = deps;
   const { getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
   bot.action(/nykne_/,async ctx => {
 const id = ctx.callbackQuery.data.split('_')[2]

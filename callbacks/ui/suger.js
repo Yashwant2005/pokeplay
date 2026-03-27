@@ -1,5 +1,5 @@
 function register_002_suger(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, pokes, c, sort, pokelist } = deps;
   bot.action(/suger_/,async ctx => {
 const parts = String(ctx.callbackQuery.data || '').split('_').filter(Boolean)
 const id = parts[1]

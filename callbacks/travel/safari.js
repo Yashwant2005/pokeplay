@@ -1,6 +1,5 @@
 function register_048_safari(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check2q, getUserData, saveUserData2, editMessage, regions, c, moment, safari, region } = deps;
   const getUtcMidnightCountdown = () => {
     const next = moment.utc().add(1, 'day').startOf('day');
     const totalSec = Math.max(0, next.diff(moment.utc(), 'seconds'));

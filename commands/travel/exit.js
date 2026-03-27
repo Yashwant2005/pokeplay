@@ -1,5 +1,5 @@
 function registerExitCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { session, check, check2, getUserData, saveUserData2, sendMessage, c, safari } = deps;
   bot.command('exit',check,check2,async ctx => {
   
   const userData = await getUserData(ctx.from.id);

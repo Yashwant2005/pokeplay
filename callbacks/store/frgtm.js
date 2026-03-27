@@ -1,5 +1,5 @@
 function register_053_frgtm(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, editMessage, tms, pokes, dmoves, c, plevel, emojis } = deps;
   bot.action(/frgtm_/,check2q,async ctx => {
 const id = ctx.callbackQuery.data.split('_')[3]
 if(ctx.from.id!=id){

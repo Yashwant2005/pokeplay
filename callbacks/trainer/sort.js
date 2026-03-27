@@ -1,6 +1,5 @@
 function register_072_sort(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, saveUserData2, editMessage, c, sort } = deps;
   async function renderSortMenu(ctx, messageId) {
     const data = await getUserData(ctx.from.id)
     if(!data.extra){

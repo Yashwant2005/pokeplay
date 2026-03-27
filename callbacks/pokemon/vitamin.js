@@ -1,6 +1,5 @@
 function register_067_vitamin(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check2q, getUserData, editMessage, pokes, c, plevel } = deps;
   function buildStatKeyboard(pass, id) {
     return [
       [

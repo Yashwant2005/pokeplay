@@ -1,5 +1,5 @@
 function register_085_release(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, editMessage, pokes, c, calculateTotal, plevel } = deps;
   bot.action(/release_/,check2q,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]

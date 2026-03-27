@@ -1,5 +1,5 @@
 function registerResetBattleCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { sendMessage, loadMessageData, saveMessageData } = deps;
   bot.command('reset_battle',async ctx => {
   
   const data = await loadMessageData()

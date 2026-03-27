@@ -1,6 +1,5 @@
 function registerAssignItemsCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, saveUserData2, sendMessage, pokes, admins, getAllUserData } = deps;
   function ensureHeldItemField(pokemon) {
     if (!pokemon || typeof pokemon !== 'object') return false;
     if (typeof pokemon.held_item === 'string' && pokemon.held_item.trim().length > 0) {

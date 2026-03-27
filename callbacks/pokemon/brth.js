@@ -1,5 +1,5 @@
 function register_070_brth(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, editMessage, pokes, stat, c, plevel } = deps;
   bot.action(/brth-/,async ctx => {
 const stat = ctx.callbackQuery.data.split('-')[1]
 const pass = ctx.callbackQuery.data.split('-')[2]

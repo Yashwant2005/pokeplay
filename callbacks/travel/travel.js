@@ -7,8 +7,7 @@ const {
 } = require('../../utils/travel_regions');
 
 function register_021_travel(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check2q, getUserData, saveUserData2, editMessage, c, safari, region } = deps;
   const locationPageSize = 12;
 
   const getRegionEntries = (config) => {

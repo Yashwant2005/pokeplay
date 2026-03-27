@@ -6,8 +6,7 @@ const {
 } = require('../../utils/trainer_rank_rewards');
 
 function registerAddExpCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, saveUserData2, sendMessage, trainerlevel, tms, stones, c, admins } = deps;
   bot.command('addexp', async (ctx) => {
     if (!admins.includes(ctx.from.id)) return;
 

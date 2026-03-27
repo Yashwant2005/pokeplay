@@ -1,5 +1,5 @@
 function register_005_moves(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, pokes, dmoves, c, Stats, emojis } = deps;
   const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');
   bot.action(/moves_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]

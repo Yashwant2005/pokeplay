@@ -5,8 +5,7 @@ function getCurrentLevel(data) {
 }
 
 function registerRankupCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, saveUserData2, sendMessage, trainerlevel, tms, stones, c, admins } = deps;
   bot.command('rankup', async (ctx) => {
     if (!admins.includes(ctx.from.id)) return;
 

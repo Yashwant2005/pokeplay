@@ -1,6 +1,5 @@
 module.exports = function registerExitMeCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { session, getUserData, saveUserData2, sendMessage, loadMessageDataFresh, saveBattleData, clearUserSessions, saveMessageData } = deps;
   function isUserEntry(entry, userId) {
     if (!entry || typeof entry !== 'object') return false;
     const idStr = String(userId);

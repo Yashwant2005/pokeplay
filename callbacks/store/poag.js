@@ -1,5 +1,5 @@
 function register_037_poag(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, tms, stones, dmoves, c, sort } = deps;
   const { getHeldItemDescription } = require('../../utils/held_item_shop');
   bot.action(/poag_/,async ctx => {
 const id = ctx.callbackQuery.data.split('_')[2]

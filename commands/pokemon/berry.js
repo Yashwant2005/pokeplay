@@ -1,5 +1,5 @@
 function registerBerryCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { commands, getUserData, sendMessage, pokes, growth_rates, chart, c, stringSimilarity, sort, pokelist, plevel } = deps;
   commands.set('berry',async ctx => {
   
   const data = await getUserData(ctx.from.id)

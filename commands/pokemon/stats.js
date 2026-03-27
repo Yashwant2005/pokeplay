@@ -1,6 +1,6 @@
 function registerStatsCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-const { titleCaseAbility } = require('../../utils/pokemon_ability');
+  const { getUserData, sendMessage, editMessage, forms, pokes, growth_rates, chart, c, stringSimilarity, calculateTotal, sort, pokelist, Stats, shiny, events, Bar } = deps;
+  const { titleCaseAbility } = require('../../utils/pokemon_ability');
 const { getDisplayPokemonName, getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
 const { getDynamaxLevel, getDynamaxLevelBar } = require('../../utils/dynamax_level');
 const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');

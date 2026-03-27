@@ -1,8 +1,7 @@
 const { Z_CRYSTALS, resolveZCrystalName, titleCaseZCrystal } = require('../../utils/z_crystals');
 
 function registerEquipZCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check, getUserData, saveUserData2, sendMessage } = deps;
   bot.command('equipz', check, async (ctx) => {
     const data = await getUserData(ctx.from.id);
     if (!data.inv) {

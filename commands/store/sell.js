@@ -1,6 +1,5 @@
 function registerSellCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { session, check, check2, getUserData, saveUserData2, sendMessage, stones, c, he } = deps;
   bot.command('sell', check, check2, async ctx => {
     const data = await getUserData(ctx.from.id);
     const sellInfo = {

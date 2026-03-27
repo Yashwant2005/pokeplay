@@ -1,6 +1,5 @@
 function registerSetMoveCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, saveUserData2, sendMessage, pokes, dmoves, word, c, admins } = deps;
   function normalizeMoveName(value) {
     return String(value || '')
       .toLowerCase()

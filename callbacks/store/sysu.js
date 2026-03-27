@@ -1,5 +1,5 @@
 function register_036_sysu(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, c } = deps;
   bot.action(/sysu:/,async ctx => {
 const id = ctx.callbackQuery.data.split(':')[2]
 if(ctx.from.id!=id){

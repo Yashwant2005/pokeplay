@@ -1,5 +1,5 @@
 function register_050_stcrd(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, editMessage, trainerlevel, fs, createCanvas, loadImage, bags } = deps;
   bot.action(/stcrd_/,async ctx => {
 const edit = ctx.callbackQuery.data.split('_')[1]
 const userData = await getUserData(ctx.from.id)

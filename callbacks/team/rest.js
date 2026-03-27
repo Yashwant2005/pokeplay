@@ -1,5 +1,5 @@
 function register_026_rest(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, saveUserData2, editMessage, pokes, pokelist } = deps;
   bot.action(/rest_/,check2q,async ctx => {
 let userData = {};
   try {

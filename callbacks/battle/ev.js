@@ -1,5 +1,5 @@
 function register_019_ev(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { pokes, stat, c } = deps;
   bot.action(/^ev_/,async ctx => {
 const name = ctx.callbackQuery.data.split('_')[1]
 const data = pokes[name]

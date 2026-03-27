@@ -1,8 +1,7 @@
 const { getPokemonDexnav, resolvePokemonSpecies } = require('../../utils/dexnav');
 
 function registerDexNavCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check, sendMessage, regions, forms, pokes, c, region } = deps;
   bot.command('dexnav', check, async (ctx) => {
     const rawName = ctx.message.text.split(' ').slice(1).join(' ').trim();
     if (!rawName) {

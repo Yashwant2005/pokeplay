@@ -1,5 +1,5 @@
 function registerHeldPanelCallbacks(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, saveUserData2, editMessage, stones, pokes, c, sort, Stats } = deps;
   const { getHeldItemDescription } = require('../../utils/held_item_shop');
   const { normalizeHeldStone, normalizeStoneKey, normalizePokemonName } = require('../../utils/stone_alias');
   const {

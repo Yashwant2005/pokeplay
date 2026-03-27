@@ -1,5 +1,5 @@
 function registerAddCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, sendMessage, stones, spawn, pokes, pokemoves, dmoves, growth_rates, chart, word, getRandomNature, generateRandomIVs, applyCaptureIvRules, c, admins, shiny } = deps;
   const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
 
   const buildLevelUpMoves = (pokeName, level) => {

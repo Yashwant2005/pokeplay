@@ -19,8 +19,7 @@ function findPokemonMatches(data, targetRaw) {
 const { getDynamaxLevel } = require('../../utils/dynamax_level');
 
 function registerDynamaxCandyCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check, getUserData, saveUserData2, sendMessage, pokes, c } = deps;
   bot.command('dynamaxcandy', check, async (ctx) => {
     const data = await getUserData(ctx.from.id);
     if (!data.inv) {

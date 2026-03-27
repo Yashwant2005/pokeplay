@@ -1,6 +1,5 @@
 function registerAssignAbilityCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, saveUserData2, sendMessage, pokes, c, fetch, admins, getAllUserData } = deps;
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
   const { repairPokemonAbilityEntry } = require('../../utils/pokemon_legality');
 

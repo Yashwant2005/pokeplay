@@ -1,5 +1,5 @@
 function registerRandomBattleCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, sendMessage, editMessage, loadMessageData, loadBattleData, saveBattleData, spawn, forms, pokes, pokemoves, dmoves, growth_rates, chart, word, getRandomNature, generateRandomIVs, c, he, chains, region } = deps;
   const { isBaseIdentifier } = require('../../utils/base_form_pokemon');
 
   const REGION_RANGES = {

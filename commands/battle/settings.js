@@ -1,5 +1,5 @@
 function registerSettingsCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { trainers, check, sendMessage, regions, region } = deps;
   bot.command('settings',check,async ctx => {
   
   await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},`<b><u>Available Battle Settings Info -</u></b>

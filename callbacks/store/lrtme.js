@@ -1,5 +1,5 @@
 function register_054_lrtme(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, saveUserData2, editMessage, tms, pokes, dmoves, c, emojis } = deps;
   bot.action(/lrtme_/,check2q,async ctx => {
 const id = ctx.callbackQuery.data.split('_')[2]
 if(ctx.from.id!=id){

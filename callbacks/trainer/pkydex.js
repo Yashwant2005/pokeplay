@@ -1,5 +1,5 @@
 function register_076_pkydex(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { gmax, getUserData, editMessage, spawn, forms, pokes, growth_rates, stat, c, re, expdata, chains, Stats } = deps;
   const pkydexLast = new Map();
   bot.action(/pkydex_/,async ctx => {
   const now = Date.now();

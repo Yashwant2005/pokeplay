@@ -1,6 +1,5 @@
 function registerItemResetCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, saveUserData2, sendMessage, pokes, c, stringSimilarity } = deps;
   function normalizeName(value) {
     return String(value || '')
       .trim()

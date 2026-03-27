@@ -1,6 +1,5 @@
 function registerReloadCacheCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { sendMessage, admins, reloadStaticData } = deps;
   bot.command('reloadcache', async (ctx) => {
     if (!admins.includes(ctx.from.id)) {
       return;

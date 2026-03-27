@@ -1,5 +1,5 @@
 function registerReleaseCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, sendMessage, pokes, growth_rates, chart, c, stringSimilarity, calculateTotal, sort, pokelist, plevel } = deps;
   bot.command('release',async ctx => {
   
   const data = await getUserData(ctx.from.id)

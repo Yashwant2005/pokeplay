@@ -1,5 +1,5 @@
 function register_044_keyitem(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, stones, c, catch_rates } = deps;
   const getMegaStoneKeys = (data) => [...new Set((data && data.inv && data.inv.stones) || [])].filter((stoneKey) => {
     const stoneInfo = stones && stones[stoneKey];
     const megaTarget = String(stoneInfo && stoneInfo.mega || '').toLowerCase();

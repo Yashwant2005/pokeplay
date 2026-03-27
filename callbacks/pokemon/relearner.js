@@ -1,6 +1,5 @@
 function registerRelearnerCallbacks(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check2q, getUserData, saveUserData2, editMessage, pokes, pokemoves, dmoves, c, sort, pokelist, plevel, emojis } = deps;
   const RELEARN_COST = 0;
 
   const getRelearnableMoves = (poke) => {

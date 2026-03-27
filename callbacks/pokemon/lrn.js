@@ -1,5 +1,5 @@
 function register_039_lrn(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, saveUserData2, editMessage, pokes, dmoves, word, c, plevel, emojis } = deps;
   bot.action(/lrn_/,check2q,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const mid = ctx.callbackQuery.data.split('_')[2]

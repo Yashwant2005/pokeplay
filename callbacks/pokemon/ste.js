@@ -1,5 +1,5 @@
 function register_007_ste(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, pokes, growth_rates, chart, c, pokestats, Stats } = deps;
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
   const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');
   const titleCaseHeldItem = (value) => String(value || 'none')

@@ -2,7 +2,7 @@ const { applyEntryAbility, getBattleMovePower, getDisplayedWeatherState, getEffe
 const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
 
 function register_018_snd(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, loadBattleData, saveBattleData, pokes, dmoves, word, c, he, pokestats, plevel, Stats, battlec, emojis, Bar } = deps;
   bot.action(/snd_/,async ctx => {
 const now = Date.now();
 const chatKey = ctx.chat && ctx.chat.id;

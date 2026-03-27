@@ -1,6 +1,6 @@
 function register_015_ball(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-    const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
+  const { tutors, getUserData, saveUserData2, sendMessage, editMessage, loadMessageData, loadMessageDataFresh, loadBattleData, saveBattleData, stones, spawn, pokes, pokemoves, dmoves, growth_rates, chart, word, applyCaptureIvRules, c, he, safari, catch_rates, ballsdata, sleep, pokestats, plevel, Stats, battlec, emojis, saveMessageData, Bar } = deps;
+  const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
     const { getBattleHeldItemName } = require('../../utils/battle_abilities');
     const { revertTrackedFormsOnBattleEnd } = require('../../utils/battle_forms');
     const clearBattlePrompt = async (chatId, userId, battleKey) => {

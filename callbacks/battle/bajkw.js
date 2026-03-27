@@ -1,7 +1,7 @@
 const { getPinchAbilityInfo } = require('../../utils/battle_abilities');
 
 function register_013_bajkw(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, loadBattleData, pokes, dmoves, c, he, pokestats, plevel, Stats, battlec, emojis, Bar } = deps;
   bot.action(/bajkw_/,async ctx => {
 const now = Date.now();
 const chatKey = ctx.chat && ctx.chat.id;

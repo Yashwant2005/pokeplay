@@ -1,8 +1,7 @@
 const { ensureDaycareState } = require('../../utils/daycare');
 
 function registerFinishDaycareCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { getUserData, saveUserData2, sendMessage, c, admins } = deps;
   bot.command('fdc', async (ctx) => {
     if (!admins.includes(ctx.from.id)) return;
 

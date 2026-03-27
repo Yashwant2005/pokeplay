@@ -1,5 +1,5 @@
 function register_062_trdfe(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, editMessage, pokes, sort, pokelisthtml } = deps;
   bot.action(/trdfe_/,async ctx => {
 const id1 = ctx.callbackQuery.data.split('_')[1]
 const pass = ctx.callbackQuery.data.split('_')[2]

@@ -1,6 +1,5 @@
 function registerEnterCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check, check2, getUserData, sendMessage, regions, trainerlevel, c, moment, safari, region } = deps;
   const getUtcMidnightCountdown = () => {
     const next = moment.utc().add(1, 'day').startOf('day');
     const totalSec = Math.max(0, next.diff(moment.utc(), 'seconds'));

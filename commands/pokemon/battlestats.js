@@ -1,6 +1,5 @@
 function registerBattleStatsCommand(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
-
+  const { check, getUserData, sendMessage, loadMessageData, loadBattleData, pokes, c, chains, stringSimilarity, pokestats, plevel, Stats, getBattleStatus, getSpeedWithStatus } = deps;
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
   const { getBattleBaseStats, getImpersonateTargetName } = require('../../utils/battle_impersonate');
   const {

@@ -1,5 +1,5 @@
 function register_064_agtr(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { getUserData, saveUserData2, sendMessage, editMessage, loadMessageData, pokes, c, he, sleep } = deps;
   bot.action(/agtr_/,async ctx => {
 const id1 = ctx.callbackQuery.data.split('_')[1]
 const pass1 = ctx.callbackQuery.data.split('_')[2]

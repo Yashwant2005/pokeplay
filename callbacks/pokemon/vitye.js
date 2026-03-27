@@ -1,5 +1,5 @@
 function register_068_vitye(bot, deps) {
-  Object.assign(globalThis, deps, { bot });
+  const { check2q, getUserData, saveUserData2, editMessage, pokes, stat, c, calculateTotal, plevel } = deps;
   bot.action(/vitye-/,check2q,async ctx => {
 const stat = ctx.callbackQuery.data.split('-')[1]
 const pass = ctx.callbackQuery.data.split('-')[2]

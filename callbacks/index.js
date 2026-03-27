@@ -16,7 +16,7 @@ function registerCallbacks(bot, deps) {
             userId &&
             messageData &&
             Array.isArray(messageData.battle) &&
-            messageData.battle.includes(userId);
+            messageData.battle.some(id => String(id) === String(userId));
           if (inBattle) {
             const raw = String((ctx && ctx.callbackQuery && ctx.callbackQuery.data) || "");
             const parts = raw.split("_").filter(Boolean);

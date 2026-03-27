@@ -35,7 +35,7 @@ if(String(sessionName) !== String(currentMessageId)){
   ctx.session.name = currentMessageId
 }
 const mdata = await loadMessageData();
-if(mdata.battle.includes(ctx.from.id)){
+if(mdata.battle.some(id => String(id) === String(ctx.from.id))){
 ctx.answerCbQuery('You Are In A Battle')
 return
 }

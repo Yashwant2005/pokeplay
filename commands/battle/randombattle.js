@@ -201,11 +201,11 @@ function registerRandomBattleCommand(bot, deps) {
     }
 
     const mdata = await loadMessageData();
-    if (mdata.battle && mdata.battle.includes(ctx.from.id)) {
+    if (mdata.battle && mdata.battle.some(id => String(id) === String(ctx.from.id))) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'You Are In A *Battle*', { reply_to_message_id: ctx.message.message_id });
       return;
     }
-    if (mdata.battle && mdata.battle.includes(reply.from.id)) {
+    if (mdata.battle && mdata.battle.some(id => String(id) === String(reply.from.id))) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Opponent Is In A *Battle*', { reply_to_message_id: ctx.message.message_id });
       return;
     }

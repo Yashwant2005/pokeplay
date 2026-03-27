@@ -24,16 +24,38 @@ function registerNicknameCommand(bot, deps) {
   
   }
   
-  const name = ctx.message.text.split(' ').slice(1).join(' ')
+  const rawArgs = ctx.message.text.split(' ').slice(1);
+  const name = rawArgs.join(' ');
   
   if(!name){
   
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Please tell which pokemon nickname you want to set or use /mynicknames to see your nicknames.*',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'*Please tell which pokemon nickname you want to set or use /mynicknames to see your nicknames.*\n\n_Tip: Use /nickname 26 NewName to nickname by list number_',{reply_to_message_id:ctx.message.message_id})
   
   return
   
   }
-  
+
+  // Support /nickname <number> <newname> - targets poke by 1-based sorted list position
+  const _numArg = parseInt(rawArgs[0], 10);
+  if (!isNaN(_numArg) && _numArg >= 1 && rawArgs.length >= 2) {
+    const _newNick = rawArgs.slice(1).join(' ');
+    const _sortedPokes = await sort(ctx.from.id, (data.pokes || []).filter(p => !p.temp_battle));
+    const _targetPoke = _sortedPokes[_numArg - 1];
+    if (!_targetPoke) {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*No pokemon at position ' + _numArg + '.*', { reply_to_message_id: ctx.message.message_id });
+      return;
+    }
+    if (_newNick === '.') {
+      _targetPoke.nickname = '';
+      delete _targetPoke.nickname;
+    } else {
+      _targetPoke.nickname = _newNick.slice(0, 20);
+    }
+    await saveUserData2(ctx.from.id, data);
+    await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*' + c(_targetPoke.name) + '* (#' + _numArg + ') has been nicknamed *' + (_targetPoke.nickname || '(removed)') + '*', { reply_to_message_id: ctx.message.message_id });
+    return;
+  }
+
   const name2 = name.replace(/ /g,'-')
   
   const p5 = data.pokes.filter((pk) => (pk.nickname && name.toLowerCase() === pk.nickname.toLowerCase()) || name2.toLowerCase() === pk.name)[0];
@@ -123,7 +145,7 @@ function registerNicknameCommand(bot, deps) {
   
   const page = 1
   
-  const pageSize = 25
+  const pageSize = 20
   
   const startIdx = (page - 1) * pageSize;
   
@@ -163,7 +185,7 @@ function registerNicknameCommand(bot, deps) {
   
   console.log(endIdx)
   
-  if((endIdx+1)<p22.length){
+  if(endIdx<p22.length){
   
   rows2.push({text:'>',callback_data:'suger_'+ctx.from.id+'_'+name2+'_nickname_'+ctx.message.message_id+'_'+(page+1)+''})
   

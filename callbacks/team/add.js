@@ -19,9 +19,8 @@ return
   let row = [];
 
 for (let i = startIndex; i < endIndex; i++) {
-  const sortedIndex = userData.pokes.indexOf(pokes[i]);
   row.push({
-    text: `${sortedIndex + 1}`,
+    text: `${i + 1}`,
     callback_data: `select_${pokes[i].pass}_${team}`,
   });
 

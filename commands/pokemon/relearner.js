@@ -24,7 +24,7 @@ function registerRelearnerCommand(bot, deps) {
     }
 
     const mdata = await loadMessageData();
-    if (mdata.battle.includes(ctx.from.id)) {
+    if (mdata.battle.some(id => String(id) === String(ctx.from.id))) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'You are in a *battle*', { reply_to_message_id: ctx.message.message_id });
       return;
     }

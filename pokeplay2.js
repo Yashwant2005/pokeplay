@@ -1417,7 +1417,7 @@ async function editOverdueMessages() {
               winnerData.inv.league_points += 25;
               await saveUserData2(winnerId, winnerData);
             }
-            messageData.battle = messageData.battle.filter((chats) => chats !== parseInt(turn) && chats !== parseInt(oppo));
+            messageData.battle = messageData.battle.filter((chats) => String(chats) !== String(turn) && String(chats) !== String(oppo));
             delete messageData[chatId];
             await saveMessageData(messageData);
             try {
@@ -1437,7 +1437,7 @@ async function editOverdueMessages() {
           const isHunting = !!(dr && dr.extra && dr.extra.hunting);
           if (elapsedTime > 60000 || !isHunting) {
             const newMessage = '*Timeover.*';
-            messageData.battle = messageData.battle.filter((chats) => chats !== userMessageData.id);
+            messageData.battle = messageData.battle.filter((chats) => String(chats) !== String(userMessageData.id));
             delete messageData[chatId];
             await saveMessageData(messageData);
             try {

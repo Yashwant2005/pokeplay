@@ -45,8 +45,8 @@ return
     return
   }
 const mdata = await loadMessageData()
-if(mdata.battle.includes(parseInt(id1)) || mdata.battle.includes(parseInt(id2))){
-if(mdata.battle.includes(ctx.from.id)){
+if(mdata.battle.some(id => String(id) === String(parseInt(id1))) || mdata.battle.some(id => String(id) === String(parseInt(id2)))){
+if(mdata.battle.some(id => String(id) === String(ctx.from.id))){
 ctx.answerCbQuery('You Are In A Battle')
 }else{
 ctx.answerCbQuery('Another User Is In A Battle')

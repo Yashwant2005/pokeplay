@@ -1,16 +1,18 @@
 function register_002_suger(bot, deps) {
   Object.assign(globalThis, deps, { bot });
   bot.action(/suger_/,async ctx => {
-const id = ctx.callbackQuery.data.split('_')[1]
+const parts = String(ctx.callbackQuery.data || '').split('_').filter(Boolean)
+const id = parts[1]
 if(ctx.from.id!=id){
 ctx.answerCbQuery()
 return
 }
-const name = ctx.callbackQuery.data.split('_')[2]
-const query = ctx.callbackQuery.data.split('_')[3]
-const msgid = ctx.callbackQuery.data.split('_')[4]
+const hasPage = parts.length > 5 && !Number.isNaN(parseInt(parts[parts.length - 1], 10))
+const page = hasPage ? parseInt(parts[parts.length - 1], 10) : 1
+const msgid = hasPage ? parts[parts.length - 2] : parts[parts.length - 1]
+const query = hasPage ? parts[parts.length - 3] : parts[parts.length - 2]
+const name = parts.slice(2, hasPage ? parts.length - 3 : parts.length - 2).join('_')
 const data = await getUserData(ctx.from.id)
-const page = ctx.callbackQuery.data.split('_')[5]*1 || 1
 const matches = data.pokes.filter((poke)=> (poke.name==name.toLowerCase()) || (poke.nickname && poke.nickname.toLowerCase() == name.toLowerCase()))
 if(matches.length < 1){
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You don\'t have *'+c(name)+'*',{parse_mode:'markdown'})
@@ -19,7 +21,7 @@ return
 let msg = ''
 const ore = []
 const passes = []
-const pageSize = 25
+const pageSize = query === 'nickname' ? 20 : 25
 const startIdx = (page - 1) * pageSize;
 let b = startIdx+1
 const endIdx = startIdx + pageSize;

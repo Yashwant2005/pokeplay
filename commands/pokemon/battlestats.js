@@ -87,7 +87,7 @@ function registerBattleStatsCommand(bot, deps) {
     const data = await getUserData(ctx.from.id);
     const messageData = await loadMessageData();
 
-    if (!messageData.battle || !messageData.battle.includes(ctx.from.id)) {
+    if (!messageData.battle || !messageData.battle.some(id => String(id) === String(ctx.from.id))) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'You are not in a *battle* right now.', { reply_to_message_id: ctx.message.message_id });
       return;
     }

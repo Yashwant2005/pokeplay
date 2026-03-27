@@ -257,10 +257,16 @@ bot.command('stats',async ctx => {
   
 })
 
-bot.action(/suger_/, async ctx => {
+bot.action(/suger_/, async (ctx, next) => {
   const parts = String(ctx.callbackQuery.data || '').split('_');
   const userId = parts[1];
   const statsIndex = parts.indexOf('stats');
+  if (statsIndex === -1) {
+    if (typeof next === 'function') {
+      return next();
+    }
+    return;
+  }
   const name = statsIndex > 2 ? parts.slice(2, statsIndex).join('_') : parts[2];
   const replyTo = parts[statsIndex + 1] || ctx.callbackQuery.message.message_id;
 

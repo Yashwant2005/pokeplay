@@ -1233,12 +1233,14 @@ if(newTrainerLevel > oldTrainerLevel){
 data.extra.hunting = false
 revertPowerConstructFormsOnBattleEnd(battleData, data)
 revertTrackedFormsOnBattleEnd(battleData, data)
+// Strip temp_battle so random-battle pokes can't be traded after battle ends
+if (Array.isArray(data.pokes)) data.pokes.forEach(p => { delete p.temp_battle; });
 await saveUserData2(ctx.from.id,data)
 const messageData = await loadMessageData();
 if(messageData[ctx.from.id]) {
 delete messageData[ctx.from.id];
 }
-messageData.battle = messageData.battle.filter((chats) => chats !== ctx.from.id)
+messageData.battle = messageData.battle.filter((chats) => String(chats) !== String(ctx.from.id))
 await saveMessageData(messageData)
 let finalMsg = '*'+c(battleData.name)+'* Has Been Fainted\n+'+ai+' 💷\n+'+ei+' Trainer EXP'
 if(rankSummary && rankSummary.levelsToClaim > 0){
@@ -1380,7 +1382,7 @@ return
 }else{
 const messageData = await loadMessageData();
 if(messageData[ctx.from.id]) {
-messageData.battle = messageData.battle.filter((chats)=> chats!== ctx.from.id)
+messageData.battle = messageData.battle.filter((chats)=> String(chats) !== String(ctx.from.id))
 delete messageData[ctx.from.id];
 await saveMessageData(messageData)
 }

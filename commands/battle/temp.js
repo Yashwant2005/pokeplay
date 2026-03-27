@@ -32,7 +32,7 @@ function registerTempCommand(bot, deps) {
     }
 
     const mdata = await loadMessageData();
-    if (mdata && mdata.battle && mdata.battle.includes(ctx.from.id)) {
+    if (mdata && mdata.battle && mdata.battle.some(id => String(id) === String(ctx.from.id))) {
       await sendMessage(
         ctx,
         ctx.chat.id,

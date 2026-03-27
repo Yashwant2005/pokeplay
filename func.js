@@ -391,7 +391,7 @@ function mergeUserDataForSave(latestData, incomingData) {
 async function check(ctx, next) {
   const data = await getUserData(ctx.from.id);
   const msgdata = await loadMessageData();
-  const inBattle = Array.isArray(msgdata.battle) && msgdata.battle.includes(ctx.from.id);
+  const inBattle = Array.isArray(msgdata.battle) && msgdata.battle.some(id => String(id) === String(ctx.from.id));
   if (!inBattle) {
     data.extra = data.extra || {};
     const tempBattleEntries = data.extra.temp_battle && typeof data.extra.temp_battle === 'object'

@@ -28,7 +28,7 @@ function registerBuyCommand(bot, deps) {
       data.inv.pc = 0;
     }
 
-    if (messageData.battle.includes(ctx.from.id)) {
+    if (messageData.battle.some(id => String(id) === String(ctx.from.id))) {
 
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'You Are In A *Battle*', { reply_to_message_id: ctx.message.message_id })
 

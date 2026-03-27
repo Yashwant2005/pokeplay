@@ -11,7 +11,7 @@ try {
 }
 const messageData = await loadMessageData();
 if(messageData[ctx.from.id]) {
-messageData.battle = messageData.battle.filter((chats)=> chats !==ctx.from.id)
+messageData.battle = messageData.battle.filter((chats)=> String(chats) !== String(ctx.from.id))
 delete messageData[ctx.from.id];
 await saveMessageData(messageData)
 }

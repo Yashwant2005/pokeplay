@@ -3494,10 +3494,13 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         revertPowerConstructFormsOnBattleEnd(battleData, defender)
         revertTrackedFormsOnBattleEnd(battleData, attacker)
         revertTrackedFormsOnBattleEnd(battleData, defender)
+        // Strip temp_battle flag so random-battle pokes can't be traded
+        if (Array.isArray(attacker.pokes)) attacker.pokes.forEach(p => { delete p.temp_battle; });
+        if (Array.isArray(defender.pokes)) defender.pokes.forEach(p => { delete p.temp_battle; });
         await saveUserData2(battleData.cid,attacker)
         await saveUserData2(battleData.oid,defender)
         const messageData = await loadMessageData();
-        messageData.battle = messageData.battle.filter((chats)=> chats!==parseInt(messageData[bword].turn) && chats!==parseInt(messageData[bword].oppo))
+        messageData.battle = messageData.battle.filter((chats)=> String(chats) !== String(messageData[bword].turn) && String(chats) !== String(messageData[bword].oppo))
         delete messageData[bword];
         await saveMessageData(messageData);
         // Clean up inactivity timers for this battle
@@ -4054,7 +4057,7 @@ ctx.answerCbQuery('Not your challenge')
 return
 }
 const mdata = await loadMessageData();
-if(Array.isArray(mdata.battle) && mdata.battle.includes(parseInt(ctx.from.id))){
+if(Array.isArray(mdata.battle) && mdata.battle.some(id => String(id) === String(parseInt(ctx.from.id)))){
 ctx.answerCbQuery('You Are In A Battle')
 return
 }
@@ -4134,7 +4137,7 @@ await saveUserData2(playerId, playerData)
 return created.map((poke) => poke.pass)
 }
 const otherPendingUserId = Object.keys(battleData.users || {}).filter((id)=> String(id) != String(ctx.from.id))[0]
-if(otherPendingUserId && Array.isArray(mdata.battle) && mdata.battle.includes(parseInt(otherPendingUserId))){
+if(otherPendingUserId && Array.isArray(mdata.battle) && mdata.battle.some(id => String(id) === String(parseInt(otherPendingUserId)))){
 ctx.answerCbQuery('Opponent Is In A Battle')
 return
 }
@@ -4462,11 +4465,11 @@ battleData.userReasons[id2] = ''
 await saveBattleData(bword, battleData);
 if(Object.values(battleData.users).every(value => value === true)){
 const mdata = await loadMessageData();
-if(mdata.battle.includes(parseInt(id2))){
+if(mdata.battle.some(id => String(id) === String(parseInt(id2)))){
 ctx.answerCbQuery('You Are In A Battle')
 return
 }
-if(mdata.battle.includes(parseInt(id1))){
+if(mdata.battle.some(id => String(id) === String(parseInt(id1)))){
 ctx.answerCbQuery('Opponent Is In A Battle')
 return
 }
@@ -6565,10 +6568,13 @@ defender.inv.win += 1
   revertPowerConstructFormsOnBattleEnd(battleData, defender)
   revertTrackedFormsOnBattleEnd(battleData, attacker)
   revertTrackedFormsOnBattleEnd(battleData, defender)
+  // Strip temp_battle flag so random-battle pokes can't be traded
+  if (Array.isArray(attacker.pokes)) attacker.pokes.forEach(p => { delete p.temp_battle; });
+  if (Array.isArray(defender.pokes)) defender.pokes.forEach(p => { delete p.temp_battle; });
   await saveUserData2(battleData.cid,attacker)
   await saveUserData2(battleData.oid,defender)
 const messageData = await loadMessageData();
-messageData.battle = messageData.battle.filter((chats)=> chats!==parseInt(messageData[bword].turn) && chats!==parseInt(messageData[bword].oppo))
+messageData.battle = messageData.battle.filter((chats)=> String(chats) !== String(messageData[bword].turn) && String(chats) !== String(messageData[bword].oppo))
 delete messageData[bword];
 await saveMessageData(messageData);
 // Clean up inactivity timers for this battle
@@ -6871,6 +6877,31 @@ if (stone5 === 'rayquaza-dragon-ascent') {
   }
   megaFormName = stone.mega
 }
+const _isPvpMega = battleData.oid && String(battleData.oid) !== String(battleData.cid);
+
+if (_isPvpMega) {
+  // ── PVP mega: store intent in pendingMega, do NOT transform yet ──────────
+  // Transformation happens in resolveQueuedActions via applyPendingMegaForAction
+  if (!battleData.pendingMega) battleData.pendingMega = {};
+  battleData.pendingMega[String(battleData.cid)] = { stone: stone5, c: battleData.c };
+  await saveBattleData(bword, battleData);
+  // Show move select UI so user can now pick their move
+  const _pvpMegAttacker = await getUserData(battleData.cid);
+  const _pvpMegDefender = await getUserData(battleData.oid);
+  const _pvpMegP1 = _pvpMegAttacker.pokes.find(p => p.pass == battleData.c);
+  const _pvpMegP2 = _pvpMegDefender.pokes.find(p => p.pass == battleData.o);
+  const _pvpMegBase1 = getBattleBaseStats({ battleData, pass: _pvpMegP2.pass, pokemonName: _pvpMegP2.name, abilityName: _pvpMegP2.ability, pokestats });
+  const _pvpMegBase2 = getBattleBaseStats({ battleData, pass: _pvpMegP1.pass, pokemonName: _pvpMegP1.name, abilityName: _pvpMegP1.ability, pokestats });
+  const _pvpMegStats1 = await Stats(_pvpMegBase1, _pvpMegP2.ivs, _pvpMegP2.evs, c(_pvpMegP2.nature), plevel(_pvpMegP2.name, _pvpMegP2.exp));
+  const _pvpMegStats2 = await Stats(_pvpMegBase2, _pvpMegP1.ivs, _pvpMegP1.evs, c(_pvpMegP1.nature), plevel(_pvpMegP1.name, _pvpMegP1.exp));
+  const _pvpMegMsg = '<b>' + c(_pvpMegP1.name) + '</b> is ready to Mega Evolve!\n<i>Mega will apply when both players have chosen. Now choose your move.</i>';
+  const _pvpMegIsGroup = ctx.chat.type !== 'private';
+  const _pvpMegUi = buildPvpMsg(_pvpMegMsg, battleData, _pvpMegAttacker, _pvpMegDefender, _pvpMegP1, _pvpMegP2, _pvpMegStats1, _pvpMegStats2, bword, _pvpMegIsGroup);
+  await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, _pvpMegUi.msg, { parse_mode: 'HTML', reply_markup: _pvpMegUi.keyboard, ..._pvpMegUi.ext });
+  return;
+}
+
+// ── Wild battle mega: apply immediately (existing behavior) ────────────────
 if(!d2b.extra){
   d2b.extra = {}
 }
@@ -6896,14 +6927,6 @@ const level12 = plevel(p22.name,p22.exp)
 const level22 = plevel(p12.name,p12.exp)
 const stats12 = await Stats(base12,p22.ivs,p22.evs,c(p22.nature),level12) 
 const stats22 = await Stats(base22,p12.ivs,p12.evs,c(p12.nature),level22)
-msg += await applyEntryHazardsOnSwitch({
-  battleData,
-  sideId: battleData.cid,
-  pass: pass,
-  pokemonName: p12.name,
-  abilityName: p12.ability,
-  maxHp: stats22.hp
-})
 const speed12 = getEffectiveSpeed(stats12.speed, battleData, p22.pass, p22 && p22.ability)
 const speed22 = getEffectiveSpeed(stats22.speed, battleData, p12.pass, p12 && p12.ability)
 const result = speed12 > speed22 ? p22.pass : p12.pass

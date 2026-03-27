@@ -44,9 +44,7 @@ function registerHeldPanelCallbacks(bot, deps) {
     return (data.pokes || []).filter((poke) => String(poke.pass) !== String(ignorePass) && normalizeHeldItemName(poke.held_item) === itemName).length;
   }
 
-  function buildNavKeyboard(pass, id) {
-    const data = globalThis.__heldPanelNavPokemon;
-    const poke = data && data.poke;
+  function buildNavKeyboard(pass, id, poke) {
     const actionRow = [
       { text: 'Evolve', callback_data: 'evolve_' + pass + '_' + id }
     ];
@@ -153,13 +151,11 @@ function registerHeldPanelCallbacks(bot, deps) {
       poke.held_item = sanitizedHeld;
       await saveUserData2(userId, data);
     }
-    globalThis.__heldPanelNavPokemon = { poke };
     const panel = buildHeldPanel(data, poke);
     await editMessage('caption', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, panel.msg, {
       parse_mode: 'markdown',
       reply_markup: { inline_keyboard: panel.rows }
     });
-    delete globalThis.__heldPanelNavPokemon;
   }
 
   async function equipHeldItem(ctx, userId, pass, heldItem) {

@@ -1,5 +1,5 @@
 function register_020_locked(bot, deps) {
-  const { bot } = deps;
+  
   bot.action('locked',async ctx => {
 ctx.answerCbQuery();
 })

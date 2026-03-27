@@ -86,7 +86,6 @@ if(hasAuraBreak && !alreadyChanged) {
 await sendMessage(ctx,ctx.chat.id,img,{caption:msg,parse_mode:'markdown',reply_to_message_id:mid,
 reply_markup:{inline_keyboard:keyboardArray}})
 })
-}
 
   // Zygarde Power Construct ability change
   bot.action(/zygpc_/,async ctx => {
@@ -129,6 +128,8 @@ reply_markup:{inline_keyboard:keyboardArray}})
     
     await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'✨ *'+c(p2.name)+'* ability changed to *Power Construct*!\n\nThis can only be done once.',{reply_markup:{inline_keyboard:[[{text:'Back',callback_data:'stats_'+p2.pass+'_'+ctx.from.id+''}]]}})
   })
+
+}
 
 module.exports = register_004_stats;
 

@@ -1,5 +1,6 @@
 function register_010_exrtbt(bot, deps) {
   const { session, getUserData, sendMessage, loadMessageData, loadMessageDataFresh, loadBattleData, saveBattleData, spawn, pokes, pokemoves, dmoves, word, getRandomNature, generateRandomIVs, c, he, rdata, region, pokestats, plevel, Stats, battlec, emojis, saveMessageData, Bar } = deps;
+  const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rules');
   bot.action(/exrtbt_/,async ctx => {
     const now = Date.now();
     const chatKey = ctx.chat && ctx.chat.id;
@@ -201,5 +202,3 @@ await saveMessageData(messageData);
 module.exports = register_010_exrtbt;
 
 
-
-const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rules');

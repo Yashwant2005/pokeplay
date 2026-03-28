@@ -18,7 +18,8 @@ return
   };
   const userData = await getUserData(id2)
   let pokes = await sort(id2,userData.pokes);
-  pokes = pokes.filter((p) => !hasHeldItem(p) && !p?.temp_battle);
+  const rbList = userData.extra && Array.isArray(userData.extra.randombattle_pokes) ? userData.extra.randombattle_pokes : [];
+  pokes = pokes.filter((p) => !hasHeldItem(p) && !p?.temp_battle && !rbList.includes(p.pass));
   if(pokes.length < 1){
     await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You do not have any tradable pokemon. Remove held items first.',{parse_mode:'html'});
     return;
@@ -86,4 +87,3 @@ messageText += await pokelisthtml(pk.map(item => item.pass),id2,startIndex)
 }
 
 module.exports = register_061_trade;
-

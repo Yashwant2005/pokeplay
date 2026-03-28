@@ -134,14 +134,18 @@ function registerRandomBattleCommand(bot, deps) {
     if (!data2.extra) data2.extra = {};
     if (!data1.pokes) data1.pokes = [];
     if (!data2.pokes) data2.pokes = [];
+    if (!Array.isArray(data1.extra.randombattle_pokes)) data1.extra.randombattle_pokes = [];
+    if (!Array.isArray(data2.extra.randombattle_pokes)) data2.extra.randombattle_pokes = [];
 
     const old1 = data1.extra.temp_battle?.[bword] || [];
     const old2 = data2.extra.temp_battle?.[bword] || [];
     if (old1.length > 0) {
       data1.pokes = data1.pokes.filter(p => !old1.includes(p.pass));
+      data1.extra.randombattle_pokes = data1.extra.randombattle_pokes.filter((pass) => !old1.includes(pass));
     }
     if (old2.length > 0) {
       data2.pokes = data2.pokes.filter(p => !old2.includes(p.pass));
+      data2.extra.randombattle_pokes = data2.extra.randombattle_pokes.filter((pass) => !old2.includes(pass));
     }
 
     data1.pokes.push(...team1);
@@ -151,6 +155,8 @@ function registerRandomBattleCommand(bot, deps) {
     data2.extra.temp_battle = data2.extra.temp_battle || {};
     data1.extra.temp_battle[bword] = team1.map(p => p.pass);
     data2.extra.temp_battle[bword] = team2.map(p => p.pass);
+    data1.extra.randombattle_pokes.push(...team1.map(p => p.pass));
+    data2.extra.randombattle_pokes.push(...team2.map(p => p.pass));
 
     await saveUserData2(id1, data1);
     await saveUserData2(id2, data2);
@@ -190,6 +196,9 @@ function registerRandomBattleCommand(bot, deps) {
     const allPasses = Object.values(userData.extra.temp_battle).flat();
     if (allPasses.length < 1) return;
     userData.pokes = (userData.pokes || []).filter(p => !allPasses.includes(p.pass));
+    if (Array.isArray(userData.extra.randombattle_pokes)) {
+      userData.extra.randombattle_pokes = userData.extra.randombattle_pokes.filter((pass) => !allPasses.includes(pass));
+    }
     userData.extra.temp_battle = {};
   }
 
@@ -228,6 +237,8 @@ function registerRandomBattleCommand(bot, deps) {
     if (!data2.pokes) data2.pokes = [];
     if (!data.extra) data.extra = {};
     if (!data2.extra) data2.extra = {};
+    if (!Array.isArray(data.extra.randombattle_pokes)) data.extra.randombattle_pokes = [];
+    if (!Array.isArray(data2.extra.randombattle_pokes)) data2.extra.randombattle_pokes = [];
 
     cleanupOldTemp(data);
     cleanupOldTemp(data2);
@@ -280,6 +291,8 @@ function registerRandomBattleCommand(bot, deps) {
     data2.extra.temp_battle = data2.extra.temp_battle || {};
     data.extra.temp_battle[bword] = team1.map(p => p.pass);
     data2.extra.temp_battle[bword] = team2.map(p => p.pass);
+    data.extra.randombattle_pokes.push(...team1.map(p => p.pass));
+    data2.extra.randombattle_pokes.push(...team2.map(p => p.pass));
 
     await saveUserData2(ctx.from.id, data);
     await saveUserData2(reply.from.id, data2);

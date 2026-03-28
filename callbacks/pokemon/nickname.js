@@ -1,6 +1,6 @@
 function register_073_nickname(bot, deps) {
   const { userState2, check2q, getUserData, sendMessage, pokes, c } = deps;
-  bot.action(/nickname_/,check2q,async ctx => {
+  bot.action(/^nickname_/,check2q,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
 const data = await getUserData(ctx.from.id)
@@ -29,4 +29,3 @@ const userData = {
 }
 
 module.exports = register_073_nickname;
-

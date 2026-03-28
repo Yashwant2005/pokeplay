@@ -95,7 +95,8 @@ function registerNicknameCommand(bot, deps) {
   
   const p = pokes[p5.name.toLowerCase()]
   
-  const p22 = data.pokes.filter((poke)=> (poke.name==name2.toLowerCase()) || (poke.nickname && poke.nickname.toLowerCase() == name.toLowerCase()))
+  const rbList = data.extra && Array.isArray(data.extra.randombattle_pokes) ? data.extra.randombattle_pokes : []
+  const p22 = data.pokes.filter((poke)=> !poke.temp_battle && !rbList.includes(poke.pass) && ((poke.name==name2.toLowerCase()) || (poke.nickname && poke.nickname.toLowerCase() == name.toLowerCase())))
   
   if(!p22 || p22.length < 1){
   

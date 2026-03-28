@@ -459,5 +459,6 @@ module.exports = {
   formatMoveSummary,
   formatDuration,
   formatRemaining,
-  getEvTotal
+  getEvTotal,
+  getFutureLevelUpEvolutionNames
 };

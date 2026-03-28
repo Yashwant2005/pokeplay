@@ -3488,14 +3488,17 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           if(defender.extra && defender.extra.temp_battle){
             delete defender.extra.temp_battle[bword]
           }
+          if (attacker.extra && Array.isArray(attacker.extra.randombattle_pokes)) {
+            attacker.extra.randombattle_pokes = attacker.extra.randombattle_pokes.filter((pass) => !t1.includes(pass));
+          }
+          if (defender.extra && Array.isArray(defender.extra.randombattle_pokes)) {
+            defender.extra.randombattle_pokes = defender.extra.randombattle_pokes.filter((pass) => !t2.includes(pass));
+          }
         }
         revertPowerConstructFormsOnBattleEnd(battleData, attacker)
         revertPowerConstructFormsOnBattleEnd(battleData, defender)
         revertTrackedFormsOnBattleEnd(battleData, attacker)
         revertTrackedFormsOnBattleEnd(battleData, defender)
-        // Strip temp_battle flag so random-battle pokes can't be traded
-        if (Array.isArray(attacker.pokes)) attacker.pokes.forEach(p => { delete p.temp_battle; });
-        if (Array.isArray(defender.pokes)) defender.pokes.forEach(p => { delete p.temp_battle; });
         await saveUserData2(battleData.cid,attacker)
         await saveUserData2(battleData.oid,defender)
         const messageData = await loadMessageData();
@@ -6562,14 +6565,17 @@ defender.inv.win += 1
   if(defender.extra && defender.extra.temp_battle){
   delete defender.extra.temp_battle[bword]
   }
+  if (attacker.extra && Array.isArray(attacker.extra.randombattle_pokes)) {
+  attacker.extra.randombattle_pokes = attacker.extra.randombattle_pokes.filter((pass) => !t1.includes(pass))
+  }
+  if (defender.extra && Array.isArray(defender.extra.randombattle_pokes)) {
+  defender.extra.randombattle_pokes = defender.extra.randombattle_pokes.filter((pass) => !t2.includes(pass))
+  }
   }
   revertPowerConstructFormsOnBattleEnd(battleData, attacker)
   revertPowerConstructFormsOnBattleEnd(battleData, defender)
   revertTrackedFormsOnBattleEnd(battleData, attacker)
   revertTrackedFormsOnBattleEnd(battleData, defender)
-  // Strip temp_battle flag so random-battle pokes can't be traded
-  if (Array.isArray(attacker.pokes)) attacker.pokes.forEach(p => { delete p.temp_battle; });
-  if (Array.isArray(defender.pokes)) defender.pokes.forEach(p => { delete p.temp_battle; });
   await saveUserData2(battleData.cid,attacker)
   await saveUserData2(battleData.oid,defender)
 const messageData = await loadMessageData();
@@ -7242,8 +7248,6 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pv
 }
 
 module.exports = registerBattleCallbacks;
-
-
 
 
 

@@ -18,6 +18,10 @@ async function cleanupTempBattleForUsers({ battleData, bword, userIds, getUserDa
       });
     }
 
+    if (data.extra && typeof data.extra === 'object' && Array.isArray(data.extra.randombattle_pokes)) {
+      data.extra.randombattle_pokes = data.extra.randombattle_pokes.filter((pass) => !passes.includes(String(pass)));
+    }
+
     if (data.extra && typeof data.extra === 'object' && data.extra.temp_battle) {
       delete data.extra.temp_battle[bword];
     }

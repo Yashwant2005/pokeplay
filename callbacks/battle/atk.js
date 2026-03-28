@@ -1233,8 +1233,6 @@ if(newTrainerLevel > oldTrainerLevel){
 data.extra.hunting = false
 revertPowerConstructFormsOnBattleEnd(battleData, data)
 revertTrackedFormsOnBattleEnd(battleData, data)
-// Strip temp_battle so random-battle pokes can't be traded after battle ends
-if (Array.isArray(data.pokes)) data.pokes.forEach(p => { delete p.temp_battle; });
 await saveUserData2(ctx.from.id,data)
 const messageData = await loadMessageData();
 if(messageData[ctx.from.id]) {
@@ -1539,4 +1537,3 @@ const messageData = await loadMessageData();
 }
 
 module.exports = register_012_atk;
-

@@ -1,9 +1,10 @@
 ﻿let msgsent = []
 const appr = [1072659486, 6265981509]
 require('dotenv').config();
-const botToken = process.env.BOT_TOKEN || '8262478413:AAEikx32qA0Rk0pSwbxyzAGHwNCJofcSMcA' // fallback for local dev
+const botToken = process.env.BOT_TOKEN || '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // fallback for local dev
 const { Telegraf } = require('telegraf')
 const bot = new Telegraf(botToken)
+
 if (process.env.QUIET_LOGS === '1') {
   console.log = () => { }
 }
@@ -62,10 +63,12 @@ const event = ['kirlia', 'pacham', 'lilligant', 'decdueye', 'skitty', 'unown']
 const userState2 = new Map()
 const path = require('path')
 const userState = new Map()
+const daycareState = new Map()
 const stringSimilarity = require('string-similarity');
 const schedule = require('node-schedule');
 const NodeCache = require('node-cache');
 const timeoutCache = new NodeCache();
+const { parseEvBuild, getFutureLevelUpEvolutionNames } = require('./utils/daycare');
 const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'lightblue', 'violet', 'darkviolet', 'black', 'grey', 'white', 'brown', 'pink', 'purple']
 const fetch = require('node-fetch');
 const { createCanvas, loadImage, registerFont } = require('canvas');
@@ -95,6 +98,21 @@ const ballsdata = {
   "origin": 1.5,
   "beast": 1.5
 }
+const DAYCARE_BLOCKED_FORM_TOKENS = [
+  'ash',
+  'battle-bond',
+  'busted',
+  'complete',
+  'crowned',
+  'eternamax',
+  'gmax',
+  'mega',
+  'origin',
+  'primal',
+  'starter',
+  'totem',
+  'zen'
+]
 bot.on('edited_message', async ctx => {
 })
 // Global error guard so one command error doesn't affect others
@@ -191,6 +209,26 @@ function removeGroupIds(ids) {
 
 function getGroupIds() {
   return Array.from(groupIds)
+}
+
+function getDaycareFormCandidates(speciesKey) {
+  const key = String(speciesKey || '').toLowerCase();
+  const rows = Array.isArray(forms && forms[key]) ? forms[key] : [];
+  return rows.filter((entry) => {
+    if (!entry) return false;
+    if (String(entry.is_battle_only) === '1') return false;
+    const identifier = String(entry.identifier || '').toLowerCase();
+    const formIdentifier = String(entry.form_identifier || '').toLowerCase();
+    return !DAYCARE_BLOCKED_FORM_TOKENS.some((tok) => identifier.includes(tok) || formIdentifier.includes(tok));
+  });
+}
+
+function hasDaycareRandomFormEvolution(evolutionNames) {
+  for (const name of evolutionNames || []) {
+    const candidates = getDaycareFormCandidates(name);
+    if (candidates.length > 1) return true;
+  }
+  return false;
 }
 
 async function retryTelegramEditMessageText(telegram, chatId, messageId, text, extra = {}, attempts = 3) {
@@ -570,6 +608,9 @@ setInterval(() => {
   for (const [userId, state] of userState2.entries()) {
     if (!state || (state._ts && now - state._ts > cutoff10m)) userState2.delete(userId);
   }
+  for (const [userId, state] of daycareState.entries()) {
+    if (!state || (state._ts && now - state._ts > cutoff10m)) daycareState.delete(userId);
+  }
 }, 5 * 60 * 1000);
 // ─────────────────────────────────────────────────────────────────────────────
 // ── Per-user callback lock — prevents race conditions when user taps fast ─────
@@ -619,6 +660,7 @@ const moduleDeps = buildModuleDeps({
   event,
   userState,
   userState2,
+  daycareState,
   check,
   check2,
   check2q,
@@ -972,6 +1014,61 @@ bot.on('message', async (ctx, next) => {
         }
         await saveUserData2(ctx.from.id, data);
         return
+      }
+    }
+    if (daycareState.has(ctx.from.id)) {
+      const state = daycareState.get(ctx.from.id);
+      if (state && state.step === 'ev' && ctx.message.reply_to_message && ctx.message.reply_to_message.message_id === state.messageId) {
+        const result = parseEvBuild(ctx.message.text);
+        if (!result.ok) {
+          const message = await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, result.error + '\n\nSend EVs like `252 atk / 252 spe / 4 hp` (Max 510).', { reply_markup: { force_reply: true } });
+          state.messageId = message;
+          state._ts = Date.now();
+          daycareState.set(ctx.from.id, state);
+          return;
+        }
+
+        const poke = data.pokes.filter((pk) => pk.pass == state.pass)[0];
+        if (!poke) {
+          daycareState.delete(ctx.from.id);
+          await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Pokemon Not Found', { reply_to_message_id: ctx.message.message_id });
+          return;
+        }
+
+        state.evs = result.evs;
+        state.step = 'evolve';
+        state._ts = Date.now();
+
+        const evoNames = getFutureLevelUpEvolutionNames(poke.name, chains);
+        if (!evoNames.length) {
+          state.evolveChoice = false;
+          state.step = 'moves';
+          daycareState.set(ctx.from.id, state);
+          await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'No level-up evolution found.\n\nSelect moves for *' + c(poke.nickname || poke.name) + '*:', {
+            reply_markup: { inline_keyboard: [[{ text: 'Select Moves', callback_data: 'daycare_moves_' + ctx.from.id + '_1' }]] }
+          });
+          return;
+        }
+
+        state.evolutionNames = evoNames;
+        state.randomFormPossible = hasDaycareRandomFormEvolution(evoNames);
+        daycareState.set(ctx.from.id, state);
+
+        let msg = '*Daycare Evolution*\n';
+        msg += '\nThis pokemon can evolve by level-up in daycare.';
+        msg += '\n\n_Note: send fully evolved pokemon that I prefer._';
+        if (state.randomFormPossible) {
+          msg += '\n\nMultiple regional forms exist. If you choose *Yes*, daycare will randomly select one.';
+        }
+        msg += '\n\nDo you want to evolve it?';
+
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, msg, {
+          reply_markup: { inline_keyboard: [[
+            { text: 'Yes', callback_data: 'daycare_evo_yes_' + ctx.from.id },
+            { text: 'No', callback_data: 'daycare_evo_no_' + ctx.from.id }
+          ]] }
+        });
+        return;
       }
     }
     if (data.inv && data.inv.team && data.teams) {
@@ -1688,5 +1785,3 @@ initApp()
   .catch((error) => {
     console.error('Failed to init app:', error);
   });
-
-

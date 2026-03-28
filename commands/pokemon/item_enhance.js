@@ -11,6 +11,11 @@ function createFlowToken() {
   return Math.random().toString(36).slice(2, 10);
 }
 
+function isRandomBattlePoke(data, p) {
+  const list = data && data.extra && Array.isArray(data.extra.randombattle_pokes) ? data.extra.randombattle_pokes : [];
+  return !!p && (p.temp_battle || list.includes(p.pass));
+}
+
 function pruneAbilityItemFlow() {
   const now = Date.now();
   for (const [token, entry] of ABILITY_ITEM_FLOW.entries()) {
@@ -34,17 +39,17 @@ function findPokemonMatches(data, targetRaw) {
 
   const byPass = list
     .map((p, idx) => ({ p, idx }))
-    .filter((entry) => String(entry.p.pass || '').toLowerCase() === key);
+    .filter((entry) => !isRandomBattlePoke(data, entry.p) && String(entry.p.pass || '').toLowerCase() === key);
   if (byPass.length > 0) return byPass;
 
   const byNickname = list
     .map((p, idx) => ({ p, idx }))
-    .filter((entry) => entry.p.nickname && String(entry.p.nickname).toLowerCase() === key);
+    .filter((entry) => !isRandomBattlePoke(data, entry.p) && entry.p.nickname && String(entry.p.nickname).toLowerCase() === key);
   if (byNickname.length > 0) return byNickname;
 
   const byName = list
     .map((p, idx) => ({ p, idx }))
-    .filter((entry) => String(entry.p.name || '').toLowerCase() === keyByName);
+    .filter((entry) => !isRandomBattlePoke(data, entry.p) && String(entry.p.name || '').toLowerCase() === keyByName);
   return byName;
 }
 
@@ -96,13 +101,13 @@ function parseTargetAndValue(raw) {
 function findPokemon(data, targetRaw) {
   const key = normalizeName(targetRaw);
   const key2 = key.replace(/ /g, '-');
-  return (data.pokes || []).find((p) => String(p.pass || '').toLowerCase() === key)
-    || (data.pokes || []).find((p) => p.nickname && String(p.nickname).toLowerCase() === key)
-    || (data.pokes || []).find((p) => String(p.name || '').toLowerCase() === key2);
+  return (data.pokes || []).find((p) => !isRandomBattlePoke(data, p) && String(p.pass || '').toLowerCase() === key)
+    || (data.pokes || []).find((p) => !isRandomBattlePoke(data, p) && p.nickname && String(p.nickname).toLowerCase() === key)
+    || (data.pokes || []).find((p) => !isRandomBattlePoke(data, p) && String(p.name || '').toLowerCase() === key2);
 }
 
 function registerItemEnhanceCommands(bot, deps) {
-  const { check, getUserData, saveUserData2, sendMessage, pokes, stat, c, fetch } = deps;
+  const { check, getUserData, saveUserData2, sendMessage, pokes, stat, c, fetch, sort, pokelist } = deps;
   const STAT_MAP = {
     hp: 'hp',
     atk: 'attack',
@@ -120,6 +125,174 @@ function registerItemEnhanceCommands(bot, deps) {
     spe: 'speed',
     speed: 'speed'
   };
+
+  async function sendPokemonPickList(ctx, matches, nameKey, query, title, replyToId) {
+    const page = 1;
+    const pageSize = 20;
+    const startIdx = (page - 1) * pageSize;
+    const endIdx = startIdx + pageSize;
+    const pokemon2 = await sort(ctx.from.id, matches.map((m) => m.p));
+    const pokemon = pokemon2.slice(startIdx, endIdx);
+    let msg = '';
+    msg += await pokelist(pokemon.map((item) => item.pass), ctx, startIdx);
+
+    const ore = [];
+    let b = startIdx + 1;
+    for (const p of pokemon) {
+      ore.push({ text: b, callback_data: `${query}_${p.pass}_${ctx.from.id}_${replyToId}` });
+      b++;
+    }
+
+    const rows = [];
+    for (let i = 0; i < ore.length; i += 5) {
+      rows.push(ore.slice(i, i + 5));
+    }
+
+    const rows2 = [];
+    if (page > 1) {
+      rows2.push({ text: '<', callback_data: `suger_${ctx.from.id}_${nameKey}_${query}_${replyToId}_${page - 1}` });
+    }
+    if (endIdx < matches.length) {
+      rows2.push({ text: '>', callback_data: `suger_${ctx.from.id}_${nameKey}_${query}_${replyToId}_${page + 1}` });
+    }
+    rows.push(rows2);
+
+    await sendMessage(
+      ctx,
+      ctx.chat.id,
+      { parse_mode: 'markdown' },
+      msg + '\n\n' + title,
+      { reply_to_message_id: replyToId, reply_markup: { inline_keyboard: rows } }
+    );
+  }
+
+  async function sendMintChoicePanel(ctx, userId, pokeIndex, useEdit) {
+    const data = await getUserData(userId);
+    if (!data.extra || typeof data.extra !== 'object') data.extra = {};
+    if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {};
+    if (!data.extra.itembox.mints || typeof data.extra.itembox.mints !== 'object') data.extra.itembox.mints = {};
+
+    const p = data.pokes && data.pokes[pokeIndex];
+    if (!p) {
+      const out = 'Pokemon not found.';
+      if (useEdit) await ctx.editMessageText(out, { parse_mode: 'markdown' });
+      else await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, out, { reply_to_message_id: ctx.message.message_id });
+      return;
+    }
+
+    const availableMints = Object.entries(data.extra.itembox.mints || {})
+      .filter(([key, count]) => Number(count) > 0)
+      .map(([key]) => key);
+
+    if (availableMints.length === 0) {
+      const out = 'You do not have any *mints* in your item box.';
+      if (useEdit) await ctx.editMessageText(out, { parse_mode: 'markdown' });
+      else await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, out, { reply_to_message_id: ctx.message.message_id });
+      return;
+    }
+
+    const buttons = availableMints.map((mintKey) => [
+      { text: mintKey.replace(/ mint$/i, ''), callback_data: `mint_sel_${pokeIndex}_${encodeURIComponent(mintKey)}_${userId}` }
+    ]);
+
+    const out = 'Select a *mint* for *' + c(p.nickname || p.name) + '*:';
+    if (useEdit) {
+      await ctx.editMessageText(out, { parse_mode: 'markdown', reply_markup: { inline_keyboard: buttons } });
+    } else {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown', reply_markup: { inline_keyboard: buttons } }, out, { reply_to_message_id: ctx.message.message_id });
+    }
+  }
+
+  async function sendBottleCapStatPanel(ctx, userId, pokeIndex, useEdit) {
+    const data = await getUserData(userId);
+    if (!data.extra || typeof data.extra !== 'object') data.extra = {};
+    if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {};
+    if (!Number.isFinite(data.extra.itembox.bottleCaps)) data.extra.itembox.bottleCaps = 0;
+
+    const p = data.pokes && data.pokes[pokeIndex];
+    if (!p) {
+      const out = 'Pokemon not found.';
+      if (useEdit) await ctx.editMessageText(out, { parse_mode: 'markdown' });
+      else await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, out, { reply_to_message_id: ctx.message.message_id });
+      return;
+    }
+
+    if (!p.ivs || typeof p.ivs !== 'object') {
+      const out = 'Pokemon IV data not found.';
+      if (useEdit) await ctx.editMessageText(out, { parse_mode: 'markdown' });
+      else await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, out, { reply_to_message_id: ctx.message.message_id });
+      return;
+    }
+
+    if (p.bottleCapUsed) {
+      const out = 'This Pokemon already used a *Bottle Cap*. Only *one* Bottle Cap can be used on a Pokemon.';
+      if (useEdit) await ctx.editMessageText(out, { parse_mode: 'markdown' });
+      else await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, out, { reply_to_message_id: ctx.message.message_id });
+      return;
+    }
+
+    const statButtons = [
+      [
+        { text: 'HP', callback_data: `bcap_sel_${pokeIndex}_hp_${userId}` },
+        { text: 'ATK', callback_data: `bcap_sel_${pokeIndex}_attack_${userId}` },
+        { text: 'DEF', callback_data: `bcap_sel_${pokeIndex}_defense_${userId}` }
+      ],
+      [
+        { text: 'SPA', callback_data: `bcap_sel_${pokeIndex}_special_attack_${userId}` },
+        { text: 'SPD', callback_data: `bcap_sel_${pokeIndex}_special_defense_${userId}` },
+        { text: 'SPE', callback_data: `bcap_sel_${pokeIndex}_speed_${userId}` }
+      ]
+    ];
+
+    const out = 'Select a *stat* for *' + c(p.nickname || p.name) + '*:';
+    if (useEdit) {
+      await ctx.editMessageText(out, { parse_mode: 'markdown', reply_markup: { inline_keyboard: statButtons } });
+    } else {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown', reply_markup: { inline_keyboard: statButtons } }, out, { reply_to_message_id: ctx.message.message_id });
+    }
+  }
+
+  async function applyGoldBottleCap(ctx, userId, pokeIndex, useEdit) {
+    const data = await getUserData(userId);
+    if (!data.extra || typeof data.extra !== 'object') data.extra = {};
+    if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {};
+    if (!Number.isFinite(data.extra.itembox.goldBottleCaps)) data.extra.itembox.goldBottleCaps = 0;
+
+    const p = data.pokes && data.pokes[pokeIndex];
+    if (!p) {
+      const out = 'Pokemon not found.';
+      if (useEdit) await ctx.editMessageText(out, { parse_mode: 'markdown' });
+      else await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, out, { reply_to_message_id: ctx.message.message_id });
+      return;
+    }
+
+    if (!p.ivs || typeof p.ivs !== 'object') {
+      const out = 'Pokemon IV data not found.';
+      if (useEdit) await ctx.editMessageText(out, { parse_mode: 'markdown' });
+      else await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, out, { reply_to_message_id: ctx.message.message_id });
+      return;
+    }
+
+    if (data.extra.itembox.goldBottleCaps < 1) {
+      const out = 'You are out of *Gold Bottle Caps*.';
+      if (useEdit) await ctx.editMessageText(out, { parse_mode: 'markdown' });
+      else await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, out, { reply_to_message_id: ctx.message.message_id });
+      return;
+    }
+
+    p.ivs.hp = 31;
+    p.ivs.attack = 31;
+    p.ivs.defense = 31;
+    p.ivs.special_attack = 31;
+    p.ivs.special_defense = 31;
+    p.ivs.speed = 31;
+    data.extra.itembox.goldBottleCaps -= 1;
+
+    await saveUserData2(userId, data);
+    const out = 'Used *Gold Bottle Cap* on *' + c(p.nickname || p.name) + '*\nAll IVs are now *31*.';
+    if (useEdit) await ctx.editMessageText(out, { parse_mode: 'markdown' });
+    else await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, out, { reply_to_message_id: ctx.message.message_id });
+  }
 
   async function sendAbilityChoicePanel(ctx, userId, kind, pokeIndex, useEdit) {
     pruneAbilityItemFlow();
@@ -400,27 +573,18 @@ function registerItemEnhanceCommands(bot, deps) {
       return;
     }
 
-    const p = findPokemon(data, targetRaw);
-    if (!p) {
+    const matches = findPokemonMatches(data, targetRaw);
+    if (!matches || matches.length < 1) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'No *matching pokemon* found.', { reply_to_message_id: ctx.message.message_id });
       return;
     }
-
-    const pokeIndex = (data.pokes || []).indexOf(p);
-    const availableMints = Object.entries(data.extra.itembox.mints || {})
-      .filter(([key, count]) => Number(count) > 0)
-      .map(([key]) => key);
-
-    if (availableMints.length === 0) {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'You do not have any *mints* in your item box.', { reply_to_message_id: ctx.message.message_id });
+    if (matches.length > 1) {
+      const nameKey = normalizeName(targetRaw).replace(/ /g, '-');
+      await sendPokemonPickList(ctx, matches, nameKey, 'mintpick', '_Select which Pokemon to use the mint on_', ctx.message.message_id);
       return;
     }
-
-    const buttons = availableMints.map((mintKey) => [
-      { text: mintKey.replace(/ mint$/i, ''), callback_data: `mint_sel_${pokeIndex}_${encodeURIComponent(mintKey)}_${ctx.from.id}` }
-    ]);
-
-    await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown', reply_markup: { inline_keyboard: buttons } }, 'Select a *mint* for *' + c(p.nickname || p.name) + '*:', { reply_to_message_id: ctx.message.message_id });
+    const pokeIndex = matches[0].idx;
+    await sendMintChoicePanel(ctx, ctx.from.id, pokeIndex, false);
   });
 
   bot.action(/^mint_sel_(\d+)_(.+)_(\d+)$/, async (ctx) => {
@@ -455,6 +619,22 @@ function registerItemEnhanceCommands(bot, deps) {
     await ctx.answerCbQuery('Mint applied!', { show_alert: false });
   });
 
+  bot.action(/^mintpick_([^_]+)_(\d+)_(\d+)$/, async (ctx) => {
+    const pass = decodeURIComponent(ctx.match[1]);
+    const userId = parseInt(ctx.match[2]);
+    if (ctx.from.id !== userId) {
+      await ctx.answerCbQuery('Not your button!', { show_alert: false });
+      return;
+    }
+    const data = await getUserData(userId);
+    const pokeIndex = (data.pokes || []).findIndex((p) => String(p.pass) === String(pass));
+    if (pokeIndex < 0) {
+      await ctx.answerCbQuery('Pokemon not found!', { show_alert: true });
+      return;
+    }
+    await sendMintChoicePanel(ctx, userId, pokeIndex, true);
+  });
+
   bot.command('bottlecap', check, async (ctx) => {
     const data = await getUserData(ctx.from.id);
     if (!data.extra || typeof data.extra !== 'object') data.extra = {};
@@ -472,43 +652,18 @@ function registerItemEnhanceCommands(bot, deps) {
       return;
     }
 
-    const p = findPokemon(data, targetRaw);
-    if (!p) {
+    const matches = findPokemonMatches(data, targetRaw);
+    if (!matches || matches.length < 1) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'No *matching pokemon* found.', { reply_to_message_id: ctx.message.message_id });
       return;
     }
-
-    if (!p.ivs || typeof p.ivs !== 'object') {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Pokemon IV data not found.', { reply_to_message_id: ctx.message.message_id });
+    if (matches.length > 1) {
+      const nameKey = normalizeName(targetRaw).replace(/ /g, '-');
+      await sendPokemonPickList(ctx, matches, nameKey, 'bcap_pick', '_Select which Pokemon to use the Bottle Cap on_', ctx.message.message_id);
       return;
     }
-
-    if (p.bottleCapUsed) {
-      await sendMessage(
-        ctx,
-        ctx.chat.id,
-        { parse_mode: 'markdown' },
-        'This Pokemon already used a *Bottle Cap*. Only *one* Bottle Cap can be used on a Pokemon.',
-        { reply_to_message_id: ctx.message.message_id }
-      );
-      return;
-    }
-
-    const pokeIndex = (data.pokes || []).indexOf(p);
-    const statButtons = [
-      [
-        { text: 'HP', callback_data: `bcap_sel_${pokeIndex}_hp_${ctx.from.id}` },
-        { text: 'ATK', callback_data: `bcap_sel_${pokeIndex}_attack_${ctx.from.id}` },
-        { text: 'DEF', callback_data: `bcap_sel_${pokeIndex}_defense_${ctx.from.id}` }
-      ],
-      [
-        { text: 'SPA', callback_data: `bcap_sel_${pokeIndex}_special_attack_${ctx.from.id}` },
-        { text: 'SPD', callback_data: `bcap_sel_${pokeIndex}_special_defense_${ctx.from.id}` },
-        { text: 'SPE', callback_data: `bcap_sel_${pokeIndex}_speed_${ctx.from.id}` }
-      ]
-    ];
-
-    await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown', reply_markup: { inline_keyboard: statButtons } }, 'Select a *stat* for *' + c(p.nickname || p.name) + '*:', { reply_to_message_id: ctx.message.message_id });
+    const pokeIndex = matches[0].idx;
+    await sendBottleCapStatPanel(ctx, ctx.from.id, pokeIndex, false);
   });
 
   bot.action(/^bcap_sel_(\d+)_(.+)_(\d+)$/, async (ctx) => {
@@ -553,6 +708,22 @@ function registerItemEnhanceCommands(bot, deps) {
     await ctx.answerCbQuery('Cap applied!', { show_alert: false });
   });
 
+  bot.action(/^bcap_pick_([^_]+)_(\d+)_(\d+)$/, async (ctx) => {
+    const pass = decodeURIComponent(ctx.match[1]);
+    const userId = parseInt(ctx.match[2]);
+    if (ctx.from.id !== userId) {
+      await ctx.answerCbQuery('Not your button!', { show_alert: false });
+      return;
+    }
+    const data = await getUserData(userId);
+    const pokeIndex = (data.pokes || []).findIndex((p) => String(p.pass) === String(pass));
+    if (pokeIndex < 0) {
+      await ctx.answerCbQuery('Pokemon not found!', { show_alert: true });
+      return;
+    }
+    await sendBottleCapStatPanel(ctx, userId, pokeIndex, true);
+  });
+
   bot.command('goldbottlecap', check, async (ctx) => {
     const data = await getUserData(ctx.from.id);
     if (!data.extra || typeof data.extra !== 'object') data.extra = {};
@@ -570,27 +741,34 @@ function registerItemEnhanceCommands(bot, deps) {
       return;
     }
 
-    const p = findPokemon(data, targetRaw);
-    if (!p) {
+    const matches = findPokemonMatches(data, targetRaw);
+    if (!matches || matches.length < 1) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'No *matching pokemon* found.', { reply_to_message_id: ctx.message.message_id });
       return;
     }
-
-    if (!p.ivs || typeof p.ivs !== 'object') {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Pokemon IV data not found.', { reply_to_message_id: ctx.message.message_id });
+    if (matches.length > 1) {
+      const nameKey = normalizeName(targetRaw).replace(/ /g, '-');
+      await sendPokemonPickList(ctx, matches, nameKey, 'gbcap_pick', '_Select which Pokemon to use the Gold Bottle Cap on_', ctx.message.message_id);
       return;
     }
+    const pokeIndex = matches[0].idx;
+    await applyGoldBottleCap(ctx, ctx.from.id, pokeIndex, false);
+  });
 
-    p.ivs.hp = 31;
-    p.ivs.attack = 31;
-    p.ivs.defense = 31;
-    p.ivs.special_attack = 31;
-    p.ivs.special_defense = 31;
-    p.ivs.speed = 31;
-    data.extra.itembox.goldBottleCaps -= 1;
-
-    await saveUserData2(ctx.from.id, data);
-    await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Used *Gold Bottle Cap* on *' + c(p.nickname || p.name) + '*\nAll IVs are now *31*.', { reply_to_message_id: ctx.message.message_id });
+  bot.action(/^gbcap_pick_([^_]+)_(\d+)_(\d+)$/, async (ctx) => {
+    const pass = decodeURIComponent(ctx.match[1]);
+    const userId = parseInt(ctx.match[2]);
+    if (ctx.from.id !== userId) {
+      await ctx.answerCbQuery('Not your button!', { show_alert: false });
+      return;
+    }
+    const data = await getUserData(userId);
+    const pokeIndex = (data.pokes || []).findIndex((p) => String(p.pass) === String(pass));
+    if (pokeIndex < 0) {
+      await ctx.answerCbQuery('Pokemon not found!', { show_alert: true });
+      return;
+    }
+    await applyGoldBottleCap(ctx, userId, pokeIndex, true);
   });
 }
 

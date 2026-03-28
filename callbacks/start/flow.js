@@ -16,6 +16,8 @@ function registerStartFlowCallbacks(bot, deps) {
     sendMessage,
     he,
     saveUserData22,
+    sort,
+    pokelist,
     c,
   } = deps;
 
@@ -223,7 +225,8 @@ function registerStartFlowCallbacks(bot, deps) {
     const pageSize = 25;
     const startIdx = (page - 1) * pageSize;
     const endIdx = startIdx + pageSize;
-    const visiblePokes = Array.isArray(data.pokes) ? data.pokes.filter((poke) => !poke.temp_battle) : [];
+    const rbList = data.extra && Array.isArray(data.extra.randombattle_pokes) ? data.extra.randombattle_pokes : [];
+    const visiblePokes = Array.isArray(data.pokes) ? data.pokes.filter((poke) => !poke.temp_battle && !rbList.includes(poke.pass)) : [];
     const pokemon2 = await sort(ctx.from.id, visiblePokes);
     const pokemon = pokemon2.slice(startIdx, endIdx);
     msg += await pokelist(pokemon.map((item) => item.pass), ctx, startIdx);

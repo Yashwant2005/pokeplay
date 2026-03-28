@@ -13,7 +13,8 @@ const msgid = hasPage ? parts[parts.length - 2] : parts[parts.length - 1]
 const query = hasPage ? parts[parts.length - 3] : parts[parts.length - 2]
 const name = parts.slice(2, hasPage ? parts.length - 3 : parts.length - 2).join('_')
 const data = await getUserData(ctx.from.id)
-const matches = data.pokes.filter((poke)=> (poke.name==name.toLowerCase()) || (poke.nickname && poke.nickname.toLowerCase() == name.toLowerCase()))
+const rbList = data.extra && Array.isArray(data.extra.randombattle_pokes) ? data.extra.randombattle_pokes : []
+const matches = data.pokes.filter((poke)=> !poke.temp_battle && !rbList.includes(poke.pass) && ((poke.name==name.toLowerCase()) || (poke.nickname && poke.nickname.toLowerCase() == name.toLowerCase())))
 if(matches.length < 1){
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'You don\'t have *'+c(name)+'*',{parse_mode:'markdown'})
 return
@@ -21,7 +22,7 @@ return
 let msg = ''
 const ore = []
 const passes = []
-const pageSize = query === 'nickname' ? 20 : 25
+const pageSize = (query === 'nickname' || query === 'mintpick' || query === 'bcap_pick' || query === 'gbcap_pick') ? 20 : 25
 const startIdx = (page - 1) * pageSize;
 let b = startIdx+1
 const endIdx = startIdx + pageSize;
@@ -50,4 +51,3 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,ms
 }
 
 module.exports = register_002_suger;
-

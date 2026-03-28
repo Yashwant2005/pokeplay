@@ -1326,76 +1326,12 @@ return pokes2
 }
 function generateRandomIVs(rarity) {
   const ivs = {};
-  const stats = ['hp', 'attack', 'defense', 'special_attack', 'special_defense', 'speed']; // Pokémon stats
-for(const a of stats){
-ivs[a] = 0
-}
-  if (rarity === 'Legendary' || rarity === 'legendry' || rarity === 'legendary' || rarity === 'mythical') {
-    let totalIVs = 0;
-const rt = Math.random()
-if(rt<0.0000005){
-var minTotal = Math.floor(Math.random() * 6) + 180;
-}else if(Math.random()< 0.000005){
-var minTotal = Math.floor(Math.random() * 8) + 172;
-}else if(Math.random()< 0.00005){
-var minTotal = Math.floor(Math.random() * 7) + 165;
-}else if(Math.random()< 0.0005){
-var minTotal = Math.floor(Math.random() * 5) + 160;
-}else if(Math.random()< 0.005){
-var minTotal = Math.floor(Math.random() * 10) + 150;
-}else if(Math.random()< 0.05){
-var minTotal = Math.floor(Math.random() * 10) + 140;
-}else if(Math.random()< 0.2){
-var minTotal = Math.floor(Math.random() * 10) + 130;
-}else if(Math.random()< 0.7){
-var minTotal = Math.floor(Math.random() * 20) + 110;
-}else{
-var minTotal = Math.floor(Math.random() * 25) + 85;
-}
-    // Ensure minimum total IVs
-    while (totalIVs < minTotal) {
-      let statToIncrease = stats[Math.floor(Math.random() * stats.length)];
-      const AIv = (Math.random() < 0.002 || minTotal > 155) ? 31 : 30
-if (!ivs[statToIncrease] || ivs[statToIncrease] < AIv) {
-            ivs[statToIncrease] = (ivs[statToIncrease] || 0) + 1;
-            totalIVs++;
-        }
-    }
-  } else{
-    let totalIVs = 0;
-const mx = Math.random() < 0.001 ? 140 : 80
-const rt = Math.random()
-if(rt<0.0000005){
-var minTotal = Math.floor(Math.random() * 6) + 180;
-}else if(Math.random()< 0.000005){
-var minTotal = Math.floor(Math.random() * 8) + 172;
-}else if(Math.random()< 0.00005){
-var minTotal = Math.floor(Math.random() * 7) + 165;
-}else if(Math.random()< 0.0005){
-var minTotal = Math.floor(Math.random() * 5) + 160;
-}else if(Math.random()< 0.01){
-var minTotal = Math.floor(Math.random() * 30) + 120;
-}else if(Math.random()< 0.1){
-var minTotal = Math.floor(Math.random() * 10) + 120;
-}else if(Math.random()< 0.3){
-var minTotal = Math.floor(Math.random() * 20) + 100;
-}else if(Math.random()< 0.9){
-var minTotal = Math.floor(Math.random() * 20) + 80;
-}else{
-var minTotal = Math.floor(Math.random() * 50) + 20
-}
-    // Ensure minimum total IVs
-    while (totalIVs < minTotal) {
-      let statToIncrease = stats[Math.floor(Math.random() * stats.length)];
-      const AIv = (Math.random() < 0.07 || minTotal>165) ? 31 : 30
-if (!ivs[statToIncrease] || ivs[statToIncrease] < AIv) {
-            ivs[statToIncrease] = (ivs[statToIncrease] || 0) + 1;
-            totalIVs++;
-        }
-    }
-}
-
-  return withGuaranteedIvSpread(ivs, 20, 31, 25);
+  const stats = ['hp', 'attack', 'defense', 'special_attack', 'special_defense', 'speed']; // Pokemon stats
+  for (const a of stats) {
+    ivs[a] = 0;
+  }
+  // No minimum IV floor: fully random per-stat IVs (0-31)
+  return withRandomIvRange(ivs, 0, 31);
 }
 
 function clampIvValue(value) {
@@ -1445,13 +1381,8 @@ function withGuaranteedIvSpread(ivs, minPerStat, maxPerStat, guaranteedMinimum) 
 }
 
 function applyCaptureIvRules(ivs, options = {}) {
-  const symbol = String(options.symbol || '');
-  const isShiny = Boolean(options.isShiny) || symbol === '✨' || symbol === '?';
-  const isSafari = Boolean(options.isSafari);
-  let minPerStat = 0;
-  if (isSafari) minPerStat = Math.max(minPerStat, 10);
-  if (isShiny) minPerStat = Math.max(minPerStat, 20);
-  return withMinimumIvs(ivs, minPerStat);
+  // No minimum IV floor from capture rules
+  return withMinimumIvs(ivs, 0);
 }
 
 module.exports = {
@@ -1497,4 +1428,5 @@ module.exports = {
   getUserIds,
   userExists
 }
+
 

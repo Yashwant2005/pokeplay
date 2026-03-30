@@ -20,7 +20,10 @@ function registerUfbCommand(bot, deps) {
   
           if (userId && (banList2.includes(String(userId)))) {
   
-              banList2 = banList2.filter((id) => id !== userId);
+              const targetId = String(userId);
+              for (let i = banList2.length - 1; i >= 0; i -= 1) {
+                if (String(banList2[i]) === targetId) banList2.splice(i, 1);
+              }
   
               saveBanList();
   
@@ -40,4 +43,3 @@ function registerUfbCommand(bot, deps) {
 }
 
 module.exports = registerUfbCommand;
-

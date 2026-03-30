@@ -230,6 +230,9 @@ function registerDaycareMenuCallbacks(bot, deps) {
           { text: 'Remove', callback_data: 'daycare_remove_' + ctx.from.id + '_1' }
         ],
         [
+          { text: 'Claim', callback_data: 'daycare_claim_' + ctx.from.id + '_1' }
+        ],
+        [
           { text: 'Use Candy', callback_data: 'daycare_candy_' + ctx.from.id + '_1' }
         ],
         [
@@ -729,6 +732,128 @@ function registerDaycareMenuCallbacks(bot, deps) {
     await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
       parse_mode: 'markdown',
       reply_markup: { inline_keyboard: rows }
+    });
+  });
+
+  bot.action(/^daycare_claim_/, check2q, async (ctx) => {
+    const parts = String(ctx.callbackQuery.data || '').split('_');
+    const id = parts[2];
+    const page = Number(parts[3]) || 1;
+    if (String(id) !== String(ctx.from.id)) {
+      await ctx.answerCbQuery();
+      return;
+    }
+
+    const data = await getUserData(ctx.from.id);
+    const daycare = ensureDaycareState(data);
+    const jobs = Array.isArray(daycare.jobs) ? daycare.jobs : [];
+    const ready = jobs.filter((job) => Number(job.readyAt) > 0 && Number(job.readyAt) <= Date.now());
+
+    if (!ready.length) {
+      await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, 'No daycare pokes are ready to claim.', { parse_mode: 'markdown' });
+      return;
+    }
+
+    const pageSize = 10;
+    const totalPages = Math.ceil(ready.length / pageSize);
+    const safePage = Math.min(Math.max(page, 1), totalPages);
+    const start = (safePage - 1) * pageSize;
+    const pageJobs = ready.slice(start, start + pageSize);
+
+    let msg = '*Ready Daycare Pokes*\n\n';
+    for (let i = 0; i < pageJobs.length; i += 1) {
+      msg += `${start + i + 1}. ${getJobDisplayName(pageJobs[i], c)} - *Ready*\n`;
+    }
+
+    const rows = [];
+    let row = [];
+    for (let i = 0; i < pageJobs.length; i += 1) {
+      row.push({
+        text: String(start + i + 1),
+        callback_data: 'daycare_claim_pick_' + pageJobs[i].id + '_' + ctx.from.id + '_' + safePage
+      });
+      if (row.length === 5) {
+        rows.push(row);
+        row = [];
+      }
+    }
+    if (row.length) rows.push(row);
+
+    if (totalPages > 1) {
+      rows.push([
+        { text: '<', callback_data: 'daycare_claim_' + ctx.from.id + '_' + (safePage - 1) },
+        { text: '>', callback_data: 'daycare_claim_' + ctx.from.id + '_' + (safePage + 1) }
+      ]);
+    }
+    rows.push([{ text: 'Back', callback_data: 'daycare_menu_' + ctx.from.id }]);
+
+    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
+      parse_mode: 'markdown',
+      reply_markup: { inline_keyboard: rows }
+    });
+  });
+
+  bot.action(/^daycare_claim_pick_/, check2q, async (ctx) => {
+    const parts = String(ctx.callbackQuery.data || '').split('_');
+    const id = parts[parts.length - 2];
+    const jobId = parts.slice(3, parts.length - 2).join('_');
+    if (String(id) !== String(ctx.from.id)) {
+      await ctx.answerCbQuery();
+      return;
+    }
+
+    const data = await getUserData(ctx.from.id);
+    const daycare = ensureDaycareState(data);
+    const jobs = Array.isArray(daycare.jobs) ? daycare.jobs : [];
+    const idx = jobs.findIndex((job) => String(job.id) === String(jobId));
+    if (idx < 0) {
+      await ctx.answerCbQuery('Job not found.');
+      return;
+    }
+
+    const job = jobs[idx];
+    const readyAt = Number(job.readyAt) || 0;
+    if (!(readyAt > 0 && readyAt <= Date.now())) {
+      await ctx.answerCbQuery('This daycare poke is not ready yet.');
+      return;
+    }
+
+    const finalName = job.evolve
+      ? (job.finalEvolutionName || getFinalEvolutionNameRandom(job.pokemon.name, chains, forms))
+      : normalizeName(job.pokemon.name);
+
+    const trained = JSON.parse(JSON.stringify(job.pokemon));
+    trained.name = finalName;
+    if (pokes && pokes[finalName] && Number.isFinite(Number(pokes[finalName].pokedex_number))) {
+      trained.id = pokes[finalName].pokedex_number;
+    }
+    if (job.evolve) {
+      trained.ability = chooseAbilityForEvolution(job.pokemon.ability, finalName, pokes);
+    }
+    const growth = growth_rates[finalName];
+    if (growth && chart[growth.growth_rate] && Number.isFinite(Number(chart[growth.growth_rate][100]))) {
+      trained.exp = Number(chart[growth.growth_rate][100]);
+    }
+    trained.evs = job.evs || trained.evs;
+    trained.moves = Array.isArray(job.moveIds) ? job.moveIds.slice(0, 4).map((id2) => Number(id2)) : trained.moves;
+
+    const daycareInfo = ensureDaycareState(data);
+    const beforeCount = Number(daycareInfo.claimedCount) || 0;
+    const nickname = 'daycare' + (beforeCount + 1);
+    trained.nickname = nickname;
+
+    data.pokes.push(trained);
+    jobs.splice(idx, 1);
+    grantDaycareClaimCandy(data, 1);
+    await saveUserData2(ctx.from.id, data);
+
+    const msg = '*Daycare Claimed!*' +
+      '\n\n*Pokemon:* ' + c(trained.nickname || trained.name) +
+      '\n*Added to your collection.*';
+
+    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
+      parse_mode: 'markdown',
+      reply_markup: { inline_keyboard: [[{ text: 'Open Daycare', callback_data: 'daycare_menu_' + ctx.from.id }]] }
     });
   });
 

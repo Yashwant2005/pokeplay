@@ -676,7 +676,7 @@ function registerDaycareMenuCallbacks(bot, deps) {
     await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, 'Daycare setup cancelled.', { parse_mode: 'markdown' });
   });
 
-  bot.action(/^daycare_remove_/, check2q, async (ctx) => {
+  bot.action(/^daycare_remove_\d+_/, check2q, async (ctx) => {
     const parts = String(ctx.callbackQuery.data || '').split('_');
     const id = parts[2];
     const page = Number(parts[3]) || 1;
@@ -735,7 +735,7 @@ function registerDaycareMenuCallbacks(bot, deps) {
     });
   });
 
-  bot.action(/^daycare_claim_/, check2q, async (ctx) => {
+  bot.action(/^daycare_claim_\d+_/, check2q, async (ctx) => {
     const parts = String(ctx.callbackQuery.data || '').split('_');
     const id = parts[2];
     const page = Number(parts[3]) || 1;
@@ -933,7 +933,7 @@ function registerDaycareMenuCallbacks(bot, deps) {
     });
   });
 
-  bot.action(/^daycare_candy_/, check2q, async (ctx) => {
+  bot.action(/^daycare_candy_\d+_/, check2q, async (ctx) => {
     const parts = String(ctx.callbackQuery.data || '').split('_');
     const id = parts[2];
     const page = Number(parts[3]) || 1;

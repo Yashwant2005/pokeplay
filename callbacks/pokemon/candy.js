@@ -1,7 +1,7 @@
 function register_066_candy(bot, deps) {
   const { check2q, getUserData, saveUserData2, sendMessage, editMessage, loadMessageData, forms, pokes, pokemoves, dmoves, growth_rates, chart, c, chains, emojis, saveMessageData } = deps;
   const { getReadyEvolutionRows } = require('../../utils/evolution_rules');
-  bot.action(/candy_/, check2q, async ctx => {
+  bot.action(/^candy_/, check2q, async ctx => {
     const pass = ctx.callbackQuery.data.split('_')[1]
     const id = ctx.callbackQuery.data.split('_')[2]
     const amount = parseInt(ctx.callbackQuery.data.split('_')[3]) || 1

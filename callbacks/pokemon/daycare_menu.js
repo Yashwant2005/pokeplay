@@ -12,6 +12,8 @@ const {
   cleanupTeamsForPokemon,
   grantDaycareClaimCandy
 } = require('../../utils/daycare');
+const { spendDaycareCandyOnJob } = require('../../utils/daycare');
+const { chooseAbilityForEvolution } = require('../../utils/pokemon_ability');
 
 const DAYCARE_BLOCKED_FORM_TOKENS = [
   'ash',
@@ -228,6 +230,9 @@ function registerDaycareMenuCallbacks(bot, deps) {
           { text: 'Remove', callback_data: 'daycare_remove_' + ctx.from.id + '_1' }
         ],
         [
+          { text: 'Use Candy', callback_data: 'daycare_candy_' + ctx.from.id + '_1' }
+        ],
+        [
           { text: 'Refresh', callback_data: 'daycare_menu_' + ctx.from.id },
           { text: 'Close', callback_data: 'daycare_close_' + ctx.from.id }
         ]
@@ -435,7 +440,7 @@ function registerDaycareMenuCallbacks(bot, deps) {
     });
   });
 
-  bot.action(/^daycare_moves_/, check2q, async (ctx) => {
+  bot.action(/^daycare_moves_\d+_/, check2q, async (ctx) => {
     const parts = String(ctx.callbackQuery.data || '').split('_');
     const id = parts[2];
     const page = Number(parts[3]) || 1;
@@ -729,8 +734,8 @@ function registerDaycareMenuCallbacks(bot, deps) {
 
   bot.action(/^daycare_remove_pick_/, check2q, async (ctx) => {
     const parts = String(ctx.callbackQuery.data || '').split('_');
-    const jobId = parts[3];
-    const id = parts[4];
+    const id = parts[parts.length - 2];
+    const jobId = parts.slice(3, parts.length - 2).join('_');
     if (String(id) !== String(ctx.from.id)) {
       await ctx.answerCbQuery();
       return;
@@ -756,6 +761,9 @@ function registerDaycareMenuCallbacks(bot, deps) {
       trained.name = finalName;
       if (pokes && pokes[finalName] && Number.isFinite(Number(pokes[finalName].pokedex_number))) {
         trained.id = pokes[finalName].pokedex_number;
+      }
+      if (job.evolve) {
+        trained.ability = chooseAbilityForEvolution(job.pokemon.ability, finalName, pokes);
       }
       const growth = growth_rates[finalName];
       if (growth && chart[growth.growth_rate] && Number.isFinite(Number(chart[growth.growth_rate][100]))) {
@@ -800,10 +808,96 @@ function registerDaycareMenuCallbacks(bot, deps) {
     });
   });
 
+  bot.action(/^daycare_candy_/, check2q, async (ctx) => {
+    const parts = String(ctx.callbackQuery.data || '').split('_');
+    const id = parts[2];
+    const page = Number(parts[3]) || 1;
+    if (String(id) !== String(ctx.from.id)) {
+      await ctx.answerCbQuery();
+      return;
+    }
+
+    const data = await getUserData(ctx.from.id);
+    const daycare = ensureDaycareState(data);
+    const jobs = Array.isArray(daycare.jobs) ? daycare.jobs : [];
+    if (!jobs.length) {
+      await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, 'No daycare jobs to use candy on.', { parse_mode: 'markdown' });
+      return;
+    }
+    if (!Number.isFinite(data.inv.daycare_candy) || data.inv.daycare_candy < 1) {
+      await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, 'You do not have any Daycare Candy.', { parse_mode: 'markdown' });
+      return;
+    }
+
+    const pageSize = 10;
+    const totalPages = Math.ceil(jobs.length / pageSize);
+    const safePage = Math.min(Math.max(page, 1), totalPages);
+    const start = (safePage - 1) * pageSize;
+    const pageJobs = jobs.slice(start, start + pageSize);
+
+    let msg = '*Use Daycare Candy*\n';
+    msg += `\n*Candy:* ${data.inv.daycare_candy}`;
+    msg += '\n\nSelect a daycare job:';
+
+    const rows = [];
+    let row = [];
+    for (let i = 0; i < pageJobs.length; i += 1) {
+      row.push({
+        text: String(start + i + 1),
+        callback_data: 'daycare_candy_pick_' + pageJobs[i].id + '_' + ctx.from.id + '_' + safePage
+      });
+      if (row.length === 5) {
+        rows.push(row);
+        row = [];
+      }
+    }
+    if (row.length) rows.push(row);
+
+    if (totalPages > 1) {
+      rows.push([
+        { text: '<', callback_data: 'daycare_candy_' + ctx.from.id + '_' + (safePage - 1) },
+        { text: '>', callback_data: 'daycare_candy_' + ctx.from.id + '_' + (safePage + 1) }
+      ]);
+    }
+    rows.push([{ text: 'Back', callback_data: 'daycare_menu_' + ctx.from.id }]);
+
+    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
+      parse_mode: 'markdown',
+      reply_markup: { inline_keyboard: rows }
+    });
+  });
+
+  bot.action(/^daycare_candy_pick_/, check2q, async (ctx) => {
+    const parts = String(ctx.callbackQuery.data || '').split('_');
+    const id = parts[parts.length - 2];
+    const jobId = parts.slice(3, parts.length - 2).join('_');
+    if (String(id) !== String(ctx.from.id)) {
+      await ctx.answerCbQuery();
+      return;
+    }
+
+    const data = await getUserData(ctx.from.id);
+    const result = spendDaycareCandyOnJob(data, jobId);
+    if (!result.ok) {
+      await ctx.answerCbQuery(result.error || 'Cannot use candy.');
+      return;
+    }
+    await saveUserData2(ctx.from.id, data);
+
+    let msg = '*Candy Used!*';
+    msg += `\n\nReduced time by *${result.reducedMinutes} minutes*.`;
+    msg += `\n*Remaining Candy:* ${data.inv.daycare_candy}`;
+
+    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
+      parse_mode: 'markdown',
+      reply_markup: { inline_keyboard: [[{ text: 'Open Daycare', callback_data: 'daycare_menu_' + ctx.from.id }]] }
+    });
+  });
+
   bot.action(/^daycare_cancel_job_/, check2q, async (ctx) => {
     const parts = String(ctx.callbackQuery.data || '').split('_');
-    const jobId = parts[3];
-    const id = parts[4];
+    const id = parts[parts.length - 1];
+    const jobId = parts.slice(3, parts.length - 1).join('_');
     if (String(id) !== String(ctx.from.id)) {
       await ctx.answerCbQuery();
       return;

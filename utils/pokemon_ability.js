@@ -141,6 +141,29 @@ function getRandomAbilityForPokemon(name, pokes) {
   return pickRandom(FALLBACK_ABILITIES);
 }
 
+function chooseAbilityForEvolution(previousAbility, newName, pokes) {
+  const prev = normalizeName(previousAbility);
+  const n = normalizeName(newName);
+  if (!n) return prev || 'none';
+
+  if (prev) {
+    const cached = getCachedAbilities(n);
+    if (cached.includes(prev)) return prev;
+
+    const p = pokes && pokes[n] ? pokes[n] : null;
+    const types = Array.isArray(p && p.types) ? p.types : [];
+    const pool = [];
+    for (const t of types) {
+      const list = TYPE_ABILITIES[String(t || '').toLowerCase()];
+      if (Array.isArray(list)) pool.push(...list);
+    }
+    const unique = Array.from(new Set(pool.map((x) => normalizeName(x))));
+    if (unique.includes(prev)) return prev;
+  }
+
+  return getRandomAbilityForPokemon(n, pokes);
+}
+
 function ensureAbilityOnPokemonEntry(entry, pokes) {
   if (!entry || typeof entry !== 'object') return false;
   if (entry.ability && String(entry.ability).trim().length > 0) return false;
@@ -163,6 +186,7 @@ async function ensureCanonicalAbilityOnPokemonEntry(entry, pokes, fetchFn) {
 module.exports = {
   fetchCanonicalAbilities,
   getRandomAbilityForPokemon,
+  chooseAbilityForEvolution,
   ensureAbilityOnPokemonEntry,
   ensureCanonicalAbilityOnPokemonEntry,
   titleCaseAbility,

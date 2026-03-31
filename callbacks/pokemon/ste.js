@@ -1,5 +1,6 @@
 function register_007_ste(bot, deps) {
   const { getUserData, editMessage, pokes, growth_rates, chart, c, pokestats, Stats } = deps;
+  const { editPokemonCard } = require('../../utils/pokemon_stats_card_v2');
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
   const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');
   const titleCaseHeldItem = (value) => String(value || 'none')
@@ -17,6 +18,11 @@ return
 }
 const data = await getUserData(ctx.from.id)
 const p2 = data.pokes.filter((poke)=> poke.pass == pass)[0]
+if(!p2){
+return
+}
+await editPokemonCard(ctx, deps, data, p2)
+return
 const g = growth_rates[p2.name]
 const exp = chart[g.growth_rate]
 const matchingLevels = Object.keys(exp).filter(level => p2.exp >= exp[level]);
@@ -80,4 +86,3 @@ if(hasAuraBreak && !alreadyChanged){
 }
 
 module.exports = register_007_ste;
-

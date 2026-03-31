@@ -1,6 +1,6 @@
 function register_008_pkisvs(bot, deps) {
   const { getUserData, editMessage, pokes, calculateTotal, Stats } = deps;
-  const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');
+  const { buildPokemonCardKeyboard } = require('../../utils/pokemon_stats_card_v2');
   bot.action(/pkisvs_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -22,17 +22,8 @@ let ivsText = ''
     ivsText += `Speed           ${ivs.speed.toString().padStart(2)} |  ${evs.speed}\n`;
     ivsText += '————————————————————————\n';
     ivsText += `Total           ${calculateTotal(ivs)} |  ${calculateTotal(evs)}\n`;
-const actionRow = [{text:'Evolve',callback_data:'evolve_'+pass+'_'+id+''}]
-if(!isRayquazaLockedFromHeldItems(p2)){
-actionRow.push({text:'Held Items',callback_data:'heldpanel_'+pass+'_'+id+''})
-}
-actionRow.push({text:'Release',callback_data:'release_'+pass+'_'+id+''})
- await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'`'+ivsText+'`',{parse_mode:'markdownv2',reply_markup:{inline_keyboard:[
-[{text:'Info',callback_data:'info_'+pass+'_'+id+''},{text:'Moveset',callback_data:'moves_'+pass+'_'+id+''},{text:'Stats',callback_data:'ste_'+pass+'_'+id+''}],
-actionRow
-]}})
+ await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'`'+ivsText+'`',{parse_mode:'markdownv2',reply_markup:{inline_keyboard: buildPokemonCardKeyboard(p2, id)}})
 })
 }
 
 module.exports = register_008_pkisvs;
-

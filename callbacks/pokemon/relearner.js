@@ -1,6 +1,7 @@
 function registerRelearnerCallbacks(bot, deps) {
   const { check2q, getUserData, saveUserData2, editMessage, pokes, pokemoves, dmoves, c, sort, pokelist, plevel, emojis } = deps;
   const RELEARN_COST = 0;
+  const getBackCallback = (origin, pass, id) => origin === 'stats' ? ('info_' + pass + '_' + id) : ('relearn_' + id + '_1');
 
   const getRelearnableMoves = (poke) => {
     if (!poke || !pokemoves[poke.name] || !Array.isArray(pokemoves[poke.name].moves_info)) {
@@ -106,6 +107,7 @@ function registerRelearnerCallbacks(bot, deps) {
   bot.action(/relearnp_/, check2q, async (ctx) => {
     const pass = ctx.callbackQuery.data.split('_')[1];
     const id = parseInt(ctx.callbackQuery.data.split('_')[2]);
+    const origin = ctx.callbackQuery.data.split('_')[3] || '';
     if (ctx.from.id !== id) {
       return;
     }
@@ -130,13 +132,13 @@ function registerRelearnerCallbacks(bot, deps) {
     const rows = [];
     const buttons = relearnable.map((mid) => ({
       text: c(dmoves[mid].name),
-      callback_data: 'relearnm_' + pass + '_' + mid + '_' + id
+      callback_data: 'relearnm_' + pass + '_' + mid + '_' + id + '_' + origin
     }));
 
     for (let i = 0; i < buttons.length; i += 2) {
       rows.push(buttons.slice(i, i + 2));
     }
-    rows.push([{ text: 'Back', callback_data: 'relearn_' + id + '_1' }]);
+    rows.push([{ text: 'Back', callback_data: getBackCallback(origin, pass, id) }]);
 
     await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
       parse_mode: 'HTML',
@@ -148,6 +150,7 @@ function registerRelearnerCallbacks(bot, deps) {
     const pass = ctx.callbackQuery.data.split('_')[1];
     const moveId = parseInt(ctx.callbackQuery.data.split('_')[2]);
     const id = parseInt(ctx.callbackQuery.data.split('_')[3]);
+    const origin = ctx.callbackQuery.data.split('_')[4] || '';
     if (ctx.from.id !== id) {
       return;
     }
@@ -181,8 +184,8 @@ function registerRelearnerCallbacks(bot, deps) {
         parse_mode: 'HTML',
         reply_markup: {
           inline_keyboard: [[
-            { text: 'Confirm', callback_data: 'relearnc_' + pass + '_' + moveId + '_' + id },
-            { text: 'Cancel', callback_data: 'relearnp_' + pass + '_' + id }
+            { text: 'Confirm', callback_data: 'relearnc_' + pass + '_' + moveId + '_' + id + '_' + origin },
+            { text: 'Cancel', callback_data: 'relearnp_' + pass + '_' + id + '_' + origin }
           ]]
         }
       });
@@ -195,13 +198,13 @@ function registerRelearnerCallbacks(bot, deps) {
     const rows = [];
     const buttons = pk.moves.map((knownId) => ({
       text: c(dmoves[knownId].name),
-      callback_data: 'relearnf_' + pass + '_' + moveId + '_' + knownId + '_' + id
+      callback_data: 'relearnf_' + pass + '_' + moveId + '_' + knownId + '_' + id + '_' + origin
     }));
 
     for (let i = 0; i < buttons.length; i += 2) {
       rows.push(buttons.slice(i, i + 2));
     }
-    rows.push([{ text: 'Back', callback_data: 'relearnp_' + pass + '_' + id }]);
+    rows.push([{ text: 'Back', callback_data: 'relearnp_' + pass + '_' + id + '_' + origin }]);
 
     await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
       parse_mode: 'HTML',
@@ -214,6 +217,7 @@ function registerRelearnerCallbacks(bot, deps) {
     const moveId = parseInt(ctx.callbackQuery.data.split('_')[2]);
     const forgetId = parseInt(ctx.callbackQuery.data.split('_')[3]);
     const id = parseInt(ctx.callbackQuery.data.split('_')[4]);
+    const origin = ctx.callbackQuery.data.split('_')[5] || '';
     if (ctx.from.id !== id) {
       return;
     }
@@ -243,8 +247,8 @@ function registerRelearnerCallbacks(bot, deps) {
       parse_mode: 'HTML',
       reply_markup: {
         inline_keyboard: [[
-          { text: 'Confirm', callback_data: 'relearnc_' + pass + '_' + moveId + '_' + id + '_' + forgetId },
-          { text: 'Cancel', callback_data: 'relearnp_' + pass + '_' + id }
+          { text: 'Confirm', callback_data: 'relearnc_' + pass + '_' + moveId + '_' + id + '_' + forgetId + '_' + origin },
+          { text: 'Cancel', callback_data: 'relearnp_' + pass + '_' + id + '_' + origin }
         ]]
       }
     });
@@ -254,7 +258,19 @@ function registerRelearnerCallbacks(bot, deps) {
     const pass = ctx.callbackQuery.data.split('_')[1];
     const moveId = parseInt(ctx.callbackQuery.data.split('_')[2]);
     const id = parseInt(ctx.callbackQuery.data.split('_')[3]);
-    const forgetId = ctx.callbackQuery.data.split('_')[4] ? parseInt(ctx.callbackQuery.data.split('_')[4]) : null;
+    const parts = ctx.callbackQuery.data.split('_');
+    const tail = parts.slice(4);
+    let forgetId = null;
+    let origin = '';
+    if (tail.length > 0) {
+      const firstTail = parseInt(tail[0]);
+      if (!Number.isNaN(firstTail)) {
+        forgetId = firstTail;
+        origin = tail[1] || '';
+      } else {
+        origin = tail[0] || '';
+      }
+    }
 
     if (ctx.from.id !== id) {
       return;
@@ -296,6 +312,19 @@ function registerRelearnerCallbacks(bot, deps) {
       '*Relearner:* *' + c(pk.name) + '* learned *' + c(dmoves[moveId].name) + '*\n*Cost:* Free',
       { parse_mode: 'markdown' }
     );
+  });
+
+  bot.action(/^relearn_back_([^_]+)_(\d+)$/, check2q, async (ctx) => {
+    const pass = ctx.match[1];
+    const id = parseInt(ctx.match[2], 10);
+    if (ctx.from.id !== id) {
+      return;
+    }
+    await editMessage('markup', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, {
+      inline_keyboard: [[{ text: 'Back', callback_data: 'info_' + pass + '_' + id }]]
+    });
+    await ctx.answerCbQuery();
+    await ctx.callbackQuery.message.delete();
   });
 }
 

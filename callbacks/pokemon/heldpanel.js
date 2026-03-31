@@ -7,6 +7,7 @@ function registerHeldPanelCallbacks(bot, deps) {
     getSanitizedHeldItemForPokemon,
     isRayquazaLockedFromHeldItems
   } = require('../../utils/pokemon_item_rules');
+  const { buildPokemonCardKeyboard } = require('../../utils/pokemon_stats_card_v2');
 
   function normalizeHeldItemName(value) {
     return normalizeHeldStone(value);
@@ -45,21 +46,7 @@ function registerHeldPanelCallbacks(bot, deps) {
   }
 
   function buildNavKeyboard(pass, id, poke) {
-    const actionRow = [
-      { text: 'Evolve', callback_data: 'evolve_' + pass + '_' + id }
-    ];
-    if (!isRayquazaLockedFromHeldItems(poke)) {
-      actionRow.push({ text: 'Held Items', callback_data: 'heldpanel_' + pass + '_' + id });
-    }
-    actionRow.push({ text: 'Release', callback_data: 'release_' + pass + '_' + id });
-    return [
-      [
-        { text: 'Stats', callback_data: 'ste_' + pass + '_' + id },
-        { text: 'IVs/EVs', callback_data: 'pkisvs_' + pass + '_' + id },
-        { text: 'Moveset', callback_data: 'moves_' + pass + '_' + id }
-      ],
-      actionRow
-    ];
+    return buildPokemonCardKeyboard(poke, id);
   }
 
   function buildHeldPanel(data, poke) {

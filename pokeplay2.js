@@ -381,7 +381,7 @@ function reloadStaticData() {
 }
 
 setInterval(reloadStaticData, 60 * 60 * 1000);
-const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal, getRandomNature, getUserData, resetUserData, saveUserData2, saveUserData22, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData, loadMessageData, loadMessageDataFresh, loadBattleData, saveBattleData, pokelist, pokelisthtml, incexp, incexp2, check2, check2q, getAllUserData, getTopUsers, sort, generateRandomIVs, applyCaptureIvRules, initDataStores, getUserIds, getUserCount, userExists } = require('./func.js')
+const { chooseRandomNumbers, getLevel, stat, calculateTotalEV, calculateTotal, getRandomNature, getUserData, resetUserData, saveUserData2, saveUserData22, overwriteUserData, check, c, Stats, word, Bar, plevel, calc, calcexp, sleep, eff, findEvolutionLevel, saveMessageData, loadMessageData, loadMessageDataFresh, loadBattleData, saveBattleData, pokelist, pokelisthtml, incexp, incexp2, check2, check2q, getAllUserData, getTopUsers, sort, generateRandomIVs, applyCaptureIvRules, initDataStores, getUserIds, getUserCount, userExists } = require('./func.js')
 const regions = ['Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola', 'Galar', 'Paldea']
 const region = {
   "Kanto": 1,
@@ -486,6 +486,10 @@ function getSpeedWithStatus(baseSpeed, battleData, pass) {
 }
 
 function canPokemonAct(battleData, pass, pokeName) {
+  if (battleData.flinched && battleData.flinched[pass]) {
+    delete battleData.flinched[pass];
+    return { canAct: false, msg: `• <b>${c(pokeName)}</b> flinched and couldn't move.` };
+  }
   const status = getBattleStatus(battleData, pass);
   if (status === "sleep") {
     const sleepTurns = ensureBattleSleepTurns(battleData);
@@ -495,19 +499,19 @@ function canPokemonAct(battleData, pass, pokeName) {
     sleepTurns[pass] = Math.max(0, Number(sleepTurns[pass]) - 1);
     if (sleepTurns[pass] <= 0) {
       setBattleStatus(battleData, pass, null);
-      return { canAct: true, msg: `âž£ <b>${c(pokeName)}</b> woke up.` };
+      return { canAct: true, msg: `• <b>${c(pokeName)}</b> woke up.` };
     }
-    return { canAct: false, msg: `âž£ <b>${c(pokeName)}</b> is fast asleep.` };
+    return { canAct: false, msg: `• <b>${c(pokeName)}</b> is fast asleep.` };
   }
   if (status === "freeze") {
     if (Math.random() < 0.2) {
       setBattleStatus(battleData, pass, null);
-      return { canAct: true, msg: `âž£ <b>${c(pokeName)}</b> thawed out.` };
+      return { canAct: true, msg: `• <b>${c(pokeName)}</b> thawed out.` };
     }
-    return { canAct: false, msg: `âž£ <b>${c(pokeName)}</b> is frozen solid.` };
+    return { canAct: false, msg: `• <b>${c(pokeName)}</b> is frozen solid.` };
   }
   if (status === "paralyze" && Math.random() < 0.25) {
-    return { canAct: false, msg: `âž£ <b>${c(pokeName)}</b> is fully paralyzed and cannot move.` };
+    return { canAct: false, msg: `• <b>${c(pokeName)}</b> is fully paralyzed and cannot move.` };
   }
   return { canAct: true, msg: "" };
 }
@@ -516,9 +520,19 @@ function getMoveStatusEffect(move) {
   if (!move || !move.name) return null;
   const name = String(move.name).toLowerCase();
   const guaranteed = {
+    "g-max-malodor": { status: "poison", chance: 1 },
+    "mortal-spin": { status: "poison", chance: 1 },
+    "toxic-thread": { status: "poison", chance: 1 },
     "will-o-wisp": { status: "burn", chance: 1 },
     "toxic": { status: "badly_poisoned", chance: 1 },
+    "dark-void": { status: "sleep", chance: 1 },
+    "grass-whistle": { status: "sleep", chance: 1 },
+    "hypnosis": { status: "sleep", chance: 1 },
+    "lovely-kiss": { status: "sleep", chance: 1 },
     "poison-powder": { status: "poison", chance: 1 },
+    "sing": { status: "sleep", chance: 1 },
+    "sleep-powder": { status: "sleep", chance: 1 },
+    "spore": { status: "sleep", chance: 1 },
     "poison-gas": { status: "poison", chance: 1 },
     "thunder-wave": { status: "paralyze", chance: 1 },
     "stun-spore": { status: "paralyze", chance: 1 },
@@ -530,14 +544,35 @@ function getMoveStatusEffect(move) {
   if (["ember", "flamethrower", "fire-blast", "heat-wave", "flame-wheel", "fire-punch"].includes(name)) {
     return { status: "burn", chance: 0.1 };
   }
-  if (["poison-sting", "smog", "sludge", "sludge-bomb", "poison-jab", "cross-poison", "gunk-shot"].includes(name)) {
+  if (["poison-sting", "smog", "sludge", "sludge-bomb", "poison-jab", "cross-poison", "gunk-shot", "barb-barrage", "noxious-torque"].includes(name)) {
     return { status: "poison", chance: 0.3 };
+  }
+  if (["sludge-wave", "shell-side-arm", "twineedle"].includes(name)) {
+    return { status: "poison", chance: 0.2 };
+  }
+  if (name === "poison-tail") {
+    return { status: "poison", chance: 0.1 };
+  }
+  if (name === "poison-fang") {
+    return { status: "badly_poisoned", chance: 0.5 };
+  }
+  if (name === "malignant-chain") {
+    return { status: "badly_poisoned", chance: 0.5 };
   }
   if (["thunderbolt", "thunder", "spark", "discharge", "body-slam", "lick"].includes(name)) {
     return { status: "paralyze", chance: 0.3 };
   }
   if (["ice-beam", "blizzard", "powder-snow", "ice-punch"].includes(name)) {
     return { status: "freeze", chance: 0.1 };
+  }
+  if (["relic-song", "wicked-torque"].includes(name)) {
+    return { status: "sleep", chance: 0.1 };
+  }
+  if (name === "dire-claw") {
+    return { status: "sleep", chance: 1 / 6 };
+  }
+  if (name === "g-max-befuddle") {
+    return { status: "sleep", chance: 1 / 3 };
   }
   return null;
 }
@@ -560,7 +595,7 @@ function applyDefenderResidualDamage(battleData, defenderPass, defenderName, def
   const residual = Math.max(1, Math.floor(defenderMaxHp / divisor));
   battleData.ohp = Math.max(0, battleData.ohp - residual);
   battleData.tem2[defenderPass] = Math.max(0, battleData.tem2[defenderPass] - residual);
-  return `\nâž£ <b>${c(defenderName)}</b> is hurt by ${status === "burn" ? "burn" : "poison"} and lost <code>${residual}</code> HP.`;
+  return `\n• <b>${c(defenderName)}</b> is hurt by ${status === "burn" ? "burn" : "poison"} and lost <code>${residual}</code> HP.`;
 }
 
 let botStartTime = new Date().getTime();
@@ -668,6 +703,7 @@ const moduleDeps = buildModuleDeps({
   resetUserData,
   saveUserData2,
   saveUserData22,
+  overwriteUserData,
   sendMessage,
   editMessage,
   loadMessageData,
@@ -1701,6 +1737,14 @@ async function editMessage(per, ctx, chatId, id, msg, parameters2) {
     }
     if (d.includes('message to edit not found')) {
       return null
+    }
+    if (per == 'text' && d.includes('there is no text in the message to edit')) {
+      try {
+        var m2 = await bot.telegram.editMessageCaption(chatId, id, null, msg, options)
+        return m2.message_id
+      } catch (e2) {
+        return null
+      }
     }
     if (per == 'caption' && d.includes('there is no caption in the message to edit')) {
       try {

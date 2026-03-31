@@ -175,7 +175,7 @@ function register_011_catch(bot, deps) {
     for (const move2 of p.moves) {
       const move = dmoves[move2];
       if (!move) continue;
-      msg += '\nâ€¢ <b>' + c(move.name) + '</b> [' + c(move.type) + ' ' + emojis[move.type] + ']\n<b>Power:</b> ' + move.power + '<b>, Accuracy:</b> ' + move.accuracy + ' (' + c(move.category.charAt(0)) + ')';
+      msg += '\n• <b>' + c(move.name) + '</b> [' + c(move.type) + ' ' + emojis[move.type] + ']\n<b>Power:</b> ' + move.power + '<b>, Accuracy:</b> ' + move.accuracy + ' (' + c(move.category.charAt(0)) + ')';
       moves.push('' + move2 + '');
     }
     if (moves.length < 1) {

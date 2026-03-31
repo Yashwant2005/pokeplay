@@ -63,7 +63,7 @@ function registerMybagCommand(bot, deps) {
   }
   if(data.extra.itembox.maxSoup > 0){
   
-  msg += '\nâ€¢ *🥣 Max Soup:* '+data.extra.itembox.maxSoup+''
+  msg += '\n• *🥣 Max Soup:* '+data.extra.itembox.maxSoup+''
   
   }
 
@@ -82,7 +82,7 @@ function registerMybagCommand(bot, deps) {
 
   if(data.extra.equippedZCrystal){
   
-  msgg += '\nâ€¢ *Z-Crystal:* '+titleCaseZCrystal(data.extra.equippedZCrystal)
+  msgg += '\n• *Z-Crystal:* '+titleCaseZCrystal(data.extra.equippedZCrystal)
   
   }
 

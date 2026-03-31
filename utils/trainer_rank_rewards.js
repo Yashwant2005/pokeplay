@@ -10,13 +10,13 @@ const CHANCE_REWARDS = [
 ];
 
 const BATTLE_BOX_REWARDS = [
-  { key: 'holowear_ht_5', chance: 40.0 },
-  { key: 'pokeballs', chance: 30.0 },
-  { key: 'tm4', chance: 20.0 },
-  { key: 'stone1', chance: 7.0 },
-  { key: 'mint1', chance: 1.0 },
-  { key: 'bottlecap1', chance: 0.3 },
-  { key: 'goldcap1', chance: 0.0025 }
+  { key: 'holowear_ht_5', chance: 50.0 },
+  { key: 'pokeballs', chance: 45.0 },
+  { key: 'tm4', chance: 4.0 },
+  { key: 'stone1', chance: 0.7 },
+  { key: 'mint1', chance: 0.2 },
+  { key: 'bottlecap1', chance: 0.1 },
+  { key: 'goldcap1', chance: 0.00025 }
 ];
 
 const POKEBALL_REWARDS = [

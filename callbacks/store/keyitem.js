@@ -66,7 +66,7 @@ function register_044_keyitem(bot, deps) {
       ctx,
       ctx.chat.id,
       ctx.callbackQuery.message.message_id,
-      'â˜… This *Mega Stone* known as *' + c(selectedStone) + '*\nâ€¢ Which helps *' + c(stones[selectedStone].pokemon) + '* to transform into *' + c(stones[selectedStone].mega) + '* in a battle.\n\n*Sell value:* ' + meta.lp + ' LP (' + meta.tier + ')\n\n_Do you wanna sell your_ *' + c(selectedStone) + '*',
+      'â˜… This *Mega Stone* known as *' + c(selectedStone) + '*\n• Which helps *' + c(stones[selectedStone].pokemon) + '* to transform into *' + c(stones[selectedStone].mega) + '* in a battle.\n\n*Sell value:* ' + meta.lp + ' LP (' + meta.tier + ')\n\n_Do you wanna sell your_ *' + c(selectedStone) + '*',
       {
         parse_mode: 'markdown',
         reply_markup: { inline_keyboard: [[{ text: 'Yes', callback_data: 'syllity_' + item + '_' + ctx.from.id + '' }, { text: 'No', callback_data: 'keyitem_page_' + ctx.from.id + '_1' }]] },

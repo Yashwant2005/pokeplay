@@ -182,6 +182,34 @@ function registerBattleCallbacks(bot, deps) {
     ensureBattleSleepTurns(battleData)[pass] = Math.max(1, Number(turns) || 2);
   }
 
+  function ensureBattleDrowsyState(battleData) {
+    if (!battleData.drowsyState || typeof battleData.drowsyState !== 'object') {
+      battleData.drowsyState = {};
+    }
+    return battleData.drowsyState;
+  }
+
+  function queueBattleDrowsy(battleData, pass, turns = 1) {
+    ensureBattleDrowsyState(battleData)[String(pass)] = Math.max(1, Number(turns) || 1);
+  }
+
+  function applyBattleDrowsyEndTurn(battleData, entries) {
+    const drowsy = ensureBattleDrowsyState(battleData);
+    let out = '';
+    for (const entry of entries) {
+      if (!entry || !entry.pokemon || !entry.pass || Number(entry.currentHp) <= 0) continue;
+      const key = String(entry.pass);
+      if (!(key in drowsy)) continue;
+      drowsy[key] = Math.max(0, Number(drowsy[key]) - 1);
+      if (drowsy[key] > 0) continue;
+      delete drowsy[key];
+      if (getBattleStatus(battleData, key)) continue;
+      setBattleSleepStatus(battleData, key, 2);
+      out += '\n-> <b>' + c(entry.pokemon.name) + '</b> fell asleep!';
+    }
+    return out;
+  }
+
   function healBattlePokemon({ battleData, pass, maxHp, amount, hpKey, tempKey }) {
     const healAmount = Math.max(0, Math.floor(Number(amount) || 0));
     const hpBefore = Math.max(0, Number(battleData[hpKey]) || 0);
@@ -199,6 +227,43 @@ function registerBattleCallbacks(bot, deps) {
   }
 
   const HALF_HEAL_STATUS_MOVES = new Set(['heal order', 'milk drink', 'recover', 'roost', 'slack off', 'soft-boiled']);
+  const MOVE_FLINCH_EFFECTS = {
+    'air slash': 0.3,
+    'astonish': 0.3,
+    'bite': 0.3,
+    'bone club': 0.1,
+    'dark pulse': 0.2,
+    'double iron bash': 0.3,
+    'dragon rush': 0.2,
+    'extrasensory': 0.1,
+    'fake out': 1,
+    'fiery wrath': 0.2,
+    'fire fang': 0.1,
+    'floaty fall': 0.3,
+    'headbutt': 0.3,
+    'heart stamp': 0.3,
+    'hyper fang': 0.1,
+    'ice fang': 0.1,
+    'icicle crash': 0.3,
+    'iron head': 0.3,
+    'low kick': 0.3,
+    'mountain gale': 0.3,
+    'needle arm': 0.3,
+    'rock slide': 0.3,
+    'rolling kick': 0.3,
+    'secret power': 0.3,
+    'sky attack': 0.3,
+    'snore': 0.3,
+    'steamroller': 0.3,
+    'stomp': 0.3,
+    'thunder fang': 0.1,
+    'triple arrows': 0.3,
+    'twister': 0.2,
+    'upper hand': 1,
+    'waterfall': 0.2,
+    'zen headbutt': 0.2,
+    'zing zap': 0.3
+  };
 
   function normalizeBattleSettings(settings) {
     const next = settings && typeof settings === 'object' ? settings : {};
@@ -208,6 +273,122 @@ function registerBattleCallbacks(bot, deps) {
     next.ban_types = Array.isArray(next.ban_types) ? next.ban_types : [];
     next.unrestricted = next.unrestricted === true;
     return next;
+  }
+
+  function ensureBattleFlinchState(battleData) {
+    if (!battleData.flinched || typeof battleData.flinched !== 'object') {
+      battleData.flinched = {};
+    }
+    return battleData.flinched;
+  }
+
+  function getMoveFlinchChance({ moveName, attackerHeldItemName, isFirstTurnForAttacker }) {
+    const normalizedMove = normalizeMoveName(moveName);
+    if (normalizedMove === 'fake out') {
+      return isFirstTurnForAttacker ? 1 : 0;
+    }
+    if (normalizedMove === 'fling') {
+      const itemName = String(attackerHeldItemName || '')
+        .toLowerCase()
+        .replace(/['’]/g, '')
+        .replace(/[_-]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      return itemName === 'kings rock' || itemName === 'razor fang' ? 1 : 0;
+    }
+    return MOVE_FLINCH_EFFECTS[normalizedMove] || 0;
+  }
+
+  function applyMoveFlinch({
+    battleData,
+    moveName,
+    attackerName,
+    defenderName,
+    defenderPass,
+    attackerHeldItemName,
+    defenderAbility,
+    defenderHeldItemName,
+    damageDealt,
+    targetHpAfterHit,
+    isFirstTurnForAttacker
+  }) {
+    if (Number(damageDealt) <= 0 || Number(targetHpAfterHit) <= 0) return '';
+    const chance = getMoveFlinchChance({ moveName, attackerHeldItemName, isFirstTurnForAttacker });
+    if (chance <= 0) return '';
+
+    const abilityKey = normalizeAbilityName(defenderAbility);
+    const itemKey = String(defenderHeldItemName || '')
+      .toLowerCase()
+      .replace(/['’]/g, '')
+      .replace(/[_-]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (abilityKey === 'inner-focus') {
+      return '\n-> <b>' + c(defenderName) + '</b>\'s <b>Inner Focus</b> prevented flinching!';
+    }
+    if (abilityKey === 'shield-dust') {
+      return '\n-> <b>' + c(defenderName) + '</b>\'s <b>Shield Dust</b> blocked the extra effect!';
+    }
+    if (itemKey === 'covert cloak') {
+      return '\n-> <b>' + c(defenderName) + '</b>\'s <b>Covert Cloak</b> blocked the extra effect!';
+    }
+
+    if (Math.random() > chance) return '';
+    ensureBattleFlinchState(battleData)[String(defenderPass)] = true;
+    return '\n-> <b>' + c(defenderName) + '</b> flinched!';
+  }
+
+  function applyMoveDrowsy({
+    battleData,
+    moveName,
+    defenderName,
+    defenderPass,
+    damageDealt,
+    targetHpAfterHit,
+    chance = 0
+  }) {
+    if (normalizeMoveName(moveName) !== 'g max snooze') return '';
+    if (Number(damageDealt) <= 0 || Number(targetHpAfterHit) <= 0 || chance <= 0) return '';
+    if (getBattleStatus(battleData, defenderPass) === 'sleep') return '';
+    if (Math.random() > chance) return '';
+    queueBattleDrowsy(battleData, defenderPass, 1);
+    return '\n-> <b>' + c(defenderName) + '</b> grew drowsy!';
+  }
+
+  function applyMovePoisonExtras({
+    battleData,
+    moveName,
+    defenderName,
+    defenderPass,
+    attackerHeldItemName,
+    defenderTypes,
+    damageDealt,
+    targetHpAfterHit
+  }) {
+    if (Number(damageDealt) <= 0 || Number(targetHpAfterHit) <= 0) return '';
+    if (getBattleStatus(battleData, defenderPass)) return '';
+
+    const normalizedMove = normalizeMoveName(moveName);
+    let effect = null;
+
+    if (normalizedMove === 'dire claw') {
+      effect = { status: 'poison', chance: 1 / 6 };
+    } else if (normalizedMove === 'fling') {
+      const itemKey = String(attackerHeldItemName || '')
+        .toLowerCase()
+        .replace(/['’]/g, '')
+        .replace(/[_-]+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (itemKey === 'poison barb') effect = { status: 'poison', chance: 1 };
+      if (itemKey === 'toxic orb') effect = { status: 'badly_poisoned', chance: 1 };
+    }
+
+    if (!effect || isStatusImmune(effect.status, defenderTypes || [])) return '';
+    if (Math.random() >= effect.chance) return '';
+    setBattleStatus(battleData, defenderPass, effect.status);
+    return '\n-> <b>' + c(defenderName) + '</b> is now <b>' + getStatusLabel(effect.status) + '</b>.';
   }
 
   function isBattleGigantamaxPokemon(pokemon) {
@@ -2367,17 +2548,21 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         evolutionChains: chains
       });
 
-      let atk = applyStageToStat(stats1.attack, unawareModifiers.attackStage);
+      const usesDefenseAsAttack = normalizeMoveName(move.name) === 'body press';
+      let atk = applyStageToStat(usesDefenseAsAttack ? stats1.defense : stats1.attack, unawareModifiers.attackStage);
       let def2 = applyStageToStat(stats2.defense, unawareModifiers.defenseStage);
       if (move.category == 'special') {
         atk = applyStageToStat(stats1.special_attack, unawareModifiers.attackStage);
         def2 = applyStageToStat(stats2.special_defense, unawareModifiers.defenseStage);
-      } else {
+      } else if (!usesDefenseAsAttack) {
         atk = Math.max(1, Math.floor(atk * getAttackStatMultiplier(attackerAbility, move.category)));
       }
       if (move.category == 'special') {
         atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.special_attack));
         def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.special_defense));
+      } else if (usesDefenseAsAttack) {
+        atk = Math.max(1, Math.floor(atk * (attackerHeldItemInfo.defense || 1)));
+        def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
       } else {
         atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.attack));
         def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
@@ -2388,7 +2573,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         pokemonTypes: getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName, abilityName: defenderAbility })
       })));
       atk = Math.max(1, Math.floor(atk * supremeOverlordInfo.multiplier));
-      if (move.category == 'physical' && getBattleStatus(battleData, battleData.c) === 'burn') {
+      if (move.category == 'physical' && !usesDefenseAsAttack && getBattleStatus(battleData, battleData.c) === 'burn') {
         atk = Math.max(1, Math.floor(atk / 2));
       }
 
@@ -2745,6 +2930,31 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                   });
                   setBattleSleepStatus(battleData, battleData.c, 2);
                   msgLocal += '\n-> <b>'+c(p.name)+'</b> fell asleep and restored <code>'+healed+'</code> HP with <b>'+c(move.name)+'</b>!';
+                }
+              }
+
+              if (moveName === 'yawn') {
+                if (getBattleStatus(battleData, battleData.o) === 'sleep') {
+                  msgLocal += '\n-> But it failed!';
+                } else {
+                  queueBattleDrowsy(battleData, battleData.o, 1);
+                  msgLocal += '\n-> <b>'+c(op.name)+'</b> grew drowsy!';
+                }
+              }
+
+              if (moveName === 'psycho shift') {
+                const currentStatus = getBattleStatus(battleData, battleData.c);
+                const targetStatus = getBattleStatus(battleData, battleData.o);
+                if (!currentStatus || targetStatus) {
+                  msgLocal += '\n-> But it failed!';
+                } else {
+                  setBattleStatus(battleData, battleData.o, currentStatus);
+                  clearBattleMajorStatus(battleData, battleData.c);
+                  if (currentStatus === 'sleep') {
+                    setBattleSleepStatus(battleData, battleData.o, 2);
+                  }
+                  msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(currentStatus)+'</b>.';
+                  msgLocal += '\n-> <b>'+c(p.name)+'</b> was cured of <b>'+getStatusLabel(currentStatus)+'</b>.';
                 }
               }
 
@@ -3222,13 +3432,23 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
           // Status condition inflictions
           const statusEffect = getMoveStatusEffect(move);
-          if (statusEffect && battleData.ohp > 0 && !blockedByGoodAsGold) {
-            const existingStatus = getBattleStatus(battleData, battleData.o);
-            const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName });
-            if (!existingStatus && !isStatusImmune(statusEffect.status, defenderTypes) && Math.random() < statusEffect.chance) {
-              setBattleStatus(battleData, battleData.o, statusEffect.status);
-              msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.';
-            }
+          if ((statusEffect || moveName === 'fling' || moveName === 'dire claw') && battleData.ohp > 0 && !blockedByGoodAsGold) {
+              const existingStatus = getBattleStatus(battleData, battleData.o);
+              const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName });
+              if (statusEffect && !existingStatus && !isStatusImmune(statusEffect.status, defenderTypes) && Math.random() < statusEffect.chance) {
+                  setBattleStatus(battleData, battleData.o, statusEffect.status);
+                  msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.';
+              }
+              msgLocal += applyMovePoisonExtras({
+                battleData,
+                moveName,
+                defenderName: op.name,
+                defenderPass: battleData.o,
+                attackerHeldItemName,
+                defenderTypes,
+                damageDealt: damage,
+                targetHpAfterHit: battleData.ohp
+              });
           }
         }
         }
@@ -3393,6 +3613,10 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           c
         }).message;
       }
+      turnLogs += applyBattleDrowsyEndTurn(battleData, [
+        { pass: battleData.c, pokemon: endTurnCurrent, currentHp: battleData.chp },
+        { pass: battleData.o, pokemon: endTurnOther, currentHp: battleData.ohp }
+      ]);
       turnLogs += advanceBattleWeather(battleData, c).message;
       for (const info of [
         { pass: battleData.c, userData: endTurnAttacker, currentHpKey: 'chp', teamKey: 'tem' },
@@ -5539,6 +5763,10 @@ async function executeStandardMove(act) {
     }
     const attackerHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item });
     const defenderHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item });
+    const attackerUsedMoves = battleData.usedMoves && battleData.usedMoves[battleData.c]
+      ? battleData.usedMoves[battleData.c]
+      : [];
+    const isFirstTurnForAttacker = attackerUsedMoves.length === 0;
     let moveLabel;
     try {
       moveLabel = getBattleMoveLabel(move, p, battleData, battleData.c);
@@ -5599,17 +5827,21 @@ async function executeStandardMove(act) {
         evolutionChains: chains
       });
 
-    let atk = applyStageToStat(stats1.attack, unawareModifiers.attackStage);
+    const usesDefenseAsAttack = normalizeMoveName(move.name) === 'body press';
+    let atk = applyStageToStat(usesDefenseAsAttack ? stats1.defense : stats1.attack, unawareModifiers.attackStage);
     let def2 = applyStageToStat(stats2.defense, unawareModifiers.defenseStage);
     if (move.category == 'special') {
       atk = applyStageToStat(stats1.special_attack, unawareModifiers.attackStage);
       def2 = applyStageToStat(stats2.special_defense, unawareModifiers.defenseStage);
-    } else {
+    } else if (!usesDefenseAsAttack) {
       atk = Math.max(1, Math.floor(atk * getAttackStatMultiplier(attackerAbility, move.category)));
     }
     if (move.category == 'special') {
       atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.special_attack));
       def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.special_defense));
+    } else if (usesDefenseAsAttack) {
+      atk = Math.max(1, Math.floor(atk * (attackerHeldItemInfo.defense || 1)));
+      def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
     } else {
       atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.attack));
       def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
@@ -5620,7 +5852,7 @@ async function executeStandardMove(act) {
       pokemonTypes: getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName, abilityName: defenderAbility })
     })));
     atk = Math.max(1, Math.floor(atk * supremeOverlordInfo.multiplier));
-    if (move.category == 'physical' && getBattleStatus(battleData, battleData.c) === 'burn') {
+    if (move.category == 'physical' && !usesDefenseAsAttack && getBattleStatus(battleData, battleData.c) === 'burn') {
         atk = Math.max(1, Math.floor(atk / 2));
     }
     
@@ -5972,6 +6204,31 @@ async function executeStandardMove(act) {
                 });
                 setBattleSleepStatus(battleData, battleData.c, 2);
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> fell asleep and restored <code>'+healed+'</code> HP with <b>'+c(moveLabel)+'</b>!';
+              }
+            }
+
+            if (moveName === 'yawn') {
+              if (getBattleStatus(battleData, battleData.o) === 'sleep') {
+                msgLocal += '\n-> But it failed!';
+              } else {
+                queueBattleDrowsy(battleData, battleData.o, 1);
+                msgLocal += '\n-> <b>'+c(op.name)+'</b> grew drowsy!';
+              }
+            }
+
+            if (moveName === 'psycho shift') {
+              const currentStatus = getBattleStatus(battleData, battleData.c);
+              const targetStatus = getBattleStatus(battleData, battleData.o);
+              if (!currentStatus || targetStatus) {
+                msgLocal += '\n-> But it failed!';
+              } else {
+                setBattleStatus(battleData, battleData.o, currentStatus);
+                clearBattleMajorStatus(battleData, battleData.c);
+                if (currentStatus === 'sleep') {
+                  setBattleSleepStatus(battleData, battleData.o, 2);
+                }
+                msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(currentStatus)+'</b>.';
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> was cured of <b>'+getStatusLabel(currentStatus)+'</b>.';
               }
             }
 
@@ -6392,6 +6649,28 @@ async function executeStandardMove(act) {
                   fromOpponent: false
                 }).message;
               }
+              msgLocal += applyMoveFlinch({
+                battleData,
+                moveName,
+                attackerName: p.name,
+                defenderName: op.name,
+                defenderPass: battleData.o,
+                attackerHeldItemName,
+                defenderAbility,
+                defenderHeldItemName,
+                damageDealt: damage,
+                targetHpAfterHit: battleData.ohp,
+                isFirstTurnForAttacker
+              });
+              msgLocal += applyMoveDrowsy({
+                battleData,
+                moveName,
+                defenderName: op.name,
+                defenderPass: battleData.o,
+                damageDealt: damage,
+                targetHpAfterHit: battleData.ohp,
+                chance: 0.5
+              });
             }
             msgLocal += applyAbilityOnDamageTaken({
               battleData,
@@ -6431,13 +6710,23 @@ async function executeStandardMove(act) {
         
         // Status condition inflictions
         const statusEffect = getMoveStatusEffect(move);
-        if (statusEffect && battleData.ohp > 0 && !blockedByGoodAsGold) {
+        if ((statusEffect || moveName === 'fling' || moveName === 'dire claw') && battleData.ohp > 0 && !blockedByGoodAsGold) {
             const existingStatus = getBattleStatus(battleData, battleData.o);
             const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName });
-            if (!existingStatus && !isStatusImmune(statusEffect.status, defenderTypes) && Math.random() < statusEffect.chance) {
+            if (statusEffect && !existingStatus && !isStatusImmune(statusEffect.status, defenderTypes) && Math.random() < statusEffect.chance) {
                 setBattleStatus(battleData, battleData.o, statusEffect.status);
                 msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.';
             }
+            msgLocal += applyMovePoisonExtras({
+              battleData,
+              moveName,
+              defenderName: op.name,
+              defenderPass: battleData.o,
+              attackerHeldItemName,
+              defenderTypes,
+              damageDealt: damage,
+              targetHpAfterHit: battleData.ohp
+            });
         }
         }
     }
@@ -6499,6 +6788,14 @@ if (battleData.chp <= 0 || battleData.ohp <= 0) {
     fullSwap(battleData); 
 }
 
+const endTurnAttacker2 = await getUserData(battleData.cid);
+const endTurnDefender2 = await getUserData(battleData.oid);
+const endTurnCurrent2 = endTurnAttacker2.pokes.filter((poke)=>poke.pass==battleData.c)[0];
+const endTurnOther2 = endTurnDefender2.pokes.filter((poke)=>poke.pass==battleData.o)[0];
+turnLogs += applyBattleDrowsyEndTurn(battleData, [
+  { pass: battleData.c, pokemon: endTurnCurrent2, currentHp: battleData.chp },
+  { pass: battleData.o, pokemon: endTurnOther2, currentHp: battleData.ohp }
+]);
 tickScreensForTurn(battleData);
 await saveBattleData(bword, battleData);
 
@@ -7248,11 +7545,3 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pv
 }
 
 module.exports = registerBattleCallbacks;
-
-
-
-
-
-
-
-

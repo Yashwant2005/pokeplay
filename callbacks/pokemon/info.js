@@ -1,5 +1,6 @@
 function register_006_info(bot, deps) {
   const { getUserData, editMessage, forms, pokes, growth_rates, chart, c, calculateTotal, Stats, Bar } = deps;
+  const { editPokemonCard } = require('../../utils/pokemon_stats_card_v2');
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
   const { getDisplayPokemonName, getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
   const { getDynamaxLevel, getDynamaxLevelBar } = require('../../utils/dynamax_level');
@@ -19,6 +20,11 @@ return
 }
 const data = await getUserData(ctx.from.id)
 const p2 = data.pokes.filter((poke)=> poke.pass == pass)[0]
+if(!p2){
+return
+}
+await editPokemonCard(ctx, deps, data, p2)
+return
 const p = pokes[p2.name]
 const g = growth_rates[p2.name]
 const exp = chart[g.growth_rate]
@@ -78,4 +84,3 @@ reply_markup:{inline_keyboard:keyboardArray}})
 }
 
 module.exports = register_006_info;
-

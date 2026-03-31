@@ -1,5 +1,6 @@
 function register_004_stats(bot, deps) {
   const { getUserData, saveUserData2, sendMessage, forms, pokes, growth_rates, chart, c, Stats, shiny, events, Bar } = deps;
+  const { sendPokemonCard } = require('../../utils/pokemon_stats_card_v2');
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
   const { getDisplayPokemonName, getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
   const { getDynamaxLevel, getDynamaxLevelBar } = require('../../utils/dynamax_level');
@@ -24,6 +25,15 @@ if(!p2){
 ctx.answerCbQuery('Poke Not Found')
 return
 }
+try {
+await deps.editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, '*Generating Pokemon page...*', { parse_mode: 'markdown' })
+} catch (_) {}
+await sendPokemonCard(ctx, deps, data, p2, mid)
+try{
+await ctx.deleteMessage()
+}catch(error){
+}
+return
 const p = pokes[p2.name]
 const g = growth_rates[p2.name]
 const exp = chart[g.growth_rate]
@@ -132,4 +142,3 @@ reply_markup:{inline_keyboard:keyboardArray}})
 }
 
 module.exports = register_004_stats;
-

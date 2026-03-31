@@ -494,6 +494,17 @@ async function saveUserData2(userId, userData) {
     console.error('Error saving data to MongoDB:', error);
   }
 }
+
+async function overwriteUserData(userId, userData) {
+  try {
+    const key = String(userId);
+    const nextData = cloneJson(userData && typeof userData === 'object' ? userData : {});
+    setCachedUserData(key, nextData);
+    queueUserSave(key, nextData);
+  } catch (error) {
+    console.error('Error overwriting data in MongoDB queue:', error);
+  }
+}
 const saveUserData22 = saveUserData2;
 async function getUserData(userId) {
   try {
@@ -1395,6 +1406,7 @@ module.exports = {
   getUserData,
   saveUserData2,
   saveUserData22,
+  overwriteUserData,
   check,
   c,
   Stats,

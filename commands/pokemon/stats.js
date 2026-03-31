@@ -4,6 +4,7 @@ function registerStatsCommand(bot, deps) {
 const { getDisplayPokemonName, getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
 const { getDynamaxLevel, getDynamaxLevelBar } = require('../../utils/dynamax_level');
 const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');
+const { sendPokemonCard } = require('../../utils/pokemon_stats_card_v2');
 const titleCaseHeldItem = (value) => String(value || 'none')
     .replace(/[_-]+/g, ' ')
     .trim()
@@ -11,6 +12,20 @@ const titleCaseHeldItem = (value) => String(value || 'none')
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ') || 'None';
+
+async function sendStatsGeneratingMessage(ctx, sendMessage, replyToMessageId) {
+  try {
+    return await sendMessage(
+      ctx,
+      ctx.chat.id,
+      { parse_mode: 'markdown' },
+      '*Generating Pokemon page...*',
+      { reply_to_message_id: replyToMessageId }
+    );
+  } catch (_) {
+    return null;
+  }
+}
 bot.command('stats',async ctx => {
   const data = await getUserData(ctx.from.id)
   
@@ -84,6 +99,17 @@ bot.command('stats',async ctx => {
   if(p22.length == 1){
   
   const p2 = p22[0]
+  const loadingMessage = await sendStatsGeneratingMessage(ctx, sendMessage, ctx.message.message_id)
+  try {
+    await sendPokemonCard(ctx, deps, data, p2, ctx.message.message_id)
+  } finally {
+    if (loadingMessage && loadingMessage.message_id) {
+      try {
+        await bot.telegram.deleteMessage(ctx.chat.id, loadingMessage.message_id)
+      } catch (_) {}
+    }
+  }
+  return
   
   const g = growth_rates[p2.name]
   
@@ -286,6 +312,17 @@ bot.action(/suger_/, async (ctx, next) => {
 
   if(p22.length == 1){
     const p2 = p22[0];
+    const loadingMessage = await sendStatsGeneratingMessage(ctx, sendMessage, replyTo);
+    try {
+      await sendPokemonCard(ctx, deps, data, p2, replyTo);
+    } finally {
+      if (loadingMessage && loadingMessage.message_id) {
+        try {
+          await bot.telegram.deleteMessage(ctx.chat.id, loadingMessage.message_id);
+        } catch (_) {}
+      }
+    }
+    return;
     const p = pokes[p2.name.toLowerCase()];
     const g = growth_rates[p2.name];
     const exp = chart[g.growth_rate];

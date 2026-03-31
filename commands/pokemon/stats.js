@@ -4,7 +4,9 @@ function registerStatsCommand(bot, deps) {
 const { getDisplayPokemonName, getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
 const { getDynamaxLevel, getDynamaxLevelBar } = require('../../utils/dynamax_level');
 const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');
-const { sendPokemonCard } = require('../../utils/pokemon_stats_card_v2');
+const legacyStatsCard = require('../../utils/pokemon_stats_card_legacy');
+const privateStatsCard = require('../../utils/pokemon_stats_card_v2');
+const { getPokemonStatsCardMode } = privateStatsCard;
 const titleCaseHeldItem = (value) => String(value || 'none')
     .replace(/[_-]+/g, ' ')
     .trim()
@@ -25,6 +27,10 @@ async function sendStatsGeneratingMessage(ctx, sendMessage, replyToMessageId) {
   } catch (_) {
     return null;
   }
+}
+
+function getStatsCardApi(userData) {
+  return getPokemonStatsCardMode(userData) === 'legacy' ? legacyStatsCard : privateStatsCard;
 }
 bot.command('stats',async ctx => {
   const data = await getUserData(ctx.from.id)
@@ -99,13 +105,14 @@ bot.command('stats',async ctx => {
   if(p22.length == 1){
   
   const p2 = p22[0]
+  const statsCardApi = getStatsCardApi(data)
   const loadingMessage = await sendStatsGeneratingMessage(ctx, sendMessage, ctx.message.message_id)
   try {
-    await sendPokemonCard(ctx, deps, data, p2, ctx.message.message_id)
+    await statsCardApi.sendPokemonCard(ctx, deps, data, p2, ctx.message.message_id)
   } finally {
-    if (loadingMessage && loadingMessage.message_id) {
+    if (loadingMessage) {
       try {
-        await bot.telegram.deleteMessage(ctx.chat.id, loadingMessage.message_id)
+        await bot.telegram.deleteMessage(ctx.chat.id, loadingMessage)
       } catch (_) {}
     }
   }
@@ -312,13 +319,14 @@ bot.action(/suger_/, async (ctx, next) => {
 
   if(p22.length == 1){
     const p2 = p22[0];
+    const statsCardApi = getStatsCardApi(data);
     const loadingMessage = await sendStatsGeneratingMessage(ctx, sendMessage, replyTo);
     try {
-      await sendPokemonCard(ctx, deps, data, p2, replyTo);
+      await statsCardApi.sendPokemonCard(ctx, deps, data, p2, replyTo);
     } finally {
-      if (loadingMessage && loadingMessage.message_id) {
+      if (loadingMessage) {
         try {
-          await bot.telegram.deleteMessage(ctx.chat.id, loadingMessage.message_id);
+          await bot.telegram.deleteMessage(ctx.chat.id, loadingMessage);
         } catch (_) {}
       }
     }

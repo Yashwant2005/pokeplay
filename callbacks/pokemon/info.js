@@ -1,6 +1,8 @@
 function register_006_info(bot, deps) {
   const { getUserData, editMessage, forms, pokes, growth_rates, chart, c, calculateTotal, Stats, Bar } = deps;
-  const { editPokemonCard } = require('../../utils/pokemon_stats_card_v2');
+  const legacyStatsCard = require('../../utils/pokemon_stats_card_legacy');
+  const privateStatsCard = require('../../utils/pokemon_stats_card_v2');
+  const { getPokemonStatsCardMode } = privateStatsCard;
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
   const { getDisplayPokemonName, getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
   const { getDynamaxLevel, getDynamaxLevelBar } = require('../../utils/dynamax_level');
@@ -12,6 +14,7 @@ function register_006_info(bot, deps) {
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ') || 'None';
+  const getStatsCardApi = (userData) => getPokemonStatsCardMode(userData) === 'legacy' ? legacyStatsCard : privateStatsCard;
   bot.action(/info_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -23,7 +26,7 @@ const p2 = data.pokes.filter((poke)=> poke.pass == pass)[0]
 if(!p2){
 return
 }
-await editPokemonCard(ctx, deps, data, p2)
+await getStatsCardApi(data).editPokemonCard(ctx, deps, data, p2)
 return
 const p = pokes[p2.name]
 const g = growth_rates[p2.name]
@@ -81,6 +84,21 @@ if(hasAuraBreak && !alreadyChanged){
 await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'markdown',
 reply_markup:{inline_keyboard:keyboardArray}})
 })
+
+  bot.action(/stativ_/, async ctx => {
+const pass = ctx.callbackQuery.data.split('_')[1]
+const id = ctx.callbackQuery.data.split('_')[2]
+const showIvs = ctx.callbackQuery.data.split('_')[3] === '1'
+if(id!=ctx.from.id){
+return
+}
+const data = await getUserData(ctx.from.id)
+const p2 = data.pokes.filter((poke)=> poke.pass == pass)[0]
+if(!p2){
+return
+}
+await privateStatsCard.editPokemonCard(ctx, deps, data, p2, { showIvs })
+  })
 }
 
 module.exports = register_006_info;

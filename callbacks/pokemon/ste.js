@@ -1,6 +1,8 @@
 function register_007_ste(bot, deps) {
   const { getUserData, editMessage, pokes, growth_rates, chart, c, pokestats, Stats } = deps;
-  const { editPokemonCard } = require('../../utils/pokemon_stats_card_v2');
+  const legacyStatsCard = require('../../utils/pokemon_stats_card_legacy');
+  const privateStatsCard = require('../../utils/pokemon_stats_card_v2');
+  const { getPokemonStatsCardMode } = privateStatsCard;
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
   const { isRayquazaLockedFromHeldItems } = require('../../utils/pokemon_item_rules');
   const titleCaseHeldItem = (value) => String(value || 'none')
@@ -10,6 +12,7 @@ function register_007_ste(bot, deps) {
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ') || 'None';
+  const getStatsCardApi = (userData) => getPokemonStatsCardMode(userData) === 'legacy' ? legacyStatsCard : privateStatsCard;
   bot.action(/ste_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -21,7 +24,7 @@ const p2 = data.pokes.filter((poke)=> poke.pass == pass)[0]
 if(!p2){
 return
 }
-await editPokemonCard(ctx, deps, data, p2)
+await getStatsCardApi(data).editPokemonCard(ctx, deps, data, p2)
 return
 const g = growth_rates[p2.name]
 const exp = chart[g.growth_rate]

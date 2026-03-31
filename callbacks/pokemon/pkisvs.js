@@ -1,6 +1,8 @@
 function register_008_pkisvs(bot, deps) {
   const { getUserData, editMessage, pokes, calculateTotal, Stats } = deps;
-  const { buildPokemonCardKeyboard } = require('../../utils/pokemon_stats_card_v2');
+  const legacyStatsCard = require('../../utils/pokemon_stats_card_legacy');
+  const privateStatsCard = require('../../utils/pokemon_stats_card_v2');
+  const { getPokemonStatsCardMode, resolvePokemonCardOptions } = privateStatsCard;
   bot.action(/pkisvs_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -9,6 +11,9 @@ return
 }
 const data = await getUserData(ctx.from.id)
 const p2 = data.pokes.filter((poke)=> poke.pass == pass)[0]
+const buildPokemonCardKeyboard = getPokemonStatsCardMode(data) === 'legacy'
+  ? legacyStatsCard.buildPokemonCardKeyboard
+  : privateStatsCard.buildPokemonCardKeyboard
 const ivs = p2.ivs
 const evs = p2.evs
 let ivsText = ''
@@ -22,7 +27,8 @@ let ivsText = ''
     ivsText += `Speed           ${ivs.speed.toString().padStart(2)} |  ${evs.speed}\n`;
     ivsText += '————————————————————————\n';
     ivsText += `Total           ${calculateTotal(ivs)} |  ${calculateTotal(evs)}\n`;
- await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'`'+ivsText+'`',{parse_mode:'markdownv2',reply_markup:{inline_keyboard: buildPokemonCardKeyboard(p2, id)}})
+ const cardOptions = resolvePokemonCardOptions(data)
+ await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'`'+ivsText+'`',{parse_mode:'markdownv2',reply_markup:{inline_keyboard: buildPokemonCardKeyboard(p2, id, cardOptions)}})
 })
 }
 

@@ -7,7 +7,6 @@ function registerHeldPanelCallbacks(bot, deps) {
     getSanitizedHeldItemForPokemon,
     isRayquazaLockedFromHeldItems
   } = require('../../utils/pokemon_item_rules');
-  const { buildPokemonCardKeyboard } = require('../../utils/pokemon_stats_card_v2');
 
   function normalizeHeldItemName(value) {
     return normalizeHeldStone(value);
@@ -43,10 +42,6 @@ function registerHeldPanelCallbacks(bot, deps) {
 
   function getEquippedHeldItemCount(data, itemName, ignorePass = '') {
     return (data.pokes || []).filter((poke) => String(poke.pass) !== String(ignorePass) && normalizeHeldItemName(poke.held_item) === itemName).length;
-  }
-
-  function buildNavKeyboard(pass, id, poke) {
-    return buildPokemonCardKeyboard(poke, id);
   }
 
   function buildHeldPanel(data, poke) {

@@ -1,6 +1,8 @@
 function register_005_moves(bot, deps) {
   const { getUserData, editMessage, pokes, dmoves, c, Stats, emojis } = deps;
-  const { buildPokemonCardKeyboard } = require('../../utils/pokemon_stats_card_v2');
+  const legacyStatsCard = require('../../utils/pokemon_stats_card_legacy');
+  const privateStatsCard = require('../../utils/pokemon_stats_card_v2');
+  const { getPokemonStatsCardMode, resolvePokemonCardOptions } = privateStatsCard;
   bot.action(/moves_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -9,13 +11,17 @@ return
 }
 const data = await getUserData(ctx.from.id)
 const poke = data.pokes.filter((poke)=> poke.pass == pass)[0]
+const buildPokemonCardKeyboard = getPokemonStatsCardMode(data) === 'legacy'
+  ? legacyStatsCard.buildPokemonCardKeyboard
+  : privateStatsCard.buildPokemonCardKeyboard
 let msg = ''
 for(const move2 of poke.moves){
 let move = dmoves[move2]
 msg += '• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+move.power+', <b>Accuracy:</b> '+move.accuracy+'% <i>('+c(move.category.charAt(0))+')</i>\n'
 }
+const cardOptions = resolvePokemonCardOptions(data)
 await editMessage('caption',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{
-inline_keyboard: buildPokemonCardKeyboard(poke, id)}})
+inline_keyboard: buildPokemonCardKeyboard(poke, id, cardOptions)}})
 })
 }
 

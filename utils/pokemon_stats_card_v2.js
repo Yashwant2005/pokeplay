@@ -24,12 +24,33 @@ function titleCaseHeldItem(value) {
     .join(' ') || 'None';
 }
 
+function getPokemonStatsCardMode(userData) {
+  const mode = String(userData && userData.settings && userData.settings.stats_page_mode || '').toLowerCase();
+  if (!mode) {
+    return 'legacy';
+  }
+  return mode === 'classic' || mode === 'legacy' ? 'legacy' : 'private';
+}
+
+function resolvePokemonCardOptions(userData, options = {}) {
+  const mode = options.mode || getPokemonStatsCardMode(userData);
+  const showIvs = typeof options.showIvs === 'boolean' ? options.showIvs : mode === 'legacy';
+  const showToggle = typeof options.showToggle === 'boolean' ? options.showToggle : mode !== 'legacy';
+  return { mode, showIvs, showToggle };
+}
+
 function capitalizeFirstWord(value) {
   const text = String(value || '').trim();
   if (!text) return '';
   const parts = text.split(/\s+/);
   parts[0] = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
   return parts.join(' ');
+}
+
+function normalizeNatureName(value) {
+  const text = String(value || '').trim().toLowerCase();
+  if (!text) return '';
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 function getPokemonLevelInfo(pokemon, growthRates, chart) {
@@ -95,7 +116,9 @@ function getPokemonDisplayImage(pokemon, pokes, shiny, events) {
   return img;
 }
 
-function buildPokemonCardKeyboard(pokemon, userId) {
+function buildPokemonCardKeyboard(pokemon, userId, options = {}) {
+  const showIvs = options.showIvs === true;
+  const showToggle = options.showToggle !== false;
   const keyboard = [[
     { text: 'Evolve', callback_data: 'evolve_' + pokemon.pass + '_' + userId },
     { text: 'Nickname', callback_data: 'nickname_' + pokemon.pass + '_' + userId },
@@ -107,7 +130,15 @@ function buildPokemonCardKeyboard(pokemon, userId) {
     utilityRow.push({ text: 'Held Items', callback_data: 'heldpanel_' + pokemon.pass + '_' + userId });
   }
   utilityRow.push({ text: 'Relearner', callback_data: 'relearnp_' + pokemon.pass + '_' + userId + '_stats' });
+  if (showToggle) {
+    utilityRow.push({
+      text: showIvs ? 'Hide' : 'Show',
+      callback_data: 'stativ_' + pokemon.pass + '_' + userId + '_' + (showIvs ? '0' : '1')
+    });
+  }
   keyboard.push(utilityRow);
+
+  keyboard.push([{ text: 'Close', callback_data: 'dlt_' + userId }]);
 
   const abilityNorm = String(pokemon.ability || '').toLowerCase().replace(/[-_\s]/g, '');
   if (abilityNorm === 'aurabreak' && !pokemon.powerConstructChanged) {
@@ -158,7 +189,7 @@ function drawLabelValue(ctx, label, value, x, y, labelWidth, valueWidth) {
   ctx.fillText(value, x + labelWidth, y);
 }
 
-async function renderPokemonStatsCard(deps, userData, pokemon) {
+async function renderPokemonStatsCard(deps, userData, pokemon, options = {}) {
   const {
     createCanvas,
     loadImage,
@@ -175,13 +206,15 @@ async function renderPokemonStatsCard(deps, userData, pokemon) {
 
   const canvas = createCanvas(920, 680);
   const ctx = canvas.getContext('2d');
+  const resolvedOptions = resolvePokemonCardOptions(userData, options);
+  const showIvs = resolvedOptions.showIvs;
   const profile = pokes[pokemon.name] || {};
   const displayName = he.decode(String(getDisplayPokemonName(pokemon, forms) || pokemon.name));
   const displaySymbol = String(getDisplayPokemonSymbol(pokemon) || '').trim();
   const trainerName = he.decode(String((userData && userData.inv && userData.inv.name) || 'Trainer')).replace(/\s+/g, ' ').trim();
   const spriteUrl = getPokemonDisplayImage(pokemon, pokes, shiny, events);
   const { level, needToNextLevel } = getPokemonLevelInfo(pokemon, growth_rates, chart);
-  const stats = await Stats(pokestats[pokemon.name], pokemon.ivs, pokemon.evs, pokemon.nature, level);
+  const stats = await Stats(pokestats[pokemon.name], pokemon.ivs, pokemon.evs, normalizeNatureName(pokemon.nature), level);
   const moves = Array.isArray(pokemon.moves)
     ? pokemon.moves.map((moveId) => dmoves && dmoves[moveId] ? capitalizeFirstWord(he.decode(String(dmoves[moveId].name))) : null).filter(Boolean).slice(0, 4)
     : [];
@@ -250,12 +283,14 @@ async function renderPokemonStatsCard(deps, userData, pokemon) {
   for (const statRow of STAT_ROWS) {
     ctx.fillStyle = '#f2f5f8';
     ctx.fillText(statRow.label, 48, statY);
-    ctx.fillStyle = '#f8e4a1';
-    ctx.fillText(String(Number(stats[statRow.key] || 0)).padStart(3, ' '), 114, statY);
-    ctx.fillStyle = '#73d4f3';
-    ctx.fillText(String(Number(pokemon.ivs && pokemon.ivs[statRow.key] || 0)).padStart(2, '0'), 176, statY);
-    ctx.fillStyle = '#9fe2a0';
-    ctx.fillText(String(Number(pokemon.evs && pokemon.evs[statRow.key] || 0)).padStart(3, ' '), 214, statY);
+    if (showIvs) {
+      ctx.fillStyle = '#f8e4a1';
+      ctx.fillText(String(Number(stats[statRow.key] || 0)).padStart(3, ' '), 114, statY);
+      ctx.fillStyle = '#73d4f3';
+      ctx.fillText(String(Number(pokemon.ivs && pokemon.ivs[statRow.key] || 0)).padStart(2, '0'), 176, statY);
+      ctx.fillStyle = '#9fe2a0';
+      ctx.fillText(String(Number(pokemon.evs && pokemon.evs[statRow.key] || 0)).padStart(3, ' '), 214, statY);
+    }
     statY += 39;
   }
 
@@ -276,7 +311,9 @@ async function renderPokemonStatsCard(deps, userData, pokemon) {
     }
   }
 
-  const badgeText = String((profile.types && profile.types[0]) || 'normal').toUpperCase();
+  const badgeText = Array.isArray(profile.types) && profile.types.length > 0
+    ? profile.types.map((type) => String(type || '').toUpperCase()).filter(Boolean).join(' / ')
+    : 'NORMAL';
   ctx.font = 'bold 14px Sans';
   const badgeWidth = Math.max(80, ctx.measureText(badgeText).width + 22);
   roundedRect(ctx, 764 - badgeWidth, 54, badgeWidth, 28, 10, '#b9b07a', '#d8d3b4', 2);
@@ -294,16 +331,18 @@ async function renderPokemonStatsCard(deps, userData, pokemon) {
   ctx.font = 'bold 18px Sans';
   ctx.fillText('Moves', 48, 474);
   ctx.fillText('Details', 494, 474);
-  ctx.font = 'bold 14px Sans';
-  ctx.fillStyle = '#73d4f3';
-  ctx.fillText('IV', 176, 152);
-  ctx.fillStyle = '#9fe2a0';
-  ctx.fillText('EV', 216, 152);
+  if (showIvs) {
+    ctx.font = 'bold 14px Sans';
+    ctx.fillStyle = '#73d4f3';
+    ctx.fillText('IV', 176, 152);
+    ctx.fillStyle = '#9fe2a0';
+    ctx.fillText('EV', 216, 152);
+  }
 
   ctx.fillStyle = '#f2f5f8';
   const moveList = (moves.length ? moves : ['None']).slice(0, 4);
   let moveY = 488;
-  for (const move of moveList) {
+  for (const move of (showIvs ? moveList : ['Hidden', 'Hidden', 'Hidden', 'Hidden'])) {
     roundedRect(ctx, 42, moveY, 412, 24, 8, '#2c3041', '#4f556f', 1);
     const fitted = fitText(ctx, move, 384, 22, 'bold', 'Sans');
     ctx.font = `bold ${fitted}px Sans`;
@@ -317,20 +356,21 @@ async function renderPokemonStatsCard(deps, userData, pokemon) {
   ctx.fillStyle = '#f2f5f8';
   ctx.font = 'bold 16px Sans';
   ctx.fillText('Ability', 48, 617);
-  const abilityText = he.decode(String(titleCaseAbility(pokemon.ability || 'none')));
+  const abilityText = showIvs ? he.decode(String(titleCaseAbility(pokemon.ability || 'none'))) : 'Hidden';
   const abilityFont = fitText(ctx, abilityText, 300, 16, 'normal', 'Sans');
   ctx.font = `normal ${abilityFont}px Sans`;
   ctx.fillText(abilityText, 124, 617);
 
-  drawLabelValue(ctx, 'Nature', he.decode(String(pokemon.nature || 'None')), 494, 512, 104, 240);
-  drawLabelValue(ctx, 'Item', he.decode(String(titleCaseHeldItem(pokemon.held_item || 'none'))), 494, 546, 104, 240);
-  drawLabelValue(ctx, 'Next Level', needToNextLevel.toLocaleString() + ' EXP', 494, 580, 122, 220);
+  drawLabelValue(ctx, 'Nature', showIvs ? he.decode(String(pokemon.nature || 'None')) : 'Hidden', 494, 512, 104, 240);
+  drawLabelValue(ctx, 'Item', showIvs ? he.decode(String(titleCaseHeldItem(pokemon.held_item || 'none'))) : 'Hidden', 494, 546, 104, 240);
+  drawLabelValue(ctx, 'Next Level', showIvs ? (needToNextLevel.toLocaleString() + ' EXP') : 'Hidden', 494, 580, 146, 188);
 
   return canvas.toBuffer('image/png');
 }
 
-async function sendPokemonCard(ctx, deps, userData, pokemon, replyToMessageId) {
-  const imageBuffer = await renderPokemonStatsCard(deps, userData, pokemon);
+async function sendPokemonCard(ctx, deps, userData, pokemon, replyToMessageId, options = {}) {
+  const resolvedOptions = resolvePokemonCardOptions(userData, options);
+  const imageBuffer = await renderPokemonStatsCard(deps, userData, pokemon, resolvedOptions);
   return deps.sendMessage(
     ctx,
     ctx.chat.id,
@@ -338,13 +378,14 @@ async function sendPokemonCard(ctx, deps, userData, pokemon, replyToMessageId) {
     {
       reply_to_message_id: replyToMessageId,
       caption: ' ',
-      reply_markup: { inline_keyboard: buildPokemonCardKeyboard(pokemon, ctx.from.id) }
+      reply_markup: { inline_keyboard: buildPokemonCardKeyboard(pokemon, ctx.from.id, resolvedOptions) }
     }
   );
 }
 
-async function editPokemonCard(ctx, deps, userData, pokemon) {
-  const imageBuffer = await renderPokemonStatsCard(deps, userData, pokemon);
+async function editPokemonCard(ctx, deps, userData, pokemon, options = {}) {
+  const resolvedOptions = resolvePokemonCardOptions(userData, options);
+  const imageBuffer = await renderPokemonStatsCard(deps, userData, pokemon, resolvedOptions);
   return deps.editMessage(
     'media',
     ctx,
@@ -356,17 +397,19 @@ async function editPokemonCard(ctx, deps, userData, pokemon) {
       caption: ' '
     },
     {
-      reply_markup: { inline_keyboard: buildPokemonCardKeyboard(pokemon, ctx.from.id) }
+      reply_markup: { inline_keyboard: buildPokemonCardKeyboard(pokemon, ctx.from.id, resolvedOptions) }
     }
   );
 }
 
 module.exports = {
+  getPokemonStatsCardMode,
   buildPokemonCardKeyboard,
   editPokemonCard,
   getPokemonDisplayImage,
   getPokemonLevelInfo,
   renderPokemonStatsCard,
+  resolvePokemonCardOptions,
   sendPokemonCard,
   titleCaseHeldItem
 };

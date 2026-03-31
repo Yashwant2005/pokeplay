@@ -1,6 +1,8 @@
 function register_004_stats(bot, deps) {
   const { getUserData, saveUserData2, sendMessage, forms, pokes, growth_rates, chart, c, Stats, shiny, events, Bar } = deps;
-  const { sendPokemonCard } = require('../../utils/pokemon_stats_card_v2');
+  const legacyStatsCard = require('../../utils/pokemon_stats_card_legacy');
+  const privateStatsCard = require('../../utils/pokemon_stats_card_v2');
+  const { getPokemonStatsCardMode } = privateStatsCard;
   const { titleCaseAbility } = require('../../utils/pokemon_ability');
   const { getDisplayPokemonName, getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
   const { getDynamaxLevel, getDynamaxLevelBar } = require('../../utils/dynamax_level');
@@ -12,6 +14,7 @@ function register_004_stats(bot, deps) {
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(' ') || 'None';
+  const getStatsCardApi = (userData) => getPokemonStatsCardMode(userData) === 'legacy' ? legacyStatsCard : privateStatsCard;
   bot.action(/stats_/,async ctx => {
 const pass = ctx.callbackQuery.data.split('_')[1]
 const id = ctx.callbackQuery.data.split('_')[2]
@@ -28,7 +31,7 @@ return
 try {
 await deps.editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, '*Generating Pokemon page...*', { parse_mode: 'markdown' })
 } catch (_) {}
-await sendPokemonCard(ctx, deps, data, p2, mid)
+await getStatsCardApi(data).sendPokemonCard(ctx, deps, data, p2, mid)
 try{
 await ctx.deleteMessage()
 }catch(error){

@@ -4,6 +4,7 @@ const { createCanvas, loadImage } = require('canvas');
 
 const ASSETS_DIR = path.join(__dirname, '..', 'assets');
 const DEFAULT_STADIUM = path.join(ASSETS_DIR, 'terrains', 'bg-meadow.jpg');
+const DEFAULT_POKEMON_PLACEHOLDER = path.join(ASSETS_DIR, '1.png');
 const SCENE_WIDTH = 800;
 const SCENE_HEIGHT = 450;
 const WEATHER_ASSET_MAP = {
@@ -171,7 +172,7 @@ function resolveSpritePath(name, side, isShiny) {
         isShiny ? path.join(ASSETS_DIR, 'image-shiny', `${key}.png`) : '',
         path.join(ASSETS_DIR, 'image', `${key}.png`),
       ];
-  return candidates.find((entry) => entry && fileExists(entry)) || '';
+  return candidates.find((entry) => entry && fileExists(entry)) || (fileExists(DEFAULT_POKEMON_PLACEHOLDER) ? DEFAULT_POKEMON_PLACEHOLDER : '');
 }
 
 async function drawContained(ctx, imagePath, x, y, width, height, alpha) {

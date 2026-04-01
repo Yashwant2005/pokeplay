@@ -44,7 +44,7 @@ function registerHeldPanelCallbacks(bot, deps) {
     return (data.pokes || []).filter((poke) => String(poke.pass) !== String(ignorePass) && normalizeHeldItemName(poke.held_item) === itemName).length;
   }
 
-  function buildHeldPanel(data, poke) {
+  function buildHeldPanel(data, poke, page = 1) {
     const currentItem = normalizeHeldItemName(poke.held_item);
     const restricted = Boolean(getPokemonHeldItemRestrictionMessage(poke));
     let msg = '*Held Item Manager*\n';
@@ -78,6 +78,11 @@ function registerHeldPanelCallbacks(bot, deps) {
     const entries = restricted
       ? []
       : allEntries.filter(([itemName]) => !getPokemonHeldItemRestrictionMessage(poke, itemName));
+    const pageSize = 8;
+    const totalPages = Math.max(1, Math.ceil(entries.length / pageSize));
+    const safePage = Math.min(Math.max(Number(page) || 1, 1), totalPages);
+    const startIndex = (safePage - 1) * pageSize;
+    const pageEntries = entries.slice(startIndex, startIndex + pageSize);
 
     if (restricted) {
       msg += '\n\n*Held items are disabled for this Pokemon.*';
@@ -88,23 +93,23 @@ function registerHeldPanelCallbacks(bot, deps) {
         msg += '\n\nYou do not have any *compatible held items* for this Pokemon.';
       }
     } else {
-      msg += '\n\n*Bag Held Items*';
-      for (const [itemName, amount] of entries) {
+      msg += '\n\n*Bag Held Items (Page ' + safePage + '/' + totalPages + ')*';
+      for (const [itemName, amount] of pageEntries) {
         const equippedElsewhere = getEquippedHeldItemCount(data, itemName, poke.pass);
         const free = Math.max(0, Number(amount) - equippedElsewhere);
         msg += '\n- ' + c(titleCaseHeldItem(itemName)) + ': *' + amount + '*';
         msg += ' | Free: *' + free + '*';
-        msg += '\n  ' + c(getHeldItemDescription(itemName));
       }
+      msg += '\n\n_Tap an item button below to equip it._';
     }
 
     const rows = [];
-    const itemButtons = restricted ? [] : entries.map(([itemName, amount]) => {
+    const itemButtons = restricted ? [] : pageEntries.map(([itemName, amount]) => {
       const equippedElsewhere = getEquippedHeldItemCount(data, itemName, poke.pass);
       const free = Math.max(0, Number(amount) - equippedElsewhere);
       return {
         text: c(titleCaseHeldItem(itemName)) + ' (' + free + ')',
-        callback_data: 'heldpick_' + encodeURIComponent(itemName) + '_' + poke.pass + '_' + data.user_id
+        callback_data: 'heldpick_' + encodeURIComponent(itemName) + '_' + poke.pass + '_' + data.user_id + '_' + safePage
       };
     });
 
@@ -112,15 +117,28 @@ function registerHeldPanelCallbacks(bot, deps) {
       rows.push(itemButtons.slice(i, i + 2));
     }
 
+    if (!restricted && totalPages > 1) {
+      const navRow = [];
+      if (safePage > 1) {
+        navRow.push({ text: '<', callback_data: 'heldpanel_' + poke.pass + '_' + data.user_id + '_' + (safePage - 1) });
+      }
+      if (safePage < totalPages) {
+        navRow.push({ text: '>', callback_data: 'heldpanel_' + poke.pass + '_' + data.user_id + '_' + (safePage + 1) });
+      }
+      if (navRow.length > 0) {
+        rows.push(navRow);
+      }
+    }
+
     if (!restricted && currentItem && currentItem !== 'none') {
-      rows.push([{ text: 'Remove Held Item', callback_data: 'heldremove_' + poke.pass + '_' + data.user_id }]);
+      rows.push([{ text: 'Remove Held Item', callback_data: 'heldremove_' + poke.pass + '_' + data.user_id + '_' + safePage }]);
     }
     rows.push([{ text: 'Back', callback_data: 'info_' + poke.pass + '_' + data.user_id }]);
 
-    return { msg, rows };
+    return { msg, rows, page: safePage, totalPages };
   }
 
-  async function showHeldPanel(ctx, pass, userId) {
+  async function showHeldPanel(ctx, pass, userId, page = 1) {
     const data = await getUserData(userId);
     data.user_id = userId;
     const poke = (data.pokes || []).find((p) => String(p.pass) === String(pass));
@@ -133,14 +151,14 @@ function registerHeldPanelCallbacks(bot, deps) {
       poke.held_item = sanitizedHeld;
       await saveUserData2(userId, data);
     }
-    const panel = buildHeldPanel(data, poke);
+    const panel = buildHeldPanel(data, poke, page);
     await editMessage('caption', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, panel.msg, {
       parse_mode: 'markdown',
       reply_markup: { inline_keyboard: panel.rows }
     });
   }
 
-  async function equipHeldItem(ctx, userId, pass, heldItem) {
+  async function equipHeldItem(ctx, userId, pass, heldItem, page = 1) {
     const data = await getUserData(userId);
     data.user_id = userId;
     const poke = (data.pokes || []).find((p) => String(p.pass) === String(pass));
@@ -171,7 +189,7 @@ function registerHeldPanelCallbacks(bot, deps) {
     if (restrictionMessage) {
       poke.held_item = getSanitizedHeldItemForPokemon(poke, poke.held_item);
       await saveUserData2(userId, data);
-      await showHeldPanel(ctx, pass, userId);
+      await showHeldPanel(ctx, pass, userId, page);
       await ctx.answerCbQuery(restrictionMessage, { show_alert: true });
       return;
     }
@@ -189,25 +207,27 @@ function registerHeldPanelCallbacks(bot, deps) {
       poke.held_item = heldItem;
     }
     await saveUserData2(userId, data);
-    await showHeldPanel(ctx, pass, userId);
+    await showHeldPanel(ctx, pass, userId, page);
     await ctx.answerCbQuery('Held item updated!', { show_alert: false });
   }
 
-  bot.action(/^heldpanel_([^_]+)_(\d+)$/, check2q, async (ctx) => {
+  bot.action(/^heldpanel_([^_]+)_(\d+)(?:_(\d+))?$/, check2q, async (ctx) => {
     const pass = ctx.match[1];
     const userId = Number(ctx.match[2]);
+    const page = Number(ctx.match[3] || 1);
     if (ctx.from.id !== userId) {
       await ctx.answerCbQuery('Not your button!');
       return;
     }
-    await showHeldPanel(ctx, pass, userId);
+    await showHeldPanel(ctx, pass, userId, page);
     await ctx.answerCbQuery();
   });
 
-  bot.action(/^heldpick_(.+)_([^_]+)_(\d+)$/, check2q, async (ctx) => {
+  bot.action(/^heldpick_(.+)_([^_]+)_(\d+)(?:_(\d+))?$/, check2q, async (ctx) => {
     const heldItem = normalizeHeldItemName(decodeURIComponent(ctx.match[1]));
     const pass = ctx.match[2];
     const userId = Number(ctx.match[3]);
+    const page = Number(ctx.match[4] || 1);
     if (ctx.from.id !== userId) {
       await ctx.answerCbQuery('Not your button!');
       return;
@@ -229,8 +249,8 @@ function registerHeldPanelCallbacks(bot, deps) {
           reply_markup: {
             inline_keyboard: [
               [
-                { text: 'Yes', callback_data: 'heldreplace_' + encodeURIComponent(heldItem) + '_' + pass + '_' + userId },
-                { text: 'No', callback_data: 'heldpanel_' + pass + '_' + userId }
+                { text: 'Yes', callback_data: 'heldreplace_' + encodeURIComponent(heldItem) + '_' + pass + '_' + userId + '_' + page },
+                { text: 'No', callback_data: 'heldpanel_' + pass + '_' + userId + '_' + page }
               ]
             ]
           }
@@ -240,23 +260,25 @@ function registerHeldPanelCallbacks(bot, deps) {
       return;
     }
 
-    await equipHeldItem(ctx, userId, pass, heldItem);
+    await equipHeldItem(ctx, userId, pass, heldItem, page);
   });
 
-  bot.action(/^heldreplace_(.+)_([^_]+)_(\d+)$/, check2q, async (ctx) => {
+  bot.action(/^heldreplace_(.+)_([^_]+)_(\d+)(?:_(\d+))?$/, check2q, async (ctx) => {
     const heldItem = normalizeHeldItemName(decodeURIComponent(ctx.match[1]));
     const pass = ctx.match[2];
     const userId = Number(ctx.match[3]);
+    const page = Number(ctx.match[4] || 1);
     if (ctx.from.id !== userId) {
       await ctx.answerCbQuery('Not your button!');
       return;
     }
-    await equipHeldItem(ctx, userId, pass, heldItem);
+    await equipHeldItem(ctx, userId, pass, heldItem, page);
   });
 
-  bot.action(/^heldremove_([^_]+)_(\d+)$/, check2q, async (ctx) => {
+  bot.action(/^heldremove_([^_]+)_(\d+)(?:_(\d+))?$/, check2q, async (ctx) => {
     const pass = ctx.match[1];
     const userId = Number(ctx.match[2]);
+    const page = Number(ctx.match[3] || 1);
     if (ctx.from.id !== userId) {
       await ctx.answerCbQuery('Not your button!');
       return;
@@ -276,7 +298,7 @@ function registerHeldPanelCallbacks(bot, deps) {
 
     poke.held_item = 'none';
     await saveUserData2(userId, data);
-    await showHeldPanel(ctx, pass, userId);
+    await showHeldPanel(ctx, pass, userId, page);
     await ctx.answerCbQuery('Held item removed!', { show_alert: false });
   });
 }

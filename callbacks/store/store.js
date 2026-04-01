@@ -236,6 +236,33 @@ _Use /buy to buy from PokeStore._`;
     return rows;
   }
 
+  function buildHeldConfirmMessage(data, itemName, page) {
+    const price = getHeldItemPrice(itemName, 'lp');
+    if (!Number.isFinite(data.inv.league_points)) data.inv.league_points = 0;
+    return [
+      '*Confirm Held Item Purchase*',
+      '',
+      '*Item:* ' + c(titleCaseHeldItem(itemName)),
+      '*Effect:* ' + c(getHeldItemDescription(itemName)),
+      '*Price:* ' + price + ' ⭐',
+      '*Your League Points:* ' + data.inv.league_points + ' ⭐',
+      '',
+      'Do you want to buy this held item?'
+    ].join('\n');
+  }
+
+  function buildHeldConfirmKeyboard(ctx, itemName, page) {
+    return [
+      [
+        { text: 'Yes', callback_data: 'heldbuyconfirm_' + itemName + '_' + ctx.from.id + '_' + page },
+        { text: 'No', callback_data: 'store_heldlp_' + ctx.from.id + '_' + page }
+      ],
+      [
+        { text: 'Back', callback_data: 'store_heldlp_' + ctx.from.id + '_' + page }
+      ]
+    ];
+  }
+
   bot.action(/store_/, async ctx => {
     const item = ctx.callbackQuery.data.split('_')[1];
     const id = ctx.callbackQuery.data.split('_')[2];
@@ -345,6 +372,26 @@ _Use /buy to buy from PokeStore._`;
   });
 
   bot.action(/heldbuylp_/, async ctx => {
+    const parts = ctx.callbackQuery.data.split('_');
+    const itemName = normalizeHeldItemShopName(parts[1]);
+    const id = parts[2];
+    const page = parts[3] * 1 || 1;
+    if (ctx.from.id != id) return;
+
+    const price = getHeldItemPrice(itemName, 'lp');
+    if (!price) {
+      ctx.answerCbQuery('Invalid held item', { show_alert: true });
+      return;
+    }
+
+    const data = await getUserData(ctx.from.id);
+    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, buildHeldConfirmMessage(data, itemName, page), {
+      parse_mode: 'markdown',
+      reply_markup: { inline_keyboard: buildHeldConfirmKeyboard(ctx, itemName, page) }
+    });
+  });
+
+  bot.action(/heldbuyconfirm_/, async ctx => {
     const parts = ctx.callbackQuery.data.split('_');
     const itemName = normalizeHeldItemShopName(parts[1]);
     const id = parts[2];

@@ -14,6 +14,7 @@
   applyWeatherEndTurn,
   advanceBattleWeather,
   consumeBattleHeldItem,
+  ensureAbilityState,
   canUseAuroraVeilWeather,
   getAttackStatMultiplier,
   getBattleHeldItemName,
@@ -25,6 +26,7 @@
   getEffectivePokemonDisplayName,
   getEffectiveMoveType,
   getEffectivePokemonTypes,
+  getProtoQuarkDriveInfo,
   canSkipChargeByWeather,
   getPowerConstructFormChange,
   getAirBalloonInfo,
@@ -60,6 +62,7 @@ const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rul
 const { getGigantamaxFormName, getDisplayPokemonSymbol } = require('../../utils/gmax_utils');
 const { getDynamaxLevel } = require('../../utils/dynamax_level');
 const { getBattleBaseStats, activateImpersonateForPass, getImpersonateTargetName } = require('../../utils/battle_impersonate');
+const { ensureBattleSceneState, setBattleSceneFocusPass, applyBattleSceneMoveVisual, buildBattleSceneMedia } = require('../../utils/battle_scene_fast');
 
 const ABILITY_BY_FORM = (() => {
   try {
@@ -208,6 +211,68 @@ function registerBattleCallbacks(bot, deps) {
       out += '\n-> <b>' + c(entry.pokemon.name) + '</b> fell asleep!';
     }
     return out;
+  }
+
+  const PROTECTION_MOVES = new Set([
+    'baneful bunker',
+    'burning bulwark',
+    'crafty shield',
+    'detect',
+    'king\'s shield',
+    'mat block',
+    'max guard',
+    'obstruct',
+    'protect',
+    'quick guard',
+    'silk trap',
+    'spiky shield',
+    'wide guard'
+  ]);
+
+  const SELF_TARGET_MOVE_TARGETS = new Set([
+    'user',
+    'users-field',
+    'ally',
+    'user-or-ally',
+    'all-allies',
+    'entire-field'
+  ]);
+
+  function ensureBattleProtectionState(battleData) {
+    if (!battleData.protectionState || typeof battleData.protectionState !== 'object') {
+      battleData.protectionState = {};
+    }
+    return battleData.protectionState;
+  }
+
+  function setBattleProtectionState(battleData, pass, moveName) {
+    ensureBattleProtectionState(battleData)[String(pass)] = {
+      active: true,
+      moveName: String(moveName || '').toLowerCase()
+    };
+  }
+
+  function getBattleProtectionState(battleData, pass) {
+    return ensureBattleProtectionState(battleData)[String(pass)] || null;
+  }
+
+  function clearBattleProtectionState(battleData) {
+    battleData.protectionState = {};
+  }
+
+  function isMoveTargetingOpponent(move) {
+    const target = String(move && move.target || '').toLowerCase().trim();
+    if (!target) return true;
+    return !SELF_TARGET_MOVE_TARGETS.has(target);
+  }
+
+  function isBattleMoveBlockedByProtection({ battleData, defenderPass, move, moveName }) {
+    if (!PROTECTION_MOVES.has(String(moveName || '').toLowerCase())) {
+      const state = getBattleProtectionState(battleData, defenderPass);
+      if (!state || !state.active) return false;
+      return isMoveTargetingOpponent(move);
+    }
+    return false;
   }
 
   function healBattlePokemon({ battleData, pass, maxHp, amount, hpKey, tempKey }) {
@@ -696,6 +761,233 @@ function registerBattleCallbacks(bot, deps) {
     });
   }
 
+  const CALL_OTHER_MOVE_NAMES = new Set([
+    'assist',
+    'copycat',
+    'instruct',
+    'me first',
+    'metronome',
+    'mirror move',
+    'nature power',
+    'sleep talk',
+    'snatch'
+  ]);
+
+  const NON_CALLABLE_CALLED_MOVE_NAMES = new Set([
+    'assist',
+    'copycat',
+    'instruct',
+    'me first',
+    'metronome',
+    'mirror move',
+    'nature power',
+    'sleep talk',
+    'snatch',
+    'struggle'
+  ]);
+
+  function getMoveIdByNormalizedName(targetMoveName) {
+    const normalized = normalizeMoveName(targetMoveName);
+    for (const [moveId, move] of Object.entries(dmoves || {})) {
+      if (move && normalizeMoveName(move.name) === normalized) {
+        return String(moveId);
+      }
+    }
+    return null;
+  }
+
+  function sampleBattleMoveId(moveIds) {
+    if (!Array.isArray(moveIds) || moveIds.length < 1) return null;
+    return String(moveIds[Math.floor(Math.random() * moveIds.length)]);
+  }
+
+  function isCallableCalledMoveId(moveId, extraBlockedNames = []) {
+    const move = dmoves && dmoves[moveId];
+    if (!move) return false;
+    const moveName = normalizeMoveName(move.name);
+    if (NON_CALLABLE_CALLED_MOVE_NAMES.has(moveName)) return false;
+    return !extraBlockedNames.some((blocked) => normalizeMoveName(blocked) === moveName);
+  }
+
+  function getPokemonCallableMoveIds(pokemon, options = {}) {
+    const excludeNames = Array.isArray(options.excludeNames) ? options.excludeNames : [];
+    const unique = new Set();
+    for (const moveId of (pokemon && Array.isArray(pokemon.moves) ? pokemon.moves : [])) {
+      if (isCallableCalledMoveId(moveId, excludeNames)) {
+        unique.add(String(moveId));
+      }
+    }
+    return Array.from(unique);
+  }
+
+  function getAssistCallableMoveIds(userData, activePass) {
+    const unique = new Set();
+    for (const teammate of (userData && Array.isArray(userData.pokes) ? userData.pokes : [])) {
+      if (!teammate || String(teammate.pass) === String(activePass)) continue;
+      for (const moveId of getPokemonCallableMoveIds(teammate)) {
+        unique.add(String(moveId));
+      }
+    }
+    return Array.from(unique);
+  }
+
+  function getNaturePowerMoveId(battleData) {
+    const terrainName = normalizeMoveName(
+      (battleData && (
+        battleData.terrain
+        || battleData.fieldTerrain
+        || battleData.activeTerrain
+        || (battleData.field && battleData.field.terrain)
+      )) || ''
+    );
+    const moveNameByTerrain = {
+      'electric terrain': 'thunderbolt',
+      'grassy terrain': 'energy ball',
+      'misty terrain': 'moonblast',
+      'psychic terrain': 'psychic'
+    };
+    return getMoveIdByNormalizedName(moveNameByTerrain[terrainName] || 'tri attack');
+  }
+
+  function canMoveBeSnatched(move) {
+    if (!move || String(move.category || '').toLowerCase() !== 'status') return false;
+    const moveName = normalizeMoveName(move.name);
+    if (PROTECTION_MOVES.has(moveName) || CALL_OTHER_MOVE_NAMES.has(moveName)) return false;
+    return !isOpponentTargetingStatusMove(move, moveName);
+  }
+
+  function canReactivePriorityMoveTrigger(moveName, opponentAction) {
+    const normalizedMove = normalizeMoveName(moveName);
+    if (normalizedMove !== 'sucker punch' && normalizedMove !== 'thunderclap') return true;
+    if (!opponentAction || opponentAction.type !== 'move' || opponentAction.executed) return false;
+    const opposingMove = dmoves[opponentAction.id];
+    if (!opposingMove) return false;
+    return String(opposingMove.category || '').toLowerCase() !== 'status' && Number(opposingMove.power) > 0;
+  }
+
+  const TARGET_SWITCH_OUT_MOVES = new Set([
+    'circle throw',
+    'dragon tail',
+    'roar',
+    'whirlwind'
+  ]);
+
+  const USER_SWITCH_OUT_MOVES = new Set([
+    'baton pass',
+    'chilly reception',
+    'flip turn',
+    'parting shot',
+    'shed tail',
+    'teleport',
+    'u turn',
+    'volt switch'
+  ]);
+
+  function getAvailableBattleSwitchPasses(teamHpMap, activePass) {
+    return Object.keys(teamHpMap || {})
+      .filter((pass) => String(pass) !== String(activePass) && Number(teamHpMap[pass]) > 0);
+  }
+
+  function chooseRandomBattleSwitchPass(teamHpMap, activePass) {
+    const candidates = getAvailableBattleSwitchPasses(teamHpMap, activePass);
+    if (candidates.length < 1) return null;
+    return String(candidates[Math.floor(Math.random() * candidates.length)]);
+  }
+
+  function resolveCalledMoveAction(options) {
+    const {
+      act,
+      battleData,
+      attackerUser,
+      attackerPokemon,
+      opponentAction
+    } = options || {};
+    const selectedMove = dmoves && dmoves[act && act.id];
+    const selectedMoveName = normalizeMoveName(selectedMove && selectedMove.name);
+    const currentStatus = getBattleStatus(battleData, battleData && battleData.c);
+    const attackerName = attackerPokemon && attackerPokemon.name ? attackerPokemon.name : 'Pokemon';
+    const defenderName = options.defenderPokemon && options.defenderPokemon.name ? options.defenderPokemon.name : 'Pokemon';
+    const result = {
+      selectedMove,
+      selectedMoveName,
+      resolvedMoveId: act ? String(act.id) : null,
+      callerMessage: '',
+      failMessage: '',
+      powerMultiplier: 1,
+      instructMoveId: null
+    };
+
+    const buildUserMoveMessage = (pokemonName, moveName) =>
+      '\n-> <b>' + c(pokemonName) + '</b> used <b>' + c(moveName) + '</b>!';
+    const buildCalledMessage = (moveId) => {
+      const calledMove = dmoves && dmoves[moveId];
+      return calledMove ? '\n-> It called <b>' + c(calledMove.name) + '</b>!' : '';
+    };
+
+    if (!selectedMove) {
+      return result;
+    }
+
+    if (selectedMoveName === 'metronome') {
+      const callableIds = Object.keys(dmoves || {}).filter((moveId) => isCallableCalledMoveId(moveId));
+      result.resolvedMoveId = sampleBattleMoveId(callableIds);
+      result.callerMessage = buildUserMoveMessage(attackerName, selectedMove.name) + buildCalledMessage(result.resolvedMoveId);
+    } else if (selectedMoveName === 'assist') {
+      const callableIds = getAssistCallableMoveIds(attackerUser, battleData.c);
+      result.resolvedMoveId = sampleBattleMoveId(callableIds);
+      result.callerMessage = buildUserMoveMessage(attackerName, selectedMove.name) + buildCalledMessage(result.resolvedMoveId);
+    } else if (selectedMoveName === 'nature power') {
+      result.resolvedMoveId = getNaturePowerMoveId(battleData);
+      result.callerMessage = buildUserMoveMessage(attackerName, selectedMove.name) + buildCalledMessage(result.resolvedMoveId);
+    } else if (selectedMoveName === 'sleep talk') {
+      if (currentStatus !== 'sleep') {
+        result.failMessage = buildUserMoveMessage(attackerName, selectedMove.name) + '\n-> But it failed!';
+        return result;
+      }
+      const callableIds = getPokemonCallableMoveIds(attackerPokemon, { excludeNames: ['sleep talk', 'rest'] });
+      result.resolvedMoveId = sampleBattleMoveId(callableIds);
+      result.callerMessage = buildUserMoveMessage(attackerName, selectedMove.name) + buildCalledMessage(result.resolvedMoveId);
+    } else if (selectedMoveName === 'copycat' || selectedMoveName === 'mirror move') {
+      const lastMoveId = battleData && battleData.lastMoveByPass ? battleData.lastMoveByPass[String(battleData.o)] : null;
+      result.resolvedMoveId = isCallableCalledMoveId(lastMoveId) ? String(lastMoveId) : null;
+      result.callerMessage = buildUserMoveMessage(attackerName, selectedMove.name) + buildCalledMessage(result.resolvedMoveId);
+    } else if (selectedMoveName === 'me first') {
+      const opposingMove = opponentAction && opponentAction.type === 'move' ? dmoves[opponentAction.id] : null;
+      const opposingMoveName = normalizeMoveName(opposingMove && opposingMove.name);
+      if (!opponentAction || opponentAction.type !== 'move' || opponentAction.executed || !opposingMove || String(opposingMove.category || '').toLowerCase() === 'status' || !isCallableCalledMoveId(opponentAction.id)) {
+        result.failMessage = buildUserMoveMessage(attackerName, selectedMove.name) + '\n-> But it failed!';
+        return result;
+      }
+      result.resolvedMoveId = String(opponentAction.id);
+      result.powerMultiplier = 1.5;
+      result.callerMessage = buildUserMoveMessage(attackerName, selectedMove.name) + '\n-> It moved first with <b>' + c(opposingMove.name || opposingMoveName) + '</b>!';
+    } else if (selectedMoveName === 'snatch') {
+      const opposingMove = opponentAction && opponentAction.type === 'move' ? dmoves[opponentAction.id] : null;
+      if (!opponentAction || opponentAction.type !== 'move' || opponentAction.executed || !canMoveBeSnatched(opposingMove)) {
+        result.failMessage = buildUserMoveMessage(attackerName, selectedMove.name) + '\n-> But it failed!';
+        return result;
+      }
+      result.resolvedMoveId = String(opponentAction.id);
+      result.callerMessage = buildUserMoveMessage(attackerName, selectedMove.name) + '\n-> It snatched <b>' + c(opposingMove.name) + '</b>!';
+      opponentAction.forcedFailMessage = '\n-> <b>' + c(defenderName) + '</b>\'s <b>' + c(opposingMove.name) + '</b> was snatched!';
+    } else if (selectedMoveName === 'instruct') {
+      const lastMoveId = battleData && battleData.lastMoveByPass ? battleData.lastMoveByPass[String(battleData.o)] : null;
+      result.instructMoveId = isCallableCalledMoveId(lastMoveId) ? String(lastMoveId) : null;
+      if (!result.instructMoveId) {
+        result.failMessage = buildUserMoveMessage(attackerName, selectedMove.name) + '\n-> But it failed!';
+        return result;
+      }
+      const instructedMove = dmoves[result.instructMoveId];
+      result.callerMessage = buildUserMoveMessage(attackerName, selectedMove.name) + '\n-> <b>' + c(defenderName) + '</b> was instructed to use <b>' + c(instructedMove && instructedMove.name) + '</b> again!';
+    }
+
+    if (CALL_OTHER_MOVE_NAMES.has(selectedMoveName) && !result.failMessage && !result.instructMoveId && !result.resolvedMoveId) {
+      result.failMessage = buildUserMoveMessage(attackerName, selectedMove.name) + '\n-> But it failed!';
+    }
+
+    return result;
+  }
+
   function getAbilityActivationMessage(pokemonName, abilityLabel) {
     return '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + abilityLabel + '</b> activated!';
   }
@@ -768,7 +1060,11 @@ function registerBattleCallbacks(bot, deps) {
       pokemonName,
       moveName: move && move.name,
       moveType: effectiveMoveType,
-      movePower: move && move.power
+      movePower: move && move.power,
+      currentHp,
+      maxHp,
+      defenderCurrentHp: maxHp,
+      defenderMaxHp: maxHp
     });
     const weatherAdjustedPower = Number.isFinite(rawPower) && rawPower > 0
       ? Math.max(1, Math.floor(rawPower * getWeatherMovePowerMultiplier({ battleData: battleDataArg, moveName: effectiveMoveName || (move && move.name), moveType: effectiveMoveType })))
@@ -1299,7 +1595,33 @@ function registerBattleCallbacks(bot, deps) {
   }
 
   // Helper: build PvP battle message + keyboard with Showdown-style hidden moves
-  const buildPvpMsg = (prefix, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroup) => {
+  const buildPvpMsg = async (prefix, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroup) => {
+    ensureBattleSceneState(battleData);
+    if (!battleData.sceneState.focusPass) {
+      setBattleSceneFocusPass(battleData, battleData.c);
+    }
+    const focusedPass = String(battleData.sceneState.focusPass || battleData.c || '');
+    const focusedPokemon = String(p1.pass) === focusedPass ? p1 : p2;
+    const focusedUserData = String(p1.pass) === focusedPass ? attacker : defender;
+    const focusedUserId = String(p1.pass) === focusedPass ? battleData.cid : battleData.oid;
+    const focusedMoveId = battleData.lastMoveByPass && battleData.lastMoveByPass[focusedPass];
+    if (focusedMoveId && dmoves[focusedMoveId] && focusedPokemon) {
+      const focusedDisplayMove = getDisplayedBattleMove({
+        battleData,
+        pokemon: focusedPokemon,
+        move: dmoves[focusedMoveId],
+        userData: focusedUserData,
+        userId: focusedUserId
+      });
+      applyBattleSceneMoveVisual(battleData, {
+        moveName: focusedDisplayMove && focusedDisplayMove.name,
+        pass: focusedPass,
+        isZMove: !!(focusedDisplayMove && focusedDisplayMove.isZMove)
+      });
+    }
+    if (bword) {
+      await saveBattleData(bword, battleData);
+    }
     const p1HeldItem = getBattleHeldItemName({ battleData, pass: p1.pass, heldItem: p1.held_item });
     const p2HeldItem = getBattleHeldItemName({ battleData, pass: p2.pass, heldItem: p2.held_item });
     const p1Types = getEffectivePokemonTypes({ pokemonName: p1.name, pokemonTypes: pokes[p1.name]?.types || [], heldItem: p1HeldItem, abilityName: p1.ability });
@@ -1379,14 +1701,6 @@ function registerBattleCallbacks(bot, deps) {
       }
     }
 
-    let img = (pokes[p1.name] && pokes[p1.name].front_default_image) || '';
-    const imSh = shiny.filter((poke)=>poke.name==p1.name)[0];
-    if (events[p1.name] && p1.symbol == '🪅') img = events[p1.name];
-    if (imSh && p1.symbol=='✨') img = imSh.shiny_url;
-
-    let ext = {};
-    ext = { link_preview_options: { is_disabled: true } };
-
     const moves = p1.moves.map(m => ''+m+'');
     let rows = [];
     // Row 1: 4 move buttons in a single row
@@ -1458,7 +1772,15 @@ function registerBattleCallbacks(bot, deps) {
 
     // Bag/Pokemon buttons removed per new UI layout
 
-    return { msg, keyboard: { inline_keyboard: rows }, ext };
+    const scene = await buildBattleSceneMedia({
+      battleData,
+      playerPokemon: p1,
+      opponentPokemon: p2,
+      caption: msg,
+      parseMode: 'HTML'
+    });
+
+    return { msg, keyboard: { inline_keyboard: rows }, media: scene.media, photo: scene.photo };
   };
 
   // Helper to swap turns between cid and oid contexts
@@ -2081,11 +2403,16 @@ function applyStageToStat(baseValue, stage) {
   return Math.max(1, Math.floor(baseValue * getStageMultiplier(stage)));
 }
 
-function getEffectiveSpeed(baseSpeed, battleData, pass, abilityName) {
+function getEffectiveSpeed(baseSpeed, battleData, pass, abilityName, pokemonName, stats) {
   const statusAdjusted = getSpeedWithStatus(baseSpeed, battleData, pass);
   const stages = ensurePokemonStatStages(battleData, pass);
   let speed = applyStageToStat(statusAdjusted, stages.speed);
   const heldItemInfo = getHeldItemStatMultipliers({
+    battleData,
+    pass,
+    pokemonName,
+    abilityName,
+    stats,
     heldItem: getBattleHeldItemName({ battleData, pass })
   });
   speed = Math.max(1, Math.floor(speed * (heldItemInfo.speed || 1)));
@@ -2335,8 +2662,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         const stA = await Stats(pokestats[pkA.name], pkA.ivs, pkA.evs, c(pkA.nature), plevel(pkA.name, pkA.exp));
         const stB = await Stats(pokestats[pkB.name], pkB.ivs, pkB.evs, c(pkB.nature), plevel(pkB.name, pkB.exp));
 
-        speedA = getEffectiveSpeed(stA.speed, battleData, action1.c, pkA && pkA.ability);
-        speedB = getEffectiveSpeed(stB.speed, battleData, action2.c, pkB && pkB.ability);
+        speedA = getEffectiveSpeed(stA.speed, battleData, action1.c, pkA && pkA.ability, pkA && pkA.name, stA);
+        speedB = getEffectiveSpeed(stB.speed, battleData, action2.c, pkB && pkB.ability, pkB && pkB.name, stB);
       }
     }
 
@@ -2359,6 +2686,10 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         else if (speedB > speedA) { orderedActions = [action2, action1]; }
         else { orderedActions = (Math.random() < 0.5) ? [action1, action2] : [action2, action1]; }
       }
+    }
+    for (const act of orderedActions) {
+      act.executed = false;
+      act.opponentAction = orderedActions.find((entry) => entry !== act) || null;
     }
     const isSingleMoveTurn = moveActions.length < 2;
 
@@ -2404,6 +2735,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         battleData.choiceLockedMoves = {};
       }
       delete battleData.choiceLockedMoves[String(previousPass)];
+      delete ensureAbilityState(battleData).protoQuark[String(previousPass)];
       turnLogs += await revertBattleDynamaxForPass({
         battleData,
         pass: previousPass,
@@ -2468,18 +2800,68 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       }
     }
 
+    async function applyForcedBattleSwitch({ side, moveName, sourcePokemonName }) {
+      if (side === 'attacker') {
+        const available = getAvailableBattleSwitchPasses(battleData.tem, battleData.c);
+        if (available.length < 1 || battleData.chp <= 0) return;
+        battleData.pendingForcedSwitch = {
+          cid: battleData.cid,
+          pass: battleData.c,
+          moveName: String(moveName || ''),
+          pokemonName: String(sourcePokemonName || '')
+        };
+        turnLogs += '\n-> <b>' + c(sourcePokemonName) + '</b> must switch out after using <b>' + c(moveName) + '</b>!';
+        return;
+      }
+
+      const nextPass = chooseRandomBattleSwitchPass(battleData.tem2, battleData.o);
+      if (!nextPass || battleData.ohp <= 0) return;
+      turnLogs += '\n-> <b>' + c(sourcePokemonName) + '</b> was forced out by <b>' + c(moveName) + '</b>!';
+      fullSwap(battleData);
+      await applySwitchAction({
+        cid: battleData.cid,
+        c: battleData.c,
+        type: 'switch',
+        pass: nextPass
+      });
+      fullSwap(battleData);
+    }
+
     // Function to execute one standard attack in current context (battleData.cid attacking battleData.oid)
     async function executeStandardMove(act) {
       if (battleData.chp <= 0 || battleData.ohp <= 0) return; // attacker or defender fainted
 
-      const move = dmoves[act.id];
       let attacker = await getUserData(battleData.cid);
       let defender = await getUserData(battleData.oid);
       let p = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0];
       let op = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
+      const calledMoveState = resolveCalledMoveAction({
+        act,
+        battleData,
+        attackerUser: attacker,
+        defenderUser: defender,
+        attackerPokemon: p,
+        defenderPokemon: op,
+        opponentAction: act && act.opponentAction
+      });
+      if (calledMoveState && calledMoveState.failMessage) {
+        turnLogs += calledMoveState.failMessage;
+        act.executed = true;
+        return;
+      }
+      if (act && act.forcedFailMessage) {
+        turnLogs += act.forcedFailMessage;
+        act.executed = true;
+        return;
+      }
+      let move = dmoves[calledMoveState && calledMoveState.resolvedMoveId ? calledMoveState.resolvedMoveId : act.id];
+      if (calledMoveState && calledMoveState.resolvedMoveId) {
+        act.id = String(calledMoveState.resolvedMoveId);
+      }
       const attackerAbility = p && p.ability ? p.ability : 'none';
       const defenderAbility = op && op.ability ? op.ability : 'none';
       if (!move || !move.type || !p || !op || !pokes[p.name] || !pokes[op.name]) {
+        act.executed = true;
         return;
       }
       let moveLabel;
@@ -2538,12 +2920,20 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         activePass: battleData.c
       });
       const attackerHeldItemInfo = getHeldItemStatMultipliers({
+        battleData,
+        pass: battleData.c,
         pokemonName: p.name,
+        abilityName: attackerAbility,
+        stats: stats1,
         heldItem: getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item }),
         evolutionChains: chains
       });
       const defenderHeldItemInfo = getHeldItemStatMultipliers({
+        battleData,
+        pass: battleData.o,
         pokemonName: op.name,
+        abilityName: defenderAbility,
+        stats: stats2,
         heldItem: getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item }),
         evolutionChains: chains
       });
@@ -2598,10 +2988,17 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         clearSemiInvulnerableStateForPass(battleData, battleData.c);
       }
 
-      if (!actState.canAct) {
+      const sleepTalkBypass = !actState.canAct && calledMoveState && calledMoveState.selectedMoveName === 'sleep talk' && getBattleStatus(battleData, battleData.c) === 'sleep';
+      if (!actState.canAct && !sleepTalkBypass) {
         msgLocal += "\n" + actState.msg;
       } else {
         didAttemptMove = true;
+        if (sleepTalkBypass) {
+          msgLocal += '\n-> <b>'+c(p.name)+'</b> is fast asleep.';
+        }
+        if (calledMoveState && calledMoveState.callerMessage) {
+          msgLocal += calledMoveState.callerMessage;
+        }
         if (isChargeReleaseTurn) {
           clearChargingStateForPass(battleData, battleData.c);
           clearSemiInvulnerableStateForPass(battleData, battleData.c);
@@ -2628,7 +3025,13 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         }
       }
 
-      if (actState.canAct && moveName === 'bide') {
+      if (actState.canAct && PROTECTION_MOVES.has(moveName)) {
+        setBattleProtectionState(battleData, battleData.c, moveName);
+        msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and protected itself!';
+      } else if (actState.canAct && !canReactivePriorityMoveTrigger(moveName, act && act.opponentAction)) {
+        didAttemptMove = false;
+        msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+      } else if (actState.canAct && moveName === 'bide') {
         // Bide bypasses accuracy/evasion checks
         if (!battleData.bideState) battleData.bideState = {};
         if (!battleData.bideState[battleData.c]) {
@@ -2663,6 +3066,11 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               });
               damage = sturdyDamage.damage;
               battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
+              const abilityState = ensureAbilityState(battleData);
+              if (!abilityState.rageFistHitsTaken || typeof abilityState.rageFistHitsTaken !== 'object') {
+                abilityState.rageFistHitsTaken = {};
+              }
+              abilityState.rageFistHitsTaken[String(battleData.o)] = Math.max(0, Number(abilityState.rageFistHitsTaken[String(battleData.o)]) || 0) + 1;
               if (battleData.bideState && battleData.bideState[battleData.o]) {
                 battleData.bideState[battleData.o].damage += damage;
                 battleData.bideState[battleData.o].lastAttacker = battleData.c;
@@ -2696,6 +3104,11 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           });
           damage = sturdyDamage.damage;
           battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
+          const abilityState = ensureAbilityState(battleData);
+          if (!abilityState.rageFistHitsTaken || typeof abilityState.rageFistHitsTaken !== 'object') {
+            abilityState.rageFistHitsTaken = {};
+          }
+          abilityState.rageFistHitsTaken[String(battleData.o)] = Math.max(0, Number(abilityState.rageFistHitsTaken[String(battleData.o)]) || 0) + 1;
           if (battleData.bideState && battleData.bideState[battleData.o]) {
             battleData.bideState[battleData.o].damage += damage;
             battleData.bideState[battleData.o].lastAttacker = battleData.c;
@@ -2772,7 +3185,10 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
             msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
           }
         } else {
-          if (moveName === 'leech seed') {
+          if (isBattleMoveBlockedByProtection({ battleData, defenderPass: battleData.o, move, moveName })) {
+            msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.';
+            msgLocal += '\n-> <b>'+c(op.name)+'</b> protected itself!';
+          } else if (moveName === 'leech seed') {
             if (!battleData.leechSeed || typeof battleData.leechSeed !== 'object') {
               battleData.leechSeed = {};
             }
@@ -3080,8 +3496,13 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 abilityName: attackerAbility,
                 moveName,
                 moveType: effectiveMoveType,
-                movePower: battleMove.power || move.power
-              }) * getWeatherMovePowerMultiplier({ battleData, moveName, moveType: effectiveMoveType }) * pinchPowerMult * technicianInfo.multiplier));
+                movePower: battleMove.power || move.power,
+                defenderPass: battleData.o,
+                defenderCurrentHp: battleData.ohp,
+                defenderMaxHp: stats2.hp,
+                effectiveness: eff1,
+                movedBeforeTarget: !!(act && act.opponentAction && !act.opponentAction.executed)
+              }) * getWeatherMovePowerMultiplier({ battleData, moveName, moveType: effectiveMoveType }) * pinchPowerMult * technicianInfo.multiplier * ((calledMoveState && calledMoveState.powerMultiplier) || 1)));
               const stabInfo = getStabInfo({
                 abilityName: attackerAbility,
                 moveType: effectiveMoveType,
@@ -3358,6 +3779,11 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
               // Record hit for counter-attacks and accumulate bide damage
               battleData.turnHits[battleData.o] = { damage: damage, category: move.category, from: battleData.c, move: moveName };
+              const abilityState = ensureAbilityState(battleData);
+              if (!abilityState.rageFistHitsTaken || typeof abilityState.rageFistHitsTaken !== 'object') {
+                abilityState.rageFistHitsTaken = {};
+              }
+              abilityState.rageFistHitsTaken[String(battleData.o)] = Math.max(0, Number(abilityState.rageFistHitsTaken[String(battleData.o)]) || 0) + 1;
               if (battleData.bideState && battleData.bideState[battleData.o]) {
                 battleData.bideState[battleData.o].damage += damage;
                 battleData.bideState[battleData.o].lastAttacker = battleData.c;
@@ -3504,7 +3930,33 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       if (!battleData.usedMoves[battleData.c]) battleData.usedMoves[battleData.c] = [];
       if (!battleData.usedMoves[battleData.c].includes(act.id)) battleData.usedMoves[battleData.c].push(act.id);
 
+      const latestHit = battleData.turnHits && battleData.turnHits[battleData.o];
+      const moveLandedThisAction = !!(latestHit && String(latestHit.from) === String(battleData.c) && normalizeMoveName(latestHit.move) === moveName && Number(latestHit.damage) > 0);
+      const canUserSwitchOut = USER_SWITCH_OUT_MOVES.has(moveName) && battleData.chp > 0;
+      const canTargetBeSwitchedOut = TARGET_SWITCH_OUT_MOVES.has(moveName) && battleData.ohp > 0;
+      if (canUserSwitchOut && ((['u turn', 'volt switch', 'flip turn'].includes(moveName) && moveLandedThisAction) || !['u turn', 'volt switch', 'flip turn'].includes(moveName))) {
+        await applyForcedBattleSwitch({ side: 'attacker', moveName: moveLabel, sourcePokemonName: p.name });
+      } else if (canTargetBeSwitchedOut && ((['dragon tail', 'circle throw'].includes(moveName) && moveLandedThisAction) || ['roar', 'whirlwind'].includes(moveName))) {
+        await applyForcedBattleSwitch({ side: 'defender', moveName: moveLabel, sourcePokemonName: op.name });
+      }
+
+      if (calledMoveState && calledMoveState.instructMoveId && battleData.ohp > 0 && battleData.chp > 0) {
+        msgLocal += '\n-> <b>'+c(op.name)+'</b> followed the instruction!';
+        fullSwap(battleData);
+        await executeStandardMove({
+          cid: battleData.cid,
+          c: battleData.c,
+          type: 'move',
+          id: calledMoveState.instructMoveId,
+          executed: false,
+          opponentAction: null,
+          instructedRepeat: true
+        });
+        fullSwap(battleData);
+      }
+
       turnLogs += msgLocal;
+      act.executed = true;
     }
 
     if (switchActions.length > 0) {
@@ -3519,16 +3971,19 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           fullSwap(battleData);
         }
         await executeStandardMove(moveActions[0]);
+        moveActions[0].executed = true;
       }
     } else {
       if (String(battleData.cid) !== String(orderedActions[0].cid)) {
         fullSwap(battleData);
       }
       await executeStandardMove(orderedActions[0]);
+      orderedActions[0].executed = true;
 
       if (battleData.ohp > 0 && battleData.chp > 0) { // both must be alive
         fullSwap(battleData); // Context swap so opponent becomes Attacker
         await executeStandardMove(orderedActions[1]);
+        orderedActions[1].executed = true;
       }
     }
 
@@ -3618,6 +4073,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         { pass: battleData.o, pokemon: endTurnOther, currentHp: battleData.ohp }
       ]);
       turnLogs += advanceBattleWeather(battleData, c).message;
+      clearBattleProtectionState(battleData);
       for (const info of [
         { pass: battleData.c, userData: endTurnAttacker, currentHpKey: 'chp', teamKey: 'tem' },
         { pass: battleData.o, userData: endTurnDefender, currentHpKey: 'ohp', teamKey: 'tem2' }
@@ -3772,9 +4228,25 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       }
       return true;
     }
+    if (battleData.pendingForcedSwitch && String(battleData.pendingForcedSwitch.cid) === String(battleData.cid)) {
+      const available = getAvailableBattleSwitchPasses(battleData.tem, battleData.c);
+      if (available.length > 0) {
+        msg += '\n\n<b>'+c(battleData.pendingForcedSwitch.pokemonName || p1.name)+'</b> must switch out after using <b>'+c(battleData.pendingForcedSwitch.moveName || 'that move')+'</b>. Choose your next pokemon.';
+        const buttons = available.map((pass, idx) => ({ text: String(idx + 1), callback_data: 'multidne_' + pass + '_' + bword + '_'+battleData.cid+'_forced' }));
+        const rows = [[{text:'View Team',callback_data:'viewteam_'+bword+'_'+battleData.cid+''}]];
+        for (let i = 0; i < buttons.length; i += 2) {
+          rows.push(buttons.slice(i, i + 2));
+        }
+        await saveBattleData(bword, battleData);
+        await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:rows}})
+        return true;
+      }
+      delete battleData.pendingForcedSwitch;
+    }
     const isGroupMmo = ctx.chat.type !== 'private';
-    const pvpMmo = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
-    await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMmo.msg,{parse_mode:'HTML',reply_markup:pvpMmo.keyboard,...pvpMmo.ext})
+    setBattleSceneFocusPass(battleData, battleData.c);
+    const pvpMmo = await buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
+    await editMessage('media',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMmo.media,{reply_markup:pvpMmo.keyboard})
     return true;
   }
 
@@ -4748,8 +5220,8 @@ const base2 = pokestats[user2poke.name]
   ensureBattleStatus(battleData)
   const p1Lead = Object.keys(spe)[0]
   const p2Lead = Object.keys(spe2)[0]
-  const speed1 = getEffectiveSpeed(spe[p1Lead], battleData, p1Lead, user1poke && user1poke.ability)
-  const speed2 = getEffectiveSpeed(spe2[p2Lead], battleData, p2Lead, user2poke && user2poke.ability)
+  const speed1 = getEffectiveSpeed(spe[p1Lead], battleData, p1Lead, user1poke && user1poke.ability, user1poke && user1poke.name, { speed: spe[p1Lead] })
+  const speed2 = getEffectiveSpeed(spe2[p2Lead], battleData, p2Lead, user2poke && user2poke.ability, user2poke && user2poke.name, { speed: spe2[p2Lead] })
   const result = speed1 > speed2 ? p1Lead : p2Lead;
 if(result in tem){
 battleData.c = Object.keys(tem)[0]
@@ -4844,8 +5316,15 @@ initPrefix += setBattleWeatherNegationState({
   activeAbilities: [p.ability, p2.ability]
 }).message;
 const isGroupInit = ctx.chat.type !== 'private';
-const pvpInit = buildPvpMsg(initPrefix, battleData, attacker, defender, p, p2, initStats1, initStats2, bword, isGroupInit);
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpInit.msg,{parse_mode:'HTML',reply_markup:pvpInit.keyboard,...pvpInit.ext})
+setBattleSceneFocusPass(battleData, battleData.c);
+const pvpInit = await buildPvpMsg(initPrefix, battleData, attacker, defender, p, p2, initStats1, initStats2, bword, isGroupInit);
+const battleMessageId = await sendMessage(ctx, ctx.chat.id, pvpInit.photo, {
+  caption: pvpInit.msg,
+  parse_mode: 'HTML',
+  reply_markup: pvpInit.keyboard,
+  reply_to_message_id: ctx.callbackQuery.message.message_id
+});
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>Battle started below.</b>',{parse_mode:'HTML'})
 const messageData = await loadMessageData();
 const _pvpId1 = String(battleData.cid);
 const _pvpId2 = String(battleData.oid);
@@ -4854,7 +5333,7 @@ if (!messageData.battle.map(String).includes(_pvpId2)) messageData.battle.push(_
 if (!messageData._battleTimestamps) messageData._battleTimestamps = {};
 messageData._battleTimestamps[_pvpId1] = Date.now();
 messageData._battleTimestamps[_pvpId2] = Date.now();
-    messageData[bword] = { chat:ctx.chat.id,mid: ctx.callbackQuery.message.message_id, times: Date.now(), turn:battleData.cid, oppo:battleData.oid };
+messageData[bword] = { chat:ctx.chat.id,mid: battleMessageId, times: Date.now(), turn:battleData.cid, oppo:battleData.oid };
     await saveMessageData(messageData);
 }else{
 let msg = 'Challenge: <a href="tg://user?id='+id1+'"><b>'+displayName(data,id1)+'</b></a> vs <a href="tg://user?id='+id2+'"><b>'+displayName(data2,id2)+'</b></a>\n'
@@ -5029,8 +5508,9 @@ if (!singleActionTurn && battleData.queuedActions.length < 2) {
     msg += `<b>Waiting for ${displayName(attacker, battleData.cid)} to select...</b>`
 
     const isGroupMmo = ctx.chat.type !== 'private';
-    const pvpMmo = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
-    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, pvpMmo.msg, { parse_mode: 'HTML', reply_markup: pvpMmo.keyboard, ...pvpMmo.ext })
+    setBattleSceneFocusPass(battleData, battleData.cid);
+    const pvpMmo = await buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
+    await editMessage('media', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, pvpMmo.media, { reply_markup: pvpMmo.keyboard })
     dbg('multimo:waiting', { bword, nextTurn: battleData.cid });
 
     // --- Inactivity Timeout Logic ---
@@ -5063,7 +5543,7 @@ if (!singleActionTurn && battleData.queuedActions.length < 2) {
           delete md[bword];
           await saveMessageData(md);
         } catch (_) {}
-        let forfeitMsg = `\n\n<b>${displayName(inactiveUser, nextUserId)} took too long!\nThey forfeit the match due to inactivity (60s timeout).</b>`;
+        let forfeitMsg = `\n\n<b>${displayName(inactiveUser, nextUserId)} took too long!\nThey forfeit the match due to inactivity (150s timeout).</b>`;
         forfeitMsg += `\n<b>${displayName(opponentUser, battleData.oid)} +25 LP ⭐.</b>`;
         await editMessage('text', ctx, _chatId, _msgId, _pvpMsg + forfeitMsg, { parse_mode: 'HTML' });
       } catch (e) {}
@@ -5075,7 +5555,7 @@ if (!singleActionTurn && battleData.queuedActions.length < 2) {
           delete battleTurnTimeouts[bword];
         }
       }
-    }, 60000);
+    }, 150000);
     return;
 }
  
@@ -5528,11 +6008,16 @@ function applyStageToStat(baseValue, stage) {
   return Math.max(1, Math.floor(baseValue * getStageMultiplier(stage)));
 }
 
-function getEffectiveSpeed(baseSpeed, battleData, pass, abilityName) {
+function getEffectiveSpeed(baseSpeed, battleData, pass, abilityName, pokemonName, stats) {
   const statusAdjusted = getSpeedWithStatus(baseSpeed, battleData, pass);
   const stages = ensurePokemonStatStages(battleData, pass);
   let speed = applyStageToStat(statusAdjusted, stages.speed);
   const heldItemInfo = getHeldItemStatMultipliers({
+    battleData,
+    pass,
+    pokemonName,
+    abilityName,
+    stats,
     heldItem: getBattleHeldItemName({ battleData, pass })
   });
   speed = Math.max(1, Math.floor(speed * (heldItemInfo.speed || 1)));
@@ -5734,6 +6219,10 @@ if (singleActionTurn) {
       else { orderedActions = (Math.random() < 0.5) ? [action1, action2] : [action2, action1]; }
   }
 }
+for (const act of orderedActions) {
+  act.executed = false;
+  act.opponentAction = orderedActions.find((entry) => entry !== act) || null;
+}
 
 if (!battleData.turnHits) battleData.turnHits = {};
 battleData.turnHits = {}; // Reset at start of turn
@@ -5747,18 +6236,68 @@ if (String(battleData.cid) !== String(orderedActions[0].cid)) {
     fullSwap(battleData);
 }
 
+async function applyForcedBattleSwitchLocal({ side, moveName, sourcePokemonName }) {
+  if (side === 'attacker') {
+    const available = getAvailableBattleSwitchPasses(battleData.tem, battleData.c);
+    if (available.length < 1 || battleData.chp <= 0) return;
+    battleData.pendingForcedSwitch = {
+      cid: battleData.cid,
+      pass: battleData.c,
+      moveName: String(moveName || ''),
+      pokemonName: String(sourcePokemonName || '')
+    };
+    turnLogs += '\n-> <b>' + c(sourcePokemonName) + '</b> must switch out after using <b>' + c(moveName) + '</b>!';
+    return;
+  }
+
+  const nextPass = chooseRandomBattleSwitchPass(battleData.tem2, battleData.o);
+  if (!nextPass || battleData.ohp <= 0) return;
+  turnLogs += '\n-> <b>' + c(sourcePokemonName) + '</b> was forced out by <b>' + c(moveName) + '</b>!';
+  battleData.o = nextPass;
+  battleData.ohp = battleData.tem2[nextPass];
+  const defenderData = await getUserData(battleData.oid);
+  const switchedPokemon = defenderData.pokes.find((poke) => String(poke.pass) === String(nextPass));
+  if (switchedPokemon) {
+    syncBattleFormAndAbility({ battleData, pokemon: switchedPokemon, pass: switchedPokemon.pass });
+    turnLogs += '\n-> <b>' + c(switchedPokemon.name) + '</b> came for battle.';
+  }
+}
+
 // Function to execute one standard attack in current context (battleData.cid attacking battleData.oid)
 async function executeStandardMove(act) {
     if (battleData.chp <= 0 || battleData.ohp <= 0) return; // attacker or defender fainted
 
-    const move = dmoves[act.id];
     let attacker = await getUserData(battleData.cid);
     let defender = await getUserData(battleData.oid);
     let p = attacker.pokes.filter((poke)=>poke.pass==battleData.c)[0];
     let op = defender.pokes.filter((poke)=>poke.pass==battleData.o)[0];
+    const calledMoveState = resolveCalledMoveAction({
+      act,
+      battleData,
+      attackerUser: attacker,
+      defenderUser: defender,
+      attackerPokemon: p,
+      defenderPokemon: op,
+      opponentAction: act && act.opponentAction
+    });
+    if (calledMoveState && calledMoveState.failMessage) {
+      turnLogs += calledMoveState.failMessage;
+      act.executed = true;
+      return;
+    }
+    if (act && act.forcedFailMessage) {
+      turnLogs += act.forcedFailMessage;
+      act.executed = true;
+      return;
+    }
+    let move = dmoves[calledMoveState && calledMoveState.resolvedMoveId ? calledMoveState.resolvedMoveId : act.id];
+    if (calledMoveState && calledMoveState.resolvedMoveId) {
+      act.id = String(calledMoveState.resolvedMoveId);
+    }
     const attackerAbility = p && p.ability ? p.ability : 'none';
     const defenderAbility = op && op.ability ? op.ability : 'none';
     if (!move || !move.type || !p || !op || !pokes[p.name] || !pokes[op.name]) {
+      act.executed = true;
       return;
     }
     const attackerHeldItemName = getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item });
@@ -5817,12 +6356,20 @@ async function executeStandardMove(act) {
         activePass: battleData.c
       });
       const attackerHeldItemInfo = getHeldItemStatMultipliers({
+        battleData,
+        pass: battleData.c,
         pokemonName: p.name,
+        abilityName: attackerAbility,
+        stats: stats1,
         heldItem: getBattleHeldItemName({ battleData, pass: battleData.c, heldItem: p.held_item }),
         evolutionChains: chains
       });
       const defenderHeldItemInfo = getHeldItemStatMultipliers({
+        battleData,
+        pass: battleData.o,
         pokemonName: op.name,
+        abilityName: defenderAbility,
+        stats: stats2,
         heldItem: getBattleHeldItemName({ battleData, pass: battleData.o, heldItem: op.held_item }),
         evolutionChains: chains
       });
@@ -5876,8 +6423,17 @@ async function executeStandardMove(act) {
       clearChargingStateForPass(battleData, battleData.c);
       clearSemiInvulnerableStateForPass(battleData, battleData.c);
     }
+    const sleepTalkBypass = !actState.canAct && calledMoveState && calledMoveState.selectedMoveName === 'sleep talk' && getBattleStatus(battleData, battleData.c) === 'sleep';
+    if (actState.canAct || sleepTalkBypass) {
+      if (sleepTalkBypass) {
+        msgLocal += '\n-> <b>'+c(p.name)+'</b> is fast asleep.';
+      }
+      if (calledMoveState && calledMoveState.callerMessage) {
+        msgLocal += calledMoveState.callerMessage;
+      }
+    }
     
-    if (!actState.canAct) {
+    if (!actState.canAct && !sleepTalkBypass) {
         msgLocal += "\n" + actState.msg;
     } else if (isChargeReleaseTurn) {
       clearChargingStateForPass(battleData, battleData.c);
@@ -5902,6 +6458,11 @@ async function executeStandardMove(act) {
       consumeBattleHeldItem({ battleData, pass: battleData.c, heldItem: p.held_item });
       msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Power Herb</b> activated!';
       msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(moveLabel)+'</b> immediately!';
+    } else if (!canReactivePriorityMoveTrigger(moveName, act && act.opponentAction)) {
+      msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(moveLabel)+'</b> but it failed!';
+    } else if (PROTECTION_MOVES.has(moveName)) {
+        setBattleProtectionState(battleData, battleData.c, moveName);
+        msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and protected itself!';
     } else if (moveName === 'bide') {
         // Bide bypasses accuracy/evasion checks
         if (!battleData.bideState) battleData.bideState = {};
@@ -5937,6 +6498,11 @@ async function executeStandardMove(act) {
                     });
                     damage = sturdyDamage.damage;
                   battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
+                  const abilityState = ensureAbilityState(battleData);
+                  if (!abilityState.rageFistHitsTaken || typeof abilityState.rageFistHitsTaken !== 'object') {
+                    abilityState.rageFistHitsTaken = {};
+                  }
+                  abilityState.rageFistHitsTaken[String(battleData.o)] = Math.max(0, Number(abilityState.rageFistHitsTaken[String(battleData.o)]) || 0) + 1;
                   if (battleData.bideState && battleData.bideState[battleData.o]) {
                     battleData.bideState[battleData.o].damage += damage;
                     battleData.bideState[battleData.o].lastAttacker = battleData.c;
@@ -5990,6 +6556,11 @@ async function executeStandardMove(act) {
               });
               damage = sturdyDamage.damage;
               battleData.turnHits[battleData.o] = { damage: damage, category: move.category || 'physical', from: battleData.c, move: moveName };
+              const abilityState = ensureAbilityState(battleData);
+              if (!abilityState.rageFistHitsTaken || typeof abilityState.rageFistHitsTaken !== 'object') {
+                abilityState.rageFistHitsTaken = {};
+              }
+              abilityState.rageFistHitsTaken[String(battleData.o)] = Math.max(0, Number(abilityState.rageFistHitsTaken[String(battleData.o)]) || 0) + 1;
               if (battleData.bideState && battleData.bideState[battleData.o]) {
                 battleData.bideState[battleData.o].damage += damage;
                 battleData.bideState[battleData.o].lastAttacker = battleData.c;
@@ -6046,7 +6617,10 @@ async function executeStandardMove(act) {
               msgLocal += '\n-> <b>'+c(p.name)+'</b> crashed and lost <code>'+crashTaken+'</code> HP!';
             }
     } else {
-            if (moveName === 'leech seed') {
+            if (isBattleMoveBlockedByProtection({ battleData, defenderPass: battleData.o, move, moveName })) {
+              msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b>.';
+              msgLocal += '\n-> <b>'+c(op.name)+'</b> protected itself!';
+            } else if (moveName === 'leech seed') {
               if (!battleData.leechSeed || typeof battleData.leechSeed !== 'object') {
                 battleData.leechSeed = {};
               }
@@ -6337,8 +6911,13 @@ async function executeStandardMove(act) {
               abilityName: attackerAbility,
               moveName,
               moveType: effectiveMoveType,
-              movePower: move.power
-            }) * getWeatherMovePowerMultiplier({ battleData, moveName, moveType: effectiveMoveType }) * pinchPowerMult * technicianInfo.multiplier));
+              movePower: move.power,
+              defenderPass: battleData.o,
+              defenderCurrentHp: battleData.ohp,
+              defenderMaxHp: stats2.hp,
+              effectiveness: eff1,
+              movedBeforeTarget: !!(act && act.opponentAction && !act.opponentAction.executed)
+            }) * getWeatherMovePowerMultiplier({ battleData, moveName, moveType: effectiveMoveType }) * pinchPowerMult * technicianInfo.multiplier * ((calledMoveState && calledMoveState.powerMultiplier) || 1)));
             const stabInfo = getStabInfo({
               abilityName: attackerAbility,
               moveType: effectiveMoveType,
@@ -6615,6 +7194,11 @@ async function executeStandardMove(act) {
             
             // Record hit for counter-attacks and accumulate bide damage
               battleData.turnHits[battleData.o] = { damage: damage, category: move.category, from: battleData.c, move: moveName };
+              const abilityState = ensureAbilityState(battleData);
+              if (!abilityState.rageFistHitsTaken || typeof abilityState.rageFistHitsTaken !== 'object') {
+                abilityState.rageFistHitsTaken = {};
+              }
+              abilityState.rageFistHitsTaken[String(battleData.o)] = Math.max(0, Number(abilityState.rageFistHitsTaken[String(battleData.o)]) || 0) + 1;
             if (battleData.bideState && battleData.bideState[battleData.o]) {
                 battleData.bideState[battleData.o].damage += damage;
                 battleData.bideState[battleData.o].lastAttacker = battleData.c;
@@ -6766,16 +7350,44 @@ async function executeStandardMove(act) {
     if (!battleData.usedMoves) battleData.usedMoves = {};
     if (!battleData.usedMoves[battleData.c]) battleData.usedMoves[battleData.c] = [];
     if (!battleData.usedMoves[battleData.c].includes(act.id)) battleData.usedMoves[battleData.c].push(act.id);
+
+    const latestHit = battleData.turnHits && battleData.turnHits[battleData.o];
+    const moveLandedThisAction = !!(latestHit && String(latestHit.from) === String(battleData.c) && normalizeMoveName(latestHit.move) === moveName && Number(latestHit.damage) > 0);
+    const canUserSwitchOut = USER_SWITCH_OUT_MOVES.has(moveName) && battleData.chp > 0;
+    const canTargetBeSwitchedOut = TARGET_SWITCH_OUT_MOVES.has(moveName) && battleData.ohp > 0;
+    if (canUserSwitchOut && ((['u turn', 'volt switch', 'flip turn'].includes(moveName) && moveLandedThisAction) || !['u turn', 'volt switch', 'flip turn'].includes(moveName))) {
+      await applyForcedBattleSwitchLocal({ side: 'attacker', moveName: moveLabel, sourcePokemonName: p.name });
+    } else if (canTargetBeSwitchedOut && ((['dragon tail', 'circle throw'].includes(moveName) && moveLandedThisAction) || ['roar', 'whirlwind'].includes(moveName))) {
+      await applyForcedBattleSwitchLocal({ side: 'defender', moveName: moveLabel, sourcePokemonName: op.name });
+    }
+
+    if (calledMoveState && calledMoveState.instructMoveId && battleData.ohp > 0 && battleData.chp > 0) {
+      msgLocal += '\n-> <b>'+c(op.name)+'</b> followed the instruction!';
+      fullSwap(battleData);
+      await executeStandardMove({
+        cid: battleData.cid,
+        c: battleData.c,
+        type: 'move',
+        id: calledMoveState.instructMoveId,
+        executed: false,
+        opponentAction: null,
+        instructedRepeat: true
+      });
+      fullSwap(battleData);
+    }
     
     turnLogs += msgLocal;
+    act.executed = true;
 }
 
 await executeStandardMove(orderedActions[0]);
+orderedActions[0].executed = true;
 
 // Ensure second action executes correctly
 if (!singleActionTurn && battleData.ohp > 0 && battleData.chp > 0) { // both must be alive
     fullSwap(battleData); // Context swap so opponent becomes Attacker
     await executeStandardMove(orderedActions[1]);
+    orderedActions[1].executed = true;
 } 
 
 // What if someone fainted?
@@ -6796,6 +7408,7 @@ turnLogs += applyBattleDrowsyEndTurn(battleData, [
   { pass: battleData.c, pokemon: endTurnCurrent2, currentHp: battleData.chp },
   { pass: battleData.o, pokemon: endTurnOther2, currentHp: battleData.ohp }
 ]);
+clearBattleProtectionState(battleData);
 tickScreensForTurn(battleData);
 await saveBattleData(bword, battleData);
 
@@ -6922,9 +7535,25 @@ return
 }
 return
 }
+if (battleData.pendingForcedSwitch && String(battleData.pendingForcedSwitch.cid) === String(battleData.cid)) {
+const available = getAvailableBattleSwitchPasses(battleData.tem, battleData.c)
+if (available.length > 0) {
+msg += '\n\n<b>'+c(battleData.pendingForcedSwitch.pokemonName || p1.name)+'</b> must switch out after using <b>'+c(battleData.pendingForcedSwitch.moveName || 'that move')+'</b>. Choose your next pokemon.'
+const buttons = available.map((pass, idx) => ({ text: String(idx + 1), callback_data: 'multidne_' + pass + '_' + bword + '_'+battleData.cid+'_forced' }))
+const rows = [[{text:'View Team',callback_data:'viewteam_'+bword+'_'+battleData.cid+''}]];
+for (let i = 0; i < buttons.length; i += 2) {
+rows.push(buttons.slice(i, i + 2))
+}
+await saveBattleData(bword, battleData)
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:rows}})
+return
+}
+delete battleData.pendingForcedSwitch
+}
 const isGroupMmo = ctx.chat.type !== 'private';
-const pvpMmo = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMmo.msg,{parse_mode:'HTML',reply_markup:pvpMmo.keyboard,...pvpMmo.ext})
+setBattleSceneFocusPass(battleData, battleData.c);
+const pvpMmo = await buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
+await editMessage('media',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMmo.media,{reply_markup:pvpMmo.keyboard})
 })
 bot.action(/multichanpok_/,async ctx => {
 if (hitBattleCooldown(ctx)) {
@@ -7021,8 +7650,9 @@ const level2 = plevel(p1.name,p1.exp)
 const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
 const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
 const isGroupBtl = ctx.chat.type !== 'private';
-const pvpBtl = buildPvpMsg('', battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupBtl);
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpBtl.msg,{parse_mode:'HTML',reply_markup:pvpBtl.keyboard,...pvpBtl.ext})
+setBattleSceneFocusPass(battleData, battleData.c);
+const pvpBtl = await buildPvpMsg('', battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupBtl);
+await editMessage('media',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpBtl.media,{reply_markup:pvpBtl.keyboard})
 })
 bot.action(/zmovetst_/,async ctx => {
 if (hitBattleCooldown(ctx)) {
@@ -7069,8 +7699,9 @@ const isGroupZ = ctx.chat.type !== 'private';
 const prefix = ready[String(battleData.cid)]
   ? '<b>'+c(p1.name)+'</b> is charged with Z-Power!'
   : '<b>'+c(p1.name)+'</b> is no longer preparing a Z-Move.'
-const pvpZ = buildPvpMsg(prefix, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupZ);
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpZ.msg,{parse_mode:'HTML',reply_markup:pvpZ.keyboard,...pvpZ.ext})
+setBattleSceneFocusPass(battleData, p1.pass);
+const pvpZ = await buildPvpMsg(prefix, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupZ);
+await editMessage('media',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpZ.media,{reply_markup:pvpZ.keyboard})
 })
 bot.action(/dyntst_/,async ctx => {
 if (hitBattleCooldown(ctx)) {
@@ -7133,8 +7764,9 @@ const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
 const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
 const isGroupDyn = ctx.chat.type !== 'private';
 const formLabel = isBattleGigantamaxPokemon(p1) ? 'Gigantamax' : 'Dynamax'
-const pvpDyn = buildPvpMsg('<b>'+c(p1.name)+'</b> transformed into <b>'+formLabel+'</b> form!', battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupDyn);
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpDyn.msg,{parse_mode:'HTML',reply_markup:pvpDyn.keyboard,...pvpDyn.ext})
+setBattleSceneFocusPass(battleData, p1.pass);
+const pvpDyn = await buildPvpMsg('<b>'+c(p1.name)+'</b> transformed into <b>'+formLabel+'</b> form!', battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupDyn);
+await editMessage('media',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpDyn.media,{reply_markup:pvpDyn.keyboard})
 })
 bot.action(/megtst_/,async ctx => {
 if (hitBattleCooldown(ctx)) {
@@ -7198,8 +7830,9 @@ if (_isPvpMega) {
   const _pvpMegStats2 = await Stats(_pvpMegBase2, _pvpMegP1.ivs, _pvpMegP1.evs, c(_pvpMegP1.nature), plevel(_pvpMegP1.name, _pvpMegP1.exp));
   const _pvpMegMsg = '<b>' + c(_pvpMegP1.name) + '</b> is ready to Mega Evolve!\n<i>Mega will apply when both players have chosen. Now choose your move.</i>';
   const _pvpMegIsGroup = ctx.chat.type !== 'private';
-  const _pvpMegUi = buildPvpMsg(_pvpMegMsg, battleData, _pvpMegAttacker, _pvpMegDefender, _pvpMegP1, _pvpMegP2, _pvpMegStats1, _pvpMegStats2, bword, _pvpMegIsGroup);
-  await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, _pvpMegUi.msg, { parse_mode: 'HTML', reply_markup: _pvpMegUi.keyboard, ..._pvpMegUi.ext });
+  setBattleSceneFocusPass(battleData, _pvpMegP1.pass);
+  const _pvpMegUi = await buildPvpMsg(_pvpMegMsg, battleData, _pvpMegAttacker, _pvpMegDefender, _pvpMegP1, _pvpMegP2, _pvpMegStats1, _pvpMegStats2, bword, _pvpMegIsGroup);
+  await editMessage('media', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, _pvpMegUi.media, { reply_markup: _pvpMegUi.keyboard });
   return;
 }
 
@@ -7229,8 +7862,8 @@ const level12 = plevel(p22.name,p22.exp)
 const level22 = plevel(p12.name,p12.exp)
 const stats12 = await Stats(base12,p22.ivs,p22.evs,c(p22.nature),level12) 
 const stats22 = await Stats(base22,p12.ivs,p12.evs,c(p12.nature),level22)
-const speed12 = getEffectiveSpeed(stats12.speed, battleData, p22.pass, p22 && p22.ability)
-const speed22 = getEffectiveSpeed(stats22.speed, battleData, p12.pass, p12 && p12.ability)
+const speed12 = getEffectiveSpeed(stats12.speed, battleData, p22.pass, p22 && p22.ability, p22 && p22.name, stats12)
+const speed22 = getEffectiveSpeed(stats22.speed, battleData, p12.pass, p12 && p12.ability, p12 && p12.name, stats22)
 const result = speed12 > speed22 ? p22.pass : p12.pass
 if(result in battleData.tem2){
 const cc = battleData.c
@@ -7265,14 +7898,15 @@ const level2 = plevel(p1.name,p1.exp)
 const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
 const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
 const isGroupMeg = ctx.chat.type !== 'private';
-const pvpMeg = buildPvpMsg(megaMsg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMeg);
+setBattleSceneFocusPass(battleData, p1.pass);
+const pvpMeg = await buildPvpMsg(megaMsg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMeg);
 let img2 = pokes[p12.name].front_default_image
 const im2 = shiny.filter((poke)=>poke.name==p12.name)[0]
 if(im2 && p12.symbol=='✨'){
   img2=im2.shiny_url
 }
 await sendMessage(ctx,ctx.chat.id,img2,{caption:'*'+c(p12.name)+'* has transformed into *'+c(pke.name)+'*.',parse_mode:'markdown',reply_to_message_id:ctx.callbackQuery.message.message_id})
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMeg.msg,{parse_mode:'HTML',reply_markup:pvpMeg.keyboard,...pvpMeg.ext})
+await editMessage('media',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpMeg.media,{reply_markup:pvpMeg.keyboard})
 })
 
 bot.action(/multidne_/,async ctx => {
@@ -7341,14 +7975,19 @@ if(prop == 'change'){
     msg += `<b>Waiting for ${displayName(attacker, battleData.cid)} to select...</b>`
 
     const isGroupMmo = ctx.chat.type !== 'private';
-    const pvpMmo = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
-    await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, pvpMmo.msg, { parse_mode: 'HTML', reply_markup: pvpMmo.keyboard, ...pvpMmo.ext })
+    setBattleSceneFocusPass(battleData, battleData.cid);
+    const pvpMmo = await buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupMmo);
+    await editMessage('media', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, pvpMmo.media, { reply_markup: pvpMmo.keyboard })
     return
   }
 
   dbg('multidne:resolving', { bword });
   await resolveQueuedActions(ctx, battleData, bword);
   return
+}
+
+if(prop == 'forced'){
+delete battleData.pendingForcedSwitch
 }
 
 const previousBattlePass = battleData.c
@@ -7359,6 +7998,8 @@ if (!battleData.choiceLockedMoves || typeof battleData.choiceLockedMoves !== 'ob
 }
 delete battleData.choiceLockedMoves[String(previousBattlePass)];
 delete battleData.choiceLockedMoves[String(pass)];
+delete ensureAbilityState(battleData).protoQuark[String(previousBattlePass)];
+delete ensureAbilityState(battleData).protoQuark[String(pass)];
 const atta = await getUserData(battleData.cid)
 const deffa = await getUserData(battleData.oid)
 const p12 = atta.pokes.filter((poke)=>poke.pass==pass)[0]
@@ -7393,8 +8034,8 @@ msg += applyAbilityEntry({
   partyHpMap: battleData.tem,
   c
 }).message
-const speed12 = getEffectiveSpeed(stats12.speed, battleData, p22.pass, p22 && p22.ability)
-const speed22 = getEffectiveSpeed(stats22.speed, battleData, p12.pass, p12 && p12.ability)
+const speed12 = getEffectiveSpeed(stats12.speed, battleData, p22.pass, p22 && p22.ability, p22 && p22.name, stats12)
+const speed22 = getEffectiveSpeed(stats22.speed, battleData, p12.pass, p12 && p12.ability, p12 && p12.name, stats22)
 const result = speed12 > speed22 ? p22.pass : p12.pass
 if(prop == 'fainted'){
 if(result in battleData.tem2){
@@ -7451,8 +8092,9 @@ const level2 = plevel(p1.name,p1.exp)
 const stats1 = await Stats(base1,p2.ivs,p2.evs,c(p2.nature),level1)
 const stats2 = await Stats(base2,p1.ivs,p1.evs,c(p1.nature),level2)
 const isGroupDne = ctx.chat.type !== 'private';
-const pvpDne = buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupDne);
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpDne.msg,{parse_mode:'HTML',reply_markup:pvpDne.keyboard,...pvpDne.ext})
+setBattleSceneFocusPass(battleData, p1.pass);
+const pvpDne = await buildPvpMsg(msg, battleData, attacker, defender, p1, p2, stats1, stats2, bword, isGroupDne);
+await editMessage('media',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpDne.media,{reply_markup:pvpDne.keyboard})
 })
 
 // Handler: "View Moves" shows ALL moves as a popup alert to the current player only (Showdown-style)
@@ -7523,7 +8165,8 @@ const level2v = plevel(p1v.name,p1v.exp)
 const stats1v = await Stats(base1v,p2v.ivs,p2v.evs,c(p2v.nature),level1v)
 const stats2v = await Stats(base2v,p1v.ivs,p1v.evs,c(p1v.nature),level2v)
 const isGroupAct = ctx.chat.type !== 'private';
-const pvpAct = buildPvpMsg('', battleData2, attacker2, defender2, p1v, p2v, stats1v, stats2v, bword2, isGroupAct);
+setBattleSceneFocusPass(battleData2, battleData2.c);
+const pvpAct = await buildPvpMsg('', battleData2, attacker2, defender2, p1v, p2v, stats1v, stats2v, bword2, isGroupAct);
 
 const usedMoves2 = battleData2.usedMoves || {};
 const p1UsedMoves2 = usedMoves2[battleData2.c] || [];
@@ -7539,7 +8182,7 @@ rows.push([{text:'Bag',callback_data:'multybg_'+bword2+''},{text:'Escape',callba
 rows.push([{text:'Pokemon',callback_data:'multichanpok_'+bword2+'_'+battleData2.cid+''}]);
 rows.push([{text:'⬅️ Back',callback_data:'multibttle_'+bword2+'_'+battleData2.cid+''}]);
 
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpAct.msg,{parse_mode:'HTML',reply_markup:{inline_keyboard:rows},...pvpAct.ext})
+await editMessage('media',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,pvpAct.media,{reply_markup:{inline_keyboard:rows}})
 })
 */
 }

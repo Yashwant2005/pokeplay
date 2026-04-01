@@ -110,6 +110,7 @@ function ensureAbilityState(battleData) {
   const state = battleData.abilityState;
   if (!state.entryOnce || typeof state.entryOnce !== 'object') state.entryOnce = {};
   if (!state.battleBond || typeof state.battleBond !== 'object') state.battleBond = {};
+  if (!state.protoQuark || typeof state.protoQuark !== 'object') state.protoQuark = {};
   return state;
 }
 
@@ -642,6 +643,43 @@ function getHighestStatKey(stats) {
   return bestStat;
 }
 
+function getProtoQuarkDriveInfo(options) {
+  const { battleData, pass, pokemonName, abilityName, heldItem, stats } = options || {};
+  const ability = normalizeAbilityName(abilityName);
+  if (ability !== 'protosynthesis' && ability !== 'quark-drive') {
+    return { active: false, stat: '', multiplier: 1, viaItem: false, ability };
+  }
+  const state = ensureAbilityState(battleData);
+  const existing = state.protoQuark[String(pass)];
+  if (existing && existing.active) {
+    return existing;
+  }
+  const item = getBattleHeldItemName({ battleData, pass, heldItem });
+  const weather = getEffectiveWeatherName(battleData);
+  const terrain = normalizeMoveName(
+    (battleData && (
+      battleData.terrain
+      || battleData.fieldTerrain
+      || battleData.activeTerrain
+      || (battleData.field && battleData.field.terrain)
+    )) || ''
+  );
+  const weatherActive = ability === 'protosynthesis' && (weather === 'sun' || weather === 'extreme-sun');
+  const terrainActive = ability === 'quark-drive' && terrain === 'electric terrain';
+  const itemActive = item === 'booster-energy';
+  if (!weatherActive && !terrainActive && !itemActive) {
+    return { active: false, stat: '', multiplier: 1, viaItem: false, ability };
+  }
+  const bestStat = getHighestStatKey(stats);
+  return {
+    active: true,
+    stat: bestStat,
+    multiplier: bestStat === 'speed' ? 1.5 : 1.3,
+    viaItem: !weatherActive && !terrainActive && itemActive,
+    ability
+  };
+}
+
 function isWindMove(moveName) {
   return WIND_MOVE_NAMES.has(normalizeMoveName(moveName));
 }
@@ -831,6 +869,19 @@ function applyEntryAbility(options) {
     if (info.active) {
       message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Supreme Overlord</b> activated!';
     }
+  }
+
+  const protoQuarkInfo = getProtoQuarkDriveInfo({ battleData, pass, pokemonName, abilityName, heldItem, stats: selfStats });
+  if (protoQuarkInfo.active) {
+    state.protoQuark[String(pass)] = protoQuarkInfo;
+    message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + titleCaseHyphenated(abilityName) + '</b> activated!';
+    message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>' + getStatLabel(protoQuarkInfo.stat, c) + '</b> was heightened!';
+    if (protoQuarkInfo.viaItem) {
+      consumeBattleHeldItem({ battleData, pass, heldItem });
+      message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Booster Energy</b> was consumed!';
+    }
+  } else {
+    delete state.protoQuark[String(pass)];
   }
 
   const currentWeather = normalizeWeatherName(getBattleWeatherName(battleData));
@@ -1248,13 +1299,14 @@ function canPokemonStillEvolve(pokemonName, evolutionChains) {
 }
 
 function getHeldItemStatMultipliers(options) {
-  const { pokemonName, heldItem, evolutionChains } = options || {};
+  const { pokemonName, heldItem, evolutionChains, battleData, pass, abilityName, stats } = options || {};
   const current = String(pokemonName || '').toLowerCase();
   const baseSpecies = current.split('-')[0];
   const item = normalizeHeldItemName(heldItem);
   const canEvolve = canPokemonStillEvolve(current, evolutionChains);
   const plateType = getArceusPlateType(item);
-  return {
+  const protoQuark = getProtoQuarkDriveInfo({ battleData, pass, pokemonName, abilityName, heldItem, stats });
+  const out = {
     attack: item === 'choice-band' ? 1.5 : (baseSpecies === 'pikachu' && item === 'light-ball' ? 2 : 1),
     special_attack: item === 'choice-specs' ? 1.5 : (baseSpecies === 'pikachu' && item === 'light-ball' ? 2 : 1),
     defense: item === 'eviolite' && canEvolve ? 1.5 : 1,
@@ -1274,8 +1326,16 @@ function getHeldItemStatMultipliers(options) {
     plateType,
     plateBoostMultiplier: plateType ? 1.2 : 1,
     arceusPlateActive: baseSpecies === 'arceus' && !!plateType,
-    heldItem: item
+    heldItem: item,
+    protoQuarkActive: protoQuark.active,
+    protoQuarkStat: protoQuark.stat,
+    protoQuarkMultiplier: protoQuark.multiplier,
+    boosterEnergyActive: item === 'booster-energy'
   };
+  if (protoQuark.active && protoQuark.stat && Object.prototype.hasOwnProperty.call(out, protoQuark.stat)) {
+    out[protoQuark.stat] = Math.max(1, Number(out[protoQuark.stat]) || 1) * protoQuark.multiplier;
+  }
+  return out;
 }
 
 function getSupremeOverlordInfo(options) {
@@ -1397,7 +1457,21 @@ function moveMakesContact(moveName, moveCategory) {
 }
 
 function getBattleMovePower(options) {
-  const { battleData, pass, pokemonName, moveName, moveType, movePower, heldItem, abilityName } = options || {};
+  const {
+    battleData,
+    pass,
+    pokemonName,
+    moveName,
+    moveType,
+    movePower,
+    heldItem,
+    abilityName,
+    defenderPass,
+    defenderCurrentHp,
+    defenderMaxHp,
+    effectiveness,
+    movedBeforeTarget
+  } = options || {};
   const rawPower = Number(movePower);
   if (!Number.isFinite(rawPower) || rawPower <= 0) return rawPower;
   const normalizedMove = normalizeMoveName(moveName);
@@ -1411,7 +1485,90 @@ function getBattleMovePower(options) {
     return 160;
   }
   const effectiveWeather = getEffectiveWeatherName(battleData);
+  const terrainName = normalizeMoveName(
+    (battleData && (
+      battleData.terrain
+      || battleData.fieldTerrain
+      || battleData.activeTerrain
+      || (battleData.field && battleData.field.terrain)
+    )) || ''
+  );
+  const attackerStatus = battleData && battleData.status ? battleData.status[pass] : null;
+  const defenderStatus = battleData && battleData.status ? battleData.status[defenderPass] : null;
+  const defenderSemiInvulnerable = battleData && battleData.semiInvulnerableState && battleData.semiInvulnerableState[String(defenderPass)];
+  const defenderSemiMove = normalizeMoveName(defenderSemiInvulnerable && defenderSemiInvulnerable.moveName);
+  const defenderMinimized = !!(battleData && battleData.minimized && battleData.minimized[String(defenderPass)]);
+  const defenderHasItem = !!item && !!String(getBattleHeldItemName({ battleData, pass: defenderPass })).trim();
+  const defenderDynamaxed = !!(battleData && battleData.dynamaxState && battleData.dynamaxState[String(defenderPass)]);
+  const turnHitOnTarget = battleData && battleData.turnHits ? battleData.turnHits[defenderPass] : null;
+  const turnHitOnUser = battleData && battleData.turnHits ? battleData.turnHits[pass] : null;
+  const rageFistHitsTaken = Math.max(0, Number(state.rageFistHitsTaken && state.rageFistHitsTaken[String(pass)]) || 0);
+  const faintedAllies = Math.max(0, Object.keys((battleData && battleData.tem) || {}).filter((allyPass) => String(allyPass) !== String(pass) && Number(battleData.tem[allyPass]) <= 0).length);
+
   if (normalizedMove === 'weather ball' && effectiveWeather && effectiveWeather !== 'strong-winds') {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if (normalizedMove === 'acrobatics' && !item) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if (normalizedMove === 'assurance' && turnHitOnTarget && String(turnHitOnTarget.from) !== String(pass) && Number(turnHitOnTarget.damage) > 0) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if ((normalizedMove === 'avalanche' || normalizedMove === 'revenge' || normalizedMove === 'payback') && turnHitOnUser && Number(turnHitOnUser.damage) > 0) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if ((normalizedMove === 'barb barrage' || normalizedMove === 'venoshock') && (defenderStatus === 'poison' || defenderStatus === 'badly_poisoned')) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if ((normalizedMove === 'behemoth bash' || normalizedMove === 'behemoth blade' || normalizedMove === 'dynamax cannon') && defenderDynamaxed) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if ((normalizedMove === 'bolt beak' || normalizedMove === 'fishious rend') && movedBeforeTarget) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if (normalizedMove === 'brine' && Number.isFinite(defenderCurrentHp) && Number.isFinite(defenderMaxHp) && defenderMaxHp > 0 && defenderCurrentHp <= defenderMaxHp / 2) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if ((normalizedMove === 'collision course' || normalizedMove === 'electro drift') && Number(effectiveness) > 1) {
+    return Math.max(1, Math.floor(rawPower * 1.3333333333));
+  }
+  if (normalizedMove === 'expanding force' && terrainName === 'psychic terrain') {
+    return Math.max(1, Math.floor(rawPower * 1.5));
+  }
+  if (normalizedMove === 'facade' && attackerStatus) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if (normalizedMove === 'fickle beam' && Math.random() < 0.3) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if ((normalizedMove === 'earthquake' || normalizedMove === 'magnitude') && defenderSemiMove === 'dig') {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if ((normalizedMove === 'gust' || normalizedMove === 'twister') && (defenderSemiMove === 'fly' || defenderSemiMove === 'bounce' || defenderSemiMove === 'sky drop')) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if (normalizedMove === 'hex' && defenderStatus) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if (normalizedMove === 'knock off' && defenderHasItem) {
+    return Math.max(1, Math.floor(rawPower * 1.5));
+  }
+  if (normalizedMove === 'last respects') {
+    return Math.max(rawPower, 50 + (faintedAllies * 50));
+  }
+  if (normalizedMove === 'rage fist') {
+    return Math.max(rawPower, Math.min(350, rawPower + (rageFistHitsTaken * 50)));
+  }
+  if (normalizedMove === 'rising voltage' && terrainName === 'electric terrain') {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if ((normalizedMove === 'smelling salts' && defenderStatus === 'paralyze') || (normalizedMove === 'wake up slap' && defenderStatus === 'sleep')) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if ((normalizedMove === 'stomp' || normalizedMove === 'malicious moonsault') && defenderMinimized) {
+    return Math.max(1, Math.floor(rawPower * 2));
+  }
+  if ((normalizedMove === 'surf' || normalizedMove === 'whirlpool') && defenderSemiMove === 'dive') {
     return Math.max(1, Math.floor(rawPower * 2));
   }
   if (plateType && effectiveMoveType === plateType) {
@@ -1925,6 +2082,7 @@ module.exports = {
   getEffectivePokemonDisplayName,
   getEffectiveMoveType,
   getEffectivePokemonTypes,
+  getProtoQuarkDriveInfo,
   getPowerConstructFormChange,
   getPowerHerbInfo,
   getGoodAsGoldInfo,

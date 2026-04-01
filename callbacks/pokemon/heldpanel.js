@@ -22,6 +22,42 @@ function registerHeldPanelCallbacks(bot, deps) {
       .join(' ') || 'None';
   }
 
+  function parseHeldTail(raw, prefix, includeItem = false) {
+    const text = String(raw || '');
+    if (!text.startsWith(prefix)) return null;
+    const tail = text.slice(prefix.length);
+    const lastUnderscore = tail.lastIndexOf('_');
+    if (lastUnderscore < 0) return null;
+    let page = 1;
+    let beforeUser = tail;
+
+    const lastPart = tail.slice(lastUnderscore + 1);
+    const beforeLast = tail.slice(0, lastUnderscore);
+    if (/^\d+$/.test(lastPart) && beforeLast.includes('_')) {
+      page = Number(lastPart || 1);
+      beforeUser = beforeLast;
+    }
+
+    const userUnderscore = beforeUser.lastIndexOf('_');
+    if (userUnderscore < 0) return null;
+    const userId = Number(beforeUser.slice(userUnderscore + 1));
+    if (!Number.isFinite(userId)) return null;
+    const head = beforeUser.slice(0, userUnderscore);
+
+    if (!includeItem) {
+      return { pass: head, userId, page };
+    }
+
+    const itemUnderscore = head.indexOf('_');
+    if (itemUnderscore < 0) return null;
+    return {
+      heldItem: normalizeHeldItemName(decodeURIComponent(head.slice(0, itemUnderscore))),
+      pass: head.slice(itemUnderscore + 1),
+      userId,
+      page
+    };
+  }
+
   function ensureHeldItemBox(data) {
     if (!data.extra || typeof data.extra !== 'object') data.extra = {};
     if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {};
@@ -211,10 +247,13 @@ function registerHeldPanelCallbacks(bot, deps) {
     await ctx.answerCbQuery('Held item updated!', { show_alert: false });
   }
 
-  bot.action(/^heldpanel_([^_]+)_(\d+)(?:_(\d+))?$/, check2q, async (ctx) => {
-    const pass = ctx.match[1];
-    const userId = Number(ctx.match[2]);
-    const page = Number(ctx.match[3] || 1);
+  bot.action(/^heldpanel_/, check2q, async (ctx) => {
+    const parsed = parseHeldTail(ctx.callbackQuery.data, 'heldpanel_');
+    if (!parsed) {
+      await ctx.answerCbQuery('Invalid button!', { show_alert: true });
+      return;
+    }
+    const { pass, userId, page } = parsed;
     if (ctx.from.id !== userId) {
       await ctx.answerCbQuery('Not your button!');
       return;
@@ -223,11 +262,13 @@ function registerHeldPanelCallbacks(bot, deps) {
     await ctx.answerCbQuery();
   });
 
-  bot.action(/^heldpick_(.+)_([^_]+)_(\d+)(?:_(\d+))?$/, check2q, async (ctx) => {
-    const heldItem = normalizeHeldItemName(decodeURIComponent(ctx.match[1]));
-    const pass = ctx.match[2];
-    const userId = Number(ctx.match[3]);
-    const page = Number(ctx.match[4] || 1);
+  bot.action(/^heldpick_/, check2q, async (ctx) => {
+    const parsed = parseHeldTail(ctx.callbackQuery.data, 'heldpick_', true);
+    if (!parsed) {
+      await ctx.answerCbQuery('Invalid button!', { show_alert: true });
+      return;
+    }
+    const { heldItem, pass, userId, page } = parsed;
     if (ctx.from.id !== userId) {
       await ctx.answerCbQuery('Not your button!');
       return;
@@ -263,11 +304,13 @@ function registerHeldPanelCallbacks(bot, deps) {
     await equipHeldItem(ctx, userId, pass, heldItem, page);
   });
 
-  bot.action(/^heldreplace_(.+)_([^_]+)_(\d+)(?:_(\d+))?$/, check2q, async (ctx) => {
-    const heldItem = normalizeHeldItemName(decodeURIComponent(ctx.match[1]));
-    const pass = ctx.match[2];
-    const userId = Number(ctx.match[3]);
-    const page = Number(ctx.match[4] || 1);
+  bot.action(/^heldreplace_/, check2q, async (ctx) => {
+    const parsed = parseHeldTail(ctx.callbackQuery.data, 'heldreplace_', true);
+    if (!parsed) {
+      await ctx.answerCbQuery('Invalid button!', { show_alert: true });
+      return;
+    }
+    const { heldItem, pass, userId, page } = parsed;
     if (ctx.from.id !== userId) {
       await ctx.answerCbQuery('Not your button!');
       return;
@@ -275,10 +318,13 @@ function registerHeldPanelCallbacks(bot, deps) {
     await equipHeldItem(ctx, userId, pass, heldItem, page);
   });
 
-  bot.action(/^heldremove_([^_]+)_(\d+)(?:_(\d+))?$/, check2q, async (ctx) => {
-    const pass = ctx.match[1];
-    const userId = Number(ctx.match[2]);
-    const page = Number(ctx.match[3] || 1);
+  bot.action(/^heldremove_/, check2q, async (ctx) => {
+    const parsed = parseHeldTail(ctx.callbackQuery.data, 'heldremove_');
+    if (!parsed) {
+      await ctx.answerCbQuery('Invalid button!', { show_alert: true });
+      return;
+    }
+    const { pass, userId, page } = parsed;
     if (ctx.from.id !== userId) {
       await ctx.answerCbQuery('Not your button!');
       return;

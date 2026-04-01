@@ -1,5 +1,16 @@
 function registerDailyRewardCommand(bot, deps) {
   const { check, getUserData, saveUserData2, sendMessage, moment, admins, events, getAllUserData } = deps;
+  const getRequiredBioTag = () => '@' + String((bot && bot.botInfo && bot.botInfo.username) || 'pokeplaybot').toLowerCase();
+  const hasBotTagInBio = async (ctx) => {
+    const requiredTag = getRequiredBioTag();
+    try {
+      const chat = await ctx.telegram.getChat(ctx.from.id);
+      const bio = String((chat && chat.bio) || '').toLowerCase();
+      return bio.includes(requiredTag);
+    } catch (error) {
+      return false;
+    }
+  };
   const ensureDailyState = (data) => {
     if (!data.extra || typeof data.extra !== 'object') data.extra = {};
     if (!data.extra.events || typeof data.extra.events !== 'object') data.extra.events = {};
@@ -42,6 +53,21 @@ function registerDailyRewardCommand(bot, deps) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Start your journey now*', {
         reply_to_message_id: ctx.message.message_id,
         reply_markup: { inline_keyboard: [[{ text: 'Start My Journey', url: 't.me/' + bot.botInfo.username + '?start=start' }]] }
+      });
+      return;
+    }
+
+    const requiredBioTag = getRequiredBioTag();
+    const bioEligible = await hasBotTagInBio(ctx);
+    if (!bioEligible) {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, [
+        '*Daily Reward*',
+        '',
+        'Add *' + requiredBioTag.replace('_', '\\_') + '* to your Telegram bio to claim daily rewards.',
+        '',
+        'After updating your bio, use */daily* again.'
+      ].join('\n'), {
+        reply_to_message_id: ctx.message.message_id
       });
       return;
     }

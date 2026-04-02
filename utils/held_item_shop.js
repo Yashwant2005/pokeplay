@@ -79,6 +79,7 @@ const MEGA_STONES = (() => {
 
 const HELD_ITEM_POOL = [
   ...new Set([
+    ...ARCEUS_PLATES.map((entry) => entry.item),
     ...HELD_ITEM_PC_TIERS.flatMap((tier) => tier.items),
     ...Object.keys(MEGA_STONES || {})
   ])

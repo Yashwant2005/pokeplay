@@ -1,7 +1,7 @@
 const EVENT_ID = 'acknowledge';
 const he = require('he');
 const EVENT_STATE_KEY = 'communityAcknowledge';
-const EVENT_TITLE = 'PokeTales Community Acknowledge Event';
+const EVENT_TITLE = 'PokePlay Community Acknowledge Event';
 const EVENT_SHORT_LABEL = 'Acknowledge';
 const EVENT_STATUS = 'active';
 const EVENT_DURATION = 'Live now';
@@ -139,6 +139,9 @@ function ensureAcknowledgeEventState(userData) {
     }
     state.rewardClaims = migratedClaims;
   }
+  if (!state.sentAcknowledgement || typeof state.sentAcknowledgement !== 'object' || Array.isArray(state.sentAcknowledgement)) {
+    state.sentAcknowledgement = null;
+  }
   delete state.claimedRewardTiers;
   return state;
 }
@@ -193,7 +196,8 @@ function buildAcknowledgeEventDetails() {
     'Use /acknowledge in reply to the player you want to appreciate.',
     '3 unique acknowledgements: earn 1 Legends ZA Mega Stone.',
     '7 unique acknowledgements: earn 1 more Legends ZA Mega Stone.',
-    'Each player can acknowledge you only once.',
+    'Each player can acknowledge only one person during this event.',
+    'A player cannot acknowledge the same target more than once.',
     'You cannot acknowledge yourself.',
     'Maximum reward: 2 Mega Stones.'
   ];

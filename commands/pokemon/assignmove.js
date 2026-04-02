@@ -106,7 +106,7 @@ function registerAssignMoveCommand(bot, deps) {
     }
 
     const before = Array.isArray(target.moves) ? target.moves.slice() : [];
-    const result = sanitizePokemonMoves(target, repairDeps);
+    const result = sanitizePokemonMoves(target, repairDeps, { forceReplace: true });
     if (result.changed) {
       await saveUserData2(ctx.from.id, data);
       await sendMessage(

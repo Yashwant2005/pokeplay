@@ -9,7 +9,8 @@ function registerBattleStatsCommand(bot, deps) {
     getStageMultiplier,
     getHeldItemStatMultipliers,
     getAttackStatMultiplier,
-    getSupremeOverlordInfo
+    getSupremeOverlordInfo,
+    getProtoQuarkDriveInfo
   } = require('../../utils/battle_abilities');
 
   const MAIN_STATS = ['attack', 'defense', 'special_attack', 'special_defense', 'speed'];
@@ -143,6 +144,14 @@ function registerBattleStatsCommand(bot, deps) {
       partyHpMap: battleSide.sideMap,
       activePass: p.pass
     });
+    const protoQuarkInfo = getProtoQuarkDriveInfo({
+      battleData,
+      pass: p.pass,
+      pokemonName: p.name,
+      abilityName: p.ability,
+      heldItem: liveHeldItem,
+      stats
+    });
 
     const currentHp = Number(battleSide.sideMap[p.pass]);
     const battleStatus = typeof getBattleStatus === 'function' ? getBattleStatus(battleData, p.pass) : null;
@@ -173,6 +182,9 @@ function registerBattleStatsCommand(bot, deps) {
       if (statKey === 'speed' && typeof getSpeedWithStatus === 'function') {
         battleValue = getSpeedWithStatus(battleValue, battleData, p.pass);
         battleValue = Math.max(1, Math.floor(battleValue * (heldItemInfo.speed || 1)));
+      }
+      if (protoQuarkInfo.active && protoQuarkInfo.stat === statKey) {
+        battleValue = Math.max(1, Math.floor(battleValue * protoQuarkInfo.multiplier));
       }
 
       finalStats[statKey] = battleValue;
@@ -213,6 +225,7 @@ function registerBattleStatsCommand(bot, deps) {
     if (heldItemInfo.lifeOrbActive) notes.push('Life Orb is boosting damaging moves and will deal recoil after attacks');
     if (getAttackStatMultiplier(p.ability, 'physical') > 1) notes.push(c(titleCaseAbility(p.ability || 'none')) + ' is boosting Attack');
     if (supremeOverlordInfo.active) notes.push('Supreme Overlord boost: x' + supremeOverlordInfo.multiplier.toFixed(1));
+    if (protoQuarkInfo.active) notes.push(c(titleCaseAbility(p.ability || 'none')) + ' is boosting ' + c(String(protoQuarkInfo.stat || '').replace(/_/g, ' ')) + ' (x' + protoQuarkInfo.multiplier.toFixed(1) + ')');
     if (battleStatus === 'paralyze') notes.push('Paralysis is reducing Speed');
 
     if (notes.length > 0) {

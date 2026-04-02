@@ -76,6 +76,14 @@ function normalizeAssetName(value) {
     .trim();
 }
 
+function getCurrentTerrainVisualKey(battleData) {
+  const terrainName = normalizeMoveName(
+    (battleData && battleData.terrain)
+    || (battleData && battleData.field && battleData.field.terrain)
+  );
+  return TERRAIN_MOVE_MAP[terrainName] || '';
+}
+
 function hashString(value) {
   const source = String(value || '');
   let hash = 0;
@@ -114,6 +122,7 @@ function ensureBattleSceneState(battleData) {
       ? options[hashString(`${battleData.cid || ''}:${battleData.oid || ''}:${battleData.bword || battleData.name || ''}`) % options.length]
       : DEFAULT_STADIUM;
   }
+  sceneState.terrain = getCurrentTerrainVisualKey(battleData) || '';
   return sceneState;
 }
 

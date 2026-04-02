@@ -1,4 +1,4 @@
-const { applyEntryAbility, getBattleMovePower, getDisplayedWeatherState, getEffectiveMoveType, getPinchAbilityInfo, getWeatherDisplayName, setBattleWeatherNegationState } = require('../../utils/battle_abilities');
+const { applyEntryAbility, getBattleMovePower, getBattleTerrainName, getDisplayedWeatherState, getEffectiveMoveType, getPinchAbilityInfo, getTerrainDisplayName, getWeatherDisplayName, setBattleWeatherNegationState } = require('../../utils/battle_abilities');
 const { syncBattleFormAndAbility } = require('../../utils/battle_forms');
 
 function register_018_snd(bot, deps) {
@@ -89,6 +89,13 @@ msg += ' ('+battleData.weatherTurns+' turns left)'
 }
 if(weatherState.negated){
 msg += ' <i>(effects negated)</i>'
+}
+}
+const terrainState = getBattleTerrainName(battleData)
+if(terrainState){
+msg += '\n<b>Terrain :</b> '+getTerrainDisplayName(terrainState)
+if((battleData.terrainTurns || 0) > 0){
+msg += ' ('+battleData.terrainTurns+' turns left)'
 }
 }
 msg += '\n\n<b>Turn :</b> <code>'+uname+'</code>'

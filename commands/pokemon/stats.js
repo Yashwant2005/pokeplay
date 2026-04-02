@@ -309,6 +309,9 @@ bot.action(/suger_/, async (ctx, next) => {
   }
 
   await ctx.answerCbQuery();
+  try {
+    await ctx.deleteMessage();
+  } catch (_) {}
   const data = await getUserData(ctx.from.id);
   const name2 = name.replace(/ /g,'-');
   const p22 = data.pokes.filter((poke)=> (poke.name==name2.toLowerCase()) || (poke.nickname && poke.nickname.toLowerCase() == name.toLowerCase()))

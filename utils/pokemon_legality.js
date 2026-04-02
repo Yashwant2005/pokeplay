@@ -141,8 +141,9 @@ function isBannedSpecialMove(moveName) {
   return name.startsWith('max-') || name.startsWith('g-max-') || Z_MOVE_NAMES.has(name);
 }
 
-async function repairPokemonAbilityEntry(entry, deps) {
+async function repairPokemonAbilityEntry(entry, deps, options = {}) {
   const { pokes, fetch } = deps;
+  const forceReplace = options.forceReplace === true;
   if (!entry || typeof entry !== 'object') {
     return { changed: false, reason: 'invalid-entry' };
   }
@@ -151,15 +152,18 @@ async function repairPokemonAbilityEntry(entry, deps) {
   const canonical = await fetchCanonicalAbilities(entry.name, fetch);
 
   if (canonical.length > 0) {
-    if (currentAbility && canonical.includes(currentAbility)) {
+    const preferredAbility = canonical[0] || currentAbility || 'none';
+    if (currentAbility && canonical.includes(currentAbility) && !forceReplace) {
       return { changed: false, reason: 'valid' };
     }
-    const nextAbility = canonical[Math.floor(Math.random() * canonical.length)] || currentAbility || 'none';
+    const nextAbility = preferredAbility;
     const previousAbility = entry.ability || 'none';
     entry.ability = nextAbility;
     return {
       changed: normalizeName(previousAbility) !== normalizeName(nextAbility),
-      reason: currentAbility ? 'repaired-invalid' : 'assigned-missing',
+      reason: currentAbility
+        ? (canonical.includes(currentAbility) ? 'reassigned-canonical' : 'repaired-invalid')
+        : 'assigned-missing',
       previousAbility,
       nextAbility
     };
@@ -179,8 +183,9 @@ async function repairPokemonAbilityEntry(entry, deps) {
   };
 }
 
-function sanitizePokemonMoves(entry, deps) {
+function sanitizePokemonMoves(entry, deps, options = {}) {
   const { dmoves } = deps;
+  const forceReplace = options.forceReplace === true;
   if (!entry || typeof entry !== 'object') {
     return { changed: false, removedCount: 0, addedCount: 0, finalMoves: [] };
   }
@@ -206,19 +211,50 @@ function sanitizePokemonMoves(entry, deps) {
   }
 
   const addedMoves = [];
+  const finalMoves = [];
+  const finalSeen = new Set();
+  const preferredSource = forceReplace ? moveData.levelUpMoveIds : [];
+
+  for (const moveId of preferredSource) {
+    if (finalMoves.length >= 4) break;
+    const move = dmoves && dmoves[String(moveId)];
+    if (!move || isBannedSpecialMove(move.name) || finalSeen.has(moveId)) continue;
+    finalSeen.add(moveId);
+    finalMoves.push(moveId);
+    if (!currentMoves.includes(moveId)) {
+      addedMoves.push(moveId);
+    }
+  }
+
+  const fallbackValidMoves = forceReplace ? validMoves : validMoves;
+  for (const moveId of fallbackValidMoves) {
+    if (finalMoves.length >= 4) break;
+    if (finalSeen.has(moveId)) continue;
+    finalSeen.add(moveId);
+    finalMoves.push(moveId);
+  }
+
   for (const moveId of moveData.levelUpMoveIds) {
-    if (validMoves.length >= 4) break;
+    if (finalMoves.length >= 4) break;
     if (seen.has(moveId)) continue;
     const move = dmoves && dmoves[String(moveId)];
     if (!move || isBannedSpecialMove(move.name)) continue;
+    if (finalSeen.has(moveId)) continue;
     seen.add(moveId);
-    validMoves.push(moveId);
-    addedMoves.push(moveId);
+    finalSeen.add(moveId);
+    finalMoves.push(moveId);
+    if (!currentMoves.includes(moveId)) {
+      addedMoves.push(moveId);
+    }
   }
 
-  entry.moves = validMoves.slice(0, 4);
+  entry.moves = finalMoves.slice(0, 4);
+  const currentTrimmed = currentMoves.slice(0, 4);
   return {
-    changed: removedMoves.length > 0 || addedMoves.length > 0 || entry.moves.length !== currentMoves.length,
+    changed: removedMoves.length > 0
+      || addedMoves.length > 0
+      || entry.moves.length !== currentMoves.length
+      || entry.moves.some((moveId, index) => moveId !== currentTrimmed[index]),
     removedCount: removedMoves.length,
     addedCount: addedMoves.length,
     removedMoves,

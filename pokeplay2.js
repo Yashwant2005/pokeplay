@@ -441,6 +441,15 @@ function ensureBattleSleepTurns(battleData) {
   return battleData.sleepTurns;
 }
 
+function normalizeBattleAbilityName(value) {
+  return String(value || '')
+    .toLowerCase()
+    .replace(/[_\s]+/g, '-')
+    .replace(/armour/g, 'armor')
+    .replace(/-+/g, '-')
+    .trim();
+}
+
 function ensureBattleStatus(battleData) {
   if (!battleData.status || typeof battleData.status !== "object") {
     battleData.status = {};
@@ -485,9 +494,20 @@ function getSpeedWithStatus(baseSpeed, battleData, pass) {
   return baseSpeed;
 }
 
-function canPokemonAct(battleData, pass, pokeName) {
+function canPokemonAct(battleData, pass, pokeName, abilityName) {
+  if (!battleData.abilityState || typeof battleData.abilityState !== "object") {
+    battleData.abilityState = {};
+  }
+  if (!battleData.abilityState.truant || typeof battleData.abilityState.truant !== "object") {
+    battleData.abilityState.truant = {};
+  }
+  const truantState = battleData.abilityState.truant;
+  const ability = normalizeBattleAbilityName(abilityName);
   if (battleData.flinched && battleData.flinched[pass]) {
     delete battleData.flinched[pass];
+    if (ability === 'truant') {
+      truantState[String(pass)] = true;
+    }
     return { canAct: false, msg: `• <b>${c(pokeName)}</b> flinched and couldn't move.` };
   }
   const status = getBattleStatus(battleData, pass);
@@ -510,8 +530,18 @@ function canPokemonAct(battleData, pass, pokeName) {
     }
     return { canAct: false, msg: `• <b>${c(pokeName)}</b> is frozen solid.` };
   }
+  if (ability === 'truant' && truantState[String(pass)]) {
+    truantState[String(pass)] = false;
+    return { canAct: false, msg: `• <b>${c(pokeName)}</b> is loafing around.` };
+  }
   if (status === "paralyze" && Math.random() < 0.25) {
+    if (ability === 'truant') {
+      truantState[String(pass)] = true;
+    }
     return { canAct: false, msg: `• <b>${c(pokeName)}</b> is fully paralyzed and cannot move.` };
+  }
+  if (ability === 'truant') {
+    truantState[String(pass)] = true;
   }
   return { canAct: true, msg: "" };
 }

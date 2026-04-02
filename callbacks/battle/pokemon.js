@@ -1,4 +1,4 @@
-const { getBattleMovePower, getDisplayedWeatherState, getEffectiveMoveType, getPinchAbilityInfo, getWeatherDisplayName } = require('../../utils/battle_abilities');
+const { getBattleMovePower, getBattleTerrainName, getDisplayedWeatherState, getEffectiveMoveType, getPinchAbilityInfo, getTerrainDisplayName, getWeatherDisplayName } = require('../../utils/battle_abilities');
 
 function register_017_pokemon(bot, deps) {
   const { getUserData, editMessage, loadBattleData, pokes, dmoves, c, he, pokestats, plevel, Stats, battlec, emojis, Bar } = deps;
@@ -63,6 +63,13 @@ msg += ' ('+battleData.weatherTurns+' turns left)'
 }
 if(weatherState.negated){
 msg += ' <i>(effects negated)</i>'
+}
+}
+const terrainState = getBattleTerrainName(battleData)
+if(terrainState){
+msg += '\n<b>Terrain :</b> '+getTerrainDisplayName(terrainState)
+if((battleData.terrainTurns || 0) > 0){
+msg += ' ('+battleData.terrainTurns+' turns left)'
 }
 }
 msg += '\n\n<b>Turn :</b> <code>'+uname+'</code>'

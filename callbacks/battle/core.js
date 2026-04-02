@@ -10,8 +10,10 @@
   applyWhiteHerbIfNeeded,
   applyEndTurnAbility: applyAbilityEndTurn,
   applyEntryAbility: applyAbilityEntry,
+  applyTerrainByMove,
   applyWeatherByMove,
   applyWeatherEndTurn,
+  advanceBattleTerrain,
   advanceBattleWeather,
   consumeBattleHeldItem,
   ensureAbilityState,
@@ -19,6 +21,7 @@
   getAttackStatMultiplier,
   getBattleHeldItemName,
   getBattleMovePower,
+  getBattleTerrainName,
   getEffectiveMoveName,
   getBattleWeatherName,
   getDisplayedWeatherState,
@@ -45,6 +48,7 @@
   getWeatherAccuracyMultiplierForTarget,
   getWeatherDefenseMultiplier,
   getWeatherDisplayName,
+  getTerrainDisplayName,
   getWeatherMovePowerMultiplier,
   getWeatherRecoveryRatio,
   getWeatherSuppressedMoveMessage,
@@ -671,28 +675,33 @@ function registerBattleCallbacks(bot, deps) {
     return MAX_MOVE_NAMES[String(moveType || '').toLowerCase()] || 'Max Strike';
   }
 
-  function getDisplayedMaxMovePower(moveType, moveCategory, movePower) {
-    if (String(moveCategory || '').toLowerCase() === 'status') return 0;
+  function getDisplayedMaxMovePower(moveName, moveType, moveCategory, movePower) {
+    const normalizedMoveName = String(moveName || '').toLowerCase();
+    if (normalizedMoveName === 'max guard') return 0;
     const normalizedType = String(moveType || '').toLowerCase();
     const basePower = Number(movePower) || 0;
     const lowPowerType = normalizedType === 'fighting' || normalizedType === 'poison';
-    if (basePower <= 0) return lowPowerType ? 70 : 90;
-    if (lowPowerType) {
-      if (basePower >= 150) return 100;
-      if (basePower >= 110) return 95;
-      if (basePower >= 75) return 90;
-      if (basePower >= 65) return 85;
-      if (basePower >= 55) return 80;
-      if (basePower >= 45) return 75;
-      return 70;
+    if (normalizedMoveName.startsWith('max ') || normalizedMoveName.startsWith('g-max ')) {
+      if (basePower <= 0) return lowPowerType ? 70 : 90;
+      if (lowPowerType) {
+        if (basePower >= 150) return 100;
+        if (basePower >= 110) return 95;
+        if (basePower >= 75) return 90;
+        if (basePower >= 65) return 85;
+        if (basePower >= 55) return 80;
+        if (basePower >= 45) return 75;
+        return 70;
+      }
+      if (basePower >= 150) return 150;
+      if (basePower >= 110) return 140;
+      if (basePower >= 75) return 130;
+      if (basePower >= 65) return 120;
+      if (basePower >= 55) return 110;
+      if (basePower >= 45) return 100;
+      return 90;
     }
-    if (basePower >= 150) return 150;
-    if (basePower >= 110) return 140;
-    if (basePower >= 75) return 130;
-    if (basePower >= 65) return 120;
-    if (basePower >= 55) return 110;
-    if (basePower >= 45) return 100;
-    return 90;
+    if (String(moveCategory || '').toLowerCase() === 'status') return 0;
+    return basePower;
   }
 
   const MAX_MOVE_FALLBACK_TYPES = [
@@ -879,7 +888,7 @@ function registerBattleCallbacks(bot, deps) {
       ...move,
       name: displayedMoveName,
       type: displayType,
-      power: getDisplayedMaxMovePower(displayType, move.category, move.power),
+      power: getDisplayedMaxMovePower(displayedMoveName, displayType, move.category, move.power),
       accuracy: 100
     };
   }
@@ -1943,6 +1952,13 @@ function registerBattleCallbacks(bot, deps) {
       }
       if (weatherState.negated) {
         msg += ' <i>(effects negated)</i>';
+      }
+    }
+    const terrainState = getBattleTerrainName(battleData);
+    if (terrainState) {
+      msg += '\n<b>Terrain :</b> '+getTerrainDisplayName(terrainState);
+      if ((battleData.terrainTurns || 0) > 0) {
+        msg += ' ('+battleData.terrainTurns+' turns left)';
       }
     }
 
@@ -3265,7 +3281,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
 
       // ActState (Frozen, Asleep, Paralyzed etc)
       ensureBattleStatus(battleData); // verify status conditions haven't cleared
-      const actState = canPokemonAct(battleData, battleData.c, p.name);
+      const actState = canPokemonAct(battleData, battleData.c, p.name, attackerAbility);
       const chargingState = getChargingStateForPass(battleData, battleData.c);
       const isChargeReleaseTurn = !!(chargingState && String(chargingState.moveId) === String(act.id));
       const powerHerbInfo = getPowerHerbInfo({
@@ -3429,6 +3445,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
             targetAlive: battleData.ohp > 0
           });
         }
+      } else if (actState.canAct && moveName === 'steel roller' && !getBattleTerrainName(battleData)) {
+        msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(moveLabel)+'</b> but it failed!';
       } else if (actState.canAct) {
         if (isSemiInvulnerableAvoidedMove(battleData, battleData.o, move.category, moveName)) {
           const opSemi = getSemiInvulnerableStateForPass(battleData, battleData.o);
@@ -3738,6 +3756,14 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 c,
                 didHit: true
               }).message;
+              msgLocal += applyTerrainByMove({
+                battleData,
+                moveName,
+                pokemonName: p.name,
+                heldItem: p.held_item,
+                c,
+                didHit: true
+              }).message;
 
               msgLocal += applySelfFaintAfterMove(moveName, moveLabel, battleData, battleData.c, p.name);
             }
@@ -3973,9 +3999,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 battleData.tem2[battleData.o] = Math.max((battleData.tem2[battleData.o] - damage), 0);
               }
               if (ohkoFailed) {
-                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> but it failed!';
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(moveLabel)+'</b> but it failed!';
               } else {
-                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(moveLabel)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
                 msgLocal += unawareMessage;
                 if (groundBlockedMove && defenderLevitateInfo.active) {
                   levitateMessage = '\n-> <b>'+c(op.name)+'</b>\'s <b>Levitate</b> activated!';
@@ -4366,6 +4392,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         { pass: battleData.c, pokemon: endTurnCurrent, currentHp: battleData.chp },
         { pass: battleData.o, pokemon: endTurnOther, currentHp: battleData.ohp }
       ]);
+      turnLogs += advanceBattleTerrain(battleData).message;
       turnLogs += advanceBattleWeather(battleData, c).message;
       clearBattleProtectionState(battleData);
       for (const info of [
@@ -6708,7 +6735,7 @@ async function executeStandardMove(act) {
     
     // ActState (Frozen, Asleep, Paralyzed etc)
     ensureBattleStatus(battleData); // verify status conditions haven't cleared
-    const actState = canPokemonAct(battleData, battleData.c, p.name);
+    const actState = canPokemonAct(battleData, battleData.c, p.name, attackerAbility);
     const chargingState = getChargingStateForPass(battleData, battleData.c);
     const isChargeReleaseTurn = !!(chargingState && String(chargingState.moveId) === String(act.id));
     const powerHerbInfo = getPowerHerbInfo({
@@ -6759,6 +6786,8 @@ async function executeStandardMove(act) {
       msgLocal += '\n-> <b>'+c(p.name)+'</b>\'s <b>Power Herb</b> activated!';
       msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(moveLabel)+'</b> immediately!';
     } else if (!canReactivePriorityMoveTrigger(moveName, act && act.opponentAction)) {
+      msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(moveLabel)+'</b> but it failed!';
+    } else if (moveName === 'steel roller' && !getBattleTerrainName(battleData)) {
       msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(moveLabel)+'</b> but it failed!';
     } else if (PROTECTION_MOVES.has(moveName)) {
         setBattleProtectionState(battleData, battleData.c, moveName);
@@ -7177,6 +7206,14 @@ async function executeStandardMove(act) {
                 c,
                 didHit: true
               }).message;
+              msgLocal += applyTerrainByMove({
+                battleData,
+                moveName,
+                pokemonName: p.name,
+                heldItem: p.held_item,
+                c,
+                didHit: true
+              }).message;
               msgLocal += applyCritStageBoostByMove({
                 battleData,
                 moveName,
@@ -7404,7 +7441,7 @@ async function executeStandardMove(act) {
               if (ohkoFailed) {
                 msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(moveLabel)+'</b> but it failed!';
               } else {
-                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(move.name)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
+                msgLocal += '\n-> <b>'+c(p.name)+'</b> used <b>'+c(moveLabel)+'</b> and dealt <code>'+damage+'</code> HP to <b>'+c(op.name)+'</b>';
                 msgLocal += unawareMessage;
                 if (groundBlockedMove && defenderLevitateInfo.active) {
                   levitateMessage = '\n-> <b>'+c(op.name)+'</b>\'s <b>Levitate</b> activated!';
@@ -7716,6 +7753,7 @@ turnLogs += applyBattleDrowsyEndTurn(battleData, [
   { pass: battleData.c, pokemon: endTurnCurrent2, currentHp: battleData.chp },
   { pass: battleData.o, pokemon: endTurnOther2, currentHp: battleData.ohp }
 ]);
+turnLogs += advanceBattleTerrain(battleData).message;
 clearBattleProtectionState(battleData);
 tickScreensForTurn(battleData);
 await saveBattleData(bword, battleData);

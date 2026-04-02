@@ -105,7 +105,7 @@ function registerAssignAbilityCommand(bot, deps) {
       return;
     }
 
-    const result = await repairPokemonAbilityEntry(target, { pokes, fetch });
+    const result = await repairPokemonAbilityEntry(target, { pokes, fetch }, { forceReplace: true });
     if (result.changed) {
       await saveUserData2(ctx.from.id, data);
       await sendMessage(

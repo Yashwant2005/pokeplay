@@ -272,7 +272,19 @@ function ensureAbilityState(battleData) {
   if (!state.entryOnce || typeof state.entryOnce !== 'object') state.entryOnce = {};
   if (!state.battleBond || typeof state.battleBond !== 'object') state.battleBond = {};
   if (!state.protoQuark || typeof state.protoQuark !== 'object') state.protoQuark = {};
+  if (!state.slowStart || typeof state.slowStart !== 'object') state.slowStart = {};
+  if (!state.truant || typeof state.truant !== 'object') state.truant = {};
   return state;
+}
+
+function getSlowStartInfo(battleData, pass, abilityName) {
+  const ability = normalizeAbilityName(abilityName);
+  if (ability !== 'slow-start') {
+    return { active: false, turnsLeft: 0 };
+  }
+  const state = ensureAbilityState(battleData);
+  const turnsLeft = Math.max(0, Number(state.slowStart[String(pass)]) || 0);
+  return { active: turnsLeft > 0, turnsLeft };
 }
 
 function ensureBattleHeldItems(battleData) {
@@ -366,6 +378,142 @@ function getDisplayedWeatherState(battleData) {
   return {
     weather,
     negated: !!(battleData && battleData.weatherNegated && weather)
+  };
+}
+
+function getBattleTerrainName(battleData) {
+  return String(
+    (battleData && (
+      battleData.terrain
+      || battleData.fieldTerrain
+      || battleData.activeTerrain
+      || (battleData.field && battleData.field.terrain)
+    )) || ''
+  )
+    .toLowerCase()
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function normalizeTerrainName(value) {
+  const terrain = String(value || '')
+    .toLowerCase()
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!terrain) return '';
+  if (terrain === 'electric terrain') return 'electric terrain';
+  if (terrain === 'grassy terrain') return 'grassy terrain';
+  if (terrain === 'misty terrain') return 'misty terrain';
+  if (terrain === 'psychic terrain') return 'psychic terrain';
+  return terrain;
+}
+
+function getTerrainDisplayName(terrainName) {
+  const terrain = normalizeTerrainName(terrainName);
+  if (!terrain) return '';
+  return terrain
+    .split(' ')
+    .map((part) => part ? part.charAt(0).toUpperCase() + part.slice(1) : part)
+    .join(' ');
+}
+
+function clearBattleTerrain(battleData) {
+  if (!battleData) return false;
+  const hadTerrain = !!normalizeTerrainName(getBattleTerrainName(battleData));
+  battleData.terrain = '';
+  battleData.fieldTerrain = '';
+  battleData.activeTerrain = '';
+  if (battleData.field && typeof battleData.field === 'object') {
+    battleData.field.terrain = '';
+  }
+  battleData.terrainTurns = 0;
+  return hadTerrain;
+}
+
+function setBattleTerrain(battleData, terrainName, duration) {
+  if (!battleData) return;
+  const terrain = normalizeTerrainName(terrainName);
+  battleData.terrain = terrain;
+  battleData.fieldTerrain = terrain;
+  battleData.activeTerrain = terrain;
+  if (!battleData.field || typeof battleData.field !== 'object') {
+    battleData.field = {};
+  }
+  battleData.field.terrain = terrain;
+  battleData.terrainTurns = Math.max(0, Number(duration) || 0);
+}
+
+function getTerrainCreatedByMove(moveName) {
+  const move = normalizeMoveName(moveName);
+  if (move === 'electric terrain' || move === 'max lightning') return 'electric terrain';
+  if (move === 'grassy terrain' || move === 'max overgrowth') return 'grassy terrain';
+  if (move === 'misty terrain' || move === 'max starfall') return 'misty terrain';
+  if (move === 'psychic terrain' || move === 'max mindstorm' || move === 'genesis supernova') return 'psychic terrain';
+  return '';
+}
+
+function getTerrainDurationFromItem(heldItem) {
+  return normalizeHeldItemName(heldItem) === 'terrain-extender' ? 8 : 5;
+}
+
+function applyTerrainByMove(options) {
+  const { battleData, moveName, pokemonName, heldItem, c, didHit } = options || {};
+  if (!battleData) return { changed: false, message: '', removed: false };
+  const move = normalizeMoveName(moveName);
+  const activeTerrain = normalizeTerrainName(getBattleTerrainName(battleData));
+  const createdTerrain = getTerrainCreatedByMove(move);
+
+  if (createdTerrain) {
+    if (!didHit && move !== 'electric terrain' && move !== 'grassy terrain' && move !== 'misty terrain' && move !== 'psychic terrain' && move !== 'genesis supernova') {
+      return { changed: false, message: '', removed: false };
+    }
+    if (activeTerrain === createdTerrain) {
+      return { changed: false, message: '\n-> But <b>' + getTerrainDisplayName(createdTerrain) + '</b> is already active!', removed: false };
+    }
+    const duration = getTerrainDurationFromItem(heldItem);
+    setBattleTerrain(battleData, createdTerrain, duration);
+    return {
+      changed: true,
+      removed: false,
+      message: '\n-> <b>' + c(pokemonName) + '</b> created <b>' + getTerrainDisplayName(createdTerrain) + '</b> for <b>' + duration + '</b> turns!'
+    };
+  }
+
+  const clearsTerrain = move === 'defog'
+    || move === 'g max wind rage'
+    || move === 'ice spinner'
+    || move === 'steel roller'
+    || move === 'splintered stormshards';
+  if (!clearsTerrain) {
+    return { changed: false, message: '', removed: false };
+  }
+  if ((move === 'ice spinner' || move === 'steel roller' || move === 'splintered stormshards' || move === 'g max wind rage') && !didHit) {
+    return { changed: false, message: '', removed: false };
+  }
+  if (!activeTerrain) {
+    return { changed: false, message: '', removed: false };
+  }
+  clearBattleTerrain(battleData);
+  return {
+    changed: true,
+    removed: true,
+    message: '\n-> The <b>' + getTerrainDisplayName(activeTerrain) + '</b> disappeared!'
+  };
+}
+
+function advanceBattleTerrain(battleData) {
+  const terrain = normalizeTerrainName(getBattleTerrainName(battleData));
+  const turns = Number(battleData && battleData.terrainTurns) || 0;
+  if (!terrain || turns <= 0) return { message: '' };
+  battleData.terrainTurns = Math.max(0, turns - 1);
+  if (battleData.terrainTurns > 0) {
+    return { message: '' };
+  }
+  clearBattleTerrain(battleData);
+  return {
+    message: '\n-> The <b>' + getTerrainDisplayName(terrain) + '</b> faded.'
   };
 }
 
@@ -1035,6 +1183,19 @@ function applyEntryAbility(options) {
     }
   }
 
+  if (ability === 'slow-start') {
+    state.slowStart[String(pass)] = 5;
+    message += '\n-> <b>' + c(pokemonName) + '</b>\'s <b>Slow Start</b> cut its <b>Attack</b> and <b>Speed</b> for <b>5</b> turns!';
+  } else {
+    delete state.slowStart[String(pass)];
+  }
+
+  if (ability === 'truant') {
+    state.truant[String(pass)] = false;
+  } else {
+    delete state.truant[String(pass)];
+  }
+
   const protoQuarkInfo = getProtoQuarkDriveInfo({ battleData, pass, pokemonName, abilityName, heldItem, stats: selfStats });
   if (protoQuarkInfo.active) {
     state.protoQuark[String(pass)] = protoQuarkInfo;
@@ -1470,12 +1631,13 @@ function getHeldItemStatMultipliers(options) {
   const canEvolve = canPokemonStillEvolve(current, evolutionChains);
   const plateType = getArceusPlateType(item);
   const protoQuark = getProtoQuarkDriveInfo({ battleData, pass, pokemonName, abilityName, heldItem, stats });
+  const slowStartInfo = getSlowStartInfo(battleData, pass, abilityName);
   const out = {
-    attack: item === 'choice-band' ? 1.5 : (baseSpecies === 'pikachu' && item === 'light-ball' ? 2 : 1),
+    attack: (item === 'choice-band' ? 1.5 : (baseSpecies === 'pikachu' && item === 'light-ball' ? 2 : 1)) * (slowStartInfo.active ? 0.5 : 1),
     special_attack: item === 'choice-specs' ? 1.5 : (baseSpecies === 'pikachu' && item === 'light-ball' ? 2 : 1),
     defense: item === 'eviolite' && canEvolve ? 1.5 : 1,
     special_defense: (item === 'eviolite' && canEvolve) || item === 'assault-vest' ? 1.5 : 1,
-    speed: item === 'choice-scarf' ? 1.5 : 1,
+    speed: (item === 'choice-scarf' ? 1.5 : 1) * (slowStartInfo.active ? 0.5 : 1),
     damageMultiplier: item === 'life-orb' ? (5324 / 4096) : 1,
     recoveryMultiplier: item === 'big-root' ? (5324 / 4096) : 1,
     lightBallActive: baseSpecies === 'pikachu' && item === 'light-ball',
@@ -1494,7 +1656,9 @@ function getHeldItemStatMultipliers(options) {
     protoQuarkActive: protoQuark.active,
     protoQuarkStat: protoQuark.stat,
     protoQuarkMultiplier: protoQuark.multiplier,
-    boosterEnergyActive: item === 'booster-energy'
+    boosterEnergyActive: item === 'booster-energy',
+    slowStartActive: slowStartInfo.active,
+    slowStartTurnsLeft: slowStartInfo.turnsLeft
   };
   if (protoQuark.active && protoQuark.stat && Object.prototype.hasOwnProperty.call(out, protoQuark.stat)) {
     out[protoQuark.stat] = Math.max(1, Number(out[protoQuark.stat]) || 1) * protoQuark.multiplier;
@@ -1620,6 +1784,29 @@ function moveMakesContact(moveName, moveCategory) {
   return !NON_CONTACT_PHYSICAL_MOVE_NAMES.has(normalizedMove);
 }
 
+function getDynamaxConvertedPower(moveType, movePower) {
+  const normalizedType = String(moveType || '').toLowerCase();
+  const basePower = Number(movePower) || 0;
+  const lowPowerType = normalizedType === 'fighting' || normalizedType === 'poison';
+  if (basePower <= 0) return lowPowerType ? 70 : 90;
+  if (lowPowerType) {
+    if (basePower >= 150) return 100;
+    if (basePower >= 110) return 95;
+    if (basePower >= 75) return 90;
+    if (basePower >= 65) return 85;
+    if (basePower >= 55) return 80;
+    if (basePower >= 45) return 75;
+    return 70;
+  }
+  if (basePower >= 150) return 150;
+  if (basePower >= 110) return 140;
+  if (basePower >= 75) return 130;
+  if (basePower >= 65) return 120;
+  if (basePower >= 55) return 110;
+  if (basePower >= 45) return 100;
+  return 90;
+}
+
 function getBattleMovePower(options) {
   const {
     battleData,
@@ -1639,11 +1826,15 @@ function getBattleMovePower(options) {
   const rawPower = Number(movePower);
   if (!Number.isFinite(rawPower) || rawPower <= 0) return rawPower;
   const normalizedMove = normalizeMoveName(moveName);
+  const attackerDynamaxed = !!(battleData && battleData.dynamaxState && battleData.dynamaxState[String(pass)]);
   const baseSpecies = String(pokemonName || '').toLowerCase().split('-')[0];
   const state = ensureAbilityState(battleData);
   const item = getBattleHeldItemName({ battleData, pass, heldItem });
   const ability = normalizeAbilityName(abilityName);
   const effectiveMoveType = getEffectiveMoveType({ pokemonName, heldItem: item, moveName, moveType, battleData });
+  if (attackerDynamaxed && !normalizedMove.startsWith('max ') && !normalizedMove.startsWith('g max ') && !normalizedMove.startsWith('g-max ')) {
+    return getDynamaxConvertedPower(effectiveMoveType, rawPower);
+  }
   const plateType = getArceusPlateType(item);
   if (normalizedMove === 'order up' && baseSpecies === 'dondozo' && state.tatsugiriLunchboxTurn && state.tatsugiriLunchboxTurn[String(pass)]) {
     return 160;
@@ -2114,6 +2305,18 @@ function applyEndTurnAbility(options) {
 
   if (!ability) return { message, deltas };
 
+  if (ability === 'slow-start') {
+    const key = String(pass);
+    const turnsLeft = Math.max(0, Number(state.slowStart[key]) || 0);
+    if (turnsLeft > 0) {
+      state.slowStart[key] = turnsLeft - 1;
+      if (state.slowStart[key] <= 0) {
+        delete state.slowStart[key];
+        message += '\n-> <b>' + c(pokemonName) + '</b> overcame <b>Slow Start</b>!';
+      }
+    }
+  }
+
   if (ability === 'speed-boost') {
     const turnState = battleData && battleData.turnAbilityState && typeof battleData.turnAbilityState === 'object'
       ? battleData.turnAbilityState
@@ -2213,7 +2416,9 @@ module.exports = {
   applyEntryAbility,
   applyKoAbility,
   applyOnDamageTakenAbilities,
+  applyTerrainByMove,
   applyWeatherByMove,
+  advanceBattleTerrain,
   applyWeatherEndTurn,
   applyBlunderPolicy,
   applyMultiscaleReduction,
@@ -2238,6 +2443,7 @@ module.exports = {
   getAttackStatMultiplier,
   getBattleHeldItemName,
   getBattleMovePower,
+  getBattleTerrainName,
   getEffectiveMoveName,
   getBattleWeatherName,
   getDisplayedWeatherState,
@@ -2247,6 +2453,7 @@ module.exports = {
   getEffectiveMoveType,
   getEffectivePokemonTypes,
   getProtoQuarkDriveInfo,
+  getSlowStartInfo,
   getPowerConstructFormChange,
   getPowerHerbInfo,
   getGoodAsGoldInfo,
@@ -2263,6 +2470,7 @@ module.exports = {
   getWeatherAccuracyMultiplierForTarget,
   getWeatherDefenseMultiplier,
   getWeatherDisplayName,
+  getTerrainDisplayName,
   getWeatherMovePowerMultiplier,
   getWeatherRecoveryRatio,
   getWeatherSuppressedMoveMessage,

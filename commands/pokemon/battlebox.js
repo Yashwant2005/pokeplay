@@ -16,7 +16,7 @@ function registerBattleboxCommand(bot, deps) {
   function buildCompactSummary(summary, pokeballTotal) {
     let msg = '*Battle Box Opened:* ' + summary.opened + '\n';
     msg += '*Remaining:* ' + summary.remaining + ' 🎁';
-    if (summary.holowearTicketsAdded > 0) msg += '\n• *Holowear Tickets:* +' + summary.holowearTicketsAdded + ' 🎟️';
+    if (summary.leaguePointsAdded > 0) msg += '\n• *League Points:* +' + summary.leaguePointsAdded + ' ⭐';
     if (pokeballTotal > 0) msg += '\n• *Pokeballs:* +' + pokeballTotal;
     if (summary.tmsAdded > 0) msg += '\n• *TMs:* +' + summary.tmsAdded;
     if (summary.stonesAdded > 0) msg += '\n• *Mega Stones:* +' + summary.stonesAdded;
@@ -76,7 +76,7 @@ function registerBattleboxCommand(bot, deps) {
     const b = summary.pokeballsAdded || {};
     const pokeballTotal = Object.keys(b).reduce((acc, key) => acc + (Number(b[key]) || 0), 0);
 
-    if (summary.holowearTicketsAdded > 0) msg += '\n• *Holowear Tickets:* +' + summary.holowearTicketsAdded + ' 🎟️';
+    if (summary.leaguePointsAdded > 0) msg += '\n• *League Points:* +' + summary.leaguePointsAdded + ' ⭐';
     if (pokeballTotal > 0) msg += '\n• *Pokeballs:* +' + pokeballTotal;
     for (const key of Object.keys(b)) {
       const count = Number(b[key]) || 0;
@@ -154,3 +154,4 @@ function registerBattleboxCommand(bot, deps) {
 }
 
 module.exports = registerBattleboxCommand;
+

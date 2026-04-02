@@ -67,6 +67,8 @@ function registerRankupCommand(bot, deps) {
       if (summary.rewards.lp > 0) msg += '\n- ' + summary.rewards.lp + ' League Points ⭐';
       if (summary.rewards.ht > 0) msg += '\n- ' + summary.rewards.ht + ' Holowear Tickets 🎟️';
       if (summary.rewards.battleBoxes > 0) msg += '\n- ' + summary.rewards.battleBoxes + ' Battle Box 🎁';
+      if (summary.rewards.tms > 0) msg += '\n- ' + summary.rewards.tms + ' TMs';
+      if (summary.rewards.stones > 0) msg += '\n- ' + summary.rewards.stones + ' Mega Stones';
     } else {
       msg += '\n\nNo new rank rewards were claimable.';
     }
@@ -77,3 +79,4 @@ function registerRankupCommand(bot, deps) {
 }
 
 module.exports = registerRankupCommand;
+

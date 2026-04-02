@@ -53,6 +53,8 @@ function registerAddExpCommand(bot, deps) {
       if (rewardSummary.rewards.lp > 0) msg += '\n- ' + rewardSummary.rewards.lp + ' League Points';
       if (rewardSummary.rewards.ht > 0) msg += '\n- ' + rewardSummary.rewards.ht + ' Holowear Tickets';
       if (rewardSummary.rewards.battleBoxes > 0) msg += '\n- ' + rewardSummary.rewards.battleBoxes + ' Battle Box';
+      if (rewardSummary.rewards.tms > 0) msg += '\n- ' + rewardSummary.rewards.tms + ' TMs';
+      if (rewardSummary.rewards.stones > 0) msg += '\n- ' + rewardSummary.rewards.stones + ' Mega Stones';
     }
     msg += '\n\n' + formatTrainerProgress(data, trainerlevel, MAX_TRAINER_LEVEL);
 

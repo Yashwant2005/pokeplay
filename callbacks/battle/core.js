@@ -421,7 +421,7 @@ function registerBattleCallbacks(bot, deps) {
     return '\n-> <b>' + c(defenderName) + '</b> grew drowsy!';
   }
 
-  function applyMovePoisonExtras({
+  function applyMoveStatusExtras({
     battleData,
     moveName,
     defenderName,
@@ -438,7 +438,19 @@ function registerBattleCallbacks(bot, deps) {
     let effect = null;
 
     if (normalizedMove === 'dire claw') {
-      effect = { status: 'poison', chance: 1 / 6 };
+      if (Math.random() >= 0.5) return '';
+      const statuses = ['poison', 'paralyze', 'sleep'];
+      effect = { status: statuses[Math.floor(Math.random() * statuses.length)], chance: 1 };
+    } else if (normalizedMove === 'tri attack') {
+      if (Math.random() >= 0.2) return '';
+      const statuses = ['burn', 'freeze', 'paralyze'];
+      effect = { status: statuses[Math.floor(Math.random() * statuses.length)], chance: 1 };
+    } else if (normalizedMove === 'g max befuddle') {
+      const statuses = ['poison', 'paralyze', 'sleep'];
+      effect = { status: statuses[Math.floor(Math.random() * statuses.length)], chance: 1 };
+    } else if (normalizedMove === 'g max stun shock') {
+      const statuses = ['poison', 'paralyze'];
+      effect = { status: statuses[Math.floor(Math.random() * statuses.length)], chance: 1 };
     } else if (normalizedMove === 'fling') {
       const itemKey = String(attackerHeldItemName || '')
         .toLowerCase()
@@ -446,6 +458,8 @@ function registerBattleCallbacks(bot, deps) {
         .replace(/[_-]+/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
+      if (itemKey === 'flame orb') effect = { status: 'burn', chance: 1 };
+      if (itemKey === 'light ball') effect = { status: 'paralyze', chance: 1 };
       if (itemKey === 'poison barb') effect = { status: 'poison', chance: 1 };
       if (itemKey === 'toxic orb') effect = { status: 'badly_poisoned', chance: 1 };
     }
@@ -481,6 +495,77 @@ function registerBattleCallbacks(bot, deps) {
     dark: 'Max Darkness',
     steel: 'Max Steelspike',
     fairy: 'Max Starfall'
+  };
+
+  const GMAX_MOVE_BY_POKEMON = {
+    'alcremie': 'G-Max Finale',
+    'alcremie-gmax': 'G-Max Finale',
+    'appletun': 'G-Max Sweetness',
+    'appletun-gmax': 'G-Max Sweetness',
+    'blastoise': 'G-Max Cannonade',
+    'blastoise-gmax': 'G-Max Cannonade',
+    'butterfree': 'G-Max Befuddle',
+    'butterfree-gmax': 'G-Max Befuddle',
+    'centiskorch': 'G-Max Centiferno',
+    'centiskorch-gmax': 'G-Max Centiferno',
+    'charizard': 'G-Max Wildfire',
+    'charizard-gmax': 'G-Max Wildfire',
+    'cinderace': 'G-Max Fireball',
+    'cinderace-gmax': 'G-Max Fireball',
+    'coalossal': 'G-Max Volcalith',
+    'coalossal-gmax': 'G-Max Volcalith',
+    'copperajah': 'G-Max Steelsurge',
+    'copperajah-gmax': 'G-Max Steelsurge',
+    'corviknight': 'G-Max Wind Rage',
+    'corviknight-gmax': 'G-Max Wind Rage',
+    'drednaw': 'G-Max Stonesurge',
+    'drednaw-gmax': 'G-Max Stonesurge',
+    'duraludon': 'G-Max Depletion',
+    'duraludon-gmax': 'G-Max Depletion',
+    'eevee': 'G-Max Cuddle',
+    'eevee-gmax': 'G-Max Cuddle',
+    'flapple': 'G-Max Tartness',
+    'flapple-gmax': 'G-Max Tartness',
+    'garbodor': 'G-Max Malodor',
+    'garbodor-gmax': 'G-Max Malodor',
+    'gengar': 'G-Max Terror',
+    'gengar-gmax': 'G-Max Terror',
+    'grimmsnarl': 'G-Max Snooze',
+    'grimmsnarl-gmax': 'G-Max Snooze',
+    'hatterene': 'G-Max Smite',
+    'hatterene-gmax': 'G-Max Smite',
+    'inteleon': 'G-Max Hydrosnipe',
+    'inteleon-gmax': 'G-Max Hydrosnipe',
+    'kingler': 'G-Max Foam Burst',
+    'kingler-gmax': 'G-Max Foam Burst',
+    'lapras': 'G-Max Resonance',
+    'lapras-gmax': 'G-Max Resonance',
+    'machamp': 'G-Max Chi Strike',
+    'machamp-gmax': 'G-Max Chi Strike',
+    'melmetal': 'G-Max Meltdown',
+    'melmetal-gmax': 'G-Max Meltdown',
+    'meowth': 'G-Max Gold Rush',
+    'meowth-gmax': 'G-Max Gold Rush',
+    'orbeetle': 'G-Max Gravitas',
+    'orbeetle-gmax': 'G-Max Gravitas',
+    'pikachu': 'G-Max Volt Crash',
+    'pikachu-gmax': 'G-Max Volt Crash',
+    'rillaboom': 'G-Max Drum Solo',
+    'rillaboom-gmax': 'G-Max Drum Solo',
+    'sandaconda': 'G-Max Sandblast',
+    'sandaconda-gmax': 'G-Max Sandblast',
+    'snorlax': 'G-Max Replenish',
+    'snorlax-gmax': 'G-Max Replenish',
+    'toxtricity-amped': 'G-Max Stun Shock',
+    'toxtricity-amped-gmax': 'G-Max Stun Shock',
+    'toxtricity-low-key': 'G-Max Stun Shock',
+    'toxtricity-low-key-gmax': 'G-Max Stun Shock',
+    'urshifu-single-strike': 'G-Max One Blow',
+    'urshifu-single-strike-gmax': 'G-Max One Blow',
+    'urshifu-rapid-strike': 'G-Max Rapid Flow',
+    'urshifu-rapid-strike-gmax': 'G-Max Rapid Flow',
+    'venusaur': 'G-Max Vine Lash',
+    'venusaur-gmax': 'G-Max Vine Lash'
   };
 
   const Z_CRYSTAL_TYPES = {
@@ -586,6 +671,95 @@ function registerBattleCallbacks(bot, deps) {
     return MAX_MOVE_NAMES[String(moveType || '').toLowerCase()] || 'Max Strike';
   }
 
+  function getDisplayedMaxMovePower(moveType, moveCategory, movePower) {
+    if (String(moveCategory || '').toLowerCase() === 'status') return 0;
+    const normalizedType = String(moveType || '').toLowerCase();
+    const basePower = Number(movePower) || 0;
+    const lowPowerType = normalizedType === 'fighting' || normalizedType === 'poison';
+    if (basePower <= 0) return lowPowerType ? 70 : 90;
+    if (lowPowerType) {
+      if (basePower >= 150) return 100;
+      if (basePower >= 110) return 95;
+      if (basePower >= 75) return 90;
+      if (basePower >= 65) return 85;
+      if (basePower >= 55) return 80;
+      if (basePower >= 45) return 75;
+      return 70;
+    }
+    if (basePower >= 150) return 150;
+    if (basePower >= 110) return 140;
+    if (basePower >= 75) return 130;
+    if (basePower >= 65) return 120;
+    if (basePower >= 55) return 110;
+    if (basePower >= 45) return 100;
+    return 90;
+  }
+
+  const MAX_MOVE_FALLBACK_TYPES = [
+    'normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison',
+    'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark',
+    'steel', 'fairy'
+  ];
+
+  function pickStableAlternateMaxType(pokemon, move, blockedTypes) {
+    const blocked = new Set((blockedTypes || []).map((type) => String(type || '').toLowerCase()));
+    const candidates = MAX_MOVE_FALLBACK_TYPES.filter((type) => !blocked.has(type));
+    if (candidates.length < 1) return 'normal';
+    const seedText = [
+      pokemon && pokemon.pass,
+      pokemon && pokemon.name,
+      move && move.name
+    ].join('|');
+    let hash = 0;
+    for (let i = 0; i < seedText.length; i += 1) {
+      hash = ((hash * 31) + seedText.charCodeAt(i)) >>> 0;
+    }
+    return candidates[hash % candidates.length];
+  }
+
+  function shouldUseMaxGuardDisplay(pokemon, move) {
+    if (!pokemon || !Array.isArray(pokemon.moves) || !move) return true;
+    const normalizedMoveName = String(move.name || '').toLowerCase();
+    let sawCurrentStatusMove = false;
+    for (const moveId of pokemon.moves) {
+      const teamMove = dmoves[moveId];
+      if (!teamMove || String(teamMove.category || '').toLowerCase() !== 'status') continue;
+      if (!sawCurrentStatusMove && String(teamMove.name || '').toLowerCase() === normalizedMoveName) {
+        sawCurrentStatusMove = true;
+        return true;
+      }
+      if (!sawCurrentStatusMove) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  function getDisplayedFallbackType(pokemon, move, baseType) {
+    if (!pokemon || !Array.isArray(pokemon.moves) || !move) return String(baseType || 'normal').toLowerCase();
+    const normalizedMoveName = String(move.name || '').toLowerCase();
+    const normalizedBaseType = String(baseType || 'normal').toLowerCase();
+    const usedTypes = [];
+    for (const moveId of pokemon.moves) {
+      const teamMove = dmoves[moveId];
+      if (!teamMove) continue;
+      if (String(teamMove.name || '').toLowerCase() === normalizedMoveName) break;
+      if (String(teamMove.category || '').toLowerCase() === 'status' && shouldUseMaxGuardDisplay(pokemon, teamMove)) continue;
+      const priorBaseType = String(teamMove.type || 'normal').toLowerCase();
+      const priorDisplayType = usedTypes.includes(priorBaseType)
+        ? pickStableAlternateMaxType(pokemon, teamMove, [priorBaseType, ...usedTypes])
+        : priorBaseType;
+      usedTypes.push(priorDisplayType);
+    }
+    if (!usedTypes.includes(normalizedBaseType)) return normalizedBaseType;
+    return pickStableAlternateMaxType(pokemon, move, [normalizedBaseType, ...usedTypes]);
+  }
+
+  function getGigantamaxMoveName(pokemonName) {
+    const key = String(pokemonName || '').trim().toLowerCase();
+    return GMAX_MOVE_BY_POKEMON[key] || '';
+  }
+
   function ensureBattleZMoveReadyState(battleData) {
     if (!battleData.zMoveReady || typeof battleData.zMoveReady !== 'object') {
       battleData.zMoveReady = {};
@@ -682,7 +856,44 @@ function registerBattleCallbacks(bot, deps) {
       moveName: move.name,
       moveType: move.type
     }) || move.type;
-    return { ...move, name: getMaxMoveName(effectiveType, move.category), type: effectiveType };
+    const normalizedCategory = String(move.category || '').toLowerCase();
+    const useMaxGuardDisplay = normalizedCategory === 'status' && shouldUseMaxGuardDisplay(pokemon, move);
+    const displayType = useMaxGuardDisplay
+      ? 'normal'
+      : getDisplayedFallbackType(pokemon, move, effectiveType);
+    const gmaxMoveName = state.isGmax ? getGigantamaxMoveName(pokemon.name) : '';
+    const displayedMoveName = gmaxMoveName && normalizedCategory !== 'status'
+      ? gmaxMoveName
+      : (useMaxGuardDisplay ? 'Max Guard' : (MAX_MOVE_NAMES[String(displayType || '').toLowerCase()] || 'Max Strike'));
+    if (useMaxGuardDisplay) {
+      return {
+        ...move,
+        name: displayedMoveName,
+        type: 'normal',
+        power: 0,
+        accuracy: 100,
+        category: 'status'
+      };
+    }
+    return {
+      ...move,
+      name: displayedMoveName,
+      type: displayType,
+      power: getDisplayedMaxMovePower(displayType, move.category, move.power),
+      accuracy: 100
+    };
+  }
+
+  function getBattleMoveLabel(move, pokemon, battleData, userId, userData) {
+    if (!move || !pokemon) return move && move.name ? move.name : 'Unknown Move';
+    const displayedMove = getDisplayedBattleMove({
+      battleData,
+      pokemon,
+      move,
+      userData,
+      userId
+    });
+    return (displayedMove && displayedMove.name) || move.name || 'Unknown Move';
   }
 
   function scaleBattleCurrentHpUp(currentHp, multiplier) {
@@ -1281,6 +1492,7 @@ function registerBattleCallbacks(bot, deps) {
 
   const CRIT_DAMAGE_MULTIPLIER = 1.5;
   const HIGH_CRIT_RATIO_CHANCE = 0.125;
+  const BASE_CRIT_CHANCE = 1 / 24;
   const OHKO_MOVES = new Set([
     'fissure',
     'guillotine',
@@ -1304,6 +1516,52 @@ function registerBattleCallbacks(bot, deps) {
     'stomp'
   ]);
   const MINIMIZE_PUNISH_MULTIPLIER = 2;
+
+  function ensureBattleCritStageState(battleData) {
+    if (!battleData.critStageState || typeof battleData.critStageState !== 'object') {
+      battleData.critStageState = {};
+    }
+    return battleData.critStageState;
+  }
+
+  function getBattleCritStage(battleData, pass) {
+    return Math.max(0, Number(ensureBattleCritStageState(battleData)[String(pass)]) || 0);
+  }
+
+  function raiseBattleCritStage(battleData, pass, amount) {
+    const all = ensureBattleCritStageState(battleData);
+    const key = String(pass);
+    all[key] = Math.max(0, Math.min(3, (Number(all[key]) || 0) + (Number(amount) || 0)));
+    return all[key];
+  }
+
+  function getCritChance({ battleData, pass, isPerfectCrit, isHighCritMove }) {
+    if (isPerfectCrit) return 1;
+    const totalStage = getBattleCritStage(battleData, pass) + (isHighCritMove ? 1 : 0);
+    if (totalStage >= 3) return 1;
+    if (totalStage === 2) return 0.5;
+    if (totalStage === 1) return HIGH_CRIT_RATIO_CHANCE;
+    return BASE_CRIT_CHANCE;
+  }
+
+  function applyCritStageBoostByMove({ battleData, moveName, attackerPass, attackerName, attackerTypes }) {
+    const normalizedMove = normalizeMoveName(moveName);
+    if (normalizedMove === 'focus energy') {
+      raiseBattleCritStage(battleData, attackerPass, 2);
+      return '\n-> <b>' + c(attackerName) + '</b> is getting pumped!';
+    }
+    if (normalizedMove === 'dragon cheer') {
+      const types = (attackerTypes || []).map((type) => String(type || '').toLowerCase());
+      const amount = types.includes('dragon') ? 2 : 1;
+      raiseBattleCritStage(battleData, attackerPass, amount);
+      return '\n-> <b>' + c(attackerName) + '</b>\'s critical-hit ratio rose!';
+    }
+    if (normalizedMove === 'g max chi strike') {
+      raiseBattleCritStage(battleData, attackerPass, 1);
+      return '\n-> <b>' + c(attackerName) + '</b>\'s critical-hit ratio rose!';
+    }
+    return '';
+  }
   const CHARGING_TURN_MOVES = new Set([
     'bounce',
     'dig',
@@ -1498,12 +1756,15 @@ function registerBattleCallbacks(bot, deps) {
     const all = ensureBattleScreens(battleData);
     const key = String(sideId);
     if (!all[key] || typeof all[key] !== 'object') {
-      all[key] = { reflect: 0, lightScreen: 0, auroraVeil: 0 };
+      all[key] = { reflect: 0, lightScreen: 0, auroraVeil: 0, reflectFresh: 0, lightScreenFresh: 0, auroraVeilFresh: 0 };
     }
     const side = all[key];
     if (typeof side.reflect !== 'number') side.reflect = 0;
     if (typeof side.lightScreen !== 'number') side.lightScreen = 0;
     if (typeof side.auroraVeil !== 'number') side.auroraVeil = 0;
+    if (typeof side.reflectFresh !== 'number') side.reflectFresh = 0;
+    if (typeof side.lightScreenFresh !== 'number') side.lightScreenFresh = 0;
+    if (typeof side.auroraVeilFresh !== 'number') side.auroraVeilFresh = 0;
     return side;
   }
 
@@ -1511,14 +1772,17 @@ function registerBattleCallbacks(bot, deps) {
     const side = ensureSideScreens(battleData, sideId);
     if (moveName === 'reflect' || (moveName === 'baddy bad' && didHit)) {
       side.reflect = 5;
+      side.reflectFresh = 1;
       return '\n-> Reflect went up on the user\'s side!';
     }
     if (moveName === 'light screen' || (moveName === 'glitzy glow' && didHit)) {
       side.lightScreen = 5;
+      side.lightScreenFresh = 1;
       return '\n-> Light Screen went up on the user\'s side!';
     }
     if ((moveName === 'aurora veil' || (moveName === 'g max resonance' && didHit)) && canUseAuroraVeilWeather(battleData)) {
       side.auroraVeil = 5;
+      side.auroraVeilFresh = 1;
       return '\n-> Aurora Veil went up on the user\'s side!';
     }
     if (moveName === 'aurora veil' || moveName === 'g max resonance') {
@@ -1542,6 +1806,9 @@ function registerBattleCallbacks(bot, deps) {
     side.reflect = 0;
     side.lightScreen = 0;
     side.auroraVeil = 0;
+    side.reflectFresh = 0;
+    side.lightScreenFresh = 0;
+    side.auroraVeilFresh = 0;
     return '\n-> The opposing side\'s screens were shattered!';
   }
 
@@ -1571,9 +1838,12 @@ function registerBattleCallbacks(bot, deps) {
     const all = ensureBattleScreens(battleData);
     for (const key of Object.keys(all)) {
       const side = ensureSideScreens(battleData, key);
-      if (side.reflect > 0) side.reflect -= 1;
-      if (side.lightScreen > 0) side.lightScreen -= 1;
-      if (side.auroraVeil > 0) side.auroraVeil -= 1;
+      if (side.reflectFresh > 0) side.reflectFresh -= 1;
+      else if (side.reflect > 0) side.reflect -= 1;
+      if (side.lightScreenFresh > 0) side.lightScreenFresh -= 1;
+      else if (side.lightScreen > 0) side.lightScreen -= 1;
+      if (side.auroraVeilFresh > 0) side.auroraVeilFresh -= 1;
+      else if (side.auroraVeil > 0) side.auroraVeil -= 1;
     }
   }
 
@@ -1684,9 +1954,10 @@ function registerBattleCallbacks(bot, deps) {
       msg += '\n\n<b>Moves :</b>';
       for (const move2 of p1.moves) {
         let move = dmoves[move2];
-        const shownPower = getDisplayedMovePower(move, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name);
-        const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, abilityName: p1.ability, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: move.name, moveType: move.type }) || move.type;
-        msg += '\n- <b>'+c(move.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')';
+        const displayMove = getDisplayedBattleMove({ battleData, pokemon: p1, move, userData: attacker, userId: battleData.cid });
+        const shownPower = getDisplayedMovePower(displayMove, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name);
+        const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, abilityName: p1.ability, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: displayMove.name, moveType: displayMove.type }) || displayMove.type;
+        msg += '\n- <b>'+c(displayMove.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+displayMove.accuracy+' ('+c(displayMove.category.charAt(0))+')';
       }
     } else if (isGroup && p1UsedMoves.length > 0 && !hideTurn) {
       msg += '\n\n<b>Revealed Moves :</b>';
@@ -1694,9 +1965,9 @@ function registerBattleCallbacks(bot, deps) {
         const mv = dmoves[mid];
         if (mv) {
           const displayMove = getDisplayedBattleMove({ battleData, pokemon: p1, move: mv, userData: attacker, userId: battleData.cid });
-          const shownPower = getDisplayedMovePower(mv, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name);
-          const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, abilityName: p1.ability, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: mv.name, moveType: mv.type }) || mv.type;
-          msg += '\n- <b>'+c(mv.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+'] <b>Power:</b> '+shownPower+' <b>Acc:</b> '+mv.accuracy+' ('+c(mv.category.charAt(0))+')';
+          const shownPower = getDisplayedMovePower(displayMove, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name);
+          const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, abilityName: p1.ability, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: displayMove.name, moveType: displayMove.type }) || displayMove.type;
+          msg += '\n- <b>'+c(displayMove.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+'] <b>Power:</b> '+shownPower+' <b>Acc:</b> '+displayMove.accuracy+' ('+c(displayMove.category.charAt(0))+')';
         }
       }
     }
@@ -1706,12 +1977,28 @@ function registerBattleCallbacks(bot, deps) {
     // Row 1: 4 move buttons in a single row
     let moveButtons = [];
     if (showAllMovesInGroup) {
-      moveButtons = moves.map((word) => ({ text: c(dmoves[word].name), callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' }));
+      moveButtons = moves.map((word) => {
+        const displayMove = getDisplayedBattleMove({
+          battleData,
+          pokemon: p1,
+          move: dmoves[word],
+          userData: attacker,
+          userId: battleData.cid
+        });
+        return { text: c(displayMove.name), callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' };
+      });
     } else {
       // Showdown-style: 4 buttons where used moves show real name, unused show ???
       moveButtons = moves.map((word) => {
         const isRevealed = p1UsedMoves.includes(word);
-        return { text: isRevealed ? c(dmoves[word].name) : '???', callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' };
+        const displayMove = getDisplayedBattleMove({
+          battleData,
+          pokemon: p1,
+          move: dmoves[word],
+          userData: attacker,
+          userId: battleData.cid
+        });
+        return { text: isRevealed ? c(displayMove.name) : '???', callback_data: 'multimo_'+word+'_'+bword+'_'+battleData.cid+'' };
       });
     }
     if (moveButtons.length < 1) {
@@ -2938,25 +3225,31 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         evolutionChains: chains
       });
 
-      const usesDefenseAsAttack = normalizeMoveName(move.name) === 'body press';
-      let atk = applyStageToStat(usesDefenseAsAttack ? stats1.defense : stats1.attack, unawareModifiers.attackStage);
-      let def2 = applyStageToStat(stats2.defense, unawareModifiers.defenseStage);
-      if (move.category == 'special') {
-        atk = applyStageToStat(stats1.special_attack, unawareModifiers.attackStage);
-        def2 = applyStageToStat(stats2.special_defense, unawareModifiers.defenseStage);
-      } else if (!usesDefenseAsAttack) {
-        atk = Math.max(1, Math.floor(atk * getAttackStatMultiplier(attackerAbility, move.category)));
-      }
-      if (move.category == 'special') {
-        atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.special_attack));
-        def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.special_defense));
-      } else if (usesDefenseAsAttack) {
-        atk = Math.max(1, Math.floor(atk * (attackerHeldItemInfo.defense || 1)));
-        def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
-      } else {
-        atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.attack));
-        def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
-      }
+    const normalizedMoveName = normalizeMoveName(move.name);
+    const usesDefenseAsAttack = normalizedMoveName === 'body press';
+    const usesTargetAttackStat = normalizedMoveName === 'foul play';
+    const usesDefenseAsSpecialTargetStat = normalizedMoveName === 'psyshock' || normalizedMoveName === 'psystrike' || normalizedMoveName === 'secret sword';
+    let atk = applyStageToStat(usesDefenseAsAttack ? stats1.defense : (usesTargetAttackStat ? stats2.attack : stats1.attack), usesTargetAttackStat ? unawareModifiers.defenseStage : unawareModifiers.attackStage);
+    let def2 = applyStageToStat(stats2.defense, unawareModifiers.defenseStage);
+    if (move.category == 'special') {
+      atk = applyStageToStat(stats1.special_attack, unawareModifiers.attackStage);
+      def2 = applyStageToStat(usesDefenseAsSpecialTargetStat ? stats2.defense : stats2.special_defense, unawareModifiers.defenseStage);
+    } else if (!usesDefenseAsAttack) {
+      atk = Math.max(1, Math.floor(atk * getAttackStatMultiplier(attackerAbility, move.category)));
+    }
+    if (move.category == 'special') {
+      atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.special_attack));
+      def2 = Math.max(1, Math.floor(def2 * (usesDefenseAsSpecialTargetStat ? defenderHeldItemInfo.defense : defenderHeldItemInfo.special_defense)));
+    } else if (usesDefenseAsAttack) {
+      atk = Math.max(1, Math.floor(atk * (attackerHeldItemInfo.defense || 1)));
+      def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
+    } else if (usesTargetAttackStat) {
+      atk = Math.max(1, Math.floor(atk));
+      def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
+    } else {
+      atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.attack));
+      def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
+    }
       def2 = Math.max(1, Math.floor(def2 * getWeatherDefenseMultiplier({
         battleData,
         moveCategory: move.category,
@@ -3510,6 +3803,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               });
               var damage = Math.min(Math.max(0, Math.floor(calc(atk, def2, level1, boostedPower, eff1) * stabInfo.multiplier)), battleData.ohp);
               const lifeOrbBoostActive = attackerHeldItemInfo.lifeOrbActive && !isDirectDamageMove(moveName);
+              const attackerTypes = getEffectivePokemonTypes({ pokemonName: p.name, pokemonTypes: pokes[p.name]?.types || [], heldItem: attackerHeldItemName });
               if (lifeOrbBoostActive && damage > 0) {
                 damage = Math.min(Math.max(1, Math.floor(damage * attackerHeldItemInfo.damageMultiplier)), battleData.ohp);
               }
@@ -3547,7 +3841,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                   if (remainingHp <= 0) break;
 
                   let hitDamage = damage;
-                  const didHitCrit = isPerfectCrit || (isHighCritMove && Math.random() < HIGH_CRIT_RATIO_CHANCE);
+                  const didHitCrit = Math.random() < getCritChance({ battleData, pass: battleData.c, isPerfectCrit, isHighCritMove });
                   if (didHitCrit) {
                     critHits += 1;
                     hitDamage = Math.max(1, Math.floor(hitDamage * CRIT_DAMAGE_MULTIPLIER));
@@ -3865,7 +4159,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                   setBattleStatus(battleData, battleData.o, statusEffect.status);
                   msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.';
               }
-              msgLocal += applyMovePoisonExtras({
+              msgLocal += applyMoveStatusExtras({
                 battleData,
                 moveName,
                 defenderName: op.name,
@@ -6374,20 +6668,26 @@ async function executeStandardMove(act) {
         evolutionChains: chains
       });
 
-    const usesDefenseAsAttack = normalizeMoveName(move.name) === 'body press';
-    let atk = applyStageToStat(usesDefenseAsAttack ? stats1.defense : stats1.attack, unawareModifiers.attackStage);
+    const normalizedMoveName = normalizeMoveName(move.name);
+    const usesDefenseAsAttack = normalizedMoveName === 'body press';
+    const usesTargetAttackStat = normalizedMoveName === 'foul play';
+    const usesDefenseAsSpecialTargetStat = normalizedMoveName === 'psyshock' || normalizedMoveName === 'psystrike' || normalizedMoveName === 'secret sword';
+    let atk = applyStageToStat(usesDefenseAsAttack ? stats1.defense : (usesTargetAttackStat ? stats2.attack : stats1.attack), usesTargetAttackStat ? unawareModifiers.defenseStage : unawareModifiers.attackStage);
     let def2 = applyStageToStat(stats2.defense, unawareModifiers.defenseStage);
     if (move.category == 'special') {
       atk = applyStageToStat(stats1.special_attack, unawareModifiers.attackStage);
-      def2 = applyStageToStat(stats2.special_defense, unawareModifiers.defenseStage);
+      def2 = applyStageToStat(usesDefenseAsSpecialTargetStat ? stats2.defense : stats2.special_defense, unawareModifiers.defenseStage);
     } else if (!usesDefenseAsAttack) {
       atk = Math.max(1, Math.floor(atk * getAttackStatMultiplier(attackerAbility, move.category)));
     }
     if (move.category == 'special') {
       atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.special_attack));
-      def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.special_defense));
+      def2 = Math.max(1, Math.floor(def2 * (usesDefenseAsSpecialTargetStat ? defenderHeldItemInfo.defense : defenderHeldItemInfo.special_defense)));
     } else if (usesDefenseAsAttack) {
       atk = Math.max(1, Math.floor(atk * (attackerHeldItemInfo.defense || 1)));
+      def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
+    } else if (usesTargetAttackStat) {
+      atk = Math.max(1, Math.floor(atk));
       def2 = Math.max(1, Math.floor(def2 * defenderHeldItemInfo.defense));
     } else {
       atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.attack));
@@ -6868,17 +7168,24 @@ async function executeStandardMove(act) {
 
             msgLocal += applyScreenSetupByMove(moveName, battleData, battleData.cid, true);
             msgLocal += applyScreenRemovalByMove(moveName, battleData, battleData.oid, true);
-            msgLocal += applyWeatherByMove({
-              battleData,
-              moveName,
-              pass: battleData.c,
-              pokemonName: p.name,
-              heldItem: p.held_item,
-              c,
-              didHit: true
-            }).message;
+              msgLocal += applyWeatherByMove({
+                battleData,
+                moveName,
+                pass: battleData.c,
+                pokemonName: p.name,
+                heldItem: p.held_item,
+                c,
+                didHit: true
+              }).message;
+              msgLocal += applyCritStageBoostByMove({
+                battleData,
+                moveName,
+                attackerPass: battleData.c,
+                attackerName: p.name,
+                attackerTypes
+              });
 
-            msgLocal += applySelfFaintAfterMove(moveName, moveLabel, battleData, battleData.c, p.name);
+              msgLocal += applySelfFaintAfterMove(moveName, moveLabel, battleData, battleData.c, p.name);
             }
         } else {
               const weatherSuppressedMessage = getWeatherSuppressedMoveMessage({
@@ -6925,14 +7232,15 @@ async function executeStandardMove(act) {
             });
             var damage = Math.min(Math.max(0, Math.floor(calc(atk, def2, level1, boostedPower, eff1) * stabInfo.multiplier)), battleData.ohp);
             const lifeOrbBoostActive = attackerHeldItemInfo.lifeOrbActive && !isDirectDamageMove(moveName);
+            const attackerTypes = getEffectivePokemonTypes({ pokemonName: p.name, pokemonTypes: pokes[p.name]?.types || [], heldItem: attackerHeldItemName });
             if (lifeOrbBoostActive && damage > 0) {
               damage = Math.min(Math.max(1, Math.floor(damage * attackerHeldItemInfo.damageMultiplier)), battleData.ohp);
             }
             let ohkoFailed = false;
             if (OHKO_MOVES.has(moveName)) {
-              const attackerTypes = getEffectivePokemonTypes({ pokemonName: p.name, pokemonTypes: pokes[p.name]?.types || [], heldItem: attackerHeldItemName }).map((t) => String(t).toLowerCase());
+              const attackerTypeKeys = attackerTypes.map((t) => String(t).toLowerCase());
               const defenderTypes = getEffectivePokemonTypes({ pokemonName: op.name, pokemonTypes: pokes[op.name]?.types || [], heldItem: defenderHeldItemName }).map((t) => String(t).toLowerCase());
-              const sheerColdBlocked = moveName === 'sheer cold' && defenderTypes.includes('ice') && !attackerTypes.includes('ice');
+              const sheerColdBlocked = moveName === 'sheer cold' && defenderTypes.includes('ice') && !attackerTypeKeys.includes('ice');
               const ohkoChance = getOhkoHitChance(level1, level2);
               if (level1 < level2 || sheerColdBlocked || Math.random() * 100 >= ohkoChance) {
                 damage = 0;
@@ -6962,7 +7270,7 @@ async function executeStandardMove(act) {
                 if (remainingHp <= 0) break;
 
                 let hitDamage = damage;
-                const didHitCrit = isPerfectCrit || (isHighCritMove && Math.random() < HIGH_CRIT_RATIO_CHANCE);
+                const didHitCrit = Math.random() < getCritChance({ battleData, pass: battleData.c, isPerfectCrit, isHighCritMove });
                 if (didHitCrit) {
                   critHits += 1;
                   hitDamage = Math.max(1, Math.floor(hitDamage * CRIT_DAMAGE_MULTIPLIER));
@@ -7301,7 +7609,7 @@ async function executeStandardMove(act) {
                 setBattleStatus(battleData, battleData.o, statusEffect.status);
                 msgLocal += '\n-> <b>'+c(op.name)+'</b> is now <b>'+getStatusLabel(statusEffect.status)+'</b>.';
             }
-            msgLocal += applyMovePoisonExtras({
+            msgLocal += applyMoveStatusExtras({
               battleData,
               moveName,
               defenderName: op.name,
@@ -8118,17 +8426,17 @@ for (const mid of p1v.moves) {
   const mv = dmoves[mid]
   if (mv) {
     const displayMove = getDisplayedBattleMove({ battleData: battleData2, pokemon: p1v, move: mv, userData: attacker2, userId: battleData2.cid })
-    const power = mv.power ?? '?'
-    const acc = mv.accuracy ?? '?'
+    const power = displayMove.power ?? '?'
+    const acc = displayMove.accuracy ?? '?'
     const shownType = getEffectiveMoveType({
       battleData: battleData2,
       pokemonName: p1v.name,
       abilityName: p1v.ability,
       heldItem: getBattleHeldItemName({ battleData: battleData2, pass: p1v.pass, heldItem: p1v.held_item }),
-      moveName: mv.name,
-      moveType: mv.type
-    }) || mv.type
-    popupText += '\n• ' + c(mv.name) + ' [' + c(shownType) + '] P:' + power + ' A:' + acc
+      moveName: displayMove.name,
+      moveType: displayMove.type
+    }) || displayMove.type
+    popupText += '\n• ' + c(displayMove.name) + ' [' + c(shownType) + '] P:' + power + ' A:' + acc
   }
 }
 if (popupText.length > 195) popupText = popupText.substring(0, 195) + '...';

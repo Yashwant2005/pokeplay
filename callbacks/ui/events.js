@@ -19,8 +19,12 @@ function registerEventsCallbacks(bot, deps) {
 
     if (action === 'detail') {
       const eventId = parts[2];
-      await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, buildEventDetailMessage(eventId), {
-        parse_mode: 'markdown',
+      const detailPayload = await buildEventDetailMessage(eventId, {
+        userId: ctx.from.id,
+        getUserData: deps.getUserData
+      });
+      await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, detailPayload.text, {
+        parse_mode: detailPayload.parse_mode || 'markdown',
         reply_markup: buildEventDetailKeyboard(id)
       });
       return;

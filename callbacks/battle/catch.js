@@ -68,7 +68,7 @@ function register_011_catch(bot, deps) {
     const level = ctx.callbackQuery.data.split('_')[2] * 1;
     const f = ctx.callbackQuery.data.split('_')[3];
     const org = ctx.callbackQuery.data.split('_')[4];
-    let msg = '<b>âœ¦ The Pokomon battle commences!</b>';
+    let msg = '<b>✦ The Pokomon battle commences!</b>';
     const op = pokes[name];
     const data = await getUserData(ctx.from.id);
     if (!data || !Array.isArray(data.pokes)) {

@@ -135,6 +135,7 @@ const HIGH_CRIT_RATIO_MOVES = new Set([
 ])
 const CRIT_DAMAGE_MULTIPLIER = 1.5
 const HIGH_CRIT_RATIO_CHANCE = 0.125
+const BASE_CRIT_CHANCE = 1 / 24
 const OHKO_MOVES = new Set([
   'fissure',
   'guillotine',
@@ -176,6 +177,45 @@ const FIXED_MULTI_HIT_MOVES = {
   'triple kick': 3,
   'twin beam': 2,
   'twineedle': 2
+}
+const ensureBattleCritStageState = (battleData) => {
+  if (!battleData.critStageState || typeof battleData.critStageState !== 'object') {
+    battleData.critStageState = {}
+  }
+  return battleData.critStageState
+}
+const getBattleCritStage = (battleData, pass) => Math.max(0, Number(ensureBattleCritStageState(battleData)[String(pass)]) || 0)
+const raiseBattleCritStage = (battleData, pass, amount) => {
+  const all = ensureBattleCritStageState(battleData)
+  const key = String(pass)
+  all[key] = Math.max(0, Math.min(3, (Number(all[key]) || 0) + (Number(amount) || 0)))
+  return all[key]
+}
+const getCritChance = ({ battleData, pass, isPerfectCrit, isHighCritMove }) => {
+  if (isPerfectCrit) return 1
+  const totalStage = getBattleCritStage(battleData, pass) + (isHighCritMove ? 1 : 0)
+  if (totalStage >= 3) return 1
+  if (totalStage === 2) return 0.5
+  if (totalStage === 1) return HIGH_CRIT_RATIO_CHANCE
+  return BASE_CRIT_CHANCE
+}
+const applyCritStageBoostByMove = ({ battleData, moveName, attackerPass, attackerName, attackerTypes }) => {
+  const normalizedMove = normalizeMoveName(moveName)
+  if (normalizedMove === 'focus energy') {
+    raiseBattleCritStage(battleData, attackerPass, 2)
+    return '\n-> <b>' + c(attackerName) + '</b> is getting pumped!'
+  }
+  if (normalizedMove === 'dragon cheer') {
+    const types = (attackerTypes || []).map((type) => String(type || '').toLowerCase())
+    const amount = types.includes('dragon') ? 2 : 1
+    raiseBattleCritStage(battleData, attackerPass, amount)
+    return '\n-> <b>' + c(attackerName) + '</b>\'s critical-hit ratio rose!'
+  }
+  if (normalizedMove === 'g max chi strike') {
+    raiseBattleCritStage(battleData, attackerPass, 1)
+    return '\n-> <b>' + c(attackerName) + '</b>\'s critical-hit ratio rose!'
+  }
+  return ''
 }
 const getMultiHitCount = (moveName) => {
   if (FIXED_MULTI_HIT_MOVES[moveName]) return FIXED_MULTI_HIT_MOVES[moveName]
@@ -437,12 +477,41 @@ let d = move1.category == 'special'
 let a2 = move2.category == 'special'
   ? applyStageToStat(stats2.special_attack, wildUnawareModifiers.attackStage)
   : applyStageToStat(stats2.attack, wildUnawareModifiers.attackStage)
+const playerUsesDefenseAsAttack = playerMoveName === 'body press'
+const playerUsesTargetAttackStat = playerMoveName === 'foul play'
+const playerUsesDefenseAsSpecialTargetStat = playerMoveName === 'psyshock' || playerMoveName === 'psystrike' || playerMoveName === 'secret sword'
+const wildUsesDefenseAsAttack = wildMoveName === 'body press'
+const wildUsesTargetAttackStat = wildMoveName === 'foul play'
+const wildUsesDefenseAsSpecialTargetStat = wildMoveName === 'psyshock' || wildMoveName === 'psystrike' || wildMoveName === 'secret sword'
+if (playerUsesDefenseAsAttack) {
+  a = applyStageToStat(stats.defense, playerUnawareModifiers.attackStage)
+}
+if (playerUsesTargetAttackStat) {
+  a = applyStageToStat(stats2.attack, playerUnawareModifiers.defenseStage)
+}
+if (playerUsesDefenseAsSpecialTargetStat) {
+  d = applyStageToStat(stats2.defense, playerUnawareModifiers.defenseStage)
+}
+if (wildUsesDefenseAsAttack) {
+  a2 = applyStageToStat(stats2.defense, wildUnawareModifiers.attackStage)
+}
+if (wildUsesTargetAttackStat) {
+  a2 = applyStageToStat(stats.attack, wildUnawareModifiers.defenseStage)
+}
 if (move1.category == 'physical') {
-  a = Math.max(1, Math.floor(a * getAttackStatMultiplier(playerAbility, move1.category)))
+  if (!playerUsesDefenseAsAttack && !playerUsesTargetAttackStat) {
+    a = Math.max(1, Math.floor(a * getAttackStatMultiplier(playerAbility, move1.category)))
+  }
 }
 if (move1.category == 'special') {
   a = Math.max(1, Math.floor(a * playerHeldItemInfo.special_attack))
-  d = Math.max(1, Math.floor(d * wildHeldItemInfo.special_defense))
+  d = Math.max(1, Math.floor(d * (playerUsesDefenseAsSpecialTargetStat ? wildHeldItemInfo.defense : wildHeldItemInfo.special_defense)))
+} else if (playerUsesDefenseAsAttack) {
+  a = Math.max(1, Math.floor(a * (playerHeldItemInfo.defense || 1)))
+  d = Math.max(1, Math.floor(d * wildHeldItemInfo.defense))
+} else if (playerUsesTargetAttackStat) {
+  a = Math.max(1, Math.floor(a))
+  d = Math.max(1, Math.floor(d * wildHeldItemInfo.defense))
 } else {
   a = Math.max(1, Math.floor(a * playerHeldItemInfo.attack))
   d = Math.max(1, Math.floor(d * wildHeldItemInfo.defense))
@@ -454,14 +523,25 @@ d = Math.max(1, Math.floor(d * getWeatherDefenseMultiplier({
 })))
 a = Math.max(1, Math.floor(a * playerSupremeOverlordInfo.multiplier))
 if (move2.category == 'physical') {
-  a2 = Math.max(1, Math.floor(a2 * getAttackStatMultiplier(wildAbility, move2.category)))
+  if (!wildUsesDefenseAsAttack && !wildUsesTargetAttackStat) {
+    a2 = Math.max(1, Math.floor(a2 * getAttackStatMultiplier(wildAbility, move2.category)))
+  }
 }
 let d2 = move2.category == 'special'
   ? applyStageToStat(stats.special_defense, wildUnawareModifiers.defenseStage)
   : applyStageToStat(stats.defense, wildUnawareModifiers.defenseStage)
+if (wildUsesDefenseAsSpecialTargetStat) {
+  d2 = applyStageToStat(stats.defense, wildUnawareModifiers.defenseStage)
+}
 if (move2.category == 'special') {
   a2 = Math.max(1, Math.floor(a2 * wildHeldItemInfo.special_attack))
-  d2 = Math.max(1, Math.floor(d2 * playerHeldItemInfo.special_defense))
+  d2 = Math.max(1, Math.floor(d2 * (wildUsesDefenseAsSpecialTargetStat ? playerHeldItemInfo.defense : playerHeldItemInfo.special_defense)))
+} else if (wildUsesDefenseAsAttack) {
+  a2 = Math.max(1, Math.floor(a2 * (wildHeldItemInfo.defense || 1)))
+  d2 = Math.max(1, Math.floor(d2 * playerHeldItemInfo.defense))
+} else if (wildUsesTargetAttackStat) {
+  a2 = Math.max(1, Math.floor(a2))
+  d2 = Math.max(1, Math.floor(d2 * playerHeldItemInfo.defense))
 } else {
   a2 = Math.max(1, Math.floor(a2 * wildHeldItemInfo.attack))
   d2 = Math.max(1, Math.floor(d2 * playerHeldItemInfo.defense))
@@ -470,6 +550,8 @@ const isPerfectCrit1 = PERFECT_CRIT_MOVES.has(playerMoveName)
 const isPerfectCrit2 = PERFECT_CRIT_MOVES.has(wildMoveName)
 const isHighCritMove1 = HIGH_CRIT_RATIO_MOVES.has(playerMoveName)
 const isHighCritMove2 = HIGH_CRIT_RATIO_MOVES.has(wildMoveName)
+const playerTypesForCritBoost = getEffectivePokemonTypes({ pokemonName: p.name, pokemonTypes: pokes[p.name]?.types || [], heldItem: playerHeldItemName })
+const wildTypesForCritBoost = getEffectivePokemonTypes({ pokemonName: battleData.name, pokemonTypes: pokes[battleData.name]?.types || [], heldItem: wildHeldItemName })
 const isOhko1 = OHKO_MOVES.has(playerMoveName)
 const isOhko2 = OHKO_MOVES.has(wildMoveName)
 const playerPinchMult = getPinchPowerMultiplier({
@@ -587,7 +669,7 @@ if(!ohkoFailed1 && damage > 0 && !isOhko1){
     const remainingHp1 = battleData.ochp - totalDamage1
     if(remainingHp1 <= 0) break
     let hitDamage1 = damage
-    const didHitCrit1 = isPerfectCrit1 || (isHighCritMove1 && Math.random() < HIGH_CRIT_RATIO_CHANCE)
+    const didHitCrit1 = Math.random() < getCritChance({ battleData, pass: p.pass, isPerfectCrit: isPerfectCrit1, isHighCritMove: isHighCritMove1 })
     if(didHitCrit1){
       critHits1 += 1
       hitDamage1 = Math.max(1, Math.floor(hitDamage1 * CRIT_DAMAGE_MULTIPLIER))
@@ -686,7 +768,7 @@ if(!ohkoFailed2 && damage2 > 0 && !isOhko2){
     const remainingHp2 = battleData.chp - totalDamage2
     if(remainingHp2 <= 0) break
     let hitDamage2 = damage2
-    const didHitCrit2 = isPerfectCrit2 || (isHighCritMove2 && Math.random() < HIGH_CRIT_RATIO_CHANCE)
+    const didHitCrit2 = Math.random() < getCritChance({ battleData, pass: opponentPass, isPerfectCrit: isPerfectCrit2, isHighCritMove: isHighCritMove2 })
     if(didHitCrit2){
       critHits2 += 1
       hitDamage2 = Math.max(1, Math.floor(hitDamage2 * CRIT_DAMAGE_MULTIPLIER))
@@ -1006,6 +1088,13 @@ ms2 += applyWeatherByMove({
   c,
   didHit: damage > 0
 }).message
+ms2 += applyCritStageBoostByMove({
+  battleData,
+  moveName: playerMoveLabel,
+  attackerPass: p.pass,
+  attackerName: p.name,
+  attackerTypes: playerTypesForCritBoost
+})
 if(battleData.ochp < 1){
   if (playerMoveName == 'fell stinger') {
     ms2 += applyStageChanges({
@@ -1129,6 +1218,13 @@ enemyAttackAbilityMsg += applyWeatherByMove({
   c,
   didHit: damage2 > 0
 }).message
+enemyAttackAbilityMsg += applyCritStageBoostByMove({
+  battleData,
+  moveName: wildMoveLabel,
+  attackerPass: opponentPass,
+  attackerName: battleData.name,
+  attackerTypes: wildTypesForCritBoost
+})
 await saveBattleData(bword, battleData);
 if(!ohkoFailed1 && finalEff1 == 0){
 ms2 += '\n<b>✶ It\'s 0x effective!</b>'
@@ -1249,6 +1345,8 @@ if(rankSummary && rankSummary.levelsToClaim > 0){
   if(rankSummary.rewards.lp > 0) finalMsg += '\n- '+rankSummary.rewards.lp+' League Points ⭐'
   if(rankSummary.rewards.ht > 0) finalMsg += '\n- '+rankSummary.rewards.ht+' Holowear Tickets 🎟️'
   if(rankSummary.rewards.battleBoxes > 0) finalMsg += '\n- '+rankSummary.rewards.battleBoxes+' Battle Box 🎁'
+  if(rankSummary.rewards.tms > 0) finalMsg += '\n- '+rankSummary.rewards.tms+' TMs'
+  if(rankSummary.rewards.stones > 0) finalMsg += '\n- '+rankSummary.rewards.stones+' Mega Stones'
 }
 finalMsg += '\n\n' + formatTrainerProgress(data, trainerlevel, MAX_TRAINER_LEVEL)
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,finalMsg,{parse_mode:'markdown'})
@@ -1537,3 +1635,4 @@ const messageData = await loadMessageData();
 }
 
 module.exports = register_012_atk;
+

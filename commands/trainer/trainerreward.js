@@ -37,6 +37,8 @@ function registerTrainerRewardCommand(bot, deps) {
     if (summary.rewards.lp > 0) msg += `\n*League Points:* +${summary.rewards.lp}`;
     if (summary.rewards.ht > 0) msg += `\n*Holowear Tickets:* +${summary.rewards.ht}`;
     if (summary.rewards.battleBoxes > 0) msg += `\n*Battle Boxes:* +${summary.rewards.battleBoxes}`;
+    if (summary.rewards.tms > 0) msg += `\n*TMs:* +${summary.rewards.tms}`;
+    if (summary.rewards.stones > 0) msg += `\n*Mega Stones:* +${summary.rewards.stones}`;
     msg += '\n\n' + formatTrainerProgress(data, trainerlevel, MAX_TRAINER_LEVEL);
 
     await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, msg, {

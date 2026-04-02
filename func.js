@@ -35,6 +35,8 @@ const growth_rates = JSON.parse(fs.readFileSync('data/pokemon_data2.json', 'utf8
 const rdata = JSON.parse(fs.readFileSync('data/pokedex_data.json', 'utf8'));
 const spawn = JSON.parse(fs.readFileSync('data/pokemon_status_info.json', 'utf8'));
 const trainerlevel = JSON.parse(fs.readFileSync('data/levels.json', 'utf8'));
+const stones = JSON.parse(fs.readFileSync('data/stones.json', 'utf8'));
+const tms = JSON.parse(fs.readFileSync('data/tms2.json', 'utf8'));
 const {
   MAX_TRAINER_LEVEL,
   extendTrainerLevelTable,
@@ -363,6 +365,28 @@ function mergeTeams(latestTeams, incomingTeams, validPasses) {
   return mergedTeams;
 }
 
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+function deepMergeObjects(latestValue, incomingValue) {
+  if (!isPlainObject(latestValue) || !isPlainObject(incomingValue)) {
+    return cloneJson(incomingValue !== undefined ? incomingValue : latestValue);
+  }
+
+  const merged = { ...latestValue };
+  for (const key of Object.keys(incomingValue)) {
+    const latestChild = latestValue[key];
+    const incomingChild = incomingValue[key];
+    if (isPlainObject(latestChild) && isPlainObject(incomingChild)) {
+      merged[key] = deepMergeObjects(latestChild, incomingChild);
+      continue;
+    }
+    merged[key] = cloneJson(incomingChild);
+  }
+  return merged;
+}
+
 function mergeUserDataForSave(latestData, incomingData) {
   const latest = latestData && typeof latestData === 'object' ? latestData : {};
   const incoming = incomingData && typeof incomingData === 'object' ? incomingData : {};
@@ -370,11 +394,11 @@ function mergeUserDataForSave(latestData, incomingData) {
   const merged = {
     ...latest,
     ...incoming,
-    inv: { ...(latest.inv || {}), ...(incoming.inv || {}) },
-    balls: { ...(latest.balls || {}), ...(incoming.balls || {}) },
-    extra: { ...(latest.extra || {}), ...(incoming.extra || {}) },
-    settings: { ...(latest.settings || {}), ...(incoming.settings || {}) },
-    tms: { ...(latest.tms || {}), ...(incoming.tms || {}) }
+    inv: deepMergeObjects(latest.inv || {}, incoming.inv || {}),
+    balls: deepMergeObjects(latest.balls || {}, incoming.balls || {}),
+    extra: deepMergeObjects(latest.extra || {}, incoming.extra || {}),
+    settings: deepMergeObjects(latest.settings || {}, incoming.settings || {}),
+    tms: deepMergeObjects(latest.tms || {}, incoming.tms || {})
   };
   merged.pokes = replacePokes
     ? (Array.isArray(incoming.pokes) ? incoming.pokes : [])
@@ -1080,7 +1104,7 @@ winner.inv.exp += 40
 const newTrainerLevel = getTrainerLevel(winner, trainerlevel, MAX_TRAINER_LEVEL)
 let rankSummary = null
 if(newTrainerLevel > oldTrainerLevel){
-rankSummary = claimTrainerRankRewards(winner, { trainerlevel })
+rankSummary = claimTrainerRankRewards(winner, { trainerlevel, tms, stones })
 }
 await saveUserData2(battleData.oid,winner)
 try{
@@ -1091,6 +1115,8 @@ trainerMsg += '\n*Level:* ' + oldTrainerLevel + ' -> ' + newTrainerLevel
   if (rankSummary.rewards.lp > 0) trainerMsg += '\n- ' + rankSummary.rewards.lp + ' League Points'
   if (rankSummary.rewards.ht > 0) trainerMsg += '\n- ' + rankSummary.rewards.ht + ' Holowear Tickets'
   if (rankSummary.rewards.battleBoxes > 0) trainerMsg += '\n- ' + rankSummary.rewards.battleBoxes + ' Battle Box'
+  if (rankSummary.rewards.tms > 0) trainerMsg += '\n- ' + rankSummary.rewards.tms + ' TMs'
+  if (rankSummary.rewards.stones > 0) trainerMsg += '\n- ' + rankSummary.rewards.stones + ' Mega Stones'
 }
 trainerMsg += '\n\n' + formatTrainerProgress(winner, trainerlevel, MAX_TRAINER_LEVEL)
 await bot.telegram.sendMessage(battleData.oid, trainerMsg, { parse_mode:'markdown' })
@@ -1440,5 +1466,6 @@ module.exports = {
   getUserIds,
   userExists
 }
+
 
 

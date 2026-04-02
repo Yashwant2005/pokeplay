@@ -10,7 +10,8 @@ const CHANCE_REWARDS = [
 ];
 
 const BATTLE_BOX_REWARDS = [
-  { key: 'holowear_ht_5', chance: 50.0 },
+  { key: 'league_points_500', chance: 30.0 },
+  { key: 'league_points_800', chance: 20.0 },
   { key: 'pokeballs', chance: 45.0 },
   { key: 'tm4', chance: 4.0 },
   { key: 'stone1', chance: 0.7 },
@@ -259,6 +260,12 @@ function addHolowearTickets(data, count) {
   data.inv.holowear_tickets += count;
 }
 
+function addLeaguePoints(data, count) {
+  if (!data.inv || typeof data.inv !== 'object') data.inv = {};
+  if (!Number.isFinite(data.inv.league_points)) data.inv.league_points = 0;
+  data.inv.league_points += count;
+}
+
 function addNatureMint(data) {
   if (!data.extra || typeof data.extra !== 'object') data.extra = {};
   if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {};
@@ -288,10 +295,17 @@ function applyBattleBox(data, summary, deps) {
   const boxRoll = weightedPick(BATTLE_BOX_REWARDS);
   summary.battleBoxes += 1;
 
-  if (boxRoll === 'holowear_ht_5') {
-    addHolowearTickets(data, 5);
-    summary.rewards.ht += 5;
-    summary.holowearTicketsAdded += 5;
+  if (boxRoll === 'league_points_500') {
+    addLeaguePoints(data, 500);
+    summary.rewards.lp += 500;
+    summary.leaguePointsAdded += 500;
+    return;
+  }
+
+  if (boxRoll === 'league_points_800') {
+    addLeaguePoints(data, 800);
+    summary.rewards.lp += 800;
+    summary.leaguePointsAdded += 800;
     return;
   }
 
@@ -378,6 +392,7 @@ function openBattleBoxes(data, deps, requestedAmount) {
     mintsAdded: 0,
     bottleCapsAdded: 0,
     goldBottleCapsAdded: 0,
+    leaguePointsAdded: 0,
     holowearTicketsAdded: 0,
     mintBreakdown: {},
     pokeballsAdded: {}
@@ -433,7 +448,39 @@ function grantBattleBox(data, summary) {
   summary.rewards.battleBoxes += 1;
 }
 
-function applyRankRewardForLevel(level, data, summary) {
+function grantBattleBoxes(data, summary, count) {
+  const safeCount = Math.max(0, Math.floor(Number(count) || 0));
+  if (safeCount < 1) return;
+  data.inv.battle_boxes += safeCount;
+  summary.rewards.battleBoxes += safeCount;
+}
+
+function grantRandomTms(data, summary, tms, count) {
+  const safeCount = Math.max(0, Math.floor(Number(count) || 0));
+  if (!Array.isArray(summary.tmsReceived)) summary.tmsReceived = [];
+  for (let i = 0; i < safeCount; i += 1) {
+    const tmNo = randomTmNumber(tms);
+    if (!tmNo) continue;
+    addTm(data, tms, tmNo);
+    summary.rewards.tms += 1;
+    summary.tmsReceived.push(tmNo);
+  }
+}
+
+function grantRandomMegaStones(data, summary, stones, count) {
+  const safeCount = Math.max(0, Math.floor(Number(count) || 0));
+  if (!Array.isArray(summary.stonesReceived)) summary.stonesReceived = [];
+  for (let i = 0; i < safeCount; i += 1) {
+    const st = randomMegaStone(stones);
+    if (!st) continue;
+    addStone(data, st);
+    summary.rewards.stones += 1;
+    summary.stonesReceived.push(st);
+  }
+}
+
+function applyRankRewardForLevel(level, data, summary, deps) {
+  const { tms, stones } = deps;
   if (level <= 30) {
     grantSingleCycleReward(level, data, summary);
     return;
@@ -450,11 +497,32 @@ function applyRankRewardForLevel(level, data, summary) {
     return;
   }
 
-  // Stage 3: levels 51-100 alternate bundle and battle box.
-  if (level % 2 === 1) {
-    grantBundle(data, summary);
-  } else {
-    grantBattleBox(data, summary);
+  if (level <= 100) {
+    // Stage 3: levels 51-100 alternate bundle and battle box.
+    if (level % 2 === 1) {
+      grantBundle(data, summary);
+    } else {
+      grantBattleBox(data, summary);
+    }
+    return;
+  }
+
+  // Stage 4: after level 100 every level grants 1 battle box,
+  // and every 5th level grants an extra 5 battle boxes.
+  grantBattleBox(data, summary);
+  if (level % 5 === 0) {
+    grantBattleBoxes(data, summary, 5);
+  }
+
+  if (level === 150) {
+    grantRandomMegaStones(data, summary, stones, 2);
+    grantRandomTms(data, summary, tms, 8);
+    return;
+  }
+
+  if (level === 200) {
+    grantRandomMegaStones(data, summary, stones, 4);
+    grantRandomTms(data, summary, tms, 16);
   }
 }
 
@@ -470,7 +538,9 @@ function claimTrainerRankRewards(data, deps) {
     currentLevel,
     claimedLevel,
     levelsToClaim,
-    rewards: { pc: 0, lp: 0, ht: 0, battleBoxes: 0 }
+    rewards: { pc: 0, lp: 0, ht: 0, battleBoxes: 0, tms: 0, stones: 0 },
+    tmsReceived: [],
+    stonesReceived: []
   };
 
   if (levelsToClaim <= 0) return summary;
@@ -478,7 +548,7 @@ function claimTrainerRankRewards(data, deps) {
   ensureWallet(data);
 
   for (let level = claimedLevel + 1; level <= currentLevel; level++) {
-    applyRankRewardForLevel(level, data, summary);
+    applyRankRewardForLevel(level, data, summary, deps);
   }
 
   state.claimedLevel = currentLevel;

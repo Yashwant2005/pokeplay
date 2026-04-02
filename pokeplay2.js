@@ -518,12 +518,14 @@ function canPokemonAct(battleData, pass, pokeName) {
 
 function getMoveStatusEffect(move) {
   if (!move || !move.name) return null;
-  const name = String(move.name).toLowerCase();
+  const name = String(move.name).toLowerCase().replace(/\s+/g, '-');
   const guaranteed = {
     "g-max-malodor": { status: "poison", chance: 1 },
     "mortal-spin": { status: "poison", chance: 1 },
     "toxic-thread": { status: "poison", chance: 1 },
     "will-o-wisp": { status: "burn", chance: 1 },
+    "inferno": { status: "burn", chance: 1 },
+    "sizzly-slide": { status: "burn", chance: 1 },
     "toxic": { status: "badly_poisoned", chance: 1 },
     "dark-void": { status: "sleep", chance: 1 },
     "grass-whistle": { status: "sleep", chance: 1 },
@@ -537,12 +539,26 @@ function getMoveStatusEffect(move) {
     "thunder-wave": { status: "paralyze", chance: 1 },
     "stun-spore": { status: "paralyze", chance: 1 },
     "glare": { status: "paralyze", chance: 1 },
-    "nuzzle": { status: "paralyze", chance: 1 }
+    "nuzzle": { status: "paralyze", chance: 1 },
+    "buzzy-buzz": { status: "paralyze", chance: 1 },
+    "g-max-volt-crash": { status: "paralyze", chance: 1 },
+    "splishy-splash": { status: "paralyze", chance: 1 },
+    "stoked-sparksurfer": { status: "paralyze", chance: 1 },
+    "zap-cannon": { status: "paralyze", chance: 1 }
   };
   if (guaranteed[name]) return guaranteed[name];
 
-  if (["ember", "flamethrower", "fire-blast", "heat-wave", "flame-wheel", "fire-punch"].includes(name)) {
+  if (["ember", "blaze-kick", "fire-blast", "fire-fang", "fire-punch", "flame-wheel", "flamethrower", "flare-blitz", "heat-wave", "pyro-ball"].includes(name)) {
     return { status: "burn", chance: 0.1 };
+  }
+  if (["blue-flare", "matcha-gotcha", "sandsear-storm"].includes(name)) {
+    return { status: "burn", chance: 0.2 };
+  }
+  if (["blazing-torque", "ice-burn", "infernal-parade", "lava-plume", "scald", "scorching-sands", "searing-shot", "steam-eruption"].includes(name)) {
+    return { status: "burn", chance: 0.3 };
+  }
+  if (name === "sacred-fire") {
+    return { status: "burn", chance: 0.5 };
   }
   if (["poison-sting", "smog", "sludge", "sludge-bomb", "poison-jab", "cross-poison", "gunk-shot", "barb-barrage", "noxious-torque"].includes(name)) {
     return { status: "poison", chance: 0.3 };
@@ -559,20 +575,20 @@ function getMoveStatusEffect(move) {
   if (name === "malignant-chain") {
     return { status: "badly_poisoned", chance: 0.5 };
   }
-  if (["thunderbolt", "thunder", "spark", "discharge", "body-slam", "lick"].includes(name)) {
+  if (["body-slam", "bounce", "combat-torque", "discharge", "dragon-breath", "force-palm", "freeze-shock", "lick", "spark"].includes(name)) {
     return { status: "paralyze", chance: 0.3 };
   }
-  if (["ice-beam", "blizzard", "powder-snow", "ice-punch"].includes(name)) {
+  if (["bolt-strike", "wildbolt-storm"].includes(name)) {
+    return { status: "paralyze", chance: 0.2 };
+  }
+  if (["thunder", "thunder-fang", "thunder-punch", "thunder-shock", "thunderbolt", "volt-tackle"].includes(name)) {
+    return { status: "paralyze", chance: 0.1 };
+  }
+  if (["blizzard", "freeze-dry", "freezing-glare", "ice-beam", "ice-fang", "ice-punch", "powder-snow"].includes(name)) {
     return { status: "freeze", chance: 0.1 };
   }
   if (["relic-song", "wicked-torque"].includes(name)) {
     return { status: "sleep", chance: 0.1 };
-  }
-  if (name === "dire-claw") {
-    return { status: "sleep", chance: 1 / 6 };
-  }
-  if (name === "g-max-befuddle") {
-    return { status: "sleep", chance: 1 / 3 };
   }
   return null;
 }
@@ -1434,7 +1450,7 @@ bot.on('text', async (ctx, next) => {
         const m = tms.tmnumber[num]
         const tmSellValue = Number(tmprices.sell[String(num)] || 0)
         const tmSellLp = Math.max(1, Math.round(tmSellValue / 20))
-        let msg = 'âœ¦ *TM' + num + '* (' + c(dmoves[m].name) + ' ' + emojis[dmoves[m].type] + ')\n'
+        let msg = '✦ *TM' + num + '* (' + c(dmoves[m].name) + ' ' + emojis[dmoves[m].type] + ')\n'
         msg += '*Power:* ' + dmoves[m].power + ', *Accuracy:* ' + dmoves[m].accuracy + ' (_' + c(dmoves[m].category) + '_)\n'
         msg += '\n• You Can Sell *TM' + num + '* For *' + tmSellLp + ' League Points*'
         await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, msg, { reply_to_message_id: ctx.message.message_id, reply_markup: { inline_keyboard: [[{ text: 'Use', callback_data: 'tmuse_' + num + '_' + ctx.from.id + '' }, { text: 'Sell', callback_data: 'tmselly_' + num + '_' + ctx.from.id + '' }]] } })

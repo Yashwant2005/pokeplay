@@ -24,8 +24,10 @@ const p2 = data.pokes.filter((poke)=> poke.pass == pass)[0]
 if(!p2){
 return
 }
-await getStatsCardApi(data).editPokemonCard(ctx, deps, data, p2)
-return
+if (getPokemonStatsCardMode(data) !== 'legacy') {
+  await getStatsCardApi(data).editPokemonCard(ctx, deps, data, p2)
+  return
+}
 const g = growth_rates[p2.name]
 const exp = chart[g.growth_rate]
 const matchingLevels = Object.keys(exp).filter(level => p2.exp >= exp[level]);

@@ -1,6 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 const moment = require('moment');
+const {
+  EVENT_ID: ACK_EVENT_ID,
+  EVENT_TITLE: ACK_EVENT_TITLE,
+  EVENT_SHORT_LABEL: ACK_EVENT_SHORT_LABEL,
+  EVENT_STATUS: ACK_EVENT_STATUS,
+  EVENT_DURATION: ACK_EVENT_DURATION,
+  buildAcknowledgeEventDetails,
+  buildAcknowledgeEventCard
+} = require('./acknowledge_event');
 const SAFARI_CONFIG_PATH = path.join(process.cwd(), 'data', 'safari_event.json');
 
 function getDefaultSafariConfig() {
@@ -71,6 +80,14 @@ function getEventsCatalog() {
 
   return [
     {
+      id: ACK_EVENT_ID,
+      title: ACK_EVENT_TITLE,
+      shortLabel: ACK_EVENT_SHORT_LABEL,
+      status: ACK_EVENT_STATUS,
+      duration: ACK_EVENT_DURATION,
+      details: buildAcknowledgeEventDetails()
+    },
+    {
       id: 'safari',
       title: 'Safari Commemorative Event',
       shortLabel: 'Safari Pass',
@@ -118,20 +135,34 @@ function buildEventsListKeyboard(userId) {
   return { inline_keyboard: rows };
 }
 
-function buildEventDetailMessage(eventId) {
-  const event = getEventsCatalog().find((item) => item.id === eventId);
-  if (!event) {
-    return '*Pokeplay Events*\n\nEvent details are unavailable.';
+async function buildEventDetailMessage(eventId, options = {}) {
+  if (eventId === ACK_EVENT_ID && typeof options.getUserData === 'function' && options.userId !== undefined && options.userId !== null) {
+    const userData = await options.getUserData(options.userId);
+    return {
+      text: buildAcknowledgeEventCard(userData),
+      parse_mode: 'HTML'
+    };
   }
 
-  return [
-    '*' + event.title + '*',
-    '',
-    '*Status:* ' + formatAvailability(event.status),
-    '*Duration:* ' + event.duration,
-    '',
-    ...event.details.map((line) => '- ' + line)
-  ].join('\n');
+  const event = getEventsCatalog().find((item) => item.id === eventId);
+  if (!event) {
+    return {
+      text: '*Pokeplay Events*\n\nEvent details are unavailable.',
+      parse_mode: 'markdown'
+    };
+  }
+
+  return {
+    text: [
+      '*' + event.title + '*',
+      '',
+      '*Status:* ' + formatAvailability(event.status),
+      '*Duration:* ' + event.duration,
+      '',
+      ...event.details.map((line) => '- ' + line)
+    ].join('\n'),
+    parse_mode: 'markdown'
+  };
 }
 
 function buildEventDetailKeyboard(userId) {

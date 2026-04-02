@@ -1260,7 +1260,7 @@ function registerBattleCallbacks(bot, deps) {
     return message;
   }
 
-  function getDisplayedMovePower(move, abilityName, currentHp, maxHp, battleDataArg, pass, pokemonName) {
+  function getDisplayedMovePower(move, abilityName, currentHp, maxHp, battleDataArg, pass, pokemonName, defenderCurrentHp, defenderMaxHp) {
     const effectiveMoveName = getEffectiveMoveName({
       pokemonName,
       heldItem: getBattleHeldItemName({ battleData: battleDataArg, pass }),
@@ -1283,8 +1283,8 @@ function registerBattleCallbacks(bot, deps) {
       movePower: move && move.power,
       currentHp,
       maxHp,
-      defenderCurrentHp: maxHp,
-      defenderMaxHp: maxHp
+      defenderCurrentHp,
+      defenderMaxHp
     });
     const weatherAdjustedPower = Number.isFinite(rawPower) && rawPower > 0
       ? Math.max(1, Math.floor(rawPower * getWeatherMovePowerMultiplier({ battleData: battleDataArg, moveName: effectiveMoveName || (move && move.name), moveType: effectiveMoveType })))
@@ -1971,7 +1971,7 @@ function registerBattleCallbacks(bot, deps) {
       for (const move2 of p1.moves) {
         let move = dmoves[move2];
         const displayMove = getDisplayedBattleMove({ battleData, pokemon: p1, move, userData: attacker, userId: battleData.cid });
-        const shownPower = getDisplayedMovePower(displayMove, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name);
+        const shownPower = getDisplayedMovePower(displayMove, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name, battleData.ohp, stats1.hp);
         const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, abilityName: p1.ability, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: displayMove.name, moveType: displayMove.type }) || displayMove.type;
         msg += '\n- <b>'+c(displayMove.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+displayMove.accuracy+' ('+c(displayMove.category.charAt(0))+')';
       }
@@ -1981,7 +1981,7 @@ function registerBattleCallbacks(bot, deps) {
         const mv = dmoves[mid];
         if (mv) {
           const displayMove = getDisplayedBattleMove({ battleData, pokemon: p1, move: mv, userData: attacker, userId: battleData.cid });
-          const shownPower = getDisplayedMovePower(displayMove, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name);
+          const shownPower = getDisplayedMovePower(displayMove, p1.ability, battleData.chp, stats2.hp, battleData, p1.pass, p1.name, battleData.ohp, stats1.hp);
           const shownType = getEffectiveMoveType({ battleData, pokemonName: p1.name, abilityName: p1.ability, heldItem: getBattleHeldItemName({ battleData, pass: p1.pass }), moveName: displayMove.name, moveType: displayMove.type }) || displayMove.type;
           msg += '\n- <b>'+c(displayMove.name)+'</b> ['+c(shownType)+' '+(emojis[shownType] || '')+'] <b>Power:</b> '+shownPower+' <b>Acc:</b> '+displayMove.accuracy+' ('+c(displayMove.category.charAt(0))+')';
         }
@@ -3816,6 +3816,8 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 moveName,
                 moveType: effectiveMoveType,
                 movePower: battleMove.power || move.power,
+                currentHp: battleData.chp,
+                maxHp: stats1.hp,
                 defenderPass: battleData.o,
                 defenderCurrentHp: battleData.ohp,
                 defenderMaxHp: stats2.hp,
@@ -7256,6 +7258,8 @@ async function executeStandardMove(act) {
               moveName,
               moveType: effectiveMoveType,
               movePower: move.power,
+              currentHp: battleData.chp,
+              maxHp: stats1.hp,
               defenderPass: battleData.o,
               defenderCurrentHp: battleData.ohp,
               defenderMaxHp: stats2.hp,

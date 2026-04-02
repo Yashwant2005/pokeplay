@@ -265,7 +265,7 @@ const getDisplayedMoveType = (move, battleDataArg, pass, pokemonName, heldItem, 
     moveType: move && move.type
   }) || String(move && move.type || '').toLowerCase()
 }
-const getDisplayedMovePower = (move, abilityName, currentHp, maxHp, battleDataArg, pass, pokemonName) => {
+const getDisplayedMovePower = (move, abilityName, currentHp, maxHp, battleDataArg, pass, pokemonName, defenderCurrentHp, defenderMaxHp) => {
   const effectiveMoveName = getEffectiveMoveName({
     pokemonName,
     heldItem: getBattleHeldItemName({ battleData: battleDataArg, pass }),
@@ -278,7 +278,11 @@ const getDisplayedMovePower = (move, abilityName, currentHp, maxHp, battleDataAr
     pokemonName,
     moveName: move && move.name,
     moveType: effectiveMoveType,
-    movePower: move && move.power
+    movePower: move && move.power,
+    currentHp,
+    maxHp,
+    defenderCurrentHp,
+    defenderMaxHp
   })
   const weatherAdjustedPower = Number.isFinite(rawPower) && rawPower > 0
     ? Math.max(1, Math.floor(rawPower * getWeatherMovePowerMultiplier({ battleData: battleDataArg, moveName: effectiveMoveName || (move && move.name), moveType: effectiveMoveType })))
@@ -574,8 +578,34 @@ const wildTechnicianInfo = getTechnicianPowerInfo({
   abilityName: wildAbility,
   movePower: move2.power
 })
-const playerBasePower = getBattleMovePower({ battleData, pass: p.pass, pokemonName: p.name, heldItem: playerHeldItemName, moveName: move1.name, moveType: playerMoveType, movePower: move1.power })
-const wildBasePower = getBattleMovePower({ battleData, pass: opponentPass, pokemonName: battleData.name, heldItem: wildHeldItemName, moveName: move2.name, moveType: wildMoveType, movePower: move2.power })
+const playerBasePower = getBattleMovePower({
+  battleData,
+  pass: p.pass,
+  pokemonName: p.name,
+  heldItem: playerHeldItemName,
+  moveName: move1.name,
+  moveType: playerMoveType,
+  movePower: move1.power,
+  currentHp: battleData.chp,
+  maxHp: stats.hp,
+  defenderPass: opponentPass,
+  defenderCurrentHp: battleData.ochp,
+  defenderMaxHp: battleData.ohp
+})
+const wildBasePower = getBattleMovePower({
+  battleData,
+  pass: opponentPass,
+  pokemonName: battleData.name,
+  heldItem: wildHeldItemName,
+  moveName: move2.name,
+  moveType: wildMoveType,
+  movePower: move2.power,
+  currentHp: battleData.ochp,
+  maxHp: battleData.ohp,
+  defenderPass: p.pass,
+  defenderCurrentHp: battleData.chp,
+  defenderMaxHp: stats.hp
+})
 const playerPower = move1.category === 'status' || !move1.power
   ? 0
   : Math.max(1, Math.floor(Number(playerBasePower || 0) * getWeatherMovePowerMultiplier({ battleData, moveName: playerMoveLabel, moveType: playerMoveType }) * playerPinchMult * playerTechnicianInfo.multiplier))
@@ -1467,7 +1497,7 @@ const moves = []
    heldItem: getBattleHeldItemName({ battleData, pass: p.pass }),
    moveName: move && move.name
  }) || (move && move.name);
- const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name)
+ const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name, battleData.ochp, battleData.ohp)
  const shownType = getDisplayedMoveType(move, battleData, p.pass, p.name, undefined, playerAbility)
  msg += '\n<b>'+c(displayMoveName)+'</b>['+c(shownType)+' '+(emojis[shownType] || '')+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
  moves.push(''+move2+'')
@@ -1597,7 +1627,7 @@ msg += '\n\n<b>Moves :</b>'
 const moves = []
 for(const move2 of p.moves){
 let move = dmoves[move2]
-const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name)
+const shownPower = getDisplayedMovePower(move, playerAbility, battleData.chp, stats.hp, battleData, p.pass, p.name, battleData.ochp, battleData.ohp)
 msg += '\n• <b>'+c(move.name)+'</b> ['+c(move.type)+' '+emojis[move.type]+']\n<b>Power:</b> '+shownPower+'<b>, Accuracy:</b> '+move.accuracy+' ('+c(move.category.charAt(0))+')'
 moves.push(''+move2+'')
 }

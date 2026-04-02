@@ -702,7 +702,6 @@
     "bulletproof"
   ],
   "chesnaught-mega": [
-    "overgrow",
     "bulletproof"
   ],
   "chespin": [
@@ -771,9 +770,7 @@
     "unaware"
   ],
   "clefable-mega": [
-    "cute-charm",
-    "magic-guard",
-    "unaware"
+    "misty-surge"
   ],
   "clefairy": [
     "cute-charm",
@@ -1043,8 +1040,7 @@
     "magician"
   ],
   "delphox-mega": [
-    "blaze",
-    "magician"
+    "levitate"
   ],
   "deoxys-attack": [
     "pressure"
@@ -1191,9 +1187,7 @@
     "cloud-nine"
   ],
   "drampa-mega": [
-    "berserk",
-    "sap-sipper",
-    "cloud-nine"
+    "drizzle"
   ],
   "drapion": [
     "battle-armor",
@@ -1331,7 +1325,7 @@
     "levitate"
   ],
   "eelektross-mega": [
-    "levitate"
+    "transistor"
   ],
   "eevee": [
     "run-away",
@@ -1401,8 +1395,7 @@
     "reckless"
   ],
   "emboar-mega": [
-    "blaze",
-    "reckless"
+    "mold-breaker"
   ],
   "emolga": [
     "static",
@@ -1454,9 +1447,7 @@
     "mold-breaker"
   ],
   "excadrill-mega": [
-    "sand-rush",
-    "sand-force",
-    "mold-breaker"
+    "piercing-drill"
   ],
   "exeggcute": [
     "chlorophyll",
@@ -1514,8 +1505,7 @@
     "sheer-force"
   ],
   "feraligatr-mega": [
-    "torrent",
-    "sheer-force"
+    "dragonize"
   ],
   "ferroseed": [
     "iron-barbs"
@@ -1649,8 +1639,7 @@
     "cursed-body"
   ],
   "froslass-mega": [
-    "snow-cloak",
-    "cursed-body"
+    "snowscape"
   ],
   "frosmoth": [
     "shield-dust",
@@ -1966,7 +1955,6 @@
     "battle-bond"
   ],
   "greninja-mega": [
-    "torrent",
     "protean"
   ],
   "grimer": [
@@ -2944,23 +2932,45 @@
     "telepathy"
   ],
   "mega-absol": [],
-  "mega-baxcalibur": [],
+  "mega-baxcalibur": [
+    "thermal-exchange"
+  ],
   "mega-chimecho": [],
-  "mega-crabominable": [],
-  "mega-darkrai": [],
+  "mega-crabominable": [
+    "defiant"
+  ],
+  "mega-darkrai": [
+    "bad-dreams"
+  ],
   "mega-garchomp-z": [],
-  "mega-glimmora": [],
-  "mega-golisopod": [],
+  "mega-glimmora": [
+    "levitate"
+  ],
+  "mega-golisopod": [
+    "tough-claws"
+  ],
   "mega-heatran": [],
-  "mega-lucario-z": [],
-  "mega-magearna": [],
+  "mega-lucario-z": [
+    "prankster"
+  ],
+  "mega-magearna": [
+    "soul-heart"
+  ],
   "mega-meowstic": [],
   "mega-raichu-x": [],
-  "mega-raichu-y": [],
-  "mega-scovillain": [],
-  "mega-staraptor": [],
+  "mega-raichu-y": [
+    "electric-surge"
+  ],
+  "mega-scovillain": [
+    "circulating-burn"
+  ],
+  "mega-staraptor": [
+    "defiant"
+  ],
   "mega-tatsugiri": [],
-  "mega-zeraora": [],
+  "mega-zeraora": [
+    "speed-boost"
+  ],
   "meganium": [
     "overgrow",
     "leaf-guard"
@@ -3863,9 +3873,7 @@
     "moxie"
   ],
   "pyroar-mega": [
-    "rivalry",
-    "unnerve",
-    "moxie"
+    "thermal-boost"
   ],
   "pyukumuku": [
     "innards-out",

@@ -1815,6 +1815,8 @@ function getBattleMovePower(options) {
     moveName,
     moveType,
     movePower,
+    currentHp,
+    maxHp,
     heldItem,
     abilityName,
     defenderPass,
@@ -1859,6 +1861,34 @@ function getBattleMovePower(options) {
   const turnHitOnUser = battleData && battleData.turnHits ? battleData.turnHits[pass] : null;
   const rageFistHitsTaken = Math.max(0, Number(state.rageFistHitsTaken && state.rageFistHitsTaken[String(pass)]) || 0);
   const faintedAllies = Math.max(0, Object.keys((battleData && battleData.tem) || {}).filter((allyPass) => String(allyPass) !== String(pass) && Number(battleData.tem[allyPass]) <= 0).length);
+  const attackerCurrentHp = Number(currentHp);
+  const attackerMaxHp = Number(maxHp);
+  const attackerStages = ensurePokemonStatStages(battleData || {}, String(pass || ''));
+  const defenderStages = ensurePokemonStatStages(battleData || {}, String(defenderPass || ''));
+  const attackerPositiveStages = MAIN_BATTLE_STATS.reduce((sum, stat) => sum + Math.max(0, Number(attackerStages[stat]) || 0), 0);
+  const defenderPositiveStages = MAIN_BATTLE_STATS.reduce((sum, stat) => sum + Math.max(0, Number(defenderStages[stat]) || 0), 0);
+
+  if (['dragon energy', 'eruption', 'water spout'].includes(normalizedMove) && Number.isFinite(attackerCurrentHp) && Number.isFinite(attackerMaxHp) && attackerMaxHp > 0) {
+    return Math.max(1, Math.floor((150 * attackerCurrentHp) / attackerMaxHp));
+  }
+  if (['crush grip', 'hard press', 'wring out'].includes(normalizedMove) && Number.isFinite(defenderCurrentHp) && Number.isFinite(defenderMaxHp) && defenderMaxHp > 0) {
+    return Math.max(1, Math.floor((120 * defenderCurrentHp) / defenderMaxHp));
+  }
+  if ((normalizedMove === 'flail' || normalizedMove === 'reversal') && Number.isFinite(attackerCurrentHp) && Number.isFinite(attackerMaxHp) && attackerMaxHp > 0) {
+    const ratio = (48 * attackerCurrentHp) / attackerMaxHp;
+    if (ratio <= 1) return 200;
+    if (ratio <= 4) return 150;
+    if (ratio <= 9) return 100;
+    if (ratio <= 16) return 80;
+    if (ratio <= 32) return 40;
+    return 20;
+  }
+  if (normalizedMove === 'stored power' || normalizedMove === 'power trip') {
+    return Math.max(20, 20 + (attackerPositiveStages * 20));
+  }
+  if (normalizedMove === 'punishment') {
+    return Math.max(60, Math.min(200, 60 + (defenderPositiveStages * 20)));
+  }
 
   if (normalizedMove === 'weather ball' && effectiveWeather && effectiveWeather !== 'strong-winds') {
     return Math.max(1, Math.floor(rawPower * 2));

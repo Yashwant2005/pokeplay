@@ -1,4 +1,4 @@
-const { getArceusPlateType } = require('./held_item_shop');
+const { getArceusPlateType, normalizeHeldItemShopName } = require('./held_item_shop');
 
 const STAT_KEYS = ['attack', 'defense', 'special_attack', 'special_defense', 'speed', 'accuracy', 'evasion'];
 const MAIN_BATTLE_STATS = ['attack', 'defense', 'special_attack', 'special_defense', 'speed'];
@@ -1492,11 +1492,7 @@ function getStabInfo(options) {
 }
 
 function normalizeHeldItemName(value) {
-  return String(value || '')
-    .trim()
-    .toLowerCase()
-    .replace(/[_\s]+/g, '-')
-    .replace(/-+/g, '-');
+  return normalizeHeldItemShopName(value);
 }
 
 function hasMultitypeFormEffect(options) {

@@ -80,7 +80,7 @@ function registerHeldPanelCallbacks(bot, deps) {
     return (data.pokes || []).filter((poke) => String(poke.pass) !== String(ignorePass) && normalizeHeldItemName(poke.held_item) === itemName).length;
   }
 
-  function buildHeldPanel(data, poke, page = 1) {
+  function buildHeldPanel(data, poke, page = 1, noticeText = '') {
     const currentItem = normalizeHeldItemName(poke.held_item);
     const restricted = Boolean(getPokemonHeldItemRestrictionMessage(poke));
     let msg = '*Held Item Manager*\n';
@@ -171,10 +171,13 @@ function registerHeldPanelCallbacks(bot, deps) {
     }
     rows.push([{ text: 'Back', callback_data: 'info_' + poke.pass + '_' + data.user_id }]);
 
+    if (noticeText) {
+      msg += '\n\n_' + noticeText + '_';
+    }
     return { msg, rows, page: safePage, totalPages };
   }
 
-  async function showHeldPanel(ctx, pass, userId, page = 1) {
+  async function showHeldPanel(ctx, pass, userId, page = 1, noticeText = '') {
     const data = await getUserData(userId);
     data.user_id = userId;
     const poke = (data.pokes || []).find((p) => String(p.pass) === String(pass));
@@ -187,7 +190,7 @@ function registerHeldPanelCallbacks(bot, deps) {
       poke.held_item = sanitizedHeld;
       await saveUserData2(userId, data);
     }
-    const panel = buildHeldPanel(data, poke, page);
+    const panel = buildHeldPanel(data, poke, page, noticeText);
     await editMessage('caption', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, panel.msg, {
       parse_mode: 'markdown',
       reply_markup: { inline_keyboard: panel.rows }
@@ -337,14 +340,22 @@ function registerHeldPanelCallbacks(bot, deps) {
       await ctx.answerCbQuery('Poke not found', { show_alert: true });
       return;
     }
-    if (!poke.held_item || normalizeHeldItemName(poke.held_item) === 'none') {
+    const removedItem = normalizeHeldItemName(poke.held_item);
+    if (!poke.held_item || removedItem === 'none') {
       await ctx.answerCbQuery('This pokemon is not holding any item.', { show_alert: true });
       return;
     }
 
+    const stoneKey = normalizeStoneKey(removedItem, stones);
+    const isStone = stones && stones[stoneKey];
+    if (!isStone) {
+      const heldBox = ensureHeldItemBox(data);
+      const currentCount = Number(heldBox[removedItem]) || 0;
+      heldBox[removedItem] = currentCount + 1;
+    }
     poke.held_item = 'none';
     await saveUserData2(userId, data);
-    await showHeldPanel(ctx, pass, userId, page);
+    await showHeldPanel(ctx, pass, userId, page, 'Item returned to bag.');
     await ctx.answerCbQuery('Held item removed!', { show_alert: false });
   });
 }

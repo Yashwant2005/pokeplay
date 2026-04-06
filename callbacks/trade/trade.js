@@ -25,13 +25,12 @@ return
     return;
   }
   const buttonsPerRow = 5;
-  let page = parseInt(ctx.callbackQuery.data.split('_')[3]) || 1
+  let page = parseInt(ctx.callbackQuery.data.split('_')[3], 10);
+  if (!Number.isFinite(page)) page = 1;
   const itemsPerPage = 20;
-const totalPages = Math.ceil(pokes.length / itemsPerPage);
-if(page<1 || page > totalPages){
-return
-}
-  const startIndex = (page - 1) * itemsPerPage;
+  const totalPages = Math.max(1, Math.ceil(pokes.length / itemsPerPage));
+  const safePage = Math.min(Math.max(page, 1), totalPages);
+  const startIndex = (safePage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, pokes.length);
   const inlineKeyboard = [];
   let row = [];
@@ -48,33 +47,33 @@ for (let i = startIndex; i < endIndex; i++) {
     row = [];
   }
 }
-if(page>1 || endIndex<pokes.length){
+if(safePage>1 || endIndex<pokes.length){
 const row2 = []
-row2.push({text:'<',callback_data:'trade_'+id1+'_'+id2+'_'+(page-1)+''})
-row2.push({text:'>',callback_data:'trade_'+id1+'_'+id2+'_'+(page+1)+''})
+row2.push({text:'<',callback_data:'trade_'+id1+'_'+id2+'_'+(safePage-1)+''})
+row2.push({text:'>',callback_data:'trade_'+id1+'_'+id2+'_'+(safePage+1)+''})
 inlineKeyboard.push(row2)
 }
  if(totalPages > 10){
  const row = []
- row.push({text:'(-5) <<',callback_data:'trade_'+id1+'_'+id2+'_'+(page-5)+'_'+ctx.from.id+''})
- row.push({text:'>> (+5)',callback_data:'trade_'+id1+'_'+id2+'_'+(page+5)+'_'+ctx.from.id+''})
+ row.push({text:'(-5) <<',callback_data:'trade_'+id1+'_'+id2+'_'+(safePage-5)+'_'+ctx.from.id+''})
+ row.push({text:'>> (+5)',callback_data:'trade_'+id1+'_'+id2+'_'+(safePage+5)+'_'+ctx.from.id+''})
  inlineKeyboard.push(row)
  }
  if(totalPages > 20){
  const row = []
- row.push({text:'(-10) <<<',callback_data:'trade_'+id1+'_'+id2+'_'+(page-10)+'_'+ctx.from.id+''})
- row.push({text:'>>> (+10)',callback_data:'trade_'+id1+'_'+id2+'_'+(page+10)+'_'+ctx.from.id+''})
+ row.push({text:'(-10) <<<',callback_data:'trade_'+id1+'_'+id2+'_'+(safePage-10)+'_'+ctx.from.id+''})
+ row.push({text:'>>> (+10)',callback_data:'trade_'+id1+'_'+id2+'_'+(safePage+10)+'_'+ctx.from.id+''})
  inlineKeyboard.push(row)
  }
  if(totalPages > 40){
  const row = []
- row.push({text:'(-20) <<<<',callback_data:'trade_'+id1+'_'+id2+'_'+(page-20)+'_'+ctx.from.id+''})
- row.push({text:'>>>> (+20)',callback_data:'trade_'+id1+'_'+id2+'_'+(page+20)+'_'+ctx.from.id+''})
+ row.push({text:'(-20) <<<<',callback_data:'trade_'+id1+'_'+id2+'_'+(safePage-20)+'_'+ctx.from.id+''})
+ row.push({text:'>>>> (+20)',callback_data:'trade_'+id1+'_'+id2+'_'+(safePage+20)+'_'+ctx.from.id+''})
  inlineKeyboard.push(row)
  }
 const data = await getUserData(id1)
 const pk = pokes.slice(startIndex,endIndex)
-  let messageText = '<a href = "tg://user?id='+id2+'"><b>'+userData.inv.name+'</b></a>\'s Pokemon List (Page: <b>'+page+'</b>)\n';
+  let messageText = '<a href = "tg://user?id='+id2+'"><b>'+userData.inv.name+'</b></a>\'s Pokemon List (Page: <b>'+safePage+'</b>)\n';
 messageText += await pokelisthtml(pk.map(item => item.pass),id2,startIndex)
   messageText += '\n\n<b><u>❖ Select Which Poke Likes To Trade With</u></b> <a href = "tg://user?id='+id1+'"><b>'+data.inv.name+'</b></a>';
 

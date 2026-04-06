@@ -29,8 +29,8 @@ const stones = JSON.parse(fs.readFileSync('data/stones.json', 'utf8'));
 
 const BOT_TOKEN = process.env.TRANSFER_BOT_TOKEN || process.env.BOT_TOKEN || '8616181555:AAHFesYbqllv11TGDDR4kNAU2rznGR_OLG8'; // fallback for local dev
 const ADMIN_GROUP_ID = -1003736053869;
-const SOURCE_BOT_IDS = [572621020, 7955369039];
-const STONES_SOURCE_BOT_IDS = [572621020, 7955369039];
+const SOURCE_BOT_IDS = [572621020, 7955369039, 8709023864];
+const STONES_SOURCE_BOT_IDS = [572621020, 7955369039, 8709023864];
 const ADMINS = [6265981509, 1411248872, 8493023103, 8551864967];
 const BACKUP_ENABLED = String(process.env.BACKUP_ENABLED || '').toLowerCase() === 'true' || Boolean(process.env.BACKUP_CHAT_ID);
 const BACKUP_CHAT_ID = process.env.BACKUP_CHAT_ID ? Number(process.env.BACKUP_CHAT_ID) : ADMIN_GROUP_ID;
@@ -241,8 +241,8 @@ function parseIvFromText(text) {
     if (l === 'hp') return 'hp';
     if (l === 'attack' || l === 'atk') return 'attack';
     if (l === 'defense' || l === 'def') return 'defense';
-    if (l === 'sp attack' || l === 'special attack' || l === 'spa') return 'special_attack';
-    if (l === 'sp defense' || l === 'special defense' || l === 'spd') return 'special_defense';
+    if (l === 'sp attack' || l === 'special attack' || l === 'sp atk' || l === 'spa') return 'special_attack';
+    if (l === 'sp defense' || l === 'special defense' || l === 'sp def' || l === 'spd') return 'special_defense';
     if (l === 'speed' || l === 'spe') return 'speed';
     return null;
   };
@@ -451,12 +451,13 @@ function userLink(user) {
 function formatSourceBot(sourceId) {
   if (Number(sourceId) === 572621020) return 'Source Bot: 572621020 (hexamonbot)';
   if (Number(sourceId) === 7955369039) return 'Source Bot: 7955369039 (poketalesxbot)';
+  if (Number(sourceId) === 8709023864) return 'Source Bot: 8709023864';
   return `Source Bot: ${sourceId || 'unknown'}`;
 }
 
 bot.start(async (ctx) => {
   await ctx.reply(
-    'Transfer bot is active.\n\nUse /add to submit a Pokemon transfer request.\nFlow: Pokemon name -> nature page -> IV/EV page -> admin approval.\n\nUse /stones to submit a stones transfer request from hexamonbot or poketalesxbot.'
+    'Transfer bot is active.\n\nUse /add to submit a Pokemon transfer request.\nFlow: Pokemon name -> nature page -> IV/EV page -> admin approval.\n\nUse /stones to submit a stones transfer request from a supported source bot.'
   );
 });
 
@@ -500,7 +501,7 @@ bot.command('stones', async (ctx) => {
 
   userState.set(ctx.from.id, { step: 'stones_await_forward' });
   await ctx.reply(
-    'Forward your stones page from hexamonbot or poketalesxbot only.\n\n' +
+    'Forward your stones page from any supported source bot only.\n\n' +
     'Format 1 (hexamonbot):\n' +
     'Key Stone 🧿: Not Equipped\n' +
     '/Banettite\n/Sablenite\n/Lopunnite\n/Medichamite\n\n' +
@@ -553,14 +554,14 @@ bot.on('message', async (ctx, next) => {
 
   if (state.step === 'stones_await_forward') {
     if (!ctx.message.forward_date || !ctx.message.forward_from || !STONES_SOURCE_BOT_IDS.includes(Number(ctx.message.forward_from.id))) {
-      await ctx.reply('Forward the stones page from hexamonbot or poketalesxbot only.');
+      await ctx.reply('Forward the stones page from a supported source bot only.');
       return;
     }
 
     const text = getMessageText(ctx.message);
     const stoneKeys = parseStonesFromText(text);
     if (stoneKeys.length < 1) {
-      await ctx.reply('No valid stones found. Please forward the stones page again from hexamonbot or poketalesxbot.');
+      await ctx.reply('No valid stones found. Please forward the stones page again from a supported source bot.');
       return;
     }
 
@@ -704,10 +705,6 @@ bot.on('message', async (ctx, next) => {
       return;
     }
     const ivPhotoId = ctx.message.photo[ctx.message.photo.length - 1].file_id;
-    if (!state.naturePhotoId || ivPhotoId !== state.naturePhotoId) {
-      await ctx.reply('Nature and IV/EV must be from the same forwarded image. Please restart with /add.');
-      return;
-    }
     const ivText = getMessageText(ctx.message);
 
     const parsedIvs = parseIvFromText(ivText);
@@ -1008,5 +1005,3 @@ initTransferBot()
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
-
-

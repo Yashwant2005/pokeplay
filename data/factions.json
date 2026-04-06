@@ -1,0 +1,26 @@
+{
+  "factions": [
+    {
+      "id": "1775495047573",
+      "name": "Yashica",
+      "captain": 6265981509,
+      "captain_name": "",
+      "members": [
+        "6265981509",
+        "2110889690"
+      ],
+      "memberNames": {
+        "2110889690": "Great Sage Heaven's Equal",
+        "6265981509": "𝙵𝙻𝙸𝚁𝚃𝙴𝚁",
+        "6969086416": "● ️ ΣRΣN 亗"
+      },
+      "admins": [],
+      "group": -1003727260821,
+      "pfp": "https://files.catbox.moe/5rg0pw.jpg",
+      "channelMessageId": 27,
+      "inv": {
+        "pc": 0
+      }
+    }
+  ]
+}

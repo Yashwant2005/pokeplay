@@ -1,17 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-const { Telegraf } = require('telegraf');
 
 // ─── Config ───────────────────────────────────────────────────────────────────
-const BOT_TOKEN      = '8686253817:AAERTq7Z5p6EDn2VLhWS0v13h4WiTVb5EqU';
 const ADMIN_IDS      = [6265981509];
 const CHANNEL_ID     = -1003707195144;
-const BOT_USERNAME   = 'pokeplay_factions_bot';
 const DEFAULT_PFP    = 'https://files.catbox.moe/5rg0pw.jpg';
-const DATA_FILE      = path.join(__dirname, 'data', 'factions.json');
-
-const bot         = new Telegraf(BOT_TOKEN);
-const botStartTime = Date.now();
+const DATA_FILE      = path.join(process.cwd(), 'data', 'factions.json');
 
 // ─── Logging ──────────────────────────────────────────────────────────────────
 function log(label, extra) {
@@ -20,6 +14,10 @@ function log(label, extra) {
     ? console.log(`[${ts}]`, label, extra)
     : console.log(`[${ts}]`, label);
 }
+
+function registerFactionModule(bot, options = {}) {
+  const botStartTime = Date.now();
+  const botUsername = String(options.botUsername || bot.botInfo?.username || '').trim();
 
 // ─── Pre-message timestamp guard ──────────────────────────────────────────────
 bot.use(async (ctx, next) => {
@@ -41,7 +39,7 @@ bot.use(async (ctx, next) => {
     if (text.trim().startsWith('/')) {
       const cmd         = text.trim().split(' ')[0];
       const hasMention  = cmd.includes('@');
-      const isForMe     = !hasMention || cmd.toLowerCase().includes('@' + BOT_USERNAME.toLowerCase());
+      const isForMe     = !hasMention || !botUsername || cmd.toLowerCase().includes('@' + botUsername.toLowerCase());
       if (!isForMe) return next();
       log('CMD', { fromId, chatId, text });
     }
@@ -77,6 +75,17 @@ async function loadDataFromStore() {
 }
 
 function loadData() {
+  try {
+    if (!fs.existsSync(DATA_FILE)) {
+      fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
+      fs.writeFileSync(DATA_FILE, JSON.stringify({ factions: [] }, null, 2), 'utf8');
+    }
+    const raw = fs.readFileSync(DATA_FILE, 'utf8');
+    const data = JSON.parse(raw);
+    cachedData = (data && Array.isArray(data.factions)) ? data : { factions: [] };
+  } catch (_) {
+    cachedData = { factions: [] };
+  }
   return cloneJson(cachedData);
 }
 
@@ -125,6 +134,8 @@ function ensureDefaults(faction) {
   if (!Array.isArray(faction.members))        faction.members     = [];
   if (!Array.isArray(faction.admins))         faction.admins      = [];
   if (!faction.memberNames || typeof faction.memberNames !== 'object') faction.memberNames = {};
+  if (!faction.inv || typeof faction.inv !== 'object') faction.inv = {};
+  if (!Number.isFinite(faction.inv.pc)) faction.inv.pc = 0;
 }
 
 function touchName(faction, user) {
@@ -199,7 +210,7 @@ function dmButton() {
   return {
     parse_mode: 'HTML',
     reply_markup: {
-      inline_keyboard: [[{ text: '💬 Open Bot DM', url: `https://t.me/${BOT_USERNAME}` }]]
+      inline_keyboard: [[{ text: '💬 Open Bot DM', url: `https://t.me/${botUsername}` }]]
     }
   };
 }
@@ -270,6 +281,7 @@ bot.command('create', async ctx => {
     group:            null,
     pfp:              DEFAULT_PFP,
     channelMessageId: null,
+    inv:              { pc: 0 },
   };
 
   data.factions.push(faction);
@@ -396,6 +408,7 @@ bot.command('myfac', async ctx => {
   const captainNm  = getUserName(faction, captainId) || faction.captain_name || captainId;
   const admins     = (faction.admins || []).map(a => mention(a.userId, a.name || a.userId)).join(', ') || 'None';
   const memberCount = (faction.members || []).length;
+  const bankPc = Number(faction.inv && faction.inv.pc) || 0;
 
   let roleLabel = '🛡️ Member';
   if (isCaptainOf(faction, ctx.from.id))    roleLabel = '👑 Captain';
@@ -408,9 +421,40 @@ bot.command('myfac', async ctx => {
     `<b>Captain:</b> ${mention(captainId, captainNm)}`,
     `<b>Admins:</b> ${admins}`,
     `<b>Members:</b> ${memberCount}`,
+    `<b>Faction PokeCoins:</b> ${bankPc}`,
   ].join('\n');
 
   await ctx.replyWithPhoto(faction.pfp || DEFAULT_PFP, { caption, parse_mode: 'HTML' });
+});
+
+bot.command('faclb', async ctx => {
+  log('CMD /faclb', { from: ctx.from.id });
+  const data = loadData();
+  const factions = Array.isArray(data.factions) ? data.factions.slice() : [];
+
+  if (!factions.length) {
+    return ctx.reply('No factions found.', { parse_mode: 'HTML' });
+  }
+
+  factions.forEach(ensureDefaults);
+  factions.sort((a, b) => {
+    const aPc = Number(a.inv && a.inv.pc) || 0;
+    const bPc = Number(b.inv && b.inv.pc) || 0;
+    if (bPc !== aPc) return bPc - aPc;
+    return String(a.name || '').localeCompare(String(b.name || ''));
+  });
+
+  const lines = [
+    '<b>Faction Leaderboard</b>',
+    DIVIDER
+  ];
+
+  factions.slice(0, 15).forEach((faction, index) => {
+    const totalPc = Number(faction.inv && faction.inv.pc) || 0;
+    lines.push(`${index + 1}. <b>${esc(faction.name)}</b> - <code>${totalPc}</code> PC`);
+  });
+
+  return ctx.reply(lines.join('\n'), { parse_mode: 'HTML' });
 });
 
 // ─── /join ────────────────────────────────────────────────────────────────────
@@ -1004,45 +1048,9 @@ bot.on('message', async (ctx, next) => {
 });
 
 // ─── Launch ───────────────────────────────────────────────────────────────────
-async function initFactionBot() {
-  await loadDataFromStore();
+return loadDataFromStore().catch((error) => {
+  log('FACTION DATA LOAD FAILED', { error: error?.message ?? String(error) });
+});
 }
 
-initFactionBot()
-  .then(() => bot.launch())
-  .then(async () => {
-    try {
-      const me = await bot.telegram.getMe();
-      log('BOT STARTED', { username: me.username });
-    } catch (_) {}
-
-    const cmds = [
-      { command: 'start',        description: 'Start the bot' },
-      { command: 'help',         description: 'Show command list' },
-      { command: 'create',       description: 'Create a faction (admin)' },
-      { command: 'deletefac',    description: 'Delete a faction (admin)' },
-      { command: 'setgc',        description: 'Link faction group (captain, in group)' },
-      { command: 'myfac',        description: 'View your faction info' },
-      { command: 'join',         description: 'Request to join a faction (DM)' },
-      { command: 'leave',        description: 'Leave your faction (DM)' },
-      { command: 'fac_link',     description: 'Get faction invite link (DM)' },
-      { command: 'kick_member',  description: 'Kick a member (officers, in group)' },
-      { command: 'facpromote',   description: 'Promote a member to admin (reply)' },
-      { command: 'facdemote',    description: 'Demote an admin to member (reply)' },
-      { command: 'setpfp',       description: 'Set faction profile picture (captain)' },
-      { command: 'setname',      description: 'Rename your faction (captain)' },
-    ];
-
-    try {
-      await bot.telegram.setMyCommands(cmds, { scope: { type: 'default' } });
-      log('COMMANDS SET', { count: cmds.length });
-    } catch (e) {
-      log('COMMANDS FAILED', { error: e?.message ?? String(e) });
-    }
-  })
-  .catch((error) => {
-    log('BOT START FAILED', { error: error?.message ?? String(error) });
-  });
-
-process.once('SIGINT',  () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+module.exports = registerFactionModule;

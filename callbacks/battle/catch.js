@@ -229,6 +229,7 @@ function register_011_catch(bot, deps) {
     var la = {};
     var tem = {};
     const heldItems = {};
+    const getRawHeldItem = (pokemon) => (pokemon && (pokemon.held_item ?? pokemon.heldItem ?? pokemon.item)) || 'none';
     for (const teamPass of data.teams[data.inv.team]) {
       const pk = data.pokes.filter((poke) => poke.pass == teamPass);
       if (pk && pk[0]) {
@@ -240,7 +241,7 @@ function register_011_catch(bot, deps) {
         const partyStats = await Stats(partyBase, pk[0].ivs, pk[0].evs, c(pk[0].nature), partyLevel);
         la[pk[0].pass] = partyLevel;
         tem[pk[0].pass] = partyStats.hp;
-        heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], pk[0].held_item);
+        heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], getRawHeldItem(pk[0]));
       }
     }
     battleData.team = tem;

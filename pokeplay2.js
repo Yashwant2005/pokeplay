@@ -74,6 +74,7 @@ const fetch = require('node-fetch');
 const { createCanvas, loadImage, registerFont } = require('canvas');
 const registerCommands = require('./commands');
 const registerCallbacks = require('./callbacks');
+const registerFactionModule = require('./faction_bot');
 const { buildModuleDeps } = require('./utils');
 registerFont('./CabalBold-78yP.ttf', { family: 'Cabal' });
 registerFont('./SparkyStonesRegular-BW6ld.ttf', { family: 'Cool' });
@@ -711,8 +712,8 @@ async function withUserLock(userId, fn) {
 
 let battlec = {}
 const banListKey = 'ban_list';
-const admins = [...new Set([6265981509, 8493023103, 8551864967, 7577674783])]
-const admins35 = [...new Set([6265981509, 8493023103, 8551864967, 7577674783])]
+const admins = [...new Set([6265981509, 1335302812, 5242138546, 1754145879, 8493023103, 8551864967, 7577674783])]
+const admins35 = [...new Set([6265981509, 1335302812, 5242138546, 1754145879, 8493023103, 8551864967, 7577674783])]
 const admins34 = [...admins35]
 
 // Load the ban list from the file
@@ -724,7 +725,7 @@ async function loadBanList() {
   } catch (error) {
     console.error('Error loading ban list:', error);
     banList2 = [];
-  }
+}
 }
 
 const moduleDeps = buildModuleDeps({
@@ -769,6 +770,7 @@ const moduleDeps = buildModuleDeps({
   dmoves,
   growth_rates,
   chart,
+  toBaseIdentifier,
   stat,
   word,
   getRandomNature,
@@ -1420,6 +1422,7 @@ bot.on('message', async (ctx, next) => {
 
 const groupCommands = [
   { command: '/start', description: 'Start The Bot' },
+  { command: '/help', description: 'Show bot commands' },
   { command: '/hunt', description: 'hunt A Poke' },
   { command: '/events', description: 'View active and upcoming events' },
   { command: '/daily', description: 'Claim commemorative daily rewards' },
@@ -1441,12 +1444,15 @@ const groupCommands = [
   { command: '/sell', description: 'Sell Item To Poke Store' },
   { command: '/battlebox', description: 'Open your Battle Box rewards' },
   { command: '/transfer', description: 'transfer PokeCoins To Other Users' },
+  { command: '/facwithdraw', description: 'Withdraw from faction bank' },
   { command: '/travel', description: 'Travel Another Place' },
   { command: '/safari_zone', description: 'Travel Into Safari Zone' },
   { command: '/daycare', description: 'Train Pokemon to Lv100 in daycare' },
   { command: '/myteams', description: ' Setup Your Teams' },
   { command: '/pokestore', description: 'Visit PokeStore' },
   { command: '/trade', description: 'Trade Pokemons With Others (Paid)' },
+  { command: '/pokechain', description: 'Start a Pokechain word game' },
+  { command: '/joinpc', description: 'Join a Pokechain lobby' },
   { command: '/nickname', description: 'Nickname A Pokemon' },
   { command: '/release', description: 'Release A Pokemon' },
   { command: '/candy', description: 'Give Candy To Your Pokemon' },
@@ -1460,7 +1466,20 @@ const groupCommands = [
   { command: '/dexnav', description: 'Find Pokemon locations by region' },
   { command: '/pokedex', description: 'Pokedex A Pokemom' },
   { command: '/referral', description: 'Refer And Earn' },
-  { command: '/settings', description: 'Battle Settings Information' }
+  { command: '/settings', description: 'Battle Settings Information' },
+  { command: '/create', description: 'Create a faction (admin)' },
+  { command: '/deletefac', description: 'Delete a faction (admin)' },
+  { command: '/setgc', description: 'Link faction group' },
+  { command: '/myfac', description: 'View your faction info' },
+  { command: '/faclb', description: 'View faction leaderboard' },
+  { command: '/join', description: 'Join a faction' },
+  { command: '/leave', description: 'Leave your faction' },
+  { command: '/fac_link', description: 'Get faction invite link' },
+  { command: '/kick_member', description: 'Kick a faction member' },
+  { command: '/facpromote', description: 'Promote a faction member' },
+  { command: '/facdemote', description: 'Demote a faction admin' },
+  { command: '/setpfp', description: 'Set faction profile picture' },
+  { command: '/setname', description: 'Rename your faction' }
   // Add more group chat commands as needed
 ];
 bot.telegram.setMyCommands(groupCommands, { scope: { type: "default" } });
@@ -1868,6 +1887,10 @@ async function initApp() {
   await initDataStores({ loadCaches: true });
   await loadGroupIdsFromStore();
   await loadBanList();
+  if (!bot.botInfo) {
+    bot.botInfo = await bot.telegram.getMe();
+  }
+  await registerFactionModule(bot, { botUsername: bot.botInfo && bot.botInfo.username });
 }
 
 initApp()

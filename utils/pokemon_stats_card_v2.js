@@ -119,11 +119,16 @@ function getPokemonDisplayImage(pokemon, pokes, shiny, events) {
 function buildPokemonCardKeyboard(pokemon, userId, options = {}) {
   const showIvs = options.showIvs === true;
   const showToggle = options.showToggle !== false;
-  const keyboard = [[
-    { text: 'Evolve', callback_data: 'evolve_' + pokemon.pass + '_' + userId },
-    { text: 'Nickname', callback_data: 'nickname_' + pokemon.pass + '_' + userId },
-    { text: 'Release', callback_data: 'release_' + pokemon.pass + '_' + userId }
-  ]];
+  const mode = options.mode || '';
+  const showNickname = mode !== 'private';
+  const mainRow = [
+    { text: 'Evolve', callback_data: 'evolve_' + pokemon.pass + '_' + userId }
+  ];
+  if (showNickname) {
+    mainRow.push({ text: 'Nickname', callback_data: 'nickname_' + pokemon.pass + '_' + userId });
+  }
+  mainRow.push({ text: 'Release', callback_data: 'release_' + pokemon.pass + '_' + userId });
+  const keyboard = [mainRow];
 
   const utilityRow = [];
   if (!isRayquazaLockedFromHeldItems(pokemon)) {
@@ -298,7 +303,7 @@ async function renderPokemonStatsCard(deps, userData, pokemon, options = {}) {
     try {
       const sprite = await loadImageSource(loadImage, spriteUrl);
       const box = { x: 310, y: 58, w: 540, h: 310 };
-      const scale = Math.min(box.w / sprite.width, box.h / sprite.height, 3.4);
+      const scale = Math.min(box.w / sprite.width, box.h / sprite.height, 3.0);
       const drawW = sprite.width * scale;
       const drawH = sprite.height * scale;
       const drawX = box.x + ((box.w - drawW) / 2);

@@ -170,6 +170,7 @@ battleData.symbol = '✨'
 var la = {}
 var tem = {}
 const heldItems = {}
+const getRawHeldItem = (pokemon) => (pokemon && (pokemon.held_item ?? pokemon.heldItem ?? pokemon.item)) || 'none';
 for(const p of data.teams[data.inv.team]){
 const pk = data.pokes.filter((poke)=> poke.pass == p)
 if(pk){
@@ -178,7 +179,7 @@ const clevel = plevel(pk[0].name,pk[0].exp)
 const stats = await Stats(base,pk[0].ivs,pk[0].evs,c(pk[0].nature),clevel)
 la[pk[0].pass] = clevel
 tem[pk[0].pass] = stats.hp
-heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], pk[0].held_item)
+heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], getRawHeldItem(pk[0]))
 }
 }
 battleData.team = tem
@@ -200,5 +201,4 @@ await saveMessageData(messageData);
 }
 
 module.exports = register_010_exrtbt;
-
 

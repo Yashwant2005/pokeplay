@@ -37,7 +37,8 @@ const HELD_ITEM_PC_TIERS = [
       'choice-specs',
       'life-orb',
       'leftovers',
-      'eviolite'
+      'eviolite',
+      'white-herb'
     ]
   },
   {
@@ -102,8 +103,13 @@ const HELD_ITEM_ALIASES = {
   'choice-band': 'choice-band',
   choicescarf: 'choice-scarf',
   'choice-scarf': 'choice-scarf',
+  scarf: 'choice-scarf',
+  band: 'choice-band',
+  specs: 'choice-specs',
   choicespecs: 'choice-specs',
   'choice-specs': 'choice-specs',
+  whiteherb: 'white-herb',
+  'white-herb': 'white-herb',
   eviolite: 'eviolite',
   evolite: 'eviolite',
   focussash: 'focus-sash',
@@ -150,8 +156,11 @@ for (const stoneName of Object.keys(MEGA_STONES || {})) {
 
 function normalizeHeldItemShopName(value) {
   const raw = String(value || '')
+    .split(',')[0]
     .trim()
     .toLowerCase()
+    .replace(/['"]/g, '')
+    .replace(/[^a-z0-9-_]+/g, '-')
     .replace(/[_\s]+/g, '-')
     .replace(/-+/g, '-');
   const compact = raw.replace(/-/g, '');
@@ -186,9 +195,9 @@ function getHeldItemDescription(itemName) {
     'big-root': 'Boosts HP recovered from draining and healing-drain effects.',
     'blunder-policy': 'If a move misses, the holder sharply raises its Speed once.',
     'booster-energy': 'Consumable future item. Battle effect not added yet.',
-    'choice-band': 'Raises Attack by 50%, but the holder is locked into its first selected move.',
-    'choice-scarf': 'Raises Speed by 50%, but the holder is locked into its first selected move.',
-    'choice-specs': 'Raises Special Attack by 50%, but the holder is locked into its first selected move.',
+    'choice-band': 'Increases Attack by 50%, but the holder is locked into the first move it uses until it leaves battle or loses the item. If swapped via Trick or Switcheroo, the lock is cleared and will reapply to the next move used.',
+    'choice-scarf': 'Increases Speed by 50%, but the holder is locked into the first move it uses until it leaves battle or loses the item. If swapped via Trick or Switcheroo, the lock is cleared and will reapply to the next move used. Quirk: if switched in by U-Turn and it knows U-Turn, U-Turn becomes its locked move.',
+    'choice-specs': 'Increases Special Attack by 50%, but the holder is locked into the first move it uses until it leaves battle or loses the item. If swapped via Trick or Switcheroo, the lock is cleared and will reapply to the next move used. Quirk: if switched in by U-Turn and it knows U-Turn, U-Turn becomes its locked move.',
     'clear-amulet': 'Prevents opponents from lowering the holder\'s stats.',
     eviolite: 'Raises Defense and Special Defense by 50% if the holder can still evolve.',
     'focus-sash': 'At full HP, surviving a knockout hit leaves the holder at 1 HP once.',
@@ -199,6 +208,7 @@ function getHeldItemDescription(itemName) {
     'power-herb': 'Skips the charge turn of a two-turn move once.',
     'rocky-helmet': 'Damages foes that make contact with the holder.',
     'tatsugiri-lunchbox': 'Special Dondozo item. Grants a strong temporary stat burst on entry.',
+    'white-herb': 'Restores any lowered stats once, then it is consumed.',
     'weakness-policy': 'After taking a super-effective hit, sharply raises Attack and Special Attack.',
     'light-ball': 'Doubles Pikachu\'s Attack and Special Attack.',
     'rusted-sword': 'Transforms Zacian into its Crowned form in battle and supports its signature ability behavior.',

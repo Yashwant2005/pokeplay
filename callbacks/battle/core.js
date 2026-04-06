@@ -15,6 +15,7 @@
   applyWeatherEndTurn,
   advanceBattleTerrain,
   advanceBattleWeather,
+  canRemoveHeldItemByEffect,
   consumeBattleHeldItem,
   ensureAbilityState,
   canUseAuroraVeilWeather,
@@ -981,6 +982,76 @@ function registerBattleCallbacks(bot, deps) {
     });
   }
 
+  function getPokemonMoveIdByName(pokemon, moveName) {
+    const target = normalizeMoveName(moveName);
+    if (!Array.isArray(pokemon && pokemon.moves)) return '';
+    for (const moveId of pokemon.moves) {
+      const move = dmoves[moveId];
+      if (move && normalizeMoveName(move.name) === target) return String(moveId);
+    }
+    return '';
+  }
+
+  function clearChoiceLockForPass(battleData, pass) {
+    if (!battleData.choiceLockedMoves || typeof battleData.choiceLockedMoves !== 'object') {
+      battleData.choiceLockedMoves = {};
+    }
+    delete battleData.choiceLockedMoves[String(pass)];
+  }
+
+  function applyChoiceLockOnUturnSwitchIn({ battleData, pokemon, pass, moveName }) {
+    if (!pokemon || !battleData) return false;
+    const normalizedMove = normalizeMoveName(moveName);
+    if (normalizedMove !== 'u turn') return false;
+    const heldItemName = getBattleHeldItemName({ battleData, pass });
+    const heldItemInfo = getHeldItemStatMultipliers({
+      pokemonName: pokemon.name,
+      heldItem: heldItemName,
+      evolutionChains: chains
+    });
+    if (!heldItemInfo.choiceItemActive) return false;
+    const uturnMoveId = getPokemonMoveIdByName(pokemon, 'u turn');
+    if (!uturnMoveId) return false;
+    if (!battleData.choiceLockedMoves || typeof battleData.choiceLockedMoves !== 'object') {
+      battleData.choiceLockedMoves = {};
+    }
+    battleData.choiceLockedMoves[String(pass)] = uturnMoveId;
+    return true;
+  }
+
+  function applyTrickSwitcherooSwap({ battleData, attacker, defender, attackerPass, defenderPass, attackerAbility, defenderAbility, moveName }) {
+    const normalizedMove = normalizeMoveName(moveName);
+    if (normalizedMove !== 'trick' && normalizedMove !== 'switcheroo') {
+      return { swapOccurred: false, message: '' };
+    }
+    const attackerItem = getBattleHeldItemName({ battleData, pass: attackerPass });
+    const defenderItem = getBattleHeldItemName({ battleData, pass: defenderPass });
+    if (!attackerItem || attackerItem === 'none' || !defenderItem || defenderItem === 'none') {
+      return { swapOccurred: false, message: '\n-> But it failed!' };
+    }
+    const canSwapAttacker = canRemoveHeldItemByEffect({
+      pokemonName: attacker && attacker.name,
+      abilityName: attackerAbility,
+      heldItem: attackerItem,
+      effectName: normalizedMove
+    });
+    const canSwapDefender = canRemoveHeldItemByEffect({
+      pokemonName: defender && defender.name,
+      abilityName: defenderAbility,
+      heldItem: defenderItem,
+      effectName: normalizedMove
+    });
+    if (!canSwapAttacker || !canSwapDefender) {
+      return { swapOccurred: false, message: '\n-> But it failed!' };
+    }
+    getBattleHeldItemName({ battleData, pass: attackerPass, heldItem: defenderItem });
+    getBattleHeldItemName({ battleData, pass: defenderPass, heldItem: attackerItem });
+    return {
+      swapOccurred: true,
+      message: '\n-> <b>' + c(attacker && attacker.name ? attacker.name : 'It') + '</b> swapped items with <b>' + c(defender && defender.name ? defender.name : 'its foe') + '</b>!'
+    };
+  }
+
   const CALL_OTHER_MOVE_NAMES = new Set([
     'assist',
     'copycat',
@@ -1856,6 +1927,104 @@ function registerBattleCallbacks(bot, deps) {
     }
   }
 
+  function ensureBattleRooms(battleData) {
+    if (!battleData.rooms || typeof battleData.rooms !== 'object') {
+      battleData.rooms = {};
+    }
+    if (typeof battleData.rooms.trickRoom !== 'number') battleData.rooms.trickRoom = 0;
+    if (typeof battleData.rooms.trickRoomFresh !== 'number') battleData.rooms.trickRoomFresh = 0;
+    return battleData.rooms;
+  }
+
+  function isBattleTrickRoomActive(battleData) {
+    return (ensureBattleRooms(battleData).trickRoom || 0) > 0;
+  }
+
+  function applyRoomSetupByMove(moveName, battleData, didHit) {
+    if (!didHit || moveName !== 'trick room') return '';
+    const rooms = ensureBattleRooms(battleData);
+    if (rooms.trickRoom > 0) {
+      rooms.trickRoom = 0;
+      rooms.trickRoomFresh = 0;
+      return '\n-> The twisted dimensions returned to normal!';
+    }
+    rooms.trickRoom = 5;
+    rooms.trickRoomFresh = 1;
+    return '\n-> Trick Room twisted the dimensions!';
+  }
+
+  function advanceBattleRooms(battleData) {
+    const rooms = ensureBattleRooms(battleData);
+    if (rooms.trickRoomFresh > 0) {
+      rooms.trickRoomFresh -= 1;
+    } else if (rooms.trickRoom > 0) {
+      rooms.trickRoom -= 1;
+      if (rooms.trickRoom <= 0) {
+        rooms.trickRoom = 0;
+        return { message: '\n-> Trick Room wore off!' };
+      }
+    }
+    return { message: '' };
+  }
+
+  function syncBattleRoomVisualState(battleData) {
+    const sceneState = ensureBattleSceneState(battleData);
+    sceneState.room = isBattleTrickRoomActive(battleData) ? 'trickroom' : '';
+    return sceneState;
+  }
+
+  function ignoresTrickRoomSpeedOrder(battleData, pass, abilityName, heldItem) {
+    if (!isBattleTrickRoomActive(battleData)) return false;
+    const ability = normalizeAbilityName(abilityName);
+    const item = getBattleHeldItemName({ battleData, pass, heldItem });
+    return ability === 'stall' || item === 'full-incense' || item === 'lagging-tail' || item === 'quick-claw';
+  }
+
+  function compareBattleActionOrder(options) {
+    const {
+      battleData,
+      action1,
+      action2,
+      pri1,
+      pri2,
+      speedA,
+      speedB,
+      pkA,
+      pkB
+    } = options || {};
+
+    if (pri1 > pri2) return [action1, action2];
+    if (pri2 > pri1) return [action2, action1];
+
+    const trickRoomActive = isBattleTrickRoomActive(battleData);
+    if (!trickRoomActive) {
+      if (speedA > speedB) return [action1, action2];
+      if (speedB > speedA) return [action2, action1];
+      return (Math.random() < 0.5) ? [action1, action2] : [action2, action1];
+    }
+
+    const ignoreA = ignoresTrickRoomSpeedOrder(battleData, action1 && action1.c, pkA && pkA.ability, pkA && pkA.held_item);
+    const ignoreB = ignoresTrickRoomSpeedOrder(battleData, action2 && action2.c, pkB && pkB.ability, pkB && pkB.held_item);
+
+    if (ignoreA && ignoreB) {
+      if (speedA > speedB) return [action1, action2];
+      if (speedB > speedA) return [action2, action1];
+      return (Math.random() < 0.5) ? [action1, action2] : [action2, action1];
+    }
+
+    if (!ignoreA && !ignoreB) {
+      if (speedA < speedB) return [action1, action2];
+      if (speedB < speedA) return [action2, action1];
+      return (Math.random() < 0.5) ? [action1, action2] : [action2, action1];
+    }
+
+    const adjustedA = ignoreA ? speedA : (100000 - speedA);
+    const adjustedB = ignoreB ? speedB : (100000 - speedB);
+    if (adjustedA > adjustedB) return [action1, action2];
+    if (adjustedB > adjustedA) return [action2, action1];
+    return (Math.random() < 0.5) ? [action1, action2] : [action2, action1];
+  }
+
   function ensureBattleMinimizeState(battleData) {
     if (!battleData.minimized || typeof battleData.minimized !== 'object') {
       battleData.minimized = {};
@@ -1961,6 +2130,14 @@ function registerBattleCallbacks(bot, deps) {
         msg += ' ('+battleData.terrainTurns+' turns left)';
       }
     }
+    if (isBattleTrickRoomActive(battleData)) {
+      const rooms = ensureBattleRooms(battleData);
+      msg += '\n<b>Room :</b> Trick Room';
+      if ((rooms.trickRoom || 0) > 0) {
+        msg += ' ('+rooms.trickRoom+' turns left)';
+      }
+    }
+    syncBattleRoomVisualState(battleData);
 
     // Revealed moves (moves already used - visible to everyone)
     const usedMoves = battleData.usedMoves || {};
@@ -2982,13 +3159,17 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         dbg('resolve:missing_move_data', { bword, mv1: !!mv1, mv2: !!mv2, a1: action1, a2: action2 });
       }
 
-      if (pri1 > pri2) { orderedActions = [action1, action2]; }
-      else if (pri2 > pri1) { orderedActions = [action2, action1]; }
-      else {
-        if (speedA > speedB) { orderedActions = [action1, action2]; }
-        else if (speedB > speedA) { orderedActions = [action2, action1]; }
-        else { orderedActions = (Math.random() < 0.5) ? [action1, action2] : [action2, action1]; }
-      }
+      orderedActions = compareBattleActionOrder({
+        battleData,
+        action1,
+        action2,
+        pri1,
+        pri2,
+        speedA,
+        speedB,
+        pkA,
+        pkB
+      });
     }
     for (const act of orderedActions) {
       act.executed = false;
@@ -3133,6 +3314,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
     // Function to execute one standard attack in current context (battleData.cid attacking battleData.oid)
     async function executeStandardMove(act) {
       if (battleData.chp <= 0 || battleData.ohp <= 0) return; // attacker or defender fainted
+      let choiceLockResetBySwap = false;
 
       let attacker = await getUserData(battleData.cid);
       let defender = await getUserData(battleData.oid);
@@ -3253,6 +3435,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
     } else if (!usesDefenseAsAttack) {
       atk = Math.max(1, Math.floor(atk * getAttackStatMultiplier(attackerAbility, move.category)));
     }
+    const atkBeforeItem = atk;
     if (move.category == 'special') {
       atk = Math.max(1, Math.floor(atk * attackerHeldItemInfo.special_attack));
       def2 = Math.max(1, Math.floor(def2 * (usesDefenseAsSpecialTargetStat ? defenderHeldItemInfo.defense : defenderHeldItemInfo.special_defense)));
@@ -3277,6 +3460,9 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
       }
 
       let msgLocal = "";
+      if (move.category == 'special' && attackerHeldItemInfo.choiceSpecsActive) {
+        msgLocal += '\n-> <b>' + c(p.name) + '</b>\'s <b>Choice Specs</b> boosted Sp. Atk from <code>' + atkBeforeItem + '</code> to <code>' + atk + '</code>.';
+      }
       let blockedByGoodAsGold = false;
 
       // ActState (Frozen, Asleep, Paralyzed etc)
@@ -3537,6 +3723,24 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
               });
               msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, true);
               msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, true);
+              const swapResult = applyTrickSwitcherooSwap({
+                battleData,
+                attacker: p,
+                defender: op,
+                attackerPass: battleData.c,
+                defenderPass: battleData.o,
+                attackerAbility,
+                defenderAbility,
+                moveName
+              });
+              if (swapResult.message) {
+                msgLocal += swapResult.message;
+              }
+              if (swapResult.swapOccurred) {
+                clearChoiceLockForPass(battleData, battleData.c);
+                clearChoiceLockForPass(battleData, battleData.o);
+                choiceLockResetBySwap = true;
+              }
 
               if (moveName === 'strength sap') {
                 const targetStages = ensurePokemonStatStages(battleData, battleData.o);
@@ -3764,6 +3968,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
                 c,
                 didHit: true
               }).message;
+              msgLocal += applyRoomSetupByMove(moveName, battleData, true);
 
               msgLocal += applySelfFaintAfterMove(moveName, moveLabel, battleData, battleData.c, p.name);
             }
@@ -4240,8 +4445,16 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         if (!battleData.choiceLockedMoves || typeof battleData.choiceLockedMoves !== 'object') {
           battleData.choiceLockedMoves = {};
         }
-        if (attackerHeldItemInfo.choiceItemActive) {
+        if (attackerHeldItemInfo.choiceItemActive && !choiceLockResetBySwap) {
+          const hadLock = !!battleData.choiceLockedMoves[String(battleData.c)];
           battleData.choiceLockedMoves[String(battleData.c)] = moveKey;
+          if (!hadLock) {
+            const heldItemLabel = String(attackerHeldItemInfo.heldItem || 'choice item')
+              .split('-')
+              .map((part) => part ? part.charAt(0).toUpperCase() + part.slice(1) : part)
+              .join(' ');
+            msgLocal += '\n-> <b>' + c(p.name) + '</b> is locked into <b>' + c(moveLabel) + '</b> by ' + heldItemLabel + '.';
+          }
         } else {
           delete battleData.choiceLockedMoves[String(battleData.c)];
         }
@@ -4340,6 +4553,12 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           maxHp: endTurnCurrentStats ? endTurnCurrentStats.hp : 0,
           c
         }).message;
+        turnLogs += applyWhiteHerbIfNeeded({
+          battleData,
+          pass: battleData.c,
+          pokemonName: endTurnCurrent.name,
+          c
+        }).message;
         turnLogs += await applyPowerConstructEndTurn({
           battleData,
           pass: battleData.c,
@@ -4370,6 +4589,12 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
           maxHp: endTurnOtherStats ? endTurnOtherStats.hp : 0,
           c
         }).message;
+        turnLogs += applyWhiteHerbIfNeeded({
+          battleData,
+          pass: battleData.o,
+          pokemonName: endTurnOther.name,
+          c
+        }).message;
         turnLogs += await applyPowerConstructEndTurn({
           battleData,
           pass: battleData.o,
@@ -4394,6 +4619,7 @@ function applyMoveStatEffects({ battleData, moveName, moveCategory, attackerName
         { pass: battleData.c, pokemon: endTurnCurrent, currentHp: battleData.chp },
         { pass: battleData.o, pokemon: endTurnOther, currentHp: battleData.ohp }
       ]);
+      turnLogs += advanceBattleRooms(battleData).message;
       turnLogs += advanceBattleTerrain(battleData).message;
       turnLogs += advanceBattleWeather(battleData, c).message;
       clearBattleProtectionState(battleData);
@@ -5498,6 +5724,7 @@ var la = {}
 var tem = {}
 let spe = {}
 const heldItems = {}
+const getRawHeldItem = (pokemon) => (pokemon && (pokemon.held_item ?? pokemon.heldItem ?? pokemon.item)) || 'none'
 for(const p of pokes1){
 const pk = data.pokes.filter((poke)=> poke.pass == p)
 if(pk[0]){
@@ -5507,7 +5734,7 @@ const stats = await Stats(base,pk[0].ivs,pk[0].evs,c(pk[0].nature),clevel)
 la[pk[0].pass] = clevel
 tem[pk[0].pass] = stats.hp
 spe[pk[0].pass] = stats.speed
-heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], pk[0].held_item)
+heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], getRawHeldItem(pk[0]))
 }
 }
 var la2 = {}
@@ -5522,7 +5749,7 @@ const stats = await Stats(base,pk[0].ivs,pk[0].evs,c(pk[0].nature),clevel)
 la2[pk[0].pass] = clevel
 tem2[pk[0].pass] = stats.hp
 spe2[pk[0].pass] = stats.speed
-heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], pk[0].held_item)
+heldItems[pk[0].pass] = getSanitizedHeldItemForPokemon(pk[0], getRawHeldItem(pk[0]))
 }
 }
 const user1poke = data.pokes.filter((poke)=>poke.pass==pokes1[0])[0]
@@ -5770,6 +5997,14 @@ if (!battleData.queuedActions.some(act => String(act.cid) === String(ctx.from.id
   if (selectedCanUseZMove) {
     zMoveUsedState[String(ctx.from.id)] = true;
     delete zMoveReadyState[String(ctx.from.id)];
+  }
+  if (actingHeldItemInfo.choiceItemActive) {
+    if (!battleData.choiceLockedMoves || typeof battleData.choiceLockedMoves !== 'object') {
+      battleData.choiceLockedMoves = {};
+    }
+    if (!battleData.choiceLockedMoves[String(battleData.c)]) {
+      battleData.choiceLockedMoves[String(battleData.c)] = String(moveid);
+    }
   }
   battleData.queuedActions.push({
     cid: ctx.from.id,
@@ -6534,13 +6769,17 @@ if (singleActionTurn) {
   const pri1 = getMovePriority(mv1.name, mv1.category, pkA && pkA.ability);
   const pri2 = getMovePriority(mv2.name, mv2.category, pkB && pkB.ability);
 
-  if (pri1 > pri2) { orderedActions = [action1, action2]; }
-  else if (pri2 > pri1) { orderedActions = [action2, action1]; }
-  else {
-      if (speedA > speedB) { orderedActions = [action1, action2]; }
-      else if (speedB > speedA) { orderedActions = [action2, action1]; }
-      else { orderedActions = (Math.random() < 0.5) ? [action1, action2] : [action2, action1]; }
-  }
+  orderedActions = compareBattleActionOrder({
+    battleData,
+    action1,
+    action2,
+    pri1,
+    pri2,
+    speedA,
+    speedB,
+    pkA,
+    pkB
+  });
 }
 for (const act of orderedActions) {
   act.executed = false;
@@ -6589,6 +6828,7 @@ async function applyForcedBattleSwitchLocal({ side, moveName, sourcePokemonName 
 // Function to execute one standard attack in current context (battleData.cid attacking battleData.oid)
 async function executeStandardMove(act) {
     if (battleData.chp <= 0 || battleData.ohp <= 0) return; // attacker or defender fainted
+    let choiceLockResetBySwap = false;
 
     let attacker = await getUserData(battleData.cid);
     let defender = await getUserData(battleData.oid);
@@ -6733,6 +6973,9 @@ async function executeStandardMove(act) {
     }
     
     let msgLocal = "";
+    if (move.category == 'special' && attackerHeldItemInfo.choiceSpecsActive) {
+      msgLocal += '\n-> <b>' + c(p.name) + '</b>\'s <b>Choice Specs</b> boosted Sp. Atk from <code>' + atkBeforeItem + '</code> to <code>' + atk + '</code>.';
+    }
     let blockedByGoodAsGold = false;
     
     // ActState (Frozen, Asleep, Paralyzed etc)
@@ -6989,6 +7232,24 @@ async function executeStandardMove(act) {
             });
             msgLocal += applyEntryHazardSetupByMove(moveName, battleData, battleData.oid, true);
             msgLocal += applyEntryHazardRemovalByMove(moveName, battleData, battleData.cid, battleData.oid, true);
+            const swapResult = applyTrickSwitcherooSwap({
+              battleData,
+              attacker: p,
+              defender: op,
+              attackerPass: battleData.c,
+              defenderPass: battleData.o,
+              attackerAbility,
+              defenderAbility,
+              moveName
+            });
+            if (swapResult.message) {
+              msgLocal += swapResult.message;
+            }
+            if (swapResult.swapOccurred) {
+              clearChoiceLockForPass(battleData, battleData.c);
+              clearChoiceLockForPass(battleData, battleData.o);
+              choiceLockResetBySwap = true;
+            }
 
             if (moveName === 'strength sap') {
               const targetStages = ensurePokemonStatStages(battleData, battleData.o);
@@ -7216,6 +7477,7 @@ async function executeStandardMove(act) {
                 c,
                 didHit: true
               }).message;
+              msgLocal += applyRoomSetupByMove(moveName, battleData, true);
               msgLocal += applyCritStageBoostByMove({
                 battleData,
                 moveName,
@@ -7757,6 +8019,7 @@ turnLogs += applyBattleDrowsyEndTurn(battleData, [
   { pass: battleData.c, pokemon: endTurnCurrent2, currentHp: battleData.chp },
   { pass: battleData.o, pokemon: endTurnOther2, currentHp: battleData.ohp }
 ]);
+turnLogs += advanceBattleRooms(battleData).message;
 turnLogs += advanceBattleTerrain(battleData).message;
 clearBattleProtectionState(battleData);
 tickScreensForTurn(battleData);
@@ -8336,8 +8599,12 @@ if(prop == 'change'){
   return
 }
 
-if(prop == 'forced'){
-delete battleData.pendingForcedSwitch
+let forcedMoveName = '';
+if (prop == 'forced') {
+  if (battleData.pendingForcedSwitch) {
+    forcedMoveName = battleData.pendingForcedSwitch.moveName;
+  }
+  delete battleData.pendingForcedSwitch;
 }
 
 const previousBattlePass = battleData.c
@@ -8355,6 +8622,14 @@ const deffa = await getUserData(battleData.oid)
 const p12 = atta.pokes.filter((poke)=>poke.pass==pass)[0]
 if (p12) {
 syncBattleFormAndAbility({ battleData, pokemon: p12, pass: p12.pass })
+}
+if (forcedMoveName) {
+  applyChoiceLockOnUturnSwitchIn({
+    battleData,
+    pokemon: p12,
+    pass,
+    moveName: forcedMoveName
+  });
 }
 let msg = '<b>'+c(p12.name)+'</b> came for battle'
 if (prop == 'change') {

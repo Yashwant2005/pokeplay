@@ -107,12 +107,12 @@ function registerAddItemCommand(bot, deps) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.holowear_tickets)) data.inv.holowear_tickets = 0;
       data.inv.holowear_tickets += amount;
-      result = 'Added *' + amount + '* Holowear Tickets ðŸŽŸï¸';
+      result = 'Added *' + amount + '* Holowear Tickets 🎟️';
     } else if (['battlebox', 'battleboxes', 'battle_box', 'battle_boxes', 'box', 'boxes'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.battle_boxes)) data.inv.battle_boxes = 0;
       data.inv.battle_boxes += amount;
-      result = 'Added *' + amount + '* Battle Box ðŸŽ';
+      result = 'Added *' + amount + '* Battle Box 🎁';
     } else if (['daycarecandy', 'daycare_candy', 'daycare-candy', 'dccandy', 'dcandy'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.daycare_candy)) data.inv.daycare_candy = 0;

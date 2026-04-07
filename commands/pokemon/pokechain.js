@@ -117,6 +117,19 @@ function registerPokechainCommands(bot, deps) {
     return { chat: { id: game.chatId }, from: { id: game.hostId } };
   }
 
+  async function endGameInChat(ctx, chatId) {
+    const key = getGameKey(chatId);
+    const game = GAME_MAP.get(key);
+    if (!game) {
+      await sendMessage(ctx, chatId, { parse_mode: 'markdown' }, '*No active Pokechain game.*');
+      return false;
+    }
+    clearTurnTimer(chatId);
+    GAME_MAP.delete(key);
+    await sendMessage(ctx, chatId, { parse_mode: 'markdown' }, '*Pokechain game ended.*');
+    return true;
+  }
+
   function buildPlayerMention(userId, userData) {
     const name = userData && userData.inv && userData.inv.name ? userData.inv.name : String(userId);
     return `<a href="tg://user?id=${userId}"><b>${name}</b></a>`;
@@ -237,13 +250,7 @@ function registerPokechainCommands(bot, deps) {
     const game = GAME_MAP.get(key);
     if (game) game.lastCtx = ctx;
     if (args[0] === 'end' || args[0] === 'stop') {
-      if (!game) {
-        await sendMessage(ctx, chatId, { parse_mode: 'markdown' }, '*No active Pokechain game.*');
-        return;
-      }
-      clearTurnTimer(chatId);
-      GAME_MAP.delete(key);
-      await sendMessage(ctx, chatId, { parse_mode: 'markdown' }, '*Pokechain game ended.*');
+      await endGameInChat(ctx, chatId);
       return;
     }
     if (args[0] === 'start') {
@@ -314,6 +321,17 @@ function registerPokechainCommands(bot, deps) {
     const playerTag = buildPlayerMention(ctx.from.id, playerData);
     const msg = `${playerTag} joined the lobby. Players: ${game.players.length}`;
     await sendMessage(ctx, chatId, { parse_mode: 'HTML' }, msg);
+  });
+
+  bot.command('end', async (ctx) => {
+    if (!ctx.chat || ctx.chat.type === 'private') {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Use this in a group chat.*');
+      return;
+    }
+    const chatId = ctx.chat.id;
+    const game = GAME_MAP.get(getGameKey(chatId));
+    if (game) game.lastCtx = ctx;
+    await endGameInChat(ctx, chatId);
   });
 
   bot.on('text', async (ctx, next) => {

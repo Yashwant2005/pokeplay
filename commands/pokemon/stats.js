@@ -276,13 +276,15 @@ bot.command('stats',async ctx => {
   
   }
   
-  if((endIdx+1)<p22.length){
+  if(endIdx < p22.length){
   
   rows2.push({text:'>',callback_data:'suger_'+ctx.from.id+'_'+name2+'_stats_'+ctx.message.message_id+'_'+(page+1)+''})
   
   }
   
+  if(rows2.length){
   rows.push(rows2)
+  }
   
   await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},message+'\n\n_Check Stats Of Which Pokemon?_',{reply_to_message_id:ctx.message.message_id,reply_markup:{inline_keyboard:rows}})
   
@@ -309,9 +311,6 @@ bot.action(/suger_/, async (ctx, next) => {
   }
 
   await ctx.answerCbQuery();
-  try {
-    await ctx.deleteMessage();
-  } catch (_) {}
   const data = await getUserData(ctx.from.id);
   const name2 = name.replace(/ /g,'-');
   const p22 = data.pokes.filter((poke)=> (poke.name==name2.toLowerCase()) || (poke.nickname && poke.nickname.toLowerCase() == name.toLowerCase()))
@@ -322,6 +321,9 @@ bot.action(/suger_/, async (ctx, next) => {
 
   if(p22.length == 1){
     const p2 = p22[0];
+    try {
+      await ctx.deleteMessage();
+    } catch (_) {}
     const statsCardApi = getStatsCardApi(data);
     const loadingMessage = await sendStatsGeneratingMessage(ctx, sendMessage, replyTo);
     try {
@@ -395,8 +397,14 @@ bot.action(/suger_/, async (ctx, next) => {
 
   const ore = [];
   let message = '';
-  const page = parseInt(parts[statsIndex + 2]) || 1;
+  let page = parseInt(parts[statsIndex + 2]) || 1;
   const pageSize = 25;
+  const totalPages = Math.max(1, Math.ceil(p22.length / pageSize));
+  if (page < 1) {
+    page = 1;
+  } else if (page > totalPages) {
+    page = totalPages;
+  }
   const startIdx = (page - 1) * pageSize;
   const endIdx = startIdx + pageSize;
   const pokemon2 = await sort(ctx.from.id,p22)
@@ -415,10 +423,12 @@ bot.action(/suger_/, async (ctx, next) => {
   if(page > 1){
     rows2.push({text:'<',callback_data:'suger_'+ctx.from.id+'_'+name2+'_stats_'+replyTo+'_'+(page-1)+''})
   }
-  if((endIdx+1)<p22.length){
+  if(endIdx < p22.length){
     rows2.push({text:'>',callback_data:'suger_'+ctx.from.id+'_'+name2+'_stats_'+replyTo+'_'+(page+1)+''})
   }
-  rows.push(rows2)
+  if(rows2.length){
+    rows.push(rows2)
+  }
   await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,message+'\n\n_Check Stats Of Which Pokemon?_',{parse_mode:'markdown',reply_markup:{inline_keyboard:rows}});
 });
 }

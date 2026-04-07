@@ -145,7 +145,7 @@ function registerStartFlowCallbacks(bot, deps) {
       data.pokes = [];
     }
     data.inv = {
-      pc: 5000,
+      vp: 5000,
       region: 'kanto',
       exp: 0,
       avtar: '1',

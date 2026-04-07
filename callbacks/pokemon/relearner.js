@@ -305,7 +305,7 @@ function registerRelearnerCallbacks(bot, deps) {
       pk.moves[idx] = moveId;
     }
 
-    data.inv.pc -= RELEARN_COST;
+    data.inv.vp -= RELEARN_COST;
     await saveUserData2(ctx.from.id, data);
 
     await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id,

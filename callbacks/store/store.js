@@ -36,31 +36,31 @@ function register_043_store(bot, deps) {
 
 
 *PokeBalls*
-• Regular Ball - 15 💷
-• Great Ball - 25 💷
-• Ultra Ball - 40 💷
-• Repeat Ball - 50 💷
-• Beast Ball - 100 💷
-• Quick Ball - 65 💷
-• Net Ball - 45 💷
-• Nest Ball - 55 💷
-• Friend Ball - 30 💷
-• Level Ball - 35 💷
-• Moon Ball - 40 💷
-• Sport Ball - 20 💷
-• Luxury Ball - 25 💷
-• Premier Ball - 10 💷
-• Park Ball - 120 💷
-• Master Ball - 3000 💷
+• Regular Ball - 15 ⚡
+• Great Ball - 25 ⚡
+• Ultra Ball - 40 ⚡
+• Repeat Ball - 50 ⚡
+• Beast Ball - 100 ⚡
+• Quick Ball - 65 ⚡
+• Net Ball - 45 ⚡
+• Nest Ball - 55 ⚡
+• Friend Ball - 30 ⚡
+• Level Ball - 35 ⚡
+• Moon Ball - 40 ⚡
+• Sport Ball - 20 ⚡
+• Luxury Ball - 25 ⚡
+• Premier Ball - 10 ⚡
+• Park Ball - 120 ⚡
+• Master Ball - 3000 ⚡
 
 *Items*
-• Candy - 100 💷
-• Berry - 75 💷
-• Vitamin - 100 💷
-• OmniRing - 5000 💷
-• Zygarde Capsule - 10000 💷
-• Ability Capsule - 25000 💷
-• Ability Patch - 50000 💷
+• Candy - 100 ⚡
+• Berry - 75 ⚡
+• Vitamin - 100 ⚡
+• OmniRing - 5000 ⚡
+• Zygarde Capsule - 10000 ⚡
+• Ability Capsule - 25000 ⚡
+• Ability Patch - 50000 ⚡
 
 *Held Items*
 • Open *Held* to buy held items with League Points
@@ -80,28 +80,28 @@ _Use /buy to buy from PokeStore._`;
     return `*Welcome To Poke Store (Sell Section)*
 
 *PokeBalls*
-• Regular Ball - 7 💷
-• Great Ball - 12 💷
-• Ultra Ball - 20 💷
-• Repeat Ball - 25 💷
-• Beast Ball - 50 💷
-• Quick Ball - 40 💷
-• Net Ball - 25 💷
-• Nest Ball - 30 💷
-• Friend Ball - 25 💷
-• Level Ball - 25 💷
-• Moon Ball - 35 💷
-• Sport Ball - 15 💷
-• Luxury Ball - 10 💷
-• Premier Ball - 8 💷
-• Park Ball - 75 💷
-• Master Ball - 3000 💷
+• Regular Ball - 7 ⚡
+• Great Ball - 12 ⚡
+• Ultra Ball - 20 ⚡
+• Repeat Ball - 25 ⚡
+• Beast Ball - 50 ⚡
+• Quick Ball - 40 ⚡
+• Net Ball - 25 ⚡
+• Nest Ball - 30 ⚡
+• Friend Ball - 25 ⚡
+• Level Ball - 25 ⚡
+• Moon Ball - 35 ⚡
+• Sport Ball - 15 ⚡
+• Luxury Ball - 10 ⚡
+• Premier Ball - 8 ⚡
+• Park Ball - 75 ⚡
+• Master Ball - 3000 ⚡
 
 *Items*
-• Candy - 50 💷
-• Berry - 40 💷
-• Vitamin - 50 💷
-• Item - 5000 💷
+• Candy - 50 ⚡
+• Berry - 40 ⚡
+• Vitamin - 50 ⚡
+• Item - 5000 ⚡
 
 *Examples*
 • /sell regular 1
@@ -138,10 +138,10 @@ _Use /buy to buy from PokeStore._`;
       lines.push('');
     }
 
-    if (!Number.isFinite(data.inv.pc)) data.inv.pc = 0;
+    if (!Number.isFinite(data.inv.vp)) data.inv.vp = 0;
     if (!Number.isFinite(data.inv.league_points)) data.inv.league_points = 0;
     lines.push('Store expires in ' + daysLeft + ' day' + (daysLeft === 1 ? '' : 's'));
-    lines.push('Your PokeCoins: ' + data.inv.pc + ' 💷');
+    lines.push('Your Victory Points: ' + data.inv.vp + ' ⚡');
     lines.push('Your League Points: ' + data.inv.league_points + ' ⭐');
     lines.push('Page ' + safePage + '/' + maxPage + ' | Bought: ' + boughtCount + '/10');
 
@@ -174,7 +174,7 @@ _Use /buy to buy from PokeStore._`;
       { text: 'Page ' + page + '/' + maxPage, callback_data: 'crncl' },
       { text: '>', callback_data: 'store_tms_' + ctx.from.id + '_' + Math.min(maxPage, page + 1) }
     ]);
-    rows.push([{ text: 'Refresh Weekly TMs (10000 PC)', callback_data: 'tmrefresh_' + ctx.from.id }]);
+    rows.push([{ text: 'Refresh Weekly TMs (10000 VP)', callback_data: 'tmrefresh_' + ctx.from.id }]);
     rows.push(...buildStoreNav(ctx, 'tms'));
     return rows;
   }
@@ -313,13 +313,13 @@ _Use /buy to buy from PokeStore._`;
     if (ctx.from.id != id) return;
 
     const data = await getUserData(ctx.from.id);
-    if (!Number.isFinite(data.inv.pc)) data.inv.pc = 0;
-    if (data.inv.pc < 10000) {
-      ctx.answerCbQuery('Need 10000 PokeCoins to refresh weekly TMs', { show_alert: true });
+    if (!Number.isFinite(data.inv.vp)) data.inv.vp = 0;
+    if (data.inv.vp < 10000) {
+      ctx.answerCbQuery('Need 10000 Victory Points to refresh weekly TMs', { show_alert: true });
       return;
     }
 
-    data.inv.pc -= 10000;
+    data.inv.vp -= 10000;
     if (!data.tms) data.tms = {};
     refreshWeeklyTmShop(data, ctx.from.id, tms, tmprices);
     await saveUserData2(ctx.from.id, data);

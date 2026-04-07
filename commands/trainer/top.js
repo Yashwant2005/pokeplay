@@ -22,7 +22,7 @@ function registerTopCommand(bot, deps) {
   
     if (allUserData.length > 0) {
   
-      const attribute = 'pc'
+      const attribute = 'vp'
   
       const topUsers = await getTopUsers(allUserData, attribute, 5); // Change '10' to the desired number of top users
   
@@ -36,7 +36,7 @@ function registerTopCommand(bot, deps) {
   
         text += `<b>User:</b> ${userData.data.inv.name}\n`;
   
-        text += `<b>${attribute.charAt(0).toUpperCase() + attribute.slice(1)}:</b> ${userData.data.inv[attribute]}\n\n`;
+        text += `<b>Victory Points:</b> ${userData.data.inv[attribute] || 0}\n\n`;
   
       });
   

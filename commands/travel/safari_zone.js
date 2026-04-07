@@ -30,7 +30,7 @@ function registerSafariZoneCommand(bot, deps) {
   
   
   
-  *Entry Fees:* 100 💷
+  *Entry Fees:* 100 ⚡
   
   */enter -* _To Enter Safari Zone_
   

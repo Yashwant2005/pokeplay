@@ -14,13 +14,13 @@ function register_089_cardmore(bot, deps) {
       const wins = data.inv.win || 0
       const loses = data.inv.lose || 0
       const battles = data.inv.battle || 0
-      const pc = data.inv.pc || 0
+      const vp = data.inv.vp || 0
       const battleBoxes = Number.isFinite(data.inv.battle_boxes) ? data.inv.battle_boxes : 0
       const nicknameCount = data.nicknames ? Object.keys(data.nicknames).length : 0
       let msg = '*Trainer Card Details*\n'
       msg += `\n*User ID:* ${ctx.from.id}`
       msg += '\n' + formatTrainerProgress(data, trainerlevel, MAX_TRAINER_LEVEL)
-      msg += `\n*PokeCoins:* ${pc}`
+      msg += `\n*Victory Points:* ${vp}`
       msg += `\n*Battle Boxes:* ${battleBoxes}`
       msg += `\n*Battles:* ${battles}`
       msg += `\n*Wins / Losses:* ${wins} / ${loses}`

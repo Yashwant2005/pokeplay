@@ -8,7 +8,7 @@ function registerTransferCommand(bot, deps) {
   
   if(!reply || reply.from.id == ctx.from.id){
   
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Reply to a *User* to send *PokeCoins* 💷',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Reply to a *User* to send *Victory Points* ⚡',{reply_to_message_id:ctx.message.message_id})
   
   return
   
@@ -34,7 +34,7 @@ function registerTransferCommand(bot, deps) {
   
   if(level<7){
   
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Have To Reach *7 Level* To Transfer PokeCoins 💷',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Have To Reach *7 Level* To Transfer Victory Points ⚡',{reply_to_message_id:ctx.message.message_id})
   
   return
   
@@ -44,31 +44,31 @@ function registerTransferCommand(bot, deps) {
   
   if(!amount){
   
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Give a amount of *PokeCoins* 💷 Also',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'Give a amount of *Victory Points* ⚡ Also',{reply_to_message_id:ctx.message.message_id})
   
   return
   
   }
   
-  if(data.inv.pc < amount){
+  if(data.inv.vp < amount){
   
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You not have enough *PokeCoins* 💷',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You not have enough *Victory Points* ⚡',{reply_to_message_id:ctx.message.message_id})
   
   return
   
   }
   
-  data.inv.pc -= amount
+  data.inv.vp -= amount
   
-  data2.inv.pc += amount
+  data2.inv.vp += amount
   
   await saveUserData2(ctx.from.id,data)
   
   await saveUserData2(reply.from.id,data2)
   
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},'Sent <b>'+amount+'</b> 💷 to <b>'+he.encode(reply.from.first_name)+'</b>',{reply_to_message_id:ctx.message.message_id})
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'HTML'},'Sent <b>'+amount+'</b> ⚡ to <b>'+he.encode(reply.from.first_name)+'</b>',{reply_to_message_id:ctx.message.message_id})
   
-  await sendMessage(ctx,-1003069884900,'#transfer\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) sent <code>'+amount+'</code> 💷 to <b>'+he.encode(reply.from.first_name)+'</b> (<code>'+reply.from.id+'</code>)',{parse_mode:'HTML'})
+  await sendMessage(ctx,-1003069884900,'#transfer\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) sent <code>'+amount+'</code> ⚡ to <b>'+he.encode(reply.from.first_name)+'</b> (<code>'+reply.from.id+'</code>)',{parse_mode:'HTML'})
   
   })
 }

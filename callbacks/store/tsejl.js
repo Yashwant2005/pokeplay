@@ -1,8 +1,8 @@
-function register_056_tsejl(bot, deps) {
+﻿function register_056_tsejl(bot, deps) {
   const { getUserData, saveUserData2, editMessage, tms, tmprices } = deps;
   const getTmSellLp = (tm) => {
     const sellValue = Number(tmprices.sell[String(tm)] || 0)
-    // Convert legacy PC sell value to LP with a stable ratio.
+    // Convert legacy VP-era sell value to LP with a stable ratio.
     return Math.max(1, Math.round(sellValue / 20))
   }
   bot.action(/tsejl_/,async ctx => {
@@ -30,4 +30,5 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'S
 }
 
 module.exports = register_056_tsejl;
+
 

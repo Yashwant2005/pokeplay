@@ -20,7 +20,23 @@ function normalizeKey(value) {
     .toLowerCase()
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\u2640/g, '-f')
+    .replace(/\u2642/g, '-m')
+    .replace(/['\u2019.]/g, '')
     .replace(/pok(?:e|\u00e9)mon/g, 'pokemon')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function normalizeLocationSlug(value) {
+  return normalizeText(value)
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/['\u2019.]/g, '')
+    .replace(/pok(?:e|\u00e9)mon/g, 'pokemon')
+    .replace(/&/g, ' and ')
+    .replace(/[()/]/g, ' ')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 }
@@ -28,6 +44,18 @@ function normalizeKey(value) {
 function titleizeRegion(regionId) {
   const config = Object.values(REGION_CONFIG).find((entry) => entry.id === regionId);
   return config ? config.label : regionId;
+}
+
+function getDexnavRegionId(regionKey) {
+  const aliases = {
+    blueberry: 'paldea'
+  };
+  const normalized = String(regionKey || '').toLowerCase();
+  const resolved = aliases[normalized] || normalized;
+  const config = Object.values(REGION_CONFIG).find((entry) =>
+    entry.id === resolved || entry.regionKeys.includes(resolved)
+  );
+  return config ? config.id : resolved;
 }
 
 function loadCache() {
@@ -270,6 +298,46 @@ function summarizeLevels(values) {
     : Math.min(...numbers) + '-' + Math.max(...numbers);
 }
 
+function findCachedLocationUrl(regionId, locationName) {
+  const targetRegion = normalizeKey(regionId);
+  const targetLocation = normalizeKey(locationName);
+  const cache = loadCache();
+
+  for (const [cacheKey, entry] of Object.entries(cache)) {
+    if (!entry || !entry.value) continue;
+
+    if (cacheKey.startsWith('pokemon:') && Array.isArray(entry.value.regions)) {
+      for (const region of entry.value.regions) {
+        if (normalizeKey(region.id) !== targetRegion || !Array.isArray(region.locations)) continue;
+        const match = region.locations.find((location) => normalizeKey(location.name) === targetLocation && location.url);
+        if (match) {
+          return match.url;
+        }
+      }
+    }
+
+    if (cacheKey.startsWith('location:https://pokemondb.net/location/')) {
+      const url = cacheKey.slice('location:'.length);
+      const slugMatch = url.match(/\/location\/([a-z0-9-]+)/i);
+      if (!slugMatch) continue;
+      const cacheRegion = slugMatch[1].split('-')[0];
+      if (normalizeKey(cacheRegion) !== targetRegion) continue;
+
+      const titleName = String(entry.value.title || '').split(',')[0];
+      if (normalizeKey(titleName) === targetLocation) {
+        return url;
+      }
+    }
+  }
+
+  return null;
+}
+
+function buildLocationUrl(regionId, locationName) {
+  if (!regionId || !locationName) return '';
+  return 'https://pokemondb.net/location/' + normalizeKey(regionId) + '-' + normalizeLocationSlug(locationName);
+}
+
 async function getPokemonDexnav(species) {
   const cacheKey = 'pokemon:' + species;
   const cached = getCached(cacheKey, CACHE_TTL_MS);
@@ -286,6 +354,52 @@ async function getLocationDexnav(url) {
 
   const html = await fetchHtml(url);
   return setCached(cacheKey, parseLocationPage(html));
+}
+
+async function getTravelLocationDexnav(regionKey, locationName) {
+  const regionId = getDexnavRegionId(regionKey);
+  const locationLabel = normalizeText(locationName);
+  if (!regionId || !locationLabel) return null;
+
+  const urls = [];
+  const cachedUrl = findCachedLocationUrl(regionId, locationLabel);
+  const slugUrl = buildLocationUrl(regionId, locationLabel);
+
+  if (cachedUrl) urls.push(cachedUrl);
+  if (slugUrl && !urls.includes(slugUrl)) urls.push(slugUrl);
+
+  let lastError = null;
+  for (const url of urls) {
+    try {
+      return {
+        regionId,
+        locationName: locationLabel,
+        url,
+        locationData: await getLocationDexnav(url)
+      };
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  if (lastError) throw lastError;
+  return null;
+}
+
+function getLocationEncounterSpecies(locationData, forms, pokes) {
+  if (!locationData || !Array.isArray(locationData.encounters)) return [];
+
+  const seen = new Set();
+  const species = [];
+
+  for (const entry of locationData.encounters) {
+    const resolved = resolvePokemonSpecies(entry.pokemon, forms, pokes);
+    if (!resolved || seen.has(resolved)) continue;
+    seen.add(resolved);
+    species.push(resolved);
+  }
+
+  return species;
 }
 
 function buildLocationSummary(locationData, targetSpecies) {
@@ -323,7 +437,10 @@ module.exports = {
   resolvePokemonSpecies,
   getPokemonDexnav,
   getLocationDexnav,
+  getTravelLocationDexnav,
+  getLocationEncounterSpecies,
   buildLocationSummary,
   normalizeKey,
+  buildLocationUrl,
   titleizeRegion
 };

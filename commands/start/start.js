@@ -1,4 +1,4 @@
-function registerStartCommand(bot, deps) {
+﻿function registerStartCommand(bot, deps) {
   const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
   function isBlockedWildArceusForm(identifier) {
     return /^arceus-(bug|dark|dragon|electric|fighting|fire|flying|ghost|grass|ground|ice|poison|psychic|rock|steel|water|fairy)$/.test(String(identifier || '').toLowerCase());
@@ -102,17 +102,17 @@ function registerStartCommand(bot, deps) {
       if (!userData2.refers) userData2.refers = 0;
       userData2.refers += 1;
       userData2.extra.refer.push(ctx.from.id);
-      data.inv.pc += 1000;
+      data.inv.vp += 1000;
       if (!data.extra || typeof data.extra !== 'object') data.extra = {};
       data.extra.referred = id;
       data.extra.pending = null;
       data.referredBy = id;
       data.referRewarded = true;
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: "HTML" }, "You have successfully referred by <b>" + userData2.inv.name + "\n+ 1k PC 💷</b>");
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: "HTML" }, "You have successfully referred by <b>" + userData2.inv.name + "\n+ 1k VP âš¡</b>");
 
       let msg = "<b>" + ctx.from.first_name + "</b> has used your refer link.";
-      userData2.inv.pc += 500;
-      msg += "\n<b>+500</b> PokeCoins 💷";
+      userData2.inv.vp += 500;
+      msg += "\n<b>+500</b> Victory Points âš¡";
 
       if (userData2.refers % 3 === 0) {
         const ballTypes = ["level", "friend", "moon", "sport", "net", "nest", "luxury", "premier", "quick", "park", "beast"];
@@ -134,10 +134,10 @@ function registerStartCommand(bot, deps) {
         if (!userData2.tms) userData2.tms = {};
         if (!userData2.tms[String(num)]) userData2.tms[String(num)] = 0;
         userData2.tms[String(num)] += 1;
-        userData2.inv.pc += 1000;
+        userData2.inv.vp += 1000;
         if (!userData2.inv.pass) userData2.inv.pass = 0;
         userData2.inv.pass += 1;
-        msg += "\n<b>+1</b> TM" + num + " ⚙\n<b>+1</b> Safari Pass\n<b>+1000</b> PokeCoins 💷";
+        msg += "\n<b>+1</b> TM" + num + " âš™\n<b>+1</b> Safari Pass\n<b>+1000</b> Victory Points âš¡";
       }
       if (userData2.refers % 13 === 0) {
         const n5 = Object.keys(tms.tmnumber);
@@ -147,10 +147,10 @@ function registerStartCommand(bot, deps) {
           if (!userData2.tms[String(num)]) userData2.tms[String(num)] = 0;
           userData2.tms[String(num)] += 1;
         }
-        userData2.inv.pc += 3000;
+        userData2.inv.vp += 3000;
         if (!userData2.inv.pass) userData2.inv.pass = 0;
         userData2.inv.pass += 1;
-        msg += "\n<b>+1</b> TM" + nums[0] + " ⚙\n<b>+1</b> TM" + nums[1] + " ⚙\n<b>+1</b> TM" + nums[2] + " ⚙\n<b>+1</b> Safari Pass\n<b>+3000</b> PokeCoins 💷";
+        msg += "\n<b>+1</b> TM" + nums[0] + " âš™\n<b>+1</b> TM" + nums[1] + " âš™\n<b>+1</b> TM" + nums[2] + " âš™\n<b>+1</b> Safari Pass\n<b>+3000</b> Victory Points âš¡";
       }
 
       if (userData2.refers % 22 === 0) {
@@ -210,4 +210,5 @@ function registerStartCommand(bot, deps) {
 }
 
 module.exports = registerStartCommand;
+
 

@@ -30,8 +30,55 @@ function registerAddCommand(bot, deps) {
     const forcedShiny = hasShinyFlag && (shinyToken === '-1' || shinyToken === '1');
     const levelIndex = hasShinyFlag ? 2 : 1;
     const amountIndex = hasShinyFlag ? 3 : 2;
-    const level = args[levelIndex];
+    const levelArg = args[levelIndex];
     const amount = isNaN(args[amountIndex]) ? 1 : parseFloat(args[amountIndex]);
+
+    // Support: /add lucario n100  → adds 100 Lucario with random levels 1-60
+    const nBulkMatch = levelArg && /^n(\d+)$/i.exec(levelArg);
+    if (nBulkMatch) {
+      const bulkCount = Math.min(150, parseInt(nBulkMatch[1], 10) || 1);
+      if (!poke || !reply) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Wrong Format*');
+        return;
+      }
+      const pokeName = poke.toLowerCase();
+      const poked = pokes[pokeName];
+      if (!poked) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Unknown Pokemon: ' + c(poke) + '*');
+        return;
+      }
+      const g = growth_rates[pokeName];
+      if (!g || !chart[g.growth_rate]) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*No growth rate data for ' + c(poke) + '*');
+        return;
+      }
+      let added = 0;
+      for (let i = 0; i < bulkCount; i++) {
+        const randLevel = Math.floor(Math.random() * 60) + 1; // random 1–60
+        if (chart[g.growth_rate][randLevel] === undefined) continue;
+        const iv = await generateRandomIVs(spawn[pokeName] ? spawn[pokeName].toLowerCase() : 'common');
+        const ev = { hp: 0, attack: 0, defense: 0, special_attack: 0, special_defense: 0, speed: 0 };
+        const da = {
+          name: pokeName,
+          id: poked.pokedex_number,
+          nature: getRandomNature(),
+          ability: getRandomAbilityForPokemon(pokeName, pokes),
+          held_item: 'none',
+          exp: chart[g.growth_rate][randLevel],
+          pass: word(8),
+          ivs: applyCaptureIvRules(iv, { symbol: hasShinyFlag ? (forcedShiny ? '✨' : '') : '' }),
+          symbol: hasShinyFlag ? (forcedShiny ? '✨' : '') : '',
+          evs: ev,
+          moves: buildLevelUpMoves(pokeName, randLevel)
+        };
+        if (!data.pokes) data.pokes = [];
+        data.pokes.push(da);
+        added++;
+      }
+      await saveUserData2(reply.from.id, data);
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Successfully Added *' + added + ' ' + c(poke) + '* with random levels (1–60)');
+      return;
+    }
 
     if (amount > 150) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Dont Keep Too High Amount');
@@ -39,6 +86,7 @@ function registerAddCommand(bot, deps) {
     }
 
     const reply = ctx.message.reply_to_message;
+    const level = levelArg;
     if (!poke || !level || !reply) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Wrong Format*');
       return;

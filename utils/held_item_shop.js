@@ -23,9 +23,9 @@ const ARCEUS_PLATE_MAP = ARCEUS_PLATES.reduce((acc, entry) => {
   return acc;
 }, {});
 
-const HELD_ITEM_PC_TIERS = [
+const HELD_ITEM_VP_TIERS = [
   {
-    pc: 30000,
+    vp: 30000,
     lp: 1500,
     items: [
       'heat-rock',
@@ -42,7 +42,7 @@ const HELD_ITEM_PC_TIERS = [
     ]
   },
   {
-    pc: 50000,
+    vp: 50000,
     lp: 2500,
     items: [
       'blunder-policy',
@@ -52,7 +52,7 @@ const HELD_ITEM_PC_TIERS = [
     ]
   },
   {
-    pc: 60000,
+    vp: 60000,
     lp: 3000,
     items: [
       'focus-sash',
@@ -62,7 +62,7 @@ const HELD_ITEM_PC_TIERS = [
     ]
   },
   {
-    pc: 100000,
+    vp: 100000,
     lp: 3000,
     items: [
       // Removed legendary orbs and rusted items from shop
@@ -81,7 +81,7 @@ const MEGA_STONES = (() => {
 const HELD_ITEM_POOL = [
   ...new Set([
     ...ARCEUS_PLATES.map((entry) => entry.item),
-    ...HELD_ITEM_PC_TIERS.flatMap((tier) => tier.items),
+    ...HELD_ITEM_VP_TIERS.flatMap((tier) => tier.items),
     ...Object.keys(MEGA_STONES || {})
   ])
 ];
@@ -227,7 +227,7 @@ function getHeldItemDescription(itemName) {
 }
 
 function getHeldItemCatalog() {
-  return HELD_ITEM_PC_TIERS.map((tier) => ({
+  return HELD_ITEM_VP_TIERS.map((tier) => ({
     ...tier,
     items: [...tier.items]
   }));
@@ -235,10 +235,11 @@ function getHeldItemCatalog() {
 
 function getHeldItemPrice(itemName, currency) {
   const name = normalizeHeldItemShopName(itemName);
-  const tier = HELD_ITEM_PC_TIERS.find((entry) => entry.items.includes(name));
+  const tier = HELD_ITEM_VP_TIERS.find((entry) => entry.items.includes(name));
   if (!tier) return null;
   if (currency === 'lp') return tier.lp;
-  return tier.pc;
+  if (currency === 'pc' || currency === 'vp') return tier.vp;
+  return tier.vp;
 }
 
 module.exports = {

@@ -1,7 +1,8 @@
-function registerHuntCommand(bot, deps) {
+﻿function registerHuntCommand(bot, deps) {
   const { session, commands, gmax, trainers, getUserData, saveUserData2, sendMessage, loadMessageData, loadMessageDataFresh, tms, stones, spawn, forms, lvls, pokes, stat, c, he, moment, safari, re, chains, rdata, region, rar, gma, shiny, saveMessageData } = deps;
   const { toBaseIdentifier } = require('../../utils/base_form_pokemon');
-  const { Z_CRYSTALS, titleCaseZCrystal } = require('../../utils/z_crystals');
+  const { getTravelLocationDexnav, getLocationEncounterSpecies } = require('../../utils/dexnav');
+  const { rollHuntReward } = require('../../utils/hunt_rewards');
   function isBlockedWildArceusForm(identifier) {
     return /^arceus-(bug|dark|dragon|electric|fighting|fire|flying|ghost|grass|ground|ice|poison|psychic|rock|steel|water|fairy)$/.test(String(identifier || '').toLowerCase());
   }
@@ -99,11 +100,9 @@ function registerHuntCommand(bot, deps) {
   await saveMessageData(mdata)
   }
   
-  if(Math.random() < 0.0003){
-  
-  const n5 = Object.keys(tms.tmnumber)
-  
-  const num = n5[Math.floor(Math.random()*n5.length)]
+    const huntReward = rollHuntReward({ tms, stones })
+
+  if(huntReward.type === 'tm'){
   
   if(!data.tms){
   
@@ -111,93 +110,28 @@ function registerHuntCommand(bot, deps) {
   
   }
   
-  if(!data.tms[String(num)]){
+  if(!data.tms[String(huntReward.tmNo)]){
   
-  data.tms[String(num)] = 0
-  
-  }
-  
-  data.tms[String(num)] += 1
-  
-  await saveUserData2(ctx.from.id,data)
-  
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Found A *TM'+num+'* ⚙')
-  
-  return
+  data.tms[String(huntReward.tmNo)] = 0
   
   }
   
-  if(!data.inv.omniring && !data.inv.gmax_band && !data.inv.ring && (Math.random()< 0.00005 || (gma > 0 && Math.random() < rar))){
-  
-  gma -= 1
-  
-  data.inv.omniring = true
-  data.inv.gmax_band = true
-  data.inv.ring = true
+  data.tms[String(huntReward.tmNo)] += 1
   
   await saveUserData2(ctx.from.id,data)
   
-  await sendMessage(ctx,ctx.chat.id,gmax,{caption:'You found an *OmniRing*.',parse_mode:'markdown'})
-  
-  await sendMessage(ctx,-1003069884900,'#hunt\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) found<code>OmniRing</code>',{parse_mode:'HTML'})
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Found A *TM'+huntReward.tmNo+'* âš™')
   
   return
   
   }
 
-  if(!data.extra || typeof data.extra !== 'object'){
-  data.extra = {}
-  }
-  if(!data.extra.itembox || typeof data.extra.itembox !== 'object'){
-  data.extra.itembox = {}
-  }
-  if(!Number.isFinite(data.extra.itembox.maxSoup)){
-  data.extra.itembox.maxSoup = 0
-  }
-  if(!data.extra.itembox.zCrystals || typeof data.extra.itembox.zCrystals !== 'object'){
-  data.extra.itembox.zCrystals = {}
-  }
-
-  if(Math.random()<0.0000125){
-
-  data.extra.itembox.maxSoup += 1
-
-  await saveUserData2(ctx.from.id,data)
-
-  await sendMessage(ctx,ctx.chat.id,gmax,{caption:'You found a *Max Soup*.',parse_mode:'markdown'})
-
-  return}
-
-  if(Math.random()<0.00005){
-
-  const crystal = Z_CRYSTALS[Math.floor(Math.random()*Z_CRYSTALS.length)]
-
-  if(!Number.isFinite(data.extra.itembox.zCrystals[crystal])){
-  data.extra.itembox.zCrystals[crystal] = 0
-  }
-  data.extra.itembox.zCrystals[crystal] += 1
-
-  await saveUserData2(ctx.from.id,data)
-
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You found a *'+titleCaseZCrystal(crystal)+'*.')
-
-  return}
-  
-  
-  
-  if(Math.random()<0.00005){
-    // Only old stones (exclude new stones)
-    const NEW_STONES = [
-      'raichuite-x','raichuite-y','clefableite','victreebelite','starmieite','dragoniteite','meganiumite','feraligatrite','skarmoryite','chimechoite','absolite-z','staraptorite','garchompite-z','lucarioite-z','froslassite','emboarite','excadrillite','scolipedeite','scraftyite','eelektrossite','chandelureite','golurkite','chesnaughtite','delphoxite','greninjaite','pyroarite','meowsticite','malamarite','barbaracleite','dragalgeite','hawluchaite','crabominableite','golisopodite','drampaite','magearnaite','falinksite','scovillainite','glimmoraite','tatsugiriite','baxcaliburite'
-    ];
-    const st = Object.keys(stones).filter(s => !NEW_STONES.includes(s));
-    if (!st.length) return;
-    const stone = st[Math.floor(Math.random()*st.length)];
-    await sendMessage(ctx,ctx.chat.id,stones[stone].image,{caption:'You found a *'+c(stone)+'*',parse_mode:'markdown'});
+  if(huntReward.type === 'stone'){
+    await sendMessage(ctx,ctx.chat.id,stones[huntReward.stone].image,{caption:'You found a *'+c(huntReward.stone)+'*',parse_mode:'markdown'});
     if(!data.inv.stones){
       data.inv.stones = [];
     }
-    data.inv.stones.push(stone);
+    data.inv.stones.push(huntReward.stone);
     await saveUserData2(ctx.from.id,data);
     return;
   }
@@ -248,6 +182,8 @@ function registerHuntCommand(bot, deps) {
   const playerRegion = typeof data.inv.region === 'string' ? data.inv.region.toLowerCase() : ''
   const safariRegion = typeof data?.extra?.saf === 'string' ? data.extra.saf.toLowerCase() : ''
   const isActiveSafari = Boolean(data.balls.safari && data.balls.safari > 0 && safariRegion && safari[safariRegion])
+  let activeLocationName = ''
+  let locationSpeciesPool = []
 
   if(isActiveSafari){
   
@@ -287,14 +223,35 @@ function registerHuntCommand(bot, deps) {
   if(['paldea', 'kitakami', 'blueberry'].includes(playerRegion)){
     rg = playerRegion
   }
+
+  if(!isActiveSafari && data.extra && data.extra.location){
+    try {
+      const locationDexnav = await getTravelLocationDexnav(data.inv.region, data.extra.location)
+      const locationSpecies = locationDexnav
+        ? getLocationEncounterSpecies(locationDexnav.locationData, forms, pokes)
+        : []
+
+      if(Array.isArray(locationSpecies) && locationSpecies.length > 0){
+        locationSpeciesPool = locationSpecies
+        activeLocationName = locationDexnav.locationName || data.extra.location
+      }
+    } catch (error) {
+      console.error('[hunt location error]', error)
+    }
+  }
   
   const regionList = (rdata && rdata[region]) ? rdata[region] : null;
+  const hasLocationPool = Array.isArray(locationSpeciesPool) && locationSpeciesPool.length > 0
+  const baseLocationPool = hasLocationPool
+    ? locationSpeciesPool.filter((pokemon) => !isBlockedStarterHuntPokemon(pokemon))
+    : []
   if(data.extra.evhunt && data.extra.evhunt > 0){
 
-  if(!regionList || !Array.isArray(regionList) || regionList.length < 1){
+  const evPool = hasLocationPool ? baseLocationPool : regionList
+  if(!evPool || !Array.isArray(evPool) || evPool.length < 1){
     return
   }
-  var list = regionList.filter(pokemon => {
+  var list = evPool.filter(pokemon => {
   
     const pokemonData = pokes[pokemon];
   
@@ -307,8 +264,21 @@ function registerHuntCommand(bot, deps) {
   var list = (safari[safariRegion] || []).filter((pk) => !isBlockedStarterHuntPokemon(pk))
   
   }else{
+    const matchesActiveRarity = (pokemon) => {
+      const spawnClass = typeof spawn[pokemon] === 'string' ? spawn[pokemon].toLowerCase() : null
+      return spawnClass && ar.includes(spawnClass)
+    }
+
+    if(hasLocationPool){
+      var list = baseLocationPool.filter(matchesActiveRarity)
+
+      if(!list || list.length < 1){
+        list = baseLocationPool.filter((pokemon) => typeof spawn[pokemon] === 'string')
+      }
+    }else{
   
   var list = Object.keys(spawn).filter(pk=>spawn[pk] && ar.includes(spawn[pk].toLowerCase()) && list2.includes(pk) && !isBlockedStarterHuntPokemon(pk))
+    }
   
   }
   
@@ -337,11 +307,25 @@ function registerHuntCommand(bot, deps) {
   var fr = forms[name5].filter(pk=> !isBlockedStarterHuntPokemon(pk.identifier) && !nut.some((pk2)=> pk.identifier.includes(pk2)) && !isBlockedWildArceusForm(pk.identifier))
   
   }else{
-  
-  var fr = forms[name5].filter(pk=> {
+    const formPool = forms[name5].filter(pk=> {
     const spawnClass = typeof spawn[pk.identifier] === 'string' ? spawn[pk.identifier].toLowerCase() : null
-    return !isBlockedStarterHuntPokemon(pk.identifier) && !nut.some((pk2)=> pk.identifier.includes(pk2)) && spawnClass && ar.includes(spawnClass)
+    return !isBlockedStarterHuntPokemon(pk.identifier) && !nut.some((pk2)=> pk.identifier.includes(pk2)) && !isBlockedWildArceusForm(pk.identifier) && spawnClass
   })
+
+    if(hasLocationPool){
+      const rarityMatchedForms = formPool.filter((pk) => {
+        const spawnClass = typeof spawn[pk.identifier] === 'string' ? spawn[pk.identifier].toLowerCase() : null
+        return spawnClass && ar.includes(spawnClass)
+      })
+  
+  var fr = rarityMatchedForms.length > 0 ? rarityMatchedForms : formPool
+    }else{
+  
+  var fr = formPool.filter(pk=> {
+    const spawnClass = typeof spawn[pk.identifier] === 'string' ? spawn[pk.identifier].toLowerCase() : null
+    return spawnClass && ar.includes(spawnClass)
+  })
+    }
   
   }
   
@@ -370,24 +354,13 @@ function registerHuntCommand(bot, deps) {
   
   let s = ''
   
-  const l = Math.random()
+    if(huntReward.shiny){
   
-  let chyi = 1 / 40960
-  
-  if(data.inv && data.inv.shiny_charm){
-    const regionPokemon = rdata[region] || []
-    const caughtSet = new Set(data.pokecaught || [])
-    const allCaughtInRegion = regionPokemon.every(pkName => caughtSet.has(pkName))
-    if(allCaughtInRegion){
-      chyi = 1 / 27306
-    }
+  if(im && im.shiny_url){
+  p=im.shiny_url
   }
   
-  if(im && l<chyi){
-  
-  p=im.shiny_url
-  
-  s='✨'
+  s='âœ¨'
   
   }
   
@@ -439,9 +412,9 @@ function registerHuntCommand(bot, deps) {
   
   const level = Math.floor(Math.random()*(m2-m))+m
   
-  if(s=='🪅'){
+  if(s=='ðŸª…'){
   
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Found A *Event* 🪅 Pokemon',{reply_markup:{remove_keyboard:true}})
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Found A *Event* ðŸª… Pokemon',{reply_markup:{remove_keyboard:true}})
   
   ctx.session.key = false
   
@@ -451,9 +424,9 @@ function registerHuntCommand(bot, deps) {
   
   
   
-  if(s=='✨'){
+  if(s=='âœ¨'){
   
-  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Found A *Shiny* ✨ Pokemon',{reply_markup:{remove_keyboard:true}})
+  await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},'You Found A *Shiny* âœ¨ Pokemon',{reply_markup:{remove_keyboard:true}})
   
   ctx.session.key = false
   
@@ -467,7 +440,7 @@ function registerHuntCommand(bot, deps) {
   
   if(data.pokecaught.includes(name)){
   
-  var re = '✧ '
+  var re = 'âœ§ '
   
   }else{
   
@@ -476,6 +449,10 @@ function registerHuntCommand(bot, deps) {
   }
   
   let msg = 'A wild *'+c(name)+'* (*Lv.* '+level+') '+s+' has appeared '+re+''
+  
+  if(activeLocationName){
+    msg += '\n*Location:* _' + c(activeLocationName) + '_'
+  }
   
   if(data.extra.evhunt && data.extra.evhunt > 0){
   
@@ -522,4 +499,5 @@ function registerHuntCommand(bot, deps) {
 }
 
 module.exports = registerHuntCommand;
+
 

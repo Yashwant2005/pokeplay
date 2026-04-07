@@ -33,7 +33,7 @@ function registerTrainerRewardCommand(bot, deps) {
 
     let msg = '*Trainer Rewards Claimed*\n';
     msg += `\n*Levels Claimed:* ${summary.levelsToClaim}`;
-    if (summary.rewards.pc > 0) msg += `\n*PokeCoins:* +${summary.rewards.pc}`;
+    if (summary.rewards.vp > 0) msg += `\n*Victory Points:* +${summary.rewards.vp}`;
     if (summary.rewards.lp > 0) msg += `\n*League Points:* +${summary.rewards.lp}`;
     if (summary.rewards.ht > 0) msg += `\n*Holowear Tickets:* +${summary.rewards.ht}`;
     if (summary.rewards.battleBoxes > 0) msg += `\n*Battle Boxes:* +${summary.rewards.battleBoxes}`;

@@ -49,7 +49,7 @@ function registerAddExpCommand(bot, deps) {
     msg += '\n*Level:* ' + oldLevel + ' -> ' + newLevel;
     if (rewardSummary && rewardSummary.levelsToClaim > 0) {
       msg += '\n\n*Auto-claimed Rewards:*';
-      if (rewardSummary.rewards.pc > 0) msg += '\n- ' + rewardSummary.rewards.pc + ' PokeCoins';
+      if (rewardSummary.rewards.vp > 0) msg += '\n- ' + rewardSummary.rewards.vp + ' Victory Points';
       if (rewardSummary.rewards.lp > 0) msg += '\n- ' + rewardSummary.rewards.lp + ' League Points';
       if (rewardSummary.rewards.ht > 0) msg += '\n- ' + rewardSummary.rewards.ht + ' Holowear Tickets';
       if (rewardSummary.rewards.battleBoxes > 0) msg += '\n- ' + rewardSummary.rewards.battleBoxes + ' Battle Box';

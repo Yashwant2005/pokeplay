@@ -28,12 +28,12 @@ function registerFactionBankCommand(bot, deps) {
 
     const data = await getUserData(ctx.from.id);
     if (!data.inv || typeof data.inv !== 'object') data.inv = {};
-    if (!Number.isFinite(data.inv.pc)) data.inv.pc = 0;
-    data.inv.pc += amount;
+    if (!Number.isFinite(data.inv.vp)) data.inv.vp = 0;
+    data.inv.vp += amount;
     await saveUserData2(ctx.from.id, data);
 
     const name = (result.faction && result.faction.name) ? result.faction.name : 'Faction';
-    await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, `*Withdrawn ${amount} PokeCoins* from *${name}* bank.`, { reply_to_message_id: ctx.message.message_id });
+    await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, `*Withdrawn ${amount} Victory Points* from *${name}* bank.`, { reply_to_message_id: ctx.message.message_id });
   });
 }
 

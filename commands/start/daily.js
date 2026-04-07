@@ -81,7 +81,7 @@ function registerDailyRewardCommand(bot, deps) {
         '*Daily Reward*',
         '',
         'You already claimed today\'s reward.',
-        '*Reward:* 2000 PokeCoins, 5 League Points, 1 Holowear Ticket, 1 Battle Box',
+        '*Reward:* 2000 Victory Points, 5 League Points, 1 Holowear Ticket, 1 Battle Box',
         '',
         '*Time remaining to claim:* ' + remaining + ' (resets at 00:00 UTC)'
       ].join('\n'), {
@@ -90,12 +90,12 @@ function registerDailyRewardCommand(bot, deps) {
       return;
     }
 
-    if (!Number.isFinite(data.inv.pc)) data.inv.pc = 0;
+    if (!Number.isFinite(data.inv.vp)) data.inv.vp = 0;
     if (!Number.isFinite(data.inv.league_points)) data.inv.league_points = 0;
     if (!Number.isFinite(data.inv.holowear_tickets)) data.inv.holowear_tickets = 0;
     normalizeBattleBoxInventory(data);
 
-    data.inv.pc += 2000;
+    data.inv.vp += 2000;
     data.inv.league_points += 5;
     data.inv.holowear_tickets += 1;
     data.inv.battle_boxes += 1;
@@ -108,12 +108,12 @@ function registerDailyRewardCommand(bot, deps) {
       '*Daily Reward*',
       '',
       'You claimed today\'s reward:',
-      '- 2000 PokeCoins',
+      '- 2000 Victory Points',
       '- 5 League Points',
       '- 1 Holowear Ticket',
       '- 1 Battle Box',
       '',
-      '*PokeCoins:* ' + data.inv.pc,
+      '*Victory Points:* ' + data.inv.vp,
       '*League Points:* ' + data.inv.league_points,
       '*Holowear Tickets:* ' + data.inv.holowear_tickets,
       '*Battle Boxes:* ' + data.inv.battle_boxes

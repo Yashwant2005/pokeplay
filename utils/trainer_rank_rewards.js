@@ -385,7 +385,7 @@ function openBattleBoxes(data, deps, requestedAmount) {
     available,
     opened: 0,
     remaining: available,
-    rewards: { pc: 0, lp: 0, ht: 0, battleBoxes: 0 },
+    rewards: { vp: 0, lp: 0, ht: 0, battleBoxes: 0 },
     battleBoxes: 0,
     tmsAdded: 0,
     stonesAdded: 0,
@@ -412,17 +412,24 @@ function openBattleBoxes(data, deps, requestedAmount) {
 
 function ensureWallet(data) {
   if (!data.inv || typeof data.inv !== 'object') data.inv = {};
-  if (!Number.isFinite(data.inv.pc)) data.inv.pc = 0;
+  if (!Number.isFinite(data.inv.vp)) data.inv.vp = 0;
+  const legacyPc = Number(data.inv.pc);
+  if (Number.isFinite(legacyPc) && legacyPc !== 0) {
+    data.inv.vp += legacyPc;
+  }
+  if (Object.prototype.hasOwnProperty.call(data.inv, 'pc')) {
+    delete data.inv.pc;
+  }
   if (!Number.isFinite(data.inv.league_points)) data.inv.league_points = 0;
   if (!Number.isFinite(data.inv.holowear_tickets)) data.inv.holowear_tickets = 0;
   if (!Number.isFinite(data.inv.battle_boxes)) data.inv.battle_boxes = 0;
 }
 
 function grantBundle(data, summary) {
-  data.inv.pc += 1000;
+  data.inv.vp += 1000;
   data.inv.league_points += 100;
   data.inv.holowear_tickets += 10;
-  summary.rewards.pc += 1000;
+  summary.rewards.vp = (summary.rewards.vp || 0) + 1000;
   summary.rewards.lp += 100;
   summary.rewards.ht += 10;
 }
@@ -430,8 +437,8 @@ function grantBundle(data, summary) {
 function grantSingleCycleReward(level, data, summary) {
   const idx = (level - 1) % 3;
   if (idx === 0) {
-    data.inv.pc += 1000;
-    summary.rewards.pc += 1000;
+    data.inv.vp += 1000;
+    summary.rewards.vp = (summary.rewards.vp || 0) + 1000;
     return;
   }
   if (idx === 1) {
@@ -538,7 +545,7 @@ function claimTrainerRankRewards(data, deps) {
     currentLevel,
     claimedLevel,
     levelsToClaim,
-    rewards: { pc: 0, lp: 0, ht: 0, battleBoxes: 0, tms: 0, stones: 0 },
+    rewards: { vp: 0, lp: 0, ht: 0, battleBoxes: 0, tms: 0, stones: 0 },
     tmsReceived: [],
     stonesReceived: []
   };

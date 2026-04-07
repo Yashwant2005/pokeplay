@@ -1342,10 +1342,10 @@ await saveUserData2(ctx.from.id,data)
 const al = Object.keys(battleData.ot).filter((pk) => battleData.ot[pk] > 0) 
 if(al.length < 1){
 const ai = 200
-if(!data.inv.pc){
-data.inv.pc = 0
+if(!data.inv.vp){
+data.inv.vp = 0
 }
-data.inv.pc += ai
+data.inv.vp += ai
 try {
   const facAdd = Math.floor(ai * 0.25);
   if (facAdd > 0) addFactionPcByUser(ctx.from.id, facAdd);
@@ -1371,12 +1371,12 @@ delete messageData[ctx.from.id];
 }
 messageData.battle = messageData.battle.filter((chats) => String(chats) !== String(ctx.from.id))
 await saveMessageData(messageData)
-let finalMsg = '*'+c(battleData.name)+'* Has Been Fainted\n+'+ai+' 💷\n+'+ei+' Trainer EXP'
+let finalMsg = '*'+c(battleData.name)+'* Has Been Fainted\n+'+ai+' Victory Points ⚡\n+'+ei+' Trainer EXP'
 if(rankSummary && rankSummary.levelsToClaim > 0){
   finalMsg += '\n\n*Trainer Rank Levelup!* '
   finalMsg += '\nLevel '+oldTrainerLevel+' -> '+newTrainerLevel
   finalMsg += '\n\n*Rewards:*'
-  if(rankSummary.rewards.pc > 0) finalMsg += '\n- '+rankSummary.rewards.pc+' PokeCoins 💷'
+  if(rankSummary.rewards.vp > 0) finalMsg += '\n- '+rankSummary.rewards.vp+' Victory Points ⚡'
   if(rankSummary.rewards.lp > 0) finalMsg += '\n- '+rankSummary.rewards.lp+' League Points ⭐'
   if(rankSummary.rewards.ht > 0) finalMsg += '\n- '+rankSummary.rewards.ht+' Holowear Tickets 🎟️'
   if(rankSummary.rewards.battleBoxes > 0) finalMsg += '\n- '+rankSummary.rewards.battleBoxes+' Battle Box 🎁'

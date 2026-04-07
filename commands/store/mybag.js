@@ -17,13 +17,13 @@ function registerMybagCommand(bot, deps) {
   
   }
   
-  if(!data.inv.pc){
+  if(!data.inv.vp){
   
-  data.inv.pc = 0
+  data.inv.vp = 0
   
   }
   
-  let msg = '*💷 PokeCoins:* '+data.inv.pc+'\n'
+  let msg = '*⚡ Victory Points:* '+data.inv.vp+'\n'
   
   let msgg = ''
   

@@ -1,11 +1,12 @@
 const { MAX_TRAINER_LEVEL, getTrainerLevel, claimTrainerRankRewards, formatTrainerProgress } = require('../../utils/trainer_rank_rewards');
 
-function getCurrentLevel(data) {
-  return getTrainerLevel(data, trainerlevel, MAX_TRAINER_LEVEL);
-}
-
 function registerRankupCommand(bot, deps) {
   const { getUserData, saveUserData2, sendMessage, trainerlevel, tms, stones, c, admins } = deps;
+
+  function getCurrentLevel(data) {
+    return getTrainerLevel(data, trainerlevel, MAX_TRAINER_LEVEL);
+  }
+
   bot.command('rankup', async (ctx) => {
     if (!admins.includes(ctx.from.id)) return;
 
@@ -63,7 +64,7 @@ function registerRankupCommand(bot, deps) {
     let msg = 'Ranked up *' + c(reply.from.first_name) + '* from *' + currentLevel + '* to *' + newLevel + '*.';
     if (summary && summary.levelsToClaim > 0) {
       msg += '\n\n*Rankup Rewards Applied:*';
-      if (summary.rewards.pc > 0) msg += '\n- ' + summary.rewards.pc + ' PokeCoins 💷';
+      if (summary.rewards.vp > 0) msg += '\n- ' + summary.rewards.vp + ' Victory Points ⚡';
       if (summary.rewards.lp > 0) msg += '\n- ' + summary.rewards.lp + ' League Points ⭐';
       if (summary.rewards.ht > 0) msg += '\n- ' + summary.rewards.ht + ' Holowear Tickets 🎟️';
       if (summary.rewards.battleBoxes > 0) msg += '\n- ' + summary.rewards.battleBoxes + ' Battle Box 🎁';

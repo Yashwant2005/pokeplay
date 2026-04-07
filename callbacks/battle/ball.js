@@ -3,6 +3,7 @@ function register_015_ball(bot, deps) {
   const { getRandomAbilityForPokemon } = require('../../utils/pokemon_ability');
     const { getBattleHeldItemName } = require('../../utils/battle_abilities');
     const { revertTrackedFormsOnBattleEnd } = require('../../utils/battle_forms');
+    const { titleCaseHeldItem } = require('../../utils/held_item_shop');
     const clearBattlePrompt = async (chatId, userId, battleKey) => {
       const messageData = await loadMessageDataFresh();
       let dirty = false;
@@ -324,7 +325,11 @@ revertPowerConstructFormsOnBattleEnd(battleData, data)
 revertTrackedFormsOnBattleEnd(battleData, data)
 await saveUserData2(ctx.from.id,data)
 await sendMessage(ctx,-1003069884900,'#caught\n\n<b>'+he.encode(ctx.from.first_name)+'</b> (<code>'+ctx.from.id+'</code>) caught <code>'+c(battleData.name)+'</code>',{parse_mode:'HTML'})
-await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,''+m+'\n\nSuccessfully Caught *'+c(battleData.name)+'*',{parse_mode:'markdown',reply_markup:{inline_keyboard:[[{text:'Check Stats',callback_data:'stats_'+pass2+'_'+ctx.from.id+'_0'}]]}})
+let caughtMsg = ''+m+'\n\nSuccessfully Caught *'+c(battleData.name)+'*';
+if (caughtHeldItem && caughtHeldItem !== 'none') {
+  caughtMsg += '\nIt was holding *' + c(titleCaseHeldItem(caughtHeldItem)) + '*!';
+}
+await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,caughtMsg,{parse_mode:'markdown',reply_markup:{inline_keyboard:[[{text:'Check Stats',callback_data:'stats_'+pass2+'_'+ctx.from.id+'_0'}]]}})
 })
 }
 

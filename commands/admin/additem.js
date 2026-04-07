@@ -74,7 +74,7 @@ function registerAddItemCommand(bot, deps) {
     const item = toKey(args[0]);
 
     if (!item) {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:*\n/additem pc 1000\n/additem lp 500\n/additem ht 20\n/additem battlebox 5\n/additem daycarecandy 3\n/additem maxsoup 1\n/additem dynamaxcandy 1\n/additem omniring 1\n/additem zcrystal electrium-z 1\n/additem zcrystal any 2\n/additem tm 44 2\n/additem tm any 3\n/additem stone charizardite-x 1\n/additem stone jade-orb 1\n/additem stone any 2\n/additem mint jolly mint 2\n/additem mint any 5\n/additem ball master 1\n/additem ball any 3\n/additem held light-ball 1\n/additem held eviolite 1\n/additem held power-herb 1\n/additem held big-root 1\n/additem held clear-amulet 1\n/additem held rocky-helmet 1\n/additem held tatsugiri-lunchbox 1\n/additem held air-balloon 1\n/additem held focus-sash 1\n/additem held life-orb 1\n/additem held leftovers 1\n/additem held heat-rock 1\n/additem held damp-rock 1\n/additem held weakness-policy 1\n/additem held blunder-policy 1\n/additem held assault-vest 1\n/additem held choice-band 1\n/additem held choice-specs 1\n/additem held choice-scarf 1\n/additem held booster-energy 1\n/additem held rusted-sword 1\n/additem held rusted-shield 1\n/additem held red-orb 1\n/additem held blue-orb 1\n/additem abilitycapsule 1\n/additem abilitypatch 1\n/additem bottlecap 2\n/additem goldbottlecap 1');
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Usage:*\n/additem vp 1000\n/additem lp 500\n/additem ht 20\n/additem battlebox 5\n/additem daycarecandy 3\n/additem maxsoup 1\n/additem dynamaxcandy 1\n/additem omniring 1\n/additem zcrystal electrium-z 1\n/additem zcrystal any 2\n/additem tm 44 2\n/additem tm any 3\n/additem stone charizardite-x 1\n/additem stone jade-orb 1\n/additem stone any 2\n/additem mint jolly mint 2\n/additem mint any 5\n/additem ball master 1\n/additem ball any 3\n/additem held light-ball 1\n/additem held eviolite 1\n/additem held power-herb 1\n/additem held big-root 1\n/additem held clear-amulet 1\n/additem held rocky-helmet 1\n/additem held tatsugiri-lunchbox 1\n/additem held air-balloon 1\n/additem held focus-sash 1\n/additem held life-orb 1\n/additem held leftovers 1\n/additem held heat-rock 1\n/additem held damp-rock 1\n/additem held weakness-policy 1\n/additem held blunder-policy 1\n/additem held assault-vest 1\n/additem held choice-band 1\n/additem held choice-specs 1\n/additem held choice-scarf 1\n/additem held booster-energy 1\n/additem held rusted-sword 1\n/additem held rusted-shield 1\n/additem held red-orb 1\n/additem held blue-orb 1\n/additem abilitycapsule 1\n/additem abilitypatch 1\n/additem bottlecap 2\n/additem goldbottlecap 1');
       return;
     }
 
@@ -93,26 +93,26 @@ function registerAddItemCommand(bot, deps) {
 
     let result = '';
 
-    if (['pc', 'pokecoin', 'pokecoins', 'coin', 'coins'].includes(item)) {
+    if (['vp', 'pc', 'pokecoin', 'pokecoins', 'coin', 'coins'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
-      if (!Number.isFinite(data.inv.pc)) data.inv.pc = 0;
-      data.inv.pc += amount;
-      result = 'Added *' + amount + '* PokeCoins ðŸ’·';
+      if (!Number.isFinite(data.inv.vp)) data.inv.vp = 0;
+      data.inv.vp += amount;
+      result = 'Added *' + amount + '* Victory Points';
     } else if (['lp', 'leaguepoint', 'leaguepoints', 'league_points'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.league_points)) data.inv.league_points = 0;
       data.inv.league_points += amount;
-      result = 'Added *' + amount + '* League Points â­';
+      result = 'Added *' + amount + '* League Points Ã¢Â­Â';
     } else if (['ht', 'holowear', 'holowear_ticket', 'holowear_tickets', 'ticket', 'tickets'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.holowear_tickets)) data.inv.holowear_tickets = 0;
       data.inv.holowear_tickets += amount;
-      result = 'Added *' + amount + '* Holowear Tickets 🎟️';
+      result = 'Added *' + amount + '* Holowear Tickets ðŸŽŸï¸';
     } else if (['battlebox', 'battleboxes', 'battle_box', 'battle_boxes', 'box', 'boxes'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.battle_boxes)) data.inv.battle_boxes = 0;
       data.inv.battle_boxes += amount;
-      result = 'Added *' + amount + '* Battle Box 🎁';
+      result = 'Added *' + amount + '* Battle Box ðŸŽ';
     } else if (['daycarecandy', 'daycare_candy', 'daycare-candy', 'dccandy', 'dcandy'].includes(item)) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.daycare_candy)) data.inv.daycare_candy = 0;
@@ -159,7 +159,7 @@ function registerAddItemCommand(bot, deps) {
       const amount = parsePositiveInt(args[1], 1);
       if (!Number.isFinite(data.inv.vp)) data.inv.vp = 0;
       data.inv.vp += amount;
-      result = 'Added *' + amount + '* VP â­';
+      result = 'Added *' + amount + '* VP Ã¢Â­Â';
     } else if (['tm', 'tms'].includes(item)) {
       const tmRaw = toKey(args[1]);
       const amount = parsePositiveInt(args[2], 1);
@@ -291,9 +291,15 @@ function registerAddItemCommand(bot, deps) {
         }
         data.inv.balls.push(ballName);
       }
-      result = 'Added *' + amount + '* PokÃ©ball(s).';
+      result = 'Added *' + amount + '* PokÃƒÂ©ball(s).';
+    } else if (['masterball', 'master-ball', 'master_ball', 'mball', 'mb'].includes(item)) {
+      const amount = parsePositiveInt(args[1], 1);
+      if (!data.balls || typeof data.balls !== 'object') data.balls = {};
+      if (!Number.isFinite(data.balls.master)) data.balls.master = 0;
+      data.balls.master += amount;
+      result = 'Added *' + amount + '* Master Ball(s) ðŸ”®';
     } else {
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Unknown item type.*\nTry: pc, lp, ht, battlebox, daycarecandy, maxsoup, dynamaxcandy, omniring, zcrystal, vp, tm, stone, mint, held, ball, abilitycapsule, abilitypatch, bottlecap, goldbottlecap');
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*Unknown item type.*\nTry: vp, lp, ht, battlebox, daycarecandy, maxsoup, dynamaxcandy, omniring, zcrystal, tm, stone, mint, held, ball, masterball, abilitycapsule, abilitypatch, bottlecap, goldbottlecap');
       return;
     }
 
@@ -303,4 +309,5 @@ function registerAddItemCommand(bot, deps) {
 }
 
 module.exports = registerAddItemCommand;
+
 

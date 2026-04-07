@@ -135,7 +135,9 @@ function ensureDefaults(faction) {
   if (!Array.isArray(faction.admins))         faction.admins      = [];
   if (!faction.memberNames || typeof faction.memberNames !== 'object') faction.memberNames = {};
   if (!faction.inv || typeof faction.inv !== 'object') faction.inv = {};
-  if (!Number.isFinite(faction.inv.pc)) faction.inv.pc = 0;
+  if (!Number.isFinite(faction.inv.vp)) faction.inv.vp = 0;
+  if (Number.isFinite(faction.inv.pc) && faction.inv.pc !== 0) faction.inv.vp += Number(faction.inv.pc);
+  if (Object.prototype.hasOwnProperty.call(faction.inv, 'pc')) delete faction.inv.pc;
 }
 
 function touchName(faction, user) {
@@ -281,7 +283,7 @@ bot.command('create', async ctx => {
     group:            null,
     pfp:              DEFAULT_PFP,
     channelMessageId: null,
-    inv:              { pc: 0 },
+    inv:              { vp: 0 },
   };
 
   data.factions.push(faction);
@@ -408,7 +410,7 @@ bot.command('myfac', async ctx => {
   const captainNm  = getUserName(faction, captainId) || faction.captain_name || captainId;
   const admins     = (faction.admins || []).map(a => mention(a.userId, a.name || a.userId)).join(', ') || 'None';
   const memberCount = (faction.members || []).length;
-  const bankPc = Number(faction.inv && faction.inv.pc) || 0;
+  const bankVp = Number(faction.inv && faction.inv.vp) || 0;
 
   let roleLabel = '🛡️ Member';
   if (isCaptainOf(faction, ctx.from.id))    roleLabel = '👑 Captain';
@@ -421,7 +423,7 @@ bot.command('myfac', async ctx => {
     `<b>Captain:</b> ${mention(captainId, captainNm)}`,
     `<b>Admins:</b> ${admins}`,
     `<b>Members:</b> ${memberCount}`,
-    `<b>Faction PokeCoins:</b> ${bankPc}`,
+    `<b>Faction Victory Points:</b> ${bankVp}`,
   ].join('\n');
 
   await ctx.replyWithPhoto(faction.pfp || DEFAULT_PFP, { caption, parse_mode: 'HTML' });
@@ -438,9 +440,9 @@ bot.command('faclb', async ctx => {
 
   factions.forEach(ensureDefaults);
   factions.sort((a, b) => {
-    const aPc = Number(a.inv && a.inv.pc) || 0;
-    const bPc = Number(b.inv && b.inv.pc) || 0;
-    if (bPc !== aPc) return bPc - aPc;
+    const aVp = Number(a.inv && a.inv.vp) || 0;
+    const bVp = Number(b.inv && b.inv.vp) || 0;
+    if (bVp !== aVp) return bVp - aVp;
     return String(a.name || '').localeCompare(String(b.name || ''));
   });
 
@@ -450,8 +452,8 @@ bot.command('faclb', async ctx => {
   ];
 
   factions.slice(0, 15).forEach((faction, index) => {
-    const totalPc = Number(faction.inv && faction.inv.pc) || 0;
-    lines.push(`${index + 1}. <b>${esc(faction.name)}</b> - <code>${totalPc}</code> PC`);
+    const totalVp = Number(faction.inv && faction.inv.vp) || 0;
+    lines.push(`${index + 1}. <b>${esc(faction.name)}</b> - <code>${totalVp}</code> VP`);
   });
 
   return ctx.reply(lines.join('\n'), { parse_mode: 'HTML' });

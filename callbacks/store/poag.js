@@ -241,8 +241,8 @@ await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,me
 return
 }
 if(item=='inventory'){
-if(!data.inv.pc){
-data.inv.pc = 0
+if(!data.inv.vp){
+data.inv.vp = 0
 }
 if(!Number.isFinite(data.inv.league_points)){
 data.inv.league_points = 0
@@ -253,7 +253,7 @@ data.inv.holowear_tickets = 0
 if(!Number.isFinite(data.inv.battle_boxes)){
 data.inv.battle_boxes = 0
 }
-let msg = '*💷 PokeCoins:* '+data.inv.pc+'\n'
+let msg = '*⚡ Victory Points:* '+data.inv.vp+'\n'
 msg += '\n• *⭐ LP:* '+data.inv.league_points+''
 msg += '\n• *🎟️ HT:* '+data.inv.holowear_tickets+''
 msg += '\n• *🎁 Battle Box:* '+data.inv.battle_boxes+''

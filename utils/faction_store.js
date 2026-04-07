@@ -45,7 +45,7 @@ function ensureDefaults(faction) {
   if (!Array.isArray(faction.members)) faction.members = [];
   if (!Array.isArray(faction.admins)) faction.admins = [];
   if (!faction.inv || typeof faction.inv !== 'object') faction.inv = {};
-  if (!Number.isFinite(faction.inv.pc)) faction.inv.pc = 0;
+  if (!Number.isFinite(faction.inv.vp)) faction.inv.vp = 0;
 }
 
 function findFactionByUser(data, userId) {
@@ -71,7 +71,7 @@ function addFactionPcByUser(userId, amount) {
   const faction = findFactionByUser(data, userId);
   if (!faction) return { ok: false, reason: 'nofaction' };
   ensureDefaults(faction);
-  faction.inv.pc += add;
+  faction.inv.vp += add;
   saveFactions(data);
   return { ok: true, faction, added: add };
 }
@@ -92,8 +92,8 @@ function withdrawFactionPc(userId, amount) {
   if (!faction) return { ok: false, reason: 'nofaction' };
   ensureDefaults(faction);
   if (!isOfficer(faction, userId)) return { ok: false, reason: 'noaccess' };
-  if (faction.inv.pc < take) return { ok: false, reason: 'insufficient', balance: faction.inv.pc };
-  faction.inv.pc -= take;
+  if (faction.inv.vp < take) return { ok: false, reason: 'insufficient', balance: faction.inv.vp };
+  faction.inv.vp -= take;
   saveFactions(data);
   return { ok: true, faction, taken: take };
 }

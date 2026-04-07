@@ -131,7 +131,7 @@ async function registerNewUser(ctx) {
     inv: {
       name: he.encode(ctx.from.first_name),
       exp: 0,
-      pc: 5000,
+      vp: 5000,
       pass: 0,
       region: 'kanto',
       avtar: '1',

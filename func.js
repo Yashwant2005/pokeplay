@@ -79,6 +79,26 @@ function cloneJson(value) {
   }
 }
 
+function normalizeUserCurrencyData(data) {
+  if (!data || typeof data !== 'object') return data;
+  if (!data.inv || typeof data.inv !== 'object') return data;
+
+  if (!Number.isFinite(data.inv.vp)) {
+    data.inv.vp = 0;
+  }
+
+  const legacyPc = Number(data.inv.pc);
+  if (Number.isFinite(legacyPc) && legacyPc !== 0) {
+    data.inv.vp += legacyPc;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(data.inv, 'pc')) {
+    delete data.inv.pc;
+  }
+
+  return data;
+}
+
 function pruneBattleCache() {
   const now = Date.now();
   for (const [key, entry] of battleCache) {
@@ -510,8 +530,9 @@ async function saveUserData2(userId, userData) {
     const queued = saveQueue.get(key);
     const cached = queued || getCachedUserData(key);
     const existing = cached ? null : await (await getCollection('users')).findOne({ _id: key });
-    const latestData = cached || (existing && existing.data ? existing.data : {});
-    const mergedData = mergeUserDataForSave(latestData, userData);
+    const latestData = normalizeUserCurrencyData(cached || (existing && existing.data ? existing.data : {}));
+    const incomingData = normalizeUserCurrencyData(cloneJson(userData && typeof userData === 'object' ? userData : {}));
+    const mergedData = normalizeUserCurrencyData(mergeUserDataForSave(latestData, incomingData));
     setCachedUserData(key, mergedData);
     queueUserSave(key, mergedData);
   } catch (error) {
@@ -522,7 +543,7 @@ async function saveUserData2(userId, userData) {
 async function overwriteUserData(userId, userData) {
   try {
     const key = String(userId);
-    const nextData = cloneJson(userData && typeof userData === 'object' ? userData : {});
+    const nextData = normalizeUserCurrencyData(cloneJson(userData && typeof userData === 'object' ? userData : {}));
     setCachedUserData(key, nextData);
     queueUserSave(key, nextData);
   } catch (error) {
@@ -535,10 +556,10 @@ async function getUserData(userId) {
     const key = String(userId);
     // 1. Return from cache if fresh
     const cached = getCachedUserData(key);
-    if (cached) return cached;
+    if (cached) return normalizeUserCurrencyData(cached);
     // 2. If a DB fetch is already in-flight for this user, wait for it
     if (userFetchInFlight.has(key)) {
-      return await userFetchInFlight.get(key);
+      return normalizeUserCurrencyData(await userFetchInFlight.get(key));
     }
     // 3. Start a new DB fetch and register it so concurrent callers share it
     const fetchPromise = (async () => {
@@ -546,8 +567,9 @@ async function getUserData(userId) {
         const users = await getCollection('users');
         const doc = await users.findOne({ _id: key });
         if (!doc || !doc.data) return {};
-        setCachedUserData(key, doc.data);
-        return doc.data;
+        const normalized = normalizeUserCurrencyData(doc.data);
+        setCachedUserData(key, normalized);
+        return normalized;
       } finally {
         userFetchInFlight.delete(key);
       }
@@ -1111,7 +1133,7 @@ try{
 let trainerMsg = '*Trainer EXP Gained:* +40'
 if(rankSummary && rankSummary.levelsToClaim > 0){
 trainerMsg += '\n*Level:* ' + oldTrainerLevel + ' -> ' + newTrainerLevel
-  if (rankSummary.rewards.pc > 0) trainerMsg += '\n- ' + rankSummary.rewards.pc + ' PokeCoins'
+  if (rankSummary.rewards.vp > 0) trainerMsg += '\n- ' + rankSummary.rewards.vp + ' Victory Points'
   if (rankSummary.rewards.lp > 0) trainerMsg += '\n- ' + rankSummary.rewards.lp + ' League Points'
   if (rankSummary.rewards.ht > 0) trainerMsg += '\n- ' + rankSummary.rewards.ht + ' Holowear Tickets'
   if (rankSummary.rewards.battleBoxes > 0) trainerMsg += '\n- ' + rankSummary.rewards.battleBoxes + ' Battle Box'
@@ -1259,7 +1281,7 @@ async function getAllUserData() {
     return docs.map((doc) => ({
       user_id: doc.user_id || doc._id,
       userId: doc.userId || doc.user_id || doc._id,
-      data: doc.data || {},
+      data: normalizeUserCurrencyData(doc.data || {}),
       reset: Boolean(doc.reset)
     }));
   } catch (error) {

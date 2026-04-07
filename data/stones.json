@@ -84,6 +84,11 @@
     "pokemon": "lucario",
     "mega": "lucario-mega"
   },
+  "lucarioite-z": {
+    "image": "https://files.catbox.moe/467vsy.png",
+    "pokemon": "lucario",
+    "mega": "lucario-mega-z"
+  },
   "abomasite": {
     "image": "https://te.legra.ph/file/f80fb5b921ab01620cc36.jpg",
     "pokemon": "abomasnow",

@@ -24,8 +24,8 @@ function registerBuyCommand(bot, deps) {
     if (!data.inv || typeof data.inv !== 'object') {
       data.inv = {};
     }
-    if (!Number.isFinite(data.inv.pc)) {
-      data.inv.pc = 0;
+    if (!Number.isFinite(data.inv.vp)) {
+      data.inv.vp = 0;
     }
 
     if (messageData.battle.some(id => String(id) === String(ctx.from.id))) {
@@ -61,9 +61,9 @@ function registerBuyCommand(bot, deps) {
 
       const pay = 5000
 
-      if (data.inv.pc < pay) {
+      if (data.inv.vp < pay) {
 
-        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough PokeCoins💷*', { reply_to_message_id: ctx.message.message_id })
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough Victory Points⚡*', { reply_to_message_id: ctx.message.message_id })
 
         return
 
@@ -72,11 +72,11 @@ function registerBuyCommand(bot, deps) {
       data.inv.omniring = true
       data.inv.ring = true
       data.inv.gmax_band = true
-      data.inv.pc -= pay
+      data.inv.vp -= pay
 
       await saveUserData2(ctx.from.id, data)
 
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *OmniRing* For *5000* PokeCoins 💷', { reply_to_message_id: ctx.message.message_id })
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *OmniRing* For *5000* Victory Points ⚡', { reply_to_message_id: ctx.message.message_id })
 
       await sendMessage(ctx, -1003069884900, '#buy\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) bought <code>OmniRing</code>',
 
@@ -88,9 +88,9 @@ function registerBuyCommand(bot, deps) {
 
     if (item2.toLowerCase() == 'shinycharm' || item2.toLowerCase() == 'shiny_charm' || ctx.message.text.split(' ').slice(1).join(' ').toLowerCase() == 'shiny charm') {
 
-      if (data.inv.pc < 15000) {
+      if (data.inv.vp < 15000) {
 
-        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough PokeCoins💷*', { reply_to_message_id: ctx.message.message_id })
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough Victory Points⚡*', { reply_to_message_id: ctx.message.message_id })
 
         return
 
@@ -106,11 +106,11 @@ function registerBuyCommand(bot, deps) {
 
       data.inv.shiny_charm = true
 
-      data.inv.pc -= 15000
+      data.inv.vp -= 15000
 
       await saveUserData2(ctx.from.id, data)
 
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *Shiny Charm* For *15000* PokeCoins 💷', { reply_to_message_id: ctx.message.message_id })
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *Shiny Charm* For *15000* Victory Points ⚡', { reply_to_message_id: ctx.message.message_id })
 
       await sendMessage(ctx, -1003069884900, '#buy\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) bought <code>Shiny Charm</code>',
 
@@ -202,17 +202,17 @@ function registerBuyCommand(bot, deps) {
         return
       }
       const pay = amount * 10000
-      if (pay > data.inv.pc) {
-        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough PokeCoinsðŸ’·*', { reply_to_message_id: ctx.message.message_id })
+      if (pay > data.inv.vp) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough Victory PointsðŸ’·*', { reply_to_message_id: ctx.message.message_id })
         return
       }
       if (!data.extra || typeof data.extra !== 'object') data.extra = {}
       if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
       if (!Number.isFinite(data.extra.itembox.zygardeCapsules)) data.extra.itembox.zygardeCapsules = 0
-      data.inv.pc -= pay
+      data.inv.vp -= pay
       data.extra.itembox.zygardeCapsules += amount
       await saveUserData2(ctx.from.id, data)
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* Zygarde Capsule for *' + pay + '* PokeCoins ðŸ’·', { reply_to_message_id: ctx.message.message_id })
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* Zygarde Capsule for *' + pay + '* Victory Points ðŸ’·', { reply_to_message_id: ctx.message.message_id })
       await sendMessage(ctx, -1003069884900, '#buy\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) bought <code>' + amount + ' Zygarde Capsule</code>', { parse_mode: 'HTML' })
       return
     }
@@ -228,17 +228,17 @@ function registerBuyCommand(bot, deps) {
         return
       }
       const pay = amount * 25000
-      if (pay > data.inv.pc) {
-        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough PokeCoinsðŸ’·*', { reply_to_message_id: ctx.message.message_id })
+      if (pay > data.inv.vp) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough Victory PointsðŸ’·*', { reply_to_message_id: ctx.message.message_id })
         return
       }
       if (!data.extra || typeof data.extra !== 'object') data.extra = {}
       if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
       if (!Number.isFinite(data.extra.itembox.abilityCapsules)) data.extra.itembox.abilityCapsules = 0
-      data.inv.pc -= pay
+      data.inv.vp -= pay
       data.extra.itembox.abilityCapsules += amount
       await saveUserData2(ctx.from.id, data)
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* Ability Capsule for *' + pay + '* PokeCoins ðŸ’·', { reply_to_message_id: ctx.message.message_id })
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* Ability Capsule for *' + pay + '* Victory Points ðŸ’·', { reply_to_message_id: ctx.message.message_id })
       await sendMessage(ctx, -1003069884900, '#buy\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) bought <code>' + amount + ' Ability Capsule</code>', { parse_mode: 'HTML' })
       return
     }
@@ -254,17 +254,17 @@ function registerBuyCommand(bot, deps) {
         return
       }
       const pay = amount * 50000
-      if (pay > data.inv.pc) {
-        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough PokeCoinsðŸ’·*', { reply_to_message_id: ctx.message.message_id })
+      if (pay > data.inv.vp) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough Victory PointsðŸ’·*', { reply_to_message_id: ctx.message.message_id })
         return
       }
       if (!data.extra || typeof data.extra !== 'object') data.extra = {}
       if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
       if (!Number.isFinite(data.extra.itembox.abilityPatches)) data.extra.itembox.abilityPatches = 0
-      data.inv.pc -= pay
+      data.inv.vp -= pay
       data.extra.itembox.abilityPatches += amount
       await saveUserData2(ctx.from.id, data)
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* Ability Patch for *' + pay + '* PokeCoins ðŸ’·', { reply_to_message_id: ctx.message.message_id })
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* Ability Patch for *' + pay + '* Victory Points ðŸ’·', { reply_to_message_id: ctx.message.message_id })
       await sendMessage(ctx, -1003069884900, '#buy\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) bought <code>' + amount + ' Ability Patch</code>', { parse_mode: 'HTML' })
       return
     }
@@ -280,17 +280,17 @@ function registerBuyCommand(bot, deps) {
         return
       }
       const pay = amount * 5000
-      if (pay > data.inv.pc) {
-        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough PokeCoinsðŸ’·*', { reply_to_message_id: ctx.message.message_id })
+      if (pay > data.inv.vp) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough Victory PointsðŸ’·*', { reply_to_message_id: ctx.message.message_id })
         return
       }
       if (!data.extra || typeof data.extra !== 'object') data.extra = {}
       if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
       if (!Number.isFinite(data.extra.itembox.dynamaxCandy)) data.extra.itembox.dynamaxCandy = 0
-      data.inv.pc -= pay
+      data.inv.vp -= pay
       data.extra.itembox.dynamaxCandy += amount
       await saveUserData2(ctx.from.id, data)
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* Dynamax Candy for *' + pay + '* PokeCoins ðŸ’·', { reply_to_message_id: ctx.message.message_id })
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* Dynamax Candy for *' + pay + '* Victory Points ðŸ’·', { reply_to_message_id: ctx.message.message_id })
       await sendMessage(ctx, -1003069884900, '#buy\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) bought <code>' + amount + ' Dynamax Candy</code>', { parse_mode: 'HTML' })
       return
     }
@@ -306,15 +306,15 @@ function registerBuyCommand(bot, deps) {
         return
       }
       const pay = amount * 375
-      if (pay > data.inv.pc) {
-        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough PokeCoinsÃ°Å¸â€™Â·*', { reply_to_message_id: ctx.message.message_id })
+      if (pay > data.inv.vp) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough Victory PointsÃ°Å¸â€™Â·*', { reply_to_message_id: ctx.message.message_id })
         return
       }
       if (!Number.isFinite(data.inv.daycare_candy)) data.inv.daycare_candy = 0
-      data.inv.pc -= pay
+      data.inv.vp -= pay
       data.inv.daycare_candy += amount
       await saveUserData2(ctx.from.id, data)
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* Daycare Candy for *' + pay + '* PokeCoins Ã°Å¸â€™Â·', { reply_to_message_id: ctx.message.message_id })
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* Daycare Candy for *' + pay + '* Victory Points Ã°Å¸â€™Â·', { reply_to_message_id: ctx.message.message_id })
       await sendMessage(ctx, -1003069884900, '#buy\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) bought <code>' + amount + ' Daycare Candy</code>', { parse_mode: 'HTML' })
       return
     }
@@ -325,21 +325,21 @@ function registerBuyCommand(bot, deps) {
       return
     }
 
-    const heldPcPrice = getHeldItemPrice(normalizedTailName, 'pc')
-    if (heldPcPrice) {
+    const heldVpPrice = getHeldItemPrice(normalizedTailName, 'vp')
+    if (heldVpPrice) {
       const amount = trailingAmount || 1
-      const pay = amount * heldPcPrice
-      if (pay > data.inv.pc) {
-        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough PokeCoinsðŸ’·*', { reply_to_message_id: ctx.message.message_id })
+      const pay = amount * heldVpPrice
+      if (pay > data.inv.vp) {
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough Victory PointsðŸ’·*', { reply_to_message_id: ctx.message.message_id })
         return
       }
       if (!data.extra || typeof data.extra !== 'object') data.extra = {}
       if (!data.extra.itembox || typeof data.extra.itembox !== 'object') data.extra.itembox = {}
       if (!data.extra.itembox.heldItems || typeof data.extra.itembox.heldItems !== 'object') data.extra.itembox.heldItems = {}
-      data.inv.pc -= pay
+      data.inv.vp -= pay
       data.extra.itembox.heldItems[normalizedTailName] = Number(data.extra.itembox.heldItems[normalizedTailName] || 0) + amount
       await saveUserData2(ctx.from.id, data)
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* ' + c(titleCaseHeldItem(normalizedTailName)) + ' for *' + pay + '* PokeCoins ðŸ’·', { reply_to_message_id: ctx.message.message_id })
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* ' + c(titleCaseHeldItem(normalizedTailName)) + ' for *' + pay + '* Victory Points ðŸ’·', { reply_to_message_id: ctx.message.message_id })
       await sendMessage(ctx, -1003069884900, '#buy\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) bought <code>' + amount + ' ' + c(titleCaseHeldItem(normalizedTailName)) + '</code>', { parse_mode: 'HTML' })
       return
     }
@@ -380,15 +380,15 @@ function registerBuyCommand(bot, deps) {
 
         const pay = amount * price
 
-        if (pay > data.inv.pc) {
+        if (pay > data.inv.vp) {
 
-          await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough PokeCoins💷*', { reply_to_message_id: ctx.message.message_id })
+          await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough Victory Points⚡*', { reply_to_message_id: ctx.message.message_id })
 
           return
 
         }
 
-        data.inv.pc -= pay
+        data.inv.vp -= pay
 
         if (!data.inv[item]) {
 
@@ -400,7 +400,7 @@ function registerBuyCommand(bot, deps) {
 
         await saveUserData2(ctx.from.id, data)
 
-        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* ' + c(item) + ' for *' + pay + '* PokeCoins 💷', { reply_to_message_id: ctx.message.message_id })
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* ' + c(item) + ' for *' + pay + '* Victory Points ⚡', { reply_to_message_id: ctx.message.message_id })
 
         await sendMessage(ctx, -1003069884900, '#buy\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) bought <code>' + amount + ' ' + c(item) + '</code>', { parse_mode: 'HTML' })
 
@@ -444,15 +444,15 @@ function registerBuyCommand(bot, deps) {
 
         const pay = amount * price
 
-        if (pay > data.inv.pc) {
+        if (pay > data.inv.vp) {
 
-          await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough PokeCoins💷*', { reply_to_message_id: ctx.message.message_id })
+          await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, '*You not have enough Victory Points⚡*', { reply_to_message_id: ctx.message.message_id })
 
           return
 
         }
 
-        data.inv.pc -= pay
+        data.inv.vp -= pay
 
         if (!data.balls) {
 
@@ -470,7 +470,7 @@ function registerBuyCommand(bot, deps) {
 
         await saveUserData2(ctx.from.id, data)
 
-        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* ' + c(item) + ' Balls for *' + pay + '* PokeCoins 💷', { reply_to_message_id: ctx.message.message_id })
+        await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Bought *' + amount + '* ' + c(item) + ' Balls for *' + pay + '* Victory Points ⚡', { reply_to_message_id: ctx.message.message_id })
 
         await sendMessage(ctx, -1003069884900, '#buy\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) bought <code>' + amount + ' ' + c(item) + '</code>', { parse_mode: 'HTML' })
 

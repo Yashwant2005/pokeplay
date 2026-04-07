@@ -49,11 +49,11 @@ function registerDaycareCommand(bot, deps) {
     msg += `\n*Daycare Slots:* ${info.slots}`;
     msg += `\n*Daycare Candy:* ${data.inv.daycare_candy}`;
     msg += '\n\n*Training Cost:*';
-    msg += '\n• Every *500 EXP required* costs *1 PC*';
-    msg += '\n• Every *1 EV* costs *5 PC*';
+    msg += '\nâ€¢ Every *500 EXP required* costs *1 VP*';
+    msg += '\nâ€¢ Every *1 EV* costs *5 VP*';
     msg += '\n\n*Training Time:*';
-    msg += '\n• Every *100 EXP* takes *1 second*';
-    msg += '\n• Every *1 EV* takes *10 seconds*';
+    msg += '\nâ€¢ Every *100 EXP* takes *1 second*';
+    msg += '\nâ€¢ Every *1 EV* takes *10 seconds*';
     msg += `\n\n*Daycare Candy Effect:* 1 candy reduces *${DAYCARE_CANDY_REDUCTION_MINUTES} minutes* from one active daycare job`;
 
     if (starter.granted) {

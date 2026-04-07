@@ -139,9 +139,9 @@ function registerSellCommand(bot, deps) {
 
     if (data.inv[item]) {
       data.inv[item] -= amount;
-      data.inv.pc += amount * sellInfo[item];
+      data.inv.vp += amount * sellInfo[item];
       await saveUserData2(ctx.from.id, data);
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Successfully *Sold ' + amount + ' ' + c(item) + '* for *' + amount * sellInfo[item] + ' PokeCoins 💷*', {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Successfully *Sold ' + amount + ' ' + c(item) + '* for *' + amount * sellInfo[item] + ' Victory Points ⚡*', {
         reply_to_message_id: ctx.message.message_id
       });
       await sendMessage(ctx, -1003069884900, '#sell\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) sold <code>' + amount + ' ' + item + '</code>', {
@@ -149,9 +149,9 @@ function registerSellCommand(bot, deps) {
       });
     } else if (data.balls[item]) {
       data.balls[item] -= amount;
-      data.inv.pc += amount * sellInfo[item];
+      data.inv.vp += amount * sellInfo[item];
       await saveUserData2(ctx.from.id, data);
-      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Successfully *Sold ' + amount + ' ' + c(item) + ' Balls* for *' + amount * sellInfo[item] + ' PokeCoins 💷*', {
+      await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Successfully *Sold ' + amount + ' ' + c(item) + ' Balls* for *' + amount * sellInfo[item] + ' Victory Points ⚡*', {
         reply_to_message_id: ctx.message.message_id
       });
       await sendMessage(ctx, -1003069884900, '#sell\n\n<b>' + he.encode(ctx.from.first_name) + '</b> (<code>' + ctx.from.id + '</code>) sold <code>' + amount + ' ' + item + '</code>', {

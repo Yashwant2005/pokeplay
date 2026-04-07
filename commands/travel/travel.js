@@ -35,7 +35,7 @@ function registerTravelCommand(bot, deps) {
       ctx,
       ctx.chat.id,
       { parse_mode: 'markdown' },
-      '*Which Region You Wanna Travel?*\n\n*Currently :* _' + currentRegion + '_' + currentLocationLine + '\n*Travel cost:* _100 PokeCoins when changing major region. Same-region travel is free._\n*Region guides loaded:* ' + loadedRegions,
+      '*Which Region You Wanna Travel?*\n\n*Currently :* _' + currentRegion + '_' + currentLocationLine + '\n*Travel cost:* _100 Victory Points when changing major region. Same-region travel is free._\n*Region guides loaded:* ' + loadedRegions,
       { reply_markup: { inline_keyboard: buildMainTravelKeyboard(ctx.from.id) } }
     );
   });

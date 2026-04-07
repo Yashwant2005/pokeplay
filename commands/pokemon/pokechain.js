@@ -139,7 +139,7 @@ function registerPokechainCommands(bot, deps) {
     const winnerData = await getUserData(winnerId);
     const winnerTag = buildPlayerMention(winnerId, winnerData);
 
-    let rewardMsg = 'Rewards: +1000 PokeCoins, +100 League Points';
+    let rewardMsg = 'Rewards: +1000 Victory Points, +100 League Points';
     let rewarded = false;
     if (!winnerData.inv || typeof winnerData.inv !== 'object') winnerData.inv = {};
     if (!winnerData.extra || typeof winnerData.extra !== 'object') winnerData.extra = {};
@@ -155,9 +155,9 @@ function registerPokechainCommands(bot, deps) {
     if (rewardData.count >= 5) {
       rewardMsg = 'Reward limit reached for today (5/5).';
     } else {
-      if (!Number.isFinite(winnerData.inv.pc)) winnerData.inv.pc = 0;
+      if (!Number.isFinite(winnerData.inv.vp)) winnerData.inv.vp = 0;
       if (!Number.isFinite(winnerData.inv.league_points)) winnerData.inv.league_points = 0;
-      winnerData.inv.pc += 1000;
+      winnerData.inv.vp += 1000;
       winnerData.inv.league_points += 100;
       rewardData.count += 1;
       rewarded = true;

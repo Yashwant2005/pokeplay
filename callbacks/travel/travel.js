@@ -92,7 +92,7 @@ function register_021_travel(bot, deps) {
         ctx,
         ctx.chat.id,
         ctx.callbackQuery.message.message_id,
-        '*Which Region You Wanna Travel?*\n\n*Travel cost:* _100 PokeCoins when changing major region. Same-region travel is free._',
+        '*Which Region You Wanna Travel?*\n\n*Travel cost:* _100 Victory Points when changing major region. Same-region travel is free._',
         { parse_mode: 'markdown', reply_markup: { inline_keyboard: buildMainTravelKeyboard(ctx.from.id) } }
       );
       return;
@@ -110,7 +110,7 @@ function register_021_travel(bot, deps) {
         ctx,
         ctx.chat.id,
         ctx.callbackQuery.message.message_id,
-        '*Which Region You Wanna Travel?*\n\n*Travel cost:* _100 PokeCoins when changing major region. Same-region travel is free._',
+        '*Which Region You Wanna Travel?*\n\n*Travel cost:* _100 Victory Points when changing major region. Same-region travel is free._',
         { parse_mode: 'markdown', reply_markup: { inline_keyboard: buildMainTravelKeyboard(ctx.from.id) } }
       );
       return;
@@ -154,7 +154,7 @@ function register_021_travel(bot, deps) {
         ctx,
         ctx.chat.id,
         ctx.callbackQuery.message.message_id,
-        '*Which Region You Wanna Travel?*\n\n*Travel cost:* _100 PokeCoins when changing major region. Same-region travel is free._',
+        '*Which Region You Wanna Travel?*\n\n*Travel cost:* _100 Victory Points when changing major region. Same-region travel is free._',
         { parse_mode: 'markdown', reply_markup: { inline_keyboard: buildMainTravelKeyboard(ctx.from.id) } }
       );
       return;
@@ -197,14 +197,14 @@ function register_021_travel(bot, deps) {
     const isPaidTravel = currentMajorId !== selectedMajorId;
 
     if(isPaidTravel){
-      if(!Number.isFinite(data.inv.pc)){
-        data.inv.pc = 0;
+      if(!Number.isFinite(data.inv.vp)){
+        data.inv.vp = 0;
       }
-      if(data.inv.pc < 100){
-        ctx.answerCbQuery('Need 100 PokeCoins to change region.', { show_alert: true });
+      if(data.inv.vp < 100){
+        ctx.answerCbQuery('Need 100 Victory Points to change region.', { show_alert: true });
         return;
       }
-      data.inv.pc -= 100;
+      data.inv.vp -= 100;
     }
 
     data.inv.region = targetRegionKey;
@@ -225,7 +225,7 @@ function register_021_travel(bot, deps) {
       arrivalMessage += '\n*Location:* _' + c(selectedLocation.name) + '_';
     }
     if(isPaidTravel){
-      arrivalMessage += '\n*Cost:* 100 PokeCoins';
+      arrivalMessage += '\n*Cost:* 100 Victory Points';
     }
 
     await editMessage(

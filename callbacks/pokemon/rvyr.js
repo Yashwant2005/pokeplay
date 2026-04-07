@@ -11,11 +11,11 @@ if(data.extra.evhunt && data.extra.evhunt > 0){
 ctx.answerCbQuery('You are already doing a ev hunt')
 return
 }
-if(data.inv.pc < 50){
-ctx.answerCbQuery('Not enough pokecoins')
+if(data.inv.vp < 50){
+ctx.answerCbQuery('Not enough victory points')
 return
 }
-data.inv.pc -= 50
+data.inv.vp -= 50
 data.extra.evhunt = 75
 data.extra.evh = stat
 await saveUserData2(ctx.from.id,data)

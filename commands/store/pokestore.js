@@ -20,24 +20,24 @@ function registerPokestoreCommand(bot, deps) {
       `*Welcome To Poke Store (Buy Section)*
 
 *PokeBalls*
-- Regular Ball - 15 PC
-- Great Ball - 25 PC
-- Ultra Ball - 40 PC
-- Repeat Ball - 50 PC
-- Beast Ball - 100 PC
-- Quick Ball - 65 PC
-- Net Ball - 45 PC
-- Nest Ball - 55 PC
+- Regular Ball - 15 VP
+- Great Ball - 25 VP
+- Ultra Ball - 40 VP
+- Repeat Ball - 50 VP
+- Beast Ball - 100 VP
+- Quick Ball - 65 VP
+- Net Ball - 45 VP
+- Nest Ball - 55 VP
 
 *Items*
-- Candy - 100 PC
-- Berry - 75 PC
-- Vitamin - 100 PC
-- OmniRing - 5000 PC
-- Zygarde Capsule - 10000 PC
-- Ability Capsule - 25000 PC
-- Ability Patch - 50000 PC
-- Daycare Candy - 375 PC
+- Candy - 100 VP
+- Berry - 75 VP
+- Vitamin - 100 VP
+- OmniRing - 5000 VP
+- Zygarde Capsule - 10000 VP
+- Ability Capsule - 25000 VP
+- Ability Patch - 50000 VP
+- Daycare Candy - 375 VP
 
 *Held Items*
 - Open *Held* to buy held items with League Points only
@@ -53,7 +53,7 @@ function registerPokestoreCommand(bot, deps) {
 - /buy daycarecandy 1
 
 _Use /pokeballs for Pokeball details._
-_Use /buy for direct PokeCoins purchases._
+_Use /buy for direct Victory Points purchases._
 _Use the Held button for held item shop._
 
 *Weekly TM Shop*
@@ -61,7 +61,7 @@ _Use the Held button for held item shop._
 - Buy with League Points (minimum 1000 LP)
 - Each weekly TM slot can be bought once
 - Duplicate TM buy is not allowed
-- Refresh weekly TM list: 10000 PokeCoins
+- Refresh weekly TM list: 10000 Victory Points
 Open it from the *Tms* button.`,
       { reply_to_message_id: ctx.message.message_id, reply_markup: { inline_keyboard: rows } }
     );

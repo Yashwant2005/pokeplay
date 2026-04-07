@@ -1267,15 +1267,15 @@ bot.on('message', async (ctx, next) => {
         }
         userData2.refers += 1
         userData2.extra.refer.push(ctx.from.id)
-        data.inv.pc += 1000
+        data.inv.vp += 1000
         data.extra.referred = id
         data.extra.pending = null
         data.referRewarded = true
         data.referredBy = id
-        await sendMessage(ctx, ctx.from.id, 'You have successfully reached <b>Level 20</b> and your refer by <b>' + userData2.inv.name + ' has been completed.\n+ 1k PC ðŸ’·</b>', { parse_mode: 'HTML' })
+        await sendMessage(ctx, ctx.from.id, 'You have successfully reached <b>Level 20</b> and your refer by <b>' + userData2.inv.name + ' has been completed.\n+ 1k VP ðŸ’·</b>', { parse_mode: 'HTML' })
         let msg = '<b>' + ctx.from.first_name + '</b> has reached <b>Level 20</b>.'
-        userData2.inv.pc += 500
-        msg += '\n<b>+500</b> PokeCoins ðŸ’·'
+        userData2.inv.vp += 500
+        msg += '\n<b>+500</b> Victory Points ðŸ’·'
         if (userData2.refers % 3 === 0) {
           const ballTypes = ['level', 'friend', 'moon', 'sport', 'net', 'nest', 'luxury', 'premier', 'quick', 'park', 'beast'];
 
@@ -1303,12 +1303,12 @@ bot.on('message', async (ctx, next) => {
             userData2.tms[String(num)] = 0
           }
           userData2.tms[String(num)] += 1
-          userData2.inv.pc += 1000
+          userData2.inv.vp += 1000
           if (!userData2.inv.pass) {
             userData2.inv.pass = 0
           }
           userData2.inv.pass += 1
-          msg += '\n<b>+1</b> TM' + num + ' âš™\n<b>+1</b> Safari Pass\n<b>+1000</b> PokeCoins ðŸ’·'
+          msg += '\n<b>+1</b> TM' + num + ' âš™\n<b>+1</b> Safari Pass\n<b>+1000</b> Victory Points ðŸ’·'
         }
         if (userData2.refers % 13 === 0) {
           const n5 = Object.keys(tms.tmnumber)
@@ -1330,12 +1330,12 @@ bot.on('message', async (ctx, next) => {
             userData2.tms[String(num3)] = 0
           }
           userData2.tms[String(num3)] += 1
-          userData2.inv.pc += 3000
+          userData2.inv.vp += 3000
           if (!userData2.inv.pass) {
             userData2.inv.pass = 0
           }
           userData2.inv.pass += 1
-          msg += '\n<b>+1</b> TM' + num + ' âš™\n<b>+1</b> TM' + num2 + ' âš™\n<b>+1</b> TM' + num3 + ' âš™\n<b>+1</b> Safari Pass\n<b>+3000</b> PokeCoins ðŸ’·'
+          msg += '\n<b>+1</b> TM' + num + ' âš™\n<b>+1</b> TM' + num2 + ' âš™\n<b>+1</b> TM' + num3 + ' âš™\n<b>+1</b> Safari Pass\n<b>+3000</b> Victory Points ðŸ’·'
         }
 
         if (userData2.refers % 22 === 0) {
@@ -1443,7 +1443,7 @@ const groupCommands = [
   { command: '/buy', description: 'Buy Items From Poke Store' },
   { command: '/sell', description: 'Sell Item To Poke Store' },
   { command: '/battlebox', description: 'Open your Battle Box rewards' },
-  { command: '/transfer', description: 'transfer PokeCoins To Other Users' },
+  { command: '/transfer', description: 'transfer Victory Points To Other Users' },
   { command: '/facwithdraw', description: 'Withdraw from faction bank' },
   { command: '/travel', description: 'Travel Another Place' },
   { command: '/safari_zone', description: 'Travel Into Safari Zone' },
@@ -1898,3 +1898,4 @@ initApp()
   .catch((error) => {
     console.error('Failed to init app:', error);
   });
+

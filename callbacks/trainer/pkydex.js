@@ -27,7 +27,7 @@ ctx.answerCbQuery('*Something went wrong.*')
 return
 }
 const key = [[{text:'Base Stats',callback_data:'bst_'+poke+'_'+ctx.from.id+'_'+form+''},
-{text:'Region Found',callback_data:'ryf_'+poke+'_'+ctx.from.id+'_'+form+''}]]
+{text:'Spawn Locations',callback_data:'ryf_'+poke+'_'+ctx.from.id+'_'+form+''}]]
 if(forms[poke].length>1){
 key.push([{text:'<',callback_data:'pkydex_'+poke+'_'+ctx.from.id+'_'+(form-1)+''},{text:''+form+'/'+forms[poke].length+'',callback_data:'ntg'},
 {text:'>',callback_data:'pkydex_'+poke+'_'+ctx.from.id+'_'+(form+1)+''}])

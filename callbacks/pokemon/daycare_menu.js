@@ -1,4 +1,4 @@
-const {
+﻿const {
   ensureDaycareState,
   getDaycareSlots,
   formatRemaining,
@@ -159,7 +159,7 @@ function renderMovesMenu(ctx, state, deps, page) {
   for (const mv of pageMoves) {
     const isSelected = selected.includes(mv.id);
     row.push({
-      text: (isSelected ? '✅ ' : '') + c(mv.name),
+      text: (isSelected ? 'âœ… ' : '') + c(mv.name),
       callback_data: 'daycare_move_toggle_' + mv.id + '_' + ctx.from.id + '_' + safePage
     });
     if (row.length === 2) {
@@ -571,12 +571,12 @@ function registerDaycareMenuCallbacks(bot, deps) {
     msg += '\n*EVs:* ' + formatEvSummary(state.evs);
     msg += '\n*Moves:* ' + formatMoveSummary(finalMoves, dmoves, c);
     msg += '\n\n*Training Cost:*';
-    msg += '\n• Every *500 EXP required* costs *1 PC*';
-    msg += '\n• Every *1 EV* costs *5 PC*';
-    msg += `\n*Total Cost:* ${totalCost} PC`;
+    msg += '\nâ€¢ Every *500 EXP required* costs *1 VP*';
+    msg += '\nâ€¢ Every *1 EV* costs *5 VP*';
+    msg += `\n*Total Cost:* ${totalCost} VP`;
     msg += '\n\n*Training Time:*';
-    msg += '\n• Every *100 EXP* takes *1 second*';
-    msg += '\n• Every *1 EV* takes *10 seconds*';
+    msg += '\nâ€¢ Every *100 EXP* takes *1 second*';
+    msg += '\nâ€¢ Every *1 EV* takes *10 seconds*';
     msg += '\n*Total Time:* ' + formatDuration(plan.durationSeconds, 'seconds');
 
     await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
@@ -629,9 +629,9 @@ function registerDaycareMenuCallbacks(bot, deps) {
     const evCost = evTotal * 5;
     const totalCost = expCost + evCost;
 
-    if (!Number.isFinite(data.inv.pc)) data.inv.pc = 0;
-    if (data.inv.pc < totalCost) {
-      await ctx.answerCbQuery('Not enough PokeCoins.');
+    if (!Number.isFinite(data.inv.vp)) data.inv.vp = 0;
+    if (data.inv.vp < totalCost) {
+      await ctx.answerCbQuery('Not enough Victory Points.');
       return;
     }
 
@@ -647,7 +647,7 @@ function registerDaycareMenuCallbacks(bot, deps) {
       finalEvolutionName: state.finalEvolutionName || null
     };
 
-    data.inv.pc -= totalCost;
+    data.inv.vp -= totalCost;
     data.pokes.splice(pokeIndex, 1);
     cleanupTeamsForPokemon(data, pokemon.pass);
     daycare.jobs.push(job);
@@ -657,7 +657,7 @@ function registerDaycareMenuCallbacks(bot, deps) {
     let msg = '*Daycare Started!*';
     msg += '\n\n*Pokemon:* ' + c(pokemon.nickname || pokemon.name);
     msg += '\n*Ready In:* ' + formatRemaining(plan.readyAt);
-    msg += `\n*Cost:* ${totalCost} PC`;
+    msg += `\n*Cost:* ${totalCost} VP`;
 
     await editMessage('text', ctx, ctx.chat.id, ctx.callbackQuery.message.message_id, msg, {
       parse_mode: 'markdown',
@@ -1052,3 +1052,4 @@ function registerDaycareMenuCallbacks(bot, deps) {
 }
 
 module.exports = registerDaycareMenuCallbacks;
+

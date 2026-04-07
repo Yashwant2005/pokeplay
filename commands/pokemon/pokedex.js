@@ -66,7 +66,7 @@ function registerPokedexCommand(bot, deps) {
   
   const key = [[{text:'Base Stats',callback_data:'bst_'+poke+'_'+ctx.from.id+'_1'},
   
-  {text:'Region Found',callback_data:'ryf_'+poke+'_'+ctx.from.id+'_1'}]]
+  {text:'Spawn Locations',callback_data:'ryf_'+poke+'_'+ctx.from.id+'_1'}]]
   
   const form = 1
   

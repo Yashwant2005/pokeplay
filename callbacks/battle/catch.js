@@ -5,8 +5,27 @@ const { activateImpersonateForPass, getBattleBaseStats } = require('../../utils/
 const { ARCEUS_PLATES } = require('../../utils/held_item_shop');
 const { getSanitizedHeldItemForPokemon } = require('../../utils/pokemon_item_rules');
 
+const MEGA_STONES_DATA = (() => {
+  try { return require('../../data/stones.json') || {}; } catch (e) { return {}; }
+})();
+
+// Pre-build a map: pokemonName -> [stoneName, stoneName, ...]
+const POKEMON_TO_MEGA_STONES = (() => {
+  const map = {};
+  for (const [stoneName, info] of Object.entries(MEGA_STONES_DATA)) {
+    if (!info || !info.pokemon || !info.mega) continue;
+    // Only include stones that represent actual mega evolution (not primal/origin/crowned forms)
+    if (!String(info.mega).includes('-mega')) continue;
+    const pokeKey = String(info.pokemon).toLowerCase();
+    if (!map[pokeKey]) map[pokeKey] = [];
+    map[pokeKey].push(stoneName);
+  }
+  return map;
+})();
+
 function register_011_catch(bot, deps) {
   const { session, getUserData, saveUserData2, sendMessage, loadMessageData, loadMessageDataFresh, loadBattleData, saveBattleData, spawn, pokes, pokemoves, dmoves, word, getRandomNature, generateRandomIVs, c, he, safari, checkseen, pokestats, plevel, Stats, battlec, emojis, saveMessageData, Bar } = deps;
+  const WILD_MEGA_STONE_CHANCE = 0.0001; // 0.01% chance a mega-capable wild Pokémon holds its stone
   const getWildHeldItem = (pokemonName) => {
     const key = String(pokemonName || '').toLowerCase();
     if (key === 'arceus' && Math.random() < 0.2) {
@@ -14,6 +33,11 @@ function register_011_catch(bot, deps) {
       return plate ? plate.item : 'none';
     }
     if (key === 'pikachu' && Math.random() < 0.05) return 'light-ball';
+    // Mega stone random drop for any mega-capable Pokémon
+    const megaStones = POKEMON_TO_MEGA_STONES[key];
+    if (megaStones && megaStones.length > 0 && Math.random() < WILD_MEGA_STONE_CHANCE) {
+      return megaStones[Math.floor(Math.random() * megaStones.length)];
+    }
     return 'none';
   };
   bot.action(/catch_/, async ctx => {

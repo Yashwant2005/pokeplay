@@ -5,7 +5,7 @@ const userData = await getUserData(ctx.from.id);
 if(!userData.inv || typeof userData.inv !== 'object') userData.inv = {}
 if(!Array.isArray(userData.pokes)) userData.pokes = []
 if(!userData.teams || typeof userData.teams !== 'object') userData.teams = {}
-const team = userData.inv.team*1 || 1
+const team = String((userData.inv && userData.inv.team) || '1')
 const pokes = Array.isArray(userData.teams[team]) ? userData.teams[team] : [];
     const matchings = [];
 let b = 1

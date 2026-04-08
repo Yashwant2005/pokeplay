@@ -36,10 +36,17 @@ async function clearBattleMessageState({ bword, loadMessageData, saveMessageData
     return;
   }
 
-  const turnId = parseInt(messageData[bword].turn);
-  const oppoId = parseInt(messageData[bword].oppo);
+  const turnId = String(messageData[bword].turn ?? '');
+  const oppoId = String(messageData[bword].oppo ?? '');
   if (Array.isArray(messageData.battle)) {
-    messageData.battle = messageData.battle.filter((chat) => chat !== turnId && chat !== oppoId);
+    messageData.battle = messageData.battle.filter((chat) => {
+      const chatId = String(chat ?? '');
+      return chatId !== turnId && chatId !== oppoId;
+    });
+  }
+  if (messageData._battleTimestamps && typeof messageData._battleTimestamps === 'object') {
+    if (turnId) delete messageData._battleTimestamps[turnId];
+    if (oppoId) delete messageData._battleTimestamps[oppoId];
   }
   delete messageData[bword];
   await saveMessageData(messageData);

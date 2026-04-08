@@ -7077,7 +7077,7 @@
     }
   },
   "location:https://pokemondb.net/location/kalos-tower-of-mastery": {
-    "savedAt": 1775565657054,
+    "savedAt": 1775609499877,
     "value": {
       "title": "Tower of Mastery, Kalos",
       "encounters": [
@@ -20877,6 +20877,191 @@
           "details": "",
           "generation": "Generation 8",
           "method": "Shaking Trees"
+        }
+      ]
+    }
+  },
+  "pokemon:xerneas": {
+    "savedAt": 1775611130031,
+    "value": {
+      "species": "xerneas",
+      "regions": [
+        {
+          "id": "kalos",
+          "label": "Kalos",
+          "locations": [
+            {
+              "name": "Team Flare HQ",
+              "url": "https://pokemondb.net/location/kalos-team-flare-hq",
+              "games": [
+                "X"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "alola",
+          "label": "Alola",
+          "locations": [
+            {
+              "name": "Ultra Space Wilds",
+              "url": "https://pokemondb.net/location/alola-ultra-space-wilds",
+              "games": [
+                "Ultra Sun"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "pokemon:koraidon": {
+    "savedAt": 1775611140345,
+    "value": {
+      "species": "koraidon",
+      "regions": [
+        {
+          "id": "paldea",
+          "label": "Paldea",
+          "locations": [
+            {
+              "name": "Poco Path",
+              "url": "https://pokemondb.net/location/paldea-poco-path",
+              "games": [
+                "Scarlet"
+              ]
+            },
+            {
+              "name": "The Great Crater of Paldea",
+              "url": "https://pokemondb.net/location/paldea-the-great-crater-of-paldea",
+              "games": [
+                "Scarlet"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "pokemon:charmander": {
+    "savedAt": 1775611165861,
+    "value": {
+      "species": "charmander",
+      "regions": [
+        {
+          "id": "kanto",
+          "label": "Kanto",
+          "locations": [
+            {
+              "name": "4",
+              "url": "https://pokemondb.net/location/kanto-route-4",
+              "games": [
+                "Let's Go Pikachu",
+                "Let's Go Eevee"
+              ]
+            },
+            {
+              "name": "24",
+              "url": "https://pokemondb.net/location/kanto-route-24",
+              "games": [
+                "Let's Go Pikachu",
+                "Let's Go Eevee"
+              ]
+            },
+            {
+              "name": "Pallet Town",
+              "url": "https://pokemondb.net/location/kanto-pallet-town",
+              "games": [
+                "Red",
+                "Blue",
+                "FireRed",
+                "LeafGreen",
+                "HeartGold",
+                "SoulSilver"
+              ]
+            },
+            {
+              "name": "Rock Tunnel",
+              "url": "https://pokemondb.net/location/kanto-rock-tunnel",
+              "games": [
+                "Let's Go Pikachu",
+                "Let's Go Eevee"
+              ]
+            },
+            {
+              "name": "Route 3",
+              "url": "https://pokemondb.net/location/kanto-route-3",
+              "games": [
+                "Let's Go Pikachu",
+                "Let's Go Eevee"
+              ]
+            },
+            {
+              "name": "Route 24",
+              "url": "https://pokemondb.net/location/kanto-route-24",
+              "games": [
+                "Yellow"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sinnoh",
+          "label": "Sinnoh",
+          "locations": [
+            {
+              "name": "Sandsear Cave",
+              "url": "https://pokemondb.net/location/sinnoh-sandsear-cave",
+              "games": [
+                "Brilliant Diamond",
+                "Shining Pearl"
+              ]
+            },
+            {
+              "name": "Typhlo Cavern",
+              "url": "https://pokemondb.net/location/sinnoh-typhlo-cavern",
+              "games": [
+                "Brilliant Diamond",
+                "Shining Pearl"
+              ]
+            },
+            {
+              "name": "Volcanic Cave",
+              "url": "https://pokemondb.net/location/sinnoh-volcanic-cave",
+              "games": [
+                "Brilliant Diamond",
+                "Shining Pearl"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "kalos",
+          "label": "Kalos",
+          "locations": [
+            {
+              "name": "Lumiose City",
+              "url": "https://pokemondb.net/location/kalos-lumiose-city",
+              "games": [
+                "X",
+                "Y"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "alola",
+          "label": "Alola",
+          "locations": [
+            {
+              "name": "Route 3",
+              "url": "https://pokemondb.net/location/alola-route-3",
+              "games": [
+                "Ultra Sun",
+                "Ultra Moon"
+              ]
+            }
+          ]
         }
       ]
     }

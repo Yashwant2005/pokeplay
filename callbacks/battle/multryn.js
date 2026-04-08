@@ -22,21 +22,23 @@ let battleData = {};
 } catch (error) {
       battleData = {};
     }
-if(ctx.from.id!=battleData.cid && ctx.from.id!=battleData.oid){
+if(String(ctx.from.id)!=String(battleData.cid) && String(ctx.from.id)!=String(battleData.oid)){
 ctx.answerCbQuery();
 return
 }
 if(!battleData.runs){
 battleData.runs = []
 }
-if(battleData.runs.includes(ctx.from.id)){
+battleData.runs = battleData.runs.map((id) => String(id))
+const runnerId = String(ctx.from.id)
+if(battleData.runs.includes(runnerId)){
 ctx.answerCbQuery('You Have Already Escapped Waiting For Opponent')
 }else{
-battleData.runs.push(ctx.from.id)
+battleData.runs.push(runnerId)
 ctx.answerCbQuery('Waiting For Opponent To Run')
 await saveBattleData(bword, battleData);
 }
-if(battleData.runs.includes(parseInt(battleData.cid)) && battleData.runs.includes(parseInt(battleData.oid))){
+if(battleData.runs.includes(String(battleData.cid)) && battleData.runs.includes(String(battleData.oid))){
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'Both Player Choosed To *Escape* Battle',{parse_mode:'markdown'})
 await cleanupTempBattleForUsers({ battleData, bword, getUserData, saveUserData2 });
 await clearBattleMessageState({ bword, loadMessageData, saveMessageData });

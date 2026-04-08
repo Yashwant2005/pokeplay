@@ -79,6 +79,142 @@ function cloneJson(value) {
   }
 }
 
+const TEAM_IDS = ['1', '2', '3', '4', '5', '6'];
+
+function normalizePokemonList(list) {
+  const source = Array.isArray(list) ? list : [];
+  const out = [];
+  const indexByPass = new Map();
+
+  for (const rawEntry of source) {
+    if (!rawEntry || typeof rawEntry !== 'object') continue;
+    const entry = rawEntry;
+    const pass = String(entry.pass ?? '').trim();
+    if (!pass) continue;
+
+    entry.pass = pass;
+    if (typeof entry.name === 'string') {
+      entry.name = entry.name.trim().toLowerCase();
+    }
+    if (typeof entry.nickname === 'string' && entry.nickname.trim().length < 1) {
+      delete entry.nickname;
+    }
+
+    if (indexByPass.has(pass)) {
+      out[indexByPass.get(pass)] = entry;
+    } else {
+      indexByPass.set(pass, out.length);
+      out.push(entry);
+    }
+  }
+
+  return out;
+}
+
+function normalizeDexName(rawName) {
+  const name = String(rawName ?? '').trim().toLowerCase();
+  return name || null;
+}
+
+function normalizeDexList(list, additions = []) {
+  const out = [];
+  const seen = new Set();
+
+  const append = (rawName) => {
+    const name = normalizeDexName(rawName);
+    if (!name || seen.has(name)) return;
+    seen.add(name);
+    out.push(name);
+  };
+
+  if (Array.isArray(list)) {
+    for (const rawName of list) append(rawName);
+  }
+  if (Array.isArray(additions)) {
+    for (const rawName of additions) append(rawName);
+  }
+
+  return out;
+}
+
+function getTeamList(source, teamId) {
+  if (!source || typeof source !== 'object') return [];
+  if (Array.isArray(source[teamId])) return source[teamId];
+  const numericKey = Number(teamId);
+  if (Array.isArray(source[numericKey])) return source[numericKey];
+  return [];
+}
+
+function normalizeTeams(teams, validPasses) {
+  const source = teams && typeof teams === 'object' ? teams : {};
+  const passSet = validPasses instanceof Set ? validPasses : null;
+  const out = {};
+
+  for (const teamId of TEAM_IDS) {
+    const seen = new Set();
+    out[teamId] = [];
+    for (const rawPass of getTeamList(source, teamId)) {
+      const pass = String(rawPass ?? '').trim();
+      if (!pass || seen.has(pass)) continue;
+      if (passSet && !passSet.has(pass)) continue;
+      seen.add(pass);
+      out[teamId].push(pass);
+    }
+  }
+
+  return out;
+}
+
+function normalizeTeamId(teamId) {
+  const normalized = String(teamId ?? '').trim();
+  return TEAM_IDS.includes(normalized) ? normalized : '1';
+}
+
+function normalizeUserCollections(data) {
+  if (!data || typeof data !== 'object') return {};
+
+  const hasInvProp = Object.prototype.hasOwnProperty.call(data, 'inv');
+  if (hasInvProp && (!data.inv || typeof data.inv !== 'object' || Array.isArray(data.inv))) {
+    data.inv = {};
+  }
+
+  if (Object.prototype.hasOwnProperty.call(data, 'extra') && (!data.extra || typeof data.extra !== 'object' || Array.isArray(data.extra))) {
+    data.extra = {};
+  }
+
+  if (Array.isArray(data.pokes) || Object.prototype.hasOwnProperty.call(data, 'pokes')) {
+    data.pokes = normalizePokemonList(data.pokes);
+  }
+
+  const ownedPokes = Array.isArray(data.pokes) ? data.pokes : [];
+  const ownedPasses = new Set(
+    ownedPokes
+      .map((poke) => String(poke && poke.pass || '').trim())
+      .filter(Boolean)
+  );
+  const ownedNames = ownedPokes
+    .map((poke) => normalizeDexName(poke && poke.name))
+    .filter(Boolean);
+
+  if (hasInvProp || Object.prototype.hasOwnProperty.call(data, 'teams') || ownedPasses.size > 0) {
+    data.teams = normalizeTeams(data.teams, ownedPasses);
+  }
+
+  if (data.inv && typeof data.inv === 'object') {
+    data.inv.team = normalizeTeamId(data.inv.team);
+  }
+
+  if (Object.prototype.hasOwnProperty.call(data, 'pokecaught') || ownedNames.length > 0) {
+    data.pokecaught = normalizeDexList(data.pokecaught, ownedNames);
+  }
+
+  if (Object.prototype.hasOwnProperty.call(data, 'pokeseen') || ownedNames.length > 0) {
+    data.pokeseen = normalizeDexList(data.pokeseen, ownedNames);
+  }
+
+  return data;
+}
+
 function normalizeUserCurrencyData(data) {
   if (!data || typeof data !== 'object') return data;
   if (!data.inv || typeof data.inv !== 'object') return data;
@@ -367,22 +503,13 @@ function mergePokemonLists(latestList, incomingList) {
       merged.push(poke);
     }
   }
-  return merged;
+  return normalizePokemonList(merged);
 }
 
 function mergeTeams(latestTeams, incomingTeams, validPasses) {
   const latest = latestTeams && typeof latestTeams === 'object' ? latestTeams : {};
   const incoming = incomingTeams && typeof incomingTeams === 'object' ? incomingTeams : {};
-  const mergedTeams = { ...latest };
-  for (const key of Object.keys(incoming)) {
-    const list = Array.isArray(incoming[key]) ? incoming[key] : [];
-    mergedTeams[key] = [...new Set(list.map((pass) => String(pass)))].filter((pass) => validPasses.has(String(pass)));
-  }
-  for (const key of Object.keys(mergedTeams)) {
-    if (!Array.isArray(mergedTeams[key])) mergedTeams[key] = [];
-    mergedTeams[key] = [...new Set(mergedTeams[key].map((pass) => String(pass)))].filter((pass) => validPasses.has(String(pass)));
-  }
-  return mergedTeams;
+  return normalizeTeams({ ...latest, ...incoming }, validPasses);
 }
 
 function isPlainObject(value) {
@@ -410,7 +537,7 @@ function deepMergeObjects(latestValue, incomingValue) {
 function mergeUserDataForSave(latestData, incomingData) {
   const latest = latestData && typeof latestData === 'object' ? latestData : {};
   const incoming = incomingData && typeof incomingData === 'object' ? incomingData : {};
-  const replacePokes = Boolean(incoming._replacePokes || incoming.__replacePokes);
+  const replacePokes = Boolean(incoming._replacePokes || incoming.__replacePokes || Array.isArray(incoming.pokes));
   const merged = {
     ...latest,
     ...incoming,
@@ -421,7 +548,7 @@ function mergeUserDataForSave(latestData, incomingData) {
     tms: deepMergeObjects(latest.tms || {}, incoming.tms || {})
   };
   merged.pokes = replacePokes
-    ? (Array.isArray(incoming.pokes) ? incoming.pokes : [])
+    ? normalizePokemonList(Array.isArray(incoming.pokes) ? incoming.pokes : [])
     : mergePokemonLists(latest.pokes, incoming.pokes);
   merged.pokecaught = mergeUniquePrimitiveArrays(latest.pokecaught, incoming.pokecaught);
   merged.pokeseen = mergeUniquePrimitiveArrays(latest.pokeseen, incoming.pokeseen);
@@ -429,7 +556,7 @@ function mergeUserDataForSave(latestData, incomingData) {
   merged.teams = mergeTeams(latest.teams, incoming.teams, validPasses);
   delete merged._replacePokes;
   delete merged.__replacePokes;
-  return merged;
+  return normalizeUserCollections(merged);
 }
 
 async function check(ctx, next) {
@@ -530,9 +657,9 @@ async function saveUserData2(userId, userData) {
     const queued = saveQueue.get(key);
     const cached = queued || getCachedUserData(key);
     const existing = cached ? null : await (await getCollection('users')).findOne({ _id: key });
-    const latestData = normalizeUserCurrencyData(cached || (existing && existing.data ? existing.data : {}));
-    const incomingData = normalizeUserCurrencyData(cloneJson(userData && typeof userData === 'object' ? userData : {}));
-    const mergedData = normalizeUserCurrencyData(mergeUserDataForSave(latestData, incomingData));
+    const latestData = normalizeUserCollections(normalizeUserCurrencyData(cached || (existing && existing.data ? existing.data : {})));
+    const incomingData = normalizeUserCollections(normalizeUserCurrencyData(cloneJson(userData && typeof userData === 'object' ? userData : {})));
+    const mergedData = normalizeUserCollections(normalizeUserCurrencyData(mergeUserDataForSave(latestData, incomingData)));
     setCachedUserData(key, mergedData);
     queueUserSave(key, mergedData);
   } catch (error) {
@@ -543,7 +670,7 @@ async function saveUserData2(userId, userData) {
 async function overwriteUserData(userId, userData) {
   try {
     const key = String(userId);
-    const nextData = normalizeUserCurrencyData(cloneJson(userData && typeof userData === 'object' ? userData : {}));
+    const nextData = normalizeUserCollections(normalizeUserCurrencyData(cloneJson(userData && typeof userData === 'object' ? userData : {})));
     setCachedUserData(key, nextData);
     queueUserSave(key, nextData);
   } catch (error) {
@@ -556,10 +683,14 @@ async function getUserData(userId) {
     const key = String(userId);
     // 1. Return from cache if fresh
     const cached = getCachedUserData(key);
-    if (cached) return normalizeUserCurrencyData(cached);
+    if (cached) {
+      const normalized = normalizeUserCollections(normalizeUserCurrencyData(cached));
+      setCachedUserData(key, normalized);
+      return normalized;
+    }
     // 2. If a DB fetch is already in-flight for this user, wait for it
     if (userFetchInFlight.has(key)) {
-      return normalizeUserCurrencyData(await userFetchInFlight.get(key));
+      return normalizeUserCollections(normalizeUserCurrencyData(await userFetchInFlight.get(key)));
     }
     // 3. Start a new DB fetch and register it so concurrent callers share it
     const fetchPromise = (async () => {
@@ -567,7 +698,7 @@ async function getUserData(userId) {
         const users = await getCollection('users');
         const doc = await users.findOne({ _id: key });
         if (!doc || !doc.data) return {};
-        const normalized = normalizeUserCurrencyData(doc.data);
+        const normalized = normalizeUserCollections(normalizeUserCurrencyData(doc.data));
         setCachedUserData(key, normalized);
         return normalized;
       } finally {

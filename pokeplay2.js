@@ -1449,6 +1449,7 @@ const groupCommands = [
   { command: '/travel', description: 'Travel Another Place' },
   { command: '/safari_zone', description: 'Travel Into Safari Zone' },
   { command: '/daycare', description: 'Train Pokemon to Lv100 in daycare' },
+  { command: '/myteam', description: 'Open your main team menu' },
   { command: '/myteams', description: ' Setup Your Teams' },
   { command: '/pokestore', description: 'Visit PokeStore' },
   { command: '/trade', description: 'Trade Pokemons With Others (Paid)' },
@@ -1778,6 +1779,8 @@ async function editMessage(per, ctx, chatId, id, msg, parameters2) {
     if (typeof parameters2 === 'object') {
       options = { ...options, ...parameters2 };
     }
+    msg = repairOutgoingValue(msg);
+    options = repairOutgoingValue(options);
     lastClicked2[ctx.from.id] = Date.now();
     globalClicks = [...globalClicks, Date.now()];
 
@@ -1825,6 +1828,51 @@ async function editMessage(per, ctx, chatId, id, msg, parameters2) {
     return null
   }
 }
+function getMojibakeScore(value) {
+  const matches = String(value || '').match(/[ÃÂâðï�]/g);
+  return matches ? matches.length : 0;
+}
+
+function repairMojibakeText(value) {
+  if (typeof value !== 'string' || !/[ÃÂâðï�]/.test(value)) {
+    return value;
+  }
+
+  let current = value;
+  for (let i = 0; i < 3; i++) {
+    const decoded = Buffer.from(current, 'latin1').toString('utf8');
+    if (!decoded || decoded === current) {
+      break;
+    }
+    if (getMojibakeScore(decoded) > getMojibakeScore(current)) {
+      break;
+    }
+    current = decoded;
+    if (!/[ÃÂâðï�]/.test(current)) {
+      break;
+    }
+  }
+  return current;
+}
+
+function repairOutgoingValue(value) {
+  if (typeof value === 'string') {
+    return repairMojibakeText(value);
+  }
+  if (Array.isArray(value)) {
+    return value.map(repairOutgoingValue);
+  }
+  if (!value || typeof value !== 'object') {
+    return value;
+  }
+
+  const out = {};
+  for (const [key, entry] of Object.entries(value)) {
+    out[key] = repairOutgoingValue(entry);
+  }
+  return out;
+}
+
 async function sendMessage(ctx, chatId, parameters1, msg, parameters2) {
   let options = {};
   try {
@@ -1843,6 +1891,10 @@ async function sendMessage(ctx, chatId, parameters1, msg, parameters2) {
     if (typeof parameters2 === 'object') {
       options = { ...options, ...parameters2 };
     }
+
+    parameters1 = repairOutgoingValue(parameters1);
+    msg = repairOutgoingValue(msg);
+    options = repairOutgoingValue(options);
 
     lastClicked2[ctx.from.id] = Date.now();
     globalmsg = [...globalmsg, Date.now()];

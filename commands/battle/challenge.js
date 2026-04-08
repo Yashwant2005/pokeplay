@@ -19,11 +19,11 @@ function registerChallengeCommand(bot, deps) {
 
     const mdata = await loadMessageData();
     const activeBattles = Array.isArray(mdata.battle) ? mdata.battle : [];
-    if (activeBattles.includes(ctx.from.id)) {
+    if (activeBattles.some((id) => String(id) === String(ctx.from.id))) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'You Are In A *Battle*', { reply_to_message_id: ctx.message.message_id });
       return;
     }
-    if (activeBattles.includes(reply.from.id)) {
+    if (activeBattles.some((id) => String(id) === String(reply.from.id))) {
       await sendMessage(ctx, ctx.chat.id, { parse_mode: 'markdown' }, 'Opponent Is In A *Battle*', { reply_to_message_id: ctx.message.message_id });
       return;
     }

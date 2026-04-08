@@ -1,6 +1,6 @@
 function registerMyteamsCommand(bot, deps) {
   const { commands, getUserData, saveUserData2, sendMessage, pokes, pokelist } = deps;
-  commands.set('myteams',async ctx => {
+  const handler = async ctx => {
   
   const userData = await getUserData(ctx.from.id)
   if(!Array.isArray(userData.pokes)){
@@ -40,7 +40,7 @@ function registerMyteamsCommand(bot, deps) {
   
       await saveUserData2(ctx.from.id, userData);
   
-  const team = userData.inv.team*1 || 1
+  const team = String((userData.inv && userData.inv.team) || '1')
   
   const teampokes = Array.isArray(userData.teams[team]) ? userData.teams[team] : [];
   var matching = [];
@@ -133,7 +133,10 @@ function registerMyteamsCommand(bot, deps) {
   
   await sendMessage(ctx,ctx.chat.id,{parse_mode:'markdown'},messageText,{reply_markup:{inline_keyboard:key}})
   
-  })
+  }
+
+  commands.set('myteams', handler)
+  commands.set('myteam', handler)
 }
 
 module.exports = registerMyteamsCommand;

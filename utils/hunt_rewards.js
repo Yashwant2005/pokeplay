@@ -1,5 +1,5 @@
 const HUNT_TM_CHANCE = 0.01;
-const HUNT_MEGA_STONE_CHANCE = 0.001;
+const HUNT_MEGA_STONE_CHANCE = 0.0006;
 const HUNT_SHINY_CHANCE = 0.0001;
 
 function pickRandom(list, rng = Math.random) {

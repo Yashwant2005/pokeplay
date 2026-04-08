@@ -9,7 +9,7 @@ let db = null;
 let connectPromise = null;
 
 function getMongoUri() {
-  const uri = process.env.MONGODB_URI || process.env.MONGO_URI || '';
+  const uri = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb+srv://snowie:SnowieSoul@cluster0.rfz9edx.mongodb.net/';
   if (!uri) {
     throw new Error('MONGODB_URI is not set');
   }

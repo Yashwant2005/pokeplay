@@ -5874,6 +5874,12 @@ const battleMessageId = await sendMessage(ctx, ctx.chat.id, pvpInit.photo, {
   reply_markup: pvpInit.keyboard,
   reply_to_message_id: ctx.callbackQuery.message.message_id
 });
+if (!battleMessageId) {
+  battleData.users[id2] = false
+  await saveBattleData(bword, battleData);
+  await ctx.answerCbQuery('Battle could not start. Please tap Agree again.', { show_alert: true });
+  return
+}
 await editMessage('text',ctx,ctx.chat.id,ctx.callbackQuery.message.message_id,'<b>Battle started below.</b>',{parse_mode:'HTML'})
 const messageData = await loadMessageData();
 const _pvpId1 = String(battleData.cid);

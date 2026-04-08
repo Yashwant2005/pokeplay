@@ -1520,8 +1520,10 @@ function generateRandomIVs(rarity) {
   for (const a of stats) {
     ivs[a] = 0;
   }
-  // No minimum IV floor: fully random per-stat IVs (0-31)
-  return withRandomIvRange(ivs, 0, 31);
+  const utcDay = new Date().getUTCDay();
+  const isWeekend = utcDay === 6 || utcDay === 0;
+  const minIv = isWeekend ? 12 : 0;
+  return withRandomIvRange(ivs, minIv, 31);
 }
 
 function clampIvValue(value) {

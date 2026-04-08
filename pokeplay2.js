@@ -1,7 +1,7 @@
 ﻿let msgsent = []
 const appr = [1072659486, 6265981509]
 require('dotenv').config();
-const botToken = process.env.BOT_TOKEN || '5940934309:AAFs9Cewbeg5oe8hWhKercl65-xZ2rLdrkc' // fallback for local dev
+const botToken = process.env.BOT_TOKEN || '8734728430:AAGfL57q3WFKKPCTf8Nmj7Oekd_8G4U9hQ8' // fallback for local dev
 const { Telegraf } = require('telegraf')
 const bot = new Telegraf(botToken)
 
@@ -1859,10 +1859,17 @@ function repairOutgoingValue(value) {
   if (typeof value === 'string') {
     return repairMojibakeText(value);
   }
+  if (Buffer.isBuffer(value) || value instanceof Uint8Array) {
+    return value;
+  }
   if (Array.isArray(value)) {
     return value.map(repairOutgoingValue);
   }
   if (!value || typeof value !== 'object') {
+    return value;
+  }
+  const proto = Object.getPrototypeOf(value);
+  if (proto !== Object.prototype && proto !== null) {
     return value;
   }
 
